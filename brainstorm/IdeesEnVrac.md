@@ -54,6 +54,7 @@ Le labyrinthe devrait avoir le genre de forme suivante :
 	###################
 
 	(Loucher ou s'éloigner pour mieux voir...)
+	PS : en fait on voit pas bien avec le rendu github. Faut regarder le fichier texte direct ^^
 
 * `#` : Mur
 * `.` : Croisements (cases de base utilisées par l'algorithme)
