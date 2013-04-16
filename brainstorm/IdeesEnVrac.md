@@ -1,6 +1,6 @@
 # Idées ONAPI #
 
-(Si jamais ceci est un document markdowm. On peut l'éditer comme ça, c'est du texte, mais github est capable de le mettre en page).
+(Si jamais ceci est un document Markdowm. C'est juste un fichier texte écrit d'une certaine façon qui permet de le mettre en page automatiquement).
 
 ## Généralités ##
 
@@ -47,7 +47,7 @@ Le labyrinthe devrait avoir le genre de forme suivante :
 	#.#.-.-.-.#.#.-.-.#
 	#-#-#######-###-#-#
 	#.#.-.#.-.-.-.#.#.#
-	#-### ##-##-###-#-#
+	#-###-##-##-###-#-#
 	#.-.#.-.-.#.-.-.#.#
 	#-#-#-#####-###-###
 	#.#.-.#.-.-.#.-.-.#
