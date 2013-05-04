@@ -11,14 +11,21 @@
  */
 package gui;
 
+import javax.swing.JFrame;
+
 /**
- * TODO
+ * Fenêtre principale de l'application.
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
-public class JOnapi {
+public class JOnapi extends JFrame {
+
+   /**
+    * ID de sérialisation du composant graphique.
+    */
+   private static final long serialVersionUID = -8770775554830532082L;
 
 }

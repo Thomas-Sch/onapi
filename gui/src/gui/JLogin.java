@@ -11,6 +11,8 @@
  */
 package gui;
 
+import javax.swing.JFrame;
+
 /**
  * TODO
  * @author Crescenzio Fabio
@@ -19,6 +21,11 @@ package gui;
  * @author Schweizer Thomas
  *
  */
-public class JLogin {
+public class JLogin extends JFrame{
+
+   /**
+    * ID de sérialisation du composant graphique.
+    */
+   private static final long serialVersionUID = -9093556072363479532L;
 
 }

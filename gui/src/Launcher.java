@@ -1,5 +1,5 @@
 /* ============================================================================
- * Nom du fichier   : launcher.java
+ * Nom du fichier   : Launcher.java
  * ============================================================================
  * Date de création : 1 mai 2013
  * ============================================================================
@@ -18,7 +18,7 @@
  * @author Schweizer Thomas
  *
  */
-public class launcher {
+public class Launcher {
 
    /**
     * @param args
