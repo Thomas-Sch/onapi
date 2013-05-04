@@ -11,14 +11,87 @@
  */
 package game.controllers;
 
+import game.models.GameModel;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * TODO
+ * Traite les entrées de l'utilisateur, les fait valider auprès du serveur puis
+ * les envoie au modèle pour que celui-ci les applique dans le jeu.
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
 public class GameController {
+
+   private GameModel game;
+
+   /**
+    * Représente les diverses actions demandées par l'utilisateur
+    * 
+    * @author Crescenzio Fabio
+    * @author Decorvet Grégoire
+    * @author Jaquier Kevin
+    * @author Schweizer Thomas
+    * 
+    */
+   enum Action {
+      UP, DOWN, LEFT, RIGHT, TURN_LEFT, TURN_RIGHT, FIRE, SKILL, LAMP;
+   }
+
+   /**
+    * Table donnant l'état de chaque action (toutes à false au début)
+    */
+   private Map<Action, Boolean> keys = new HashMap<Action, Boolean>();
+   {
+      for (Action act : Action.values()) {
+         keys.put(act, false);
+      }
+   };
+
+   /**
+    * @param game
+    *           Modèle du jeu en lui-même
+    */
+   public GameController(GameModel game) {
+      this.game = game;
+   }
+
+   /**
+    * Change l'état (activé => true, désactivé => false) d'une action
+    * 
+    * @param action
+    *           Action concernée
+    * @param state
+    *           Nouvel état de l'action
+    */
+   public void setActionState(Action action, Boolean state) {
+      keys.get(keys.put(action, state));
+   }
+
+   /**
+    * Obtient l'état actuel d'une action
+    * 
+    * @param action
+    *           Action concernée
+    * @return Etat actuel de l'action
+    */
+   public boolean getActionState(Action action) {
+      return keys.get(action).booleanValue();
+   }
+
+   /**
+    * Méthode de mise à jour de la logique de jeu
+    * 
+    * @param delta
+    *           Différence de temps depuis le dernier update
+    */
+   public void update(float delta) {
+      // TODO Auto-generated method stub
+   }
 
 }
