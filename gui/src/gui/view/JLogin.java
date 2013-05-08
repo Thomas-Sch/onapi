@@ -9,7 +9,7 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package gui;
+package gui.view;
 
 import javax.swing.JFrame;
 
@@ -27,5 +27,9 @@ public class JLogin extends JFrame{
     * ID de sérialisation du composant graphique.
     */
    private static final long serialVersionUID = -9093556072363479532L;
+   
+   public JLogin () {
+      
+   }
 
 }

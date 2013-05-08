@@ -1,3 +1,7 @@
+import utils.MidasLogs;
+import gui.view.JLogin;
+import gui.view.LogsFrame;
+
 /* ============================================================================
  * Nom du fichier   : Launcher.java
  * ============================================================================
@@ -25,6 +29,12 @@ public class Launcher {
     */
    public static void main(String[] args) {
       System.out.println("Je suis l'interface !");
+      new JLogin();
+      
+      // Temporaire en attendant de merge.
+      (new MidasLogs()).addLogsToFrame(new LogsFrame("Logs", 0, 0, 500, 400));
+      
+      MidasLogs.messages.push("Salut");
    }
 
 }

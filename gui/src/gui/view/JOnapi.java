@@ -9,7 +9,7 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package gui;
+package gui.view;
 
 import javax.swing.JFrame;
 
