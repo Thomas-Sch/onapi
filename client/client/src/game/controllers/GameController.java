@@ -16,6 +16,8 @@ import game.models.GameModel;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.math.Vector2;
+
 /**
  * Traite les entrées de l'utilisateur, les fait valider auprès du serveur puis
  * les envoie au modèle pour que celui-ci les applique dans le jeu.
@@ -39,7 +41,7 @@ public class GameController {
     * @author Schweizer Thomas
     * 
     */
-   enum Action {
+   public static enum Action {
       UP, DOWN, LEFT, RIGHT, TURN_LEFT, TURN_RIGHT, FIRE, SKILL, LAMP;
    }
 
@@ -91,7 +93,19 @@ public class GameController {
     *           Différence de temps depuis le dernier update
     */
    public void update(float delta) {
-      // TODO Auto-generated method stub
+      if (getActionState(Action.UP)) {
+         game.getPlayer().move(new Vector2(0, +0.1f));
+      }
+      if (getActionState(Action.DOWN)) {
+         game.getPlayer().move(new Vector2(0, -0.1f));
+      }
+      if (getActionState(Action.RIGHT)) {
+         game.getPlayer().move(new Vector2(+0.1f, 0));
+      }
+      if (getActionState(Action.LEFT)) {
+         game.getPlayer().move(new Vector2(-0.1f, 0));
+      }
+      
    }
 
 }

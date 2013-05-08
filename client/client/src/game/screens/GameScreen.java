@@ -16,6 +16,7 @@ import game.models.GameModel;
 import game.views.GameRenderer;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 
 /**
@@ -68,14 +69,28 @@ public class GameScreen extends ScreenAdapter {
 
    @Override
    public boolean keyDown(int keycode) {
-      // TODO Auto-generated method stub
-      return false;
+      if (keycode == Keys.W)
+         controller.setActionState(GameController.Action.UP, true);
+      if (keycode == Keys.S)
+         controller.setActionState(GameController.Action.DOWN, true);
+      if (keycode == Keys.A)
+         controller.setActionState(GameController.Action.LEFT, true);
+      if (keycode == Keys.D)
+         controller.setActionState(GameController.Action.RIGHT, true);
+      return true;
    }
 
    @Override
    public boolean keyUp(int keycode) {
-      // TODO Auto-generated method stub
-      return false;
+      if (keycode == Keys.W)
+         controller.setActionState(GameController.Action.UP, false);
+      if (keycode == Keys.S)
+         controller.setActionState(GameController.Action.DOWN, false);
+      if (keycode == Keys.A)
+         controller.setActionState(GameController.Action.LEFT, false);
+      if (keycode == Keys.D)
+         controller.setActionState(GameController.Action.RIGHT, false);
+      return true;
    }
 
    @Override
