@@ -16,6 +16,9 @@ import java.net.Socket;
 import javax.swing.JFrame;
 
 import utils.connections.Channel;
+import utils.connections.protocol.ClientProtocol;
+import utils.connections.protocol.ProtocolType;
+import utils.connections.protocol.ServerProtocol;
 
 /**
  * TODO
@@ -31,32 +34,43 @@ public class UserConnection implements Runnable {
    
    private boolean active = true;
    
+   private ServerProtocol protocol;
    
    public UserConnection(Socket socket, int timeout) {
       channel = new Channel(socket, timeout);
+      protocol = new ServerProtocol(channel);
    }
 
 
    @Override
    public void run() {
-      int counter = 0;
-      String msg = "";
       
-      JFrame frame = new JFrame("Popup !!");
-      frame.setBounds(800, 50, 300, 100);
-      
-      channel.sendObject(frame);
+      ProtocolType proType;
       
       while(active) {
-         counter++;
          
-         msg = channel.receiveString();
+         proType = channel.receiveProtocolType();
          
-         System.out.println("Server - " + counter + ". " + msg);
+         System.out.println("Requete client : " + proType);
          
-         msg = "";
+         switch(proType) {
+            
+            case PING :
+               protocol.ping();
+               break;
+               
+            case AUTHENTIFICATION :
+               protocol.authentifaction();
+               break;
+               
+            case TEXT_MESSAGE :
+               protocol.textMessage(System.out);
+               break;
+               
+            default :
+               System.out.println("Not yet implemented protocol");
+         }
          
-         channel.sendString("orly ?");
       }
       
    }
