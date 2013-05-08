@@ -1,5 +1,5 @@
 /* ============================================================================
- * Nom du fichier   : launcher.java
+ * Nom du fichier   : JOnapi.java
  * ============================================================================
  * Date de création : 1 mai 2013
  * ============================================================================
@@ -9,22 +9,23 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
+package gui.view;
+
+import javax.swing.JFrame;
 
 /**
- * TODO
+ * Fenêtre principale de l'application.
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
-public class launcher {
+public class JOnapi extends JFrame {
 
    /**
-    * @param args
+    * ID de sérialisation du composant graphique.
     */
-   public static void main(String[] args) {
-      System.out.println("Salut, je suis le serveur.");
-   }
+   private static final long serialVersionUID = -8770775554830532082L;
 
 }

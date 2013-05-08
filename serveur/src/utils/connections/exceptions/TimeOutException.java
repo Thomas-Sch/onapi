@@ -1,11 +1,7 @@
-import utils.MidasLogs;
-import gui.view.JLogin;
-import gui.view.LogsFrame;
-
 /* ============================================================================
- * Nom du fichier   : Launcher.java
+ * Nom du fichier   : TimeOutException.java
  * ============================================================================
- * Date de création : 1 mai 2013
+ * Date de création : 8 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -13,6 +9,7 @@ import gui.view.LogsFrame;
  *                    Schweizer Thomas
  * ============================================================================
  */
+package utils.connections.exceptions;
 
 /**
  * TODO
@@ -22,19 +19,22 @@ import gui.view.LogsFrame;
  * @author Schweizer Thomas
  *
  */
-public class Launcher {
-
-   /**
-    * @param args
-    */
-   public static void main(String[] args) {
-      System.out.println("Je suis l'interface !");
-      new JLogin();
-      
-      // Temporaire en attendant de merge.
-      (new MidasLogs()).addLogsToFrame(new LogsFrame("Logs", 0, 0, 500, 400));
-      
-      MidasLogs.messages.push("Salut");
+public class TimeOutException extends ChannelException {
+   
+   public TimeOutException() {
+      super();
+   }
+   
+   public TimeOutException(String message) {
+      super(message);
+   }
+   
+   public TimeOutException(Throwable cause) {
+      super(cause);
+   }
+   
+   public TimeOutException(String message, Throwable cause) {
+      super(message,cause);
    }
 
 }

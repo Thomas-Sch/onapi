@@ -1,11 +1,7 @@
-import utils.MidasLogs;
-import gui.view.JLogin;
-import gui.view.LogsFrame;
-
 /* ============================================================================
- * Nom du fichier   : Launcher.java
+ * Nom du fichier   : PortException.java
  * ============================================================================
- * Date de création : 1 mai 2013
+ * Date de création : 6 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -13,6 +9,9 @@ import gui.view.LogsFrame;
  *                    Schweizer Thomas
  * ============================================================================
  */
+package core.exceptions;
+
+import java.io.IOException;
 
 /**
  * TODO
@@ -22,19 +21,22 @@ import gui.view.LogsFrame;
  * @author Schweizer Thomas
  *
  */
-public class Launcher {
-
-   /**
-    * @param args
-    */
-   public static void main(String[] args) {
-      System.out.println("Je suis l'interface !");
-      new JLogin();
-      
-      // Temporaire en attendant de merge.
-      (new MidasLogs()).addLogsToFrame(new LogsFrame("Logs", 0, 0, 500, 400));
-      
-      MidasLogs.messages.push("Salut");
+public class PortException extends IOException {
+   
+   public PortException() {
+      super();
+   }
+   
+   public PortException(String message) {
+      super(message);
+   }
+   
+   public PortException(Throwable cause) {
+      super(cause);
+   }
+   
+   public PortException(String message, Throwable cause) {
+      super(message, cause);
    }
 
 }

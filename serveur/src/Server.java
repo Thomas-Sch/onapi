@@ -1,5 +1,7 @@
+import core.Core;
+
 /* ============================================================================
- * Nom du fichier   : JLogin.java
+ * Nom du fichier   : Server.java
  * ============================================================================
  * Date de création : 1 mai 2013
  * ============================================================================
@@ -9,9 +11,6 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package gui;
-
-import javax.swing.JFrame;
 
 /**
  * TODO
@@ -21,11 +20,19 @@ import javax.swing.JFrame;
  * @author Schweizer Thomas
  *
  */
-public class JLogin extends JFrame{
-
-   /**
-    * ID de sérialisation du composant graphique.
-    */
-   private static final long serialVersionUID = -9093556072363479532L;
+public class Server {
+   
+   
+   
+   
+   
+   public static void main(String[] args) {
+      
+      Core core = new Core();
+      
+      core.start();
+      
+      
+   }
 
 }

@@ -1,9 +1,5 @@
-import utils.MidasLogs;
-import gui.view.JLogin;
-import gui.view.LogsFrame;
-
 /* ============================================================================
- * Nom du fichier   : Launcher.java
+ * Nom du fichier   : JLogin.java
  * ============================================================================
  * Date de création : 1 mai 2013
  * ============================================================================
@@ -13,6 +9,9 @@ import gui.view.LogsFrame;
  *                    Schweizer Thomas
  * ============================================================================
  */
+package gui.view;
+
+import javax.swing.JFrame;
 
 /**
  * TODO
@@ -22,19 +21,15 @@ import gui.view.LogsFrame;
  * @author Schweizer Thomas
  *
  */
-public class Launcher {
+public class JLogin extends JFrame{
 
    /**
-    * @param args
+    * ID de sérialisation du composant graphique.
     */
-   public static void main(String[] args) {
-      System.out.println("Je suis l'interface !");
-      new JLogin();
+   private static final long serialVersionUID = -9093556072363479532L;
+   
+   public JLogin () {
       
-      // Temporaire en attendant de merge.
-      (new MidasLogs()).addLogsToFrame(new LogsFrame("Logs", 0, 0, 500, 400));
-      
-      MidasLogs.messages.push("Salut");
    }
 
 }
