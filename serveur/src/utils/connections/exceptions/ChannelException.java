@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : launcher.java
+ * Nom du fichier   : ConnectionException.java
  * ============================================================================
- * Date de création : 1 mai 2013
+ * Date de création : 8 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,6 +9,7 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
+package utils.connections.exceptions;
 
 /**
  * TODO
@@ -18,13 +19,22 @@
  * @author Schweizer Thomas
  *
  */
-public class launcher {
-
-   /**
-    * @param args
-    */
-   public static void main(String[] args) {
-      System.out.println("Salut, je suis le serveur.");
+public class ChannelException extends RuntimeException {
+   
+   public ChannelException() {
+      super();
    }
+   
+   public ChannelException(String message) {
+      super(message);
+   }
+   
+   public ChannelException(Throwable cause) {
+      super(cause);
+   }
+   
+   public ChannelException(String message, Throwable cause) {
+      super(message,cause);
+   }  
 
 }
