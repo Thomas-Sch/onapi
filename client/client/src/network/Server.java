@@ -11,11 +11,10 @@
  */
 package network;
 
+import java.net.InetAddress;
+
 /**
- * Classe singleton pour la communication avec le serveur de jeu.
- * 
- * Singleton Pattern :
- * http://fr.wikipedia.org/wiki/Singleton_(patron_de_conception)
+ * Façade permettant de communiquer avec le serveur de jeu.
  * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
@@ -23,38 +22,28 @@ package network;
  * @author Schweizer Thomas
  * 
  */
-public final class Server {
+public class Server {
 
-   private static volatile Server instance = null;
+   private InetAddress address;
 
-   private Server() {
-      super();
+   public Server(InetAddress address) {
+      this.address = address;
    }
 
-   /**
-    * Retourne l'unique instance du serveur, et la crée si elle n'a 
-    * pas encore déjà été instanciée.
-    * 
-    * @return L'instance unique de l'objet serveur.
-    */
-   public final static Server getInstance() {
-      if (instance == null) {
-         synchronized (Server.class) {
-            if (instance == null) {
-               instance = new Server();
-            }
-         }
-      }
-      return instance;
-   }
-   
    public void connect() {
-      // TODO Implémenter la connexion du serveur
-   }
-   
-   public void disconnect() {
-      // TODO Implémenter la déconnexion du serveur
+      // TODO implémenter connect
    }
 
+   public void disconnect() {
+      // TODO implémenter disconnect
+   }
+
+   public InetAddress getAddress() {
+      return address;
+   }
+
+   public void setAddress(InetAddress address) {
+      this.address = address;
+   }
 
 }
