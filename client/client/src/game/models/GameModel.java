@@ -13,6 +13,9 @@ package game.models;
 
 import java.util.List;
 
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
+
 
 /**
  * TODO
@@ -28,6 +31,11 @@ public class GameModel {
    private Player player;
    private List<Team> teams;
 
+   public GameModel() {
+      Team t1 = new Team(Color.RED);
+      player = new Player(new Vector2(0f, 0f), new Vector2(0f, 1f), t1);
+   }
+   
    public List<Team> getTeams() {
       return teams;
    }

@@ -11,7 +11,7 @@
  */
 package game.models;
 
-import java.util.List;
+import java.util.LinkedList;
 
 import com.badlogic.gdx.graphics.Color;
 
@@ -25,32 +25,33 @@ import com.badlogic.gdx.graphics.Color;
  */
 public class Team {
 
-   public Team(Color color, List<Player> members) {
+   private Color color;
+   private LinkedList<Player> members;
+   
+   public Team(Color color) {
+      this(color, new LinkedList<Player>());
+   }
+   
+   public Team(Color color, LinkedList<Player> members) {
       super();
       this.color = color;
       this.members = members;
    }
-
-
-   private Color color;
-   private List<Player> members;
    
    public Color getColor() {
       return color;
    }
-
 
    public void setColor(Color color) {
       this.color = color;
    }
 
 
-   public List<Player> getMembers() {
+   public LinkedList<Player> getMembers() {
       return members;
    }
 
-
-   public void setMembers(List<Player> members) {
+   public void setMembers(LinkedList<Player> members) {
       this.members = members;
    }
    

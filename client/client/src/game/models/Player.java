@@ -45,6 +45,13 @@ public class Player {
       this.pos = pos;
    }
 
+   public void moveTo(Vector2 newPos) {
+      setPos(newPos);
+   }
+   
+   public void move(Vector2 dir) {
+      this.pos.add(dir);
+   }
 
    public Vector2 getDir() {
       return dir;
