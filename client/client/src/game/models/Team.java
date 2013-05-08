@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : Game.java
+ * Nom du fichier   : Team.java
  * ============================================================================
- * Date de création : 1 mai 2013
+ * Date de création : 8 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -13,6 +13,7 @@ package game.models;
 
 import java.util.List;
 
+import com.badlogic.gdx.graphics.Color;
 
 /**
  * TODO
@@ -22,38 +23,35 @@ import java.util.List;
  * @author Schweizer Thomas
  *
  */
-public class GameModel {
+public class Team {
 
-   private Map map;
-   private Player player;
-   private List<Team> teams;
-
-   public List<Team> getTeams() {
-      return teams;
-   }
-
-   public void setTeams(List<Team> teams) {
-      this.teams = teams;
-   }
-
-   public Player getPlayer() {
-      return player;
+   public Team(Color color, List<Player> members) {
+      super();
+      this.color = color;
+      this.members = members;
    }
 
 
-   public void setPlayer(Player player) {
-      this.player = player;
-   }
-
-
-   public Map getMap() {
-      return map;
-   }
-
-
-   public void setMap(Map map) {
-      this.map = map;
-   }
+   private Color color;
+   private List<Player> members;
    
+   public Color getColor() {
+      return color;
+   }
+
+
+   public void setColor(Color color) {
+      this.color = color;
+   }
+
+
+   public List<Player> getMembers() {
+      return members;
+   }
+
+
+   public void setMembers(List<Player> members) {
+      this.members = members;
+   }
    
 }

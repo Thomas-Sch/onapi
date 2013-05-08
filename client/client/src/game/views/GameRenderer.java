@@ -38,8 +38,7 @@ public class GameRenderer {
     * Méthode appelée à chaque rafraîchissement de l'écran
     */
    public void render() {
-      // TODO Auto-generated method stub
-
+      
    }
 
    /**

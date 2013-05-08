@@ -39,14 +39,14 @@ public class Onapi extends Game {
       //
       
       setScreen(gameScreen); 
-      try { Thread.sleep(3000); } catch (InterruptedException e) {}
-      setScreen(mainMenu);
-      try { Thread.sleep(3000); } catch (InterruptedException e) {}
-      setScreen(gameScreen);
-      try { Thread.sleep(3000); } catch (InterruptedException e) {}
-      setScreen(mainMenu);
-      try { Thread.sleep(3000); } catch (InterruptedException e) {}
-      setScreen(gameScreen);
+//      try { Thread.sleep(3000); } catch (InterruptedException e) {}
+//      setScreen(mainMenu);
+//      try { Thread.sleep(3000); } catch (InterruptedException e) {}
+//      setScreen(gameScreen);
+//      try { Thread.sleep(3000); } catch (InterruptedException e) {}
+//      setScreen(mainMenu);
+//      try { Thread.sleep(3000); } catch (InterruptedException e) {}
+//      setScreen(gameScreen);
    }
    
    
