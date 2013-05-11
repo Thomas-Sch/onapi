@@ -11,6 +11,8 @@
  */
 package gui.controller;
 
+import gui.view.JLogin;
+
 import java.awt.Component;
 
 /**
@@ -22,23 +24,21 @@ import java.awt.Component;
  *
  */
 public class Login extends Controller {
+   
+   JLogin view;
 
    @Override
    protected void initComponents() {
-      // TODO Auto-generated method stub
-
+      view = new JLogin();
    }
 
    @Override
    protected void initListeners() {
-      // TODO Auto-generated method stub
-
    }
 
    @Override
    public Component getGraphicalComponent() {
-      // TODO Auto-generated method stub
-      return null;
+      return view;
    }
 
 }
