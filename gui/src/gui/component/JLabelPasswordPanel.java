@@ -18,9 +18,10 @@ import java.awt.BorderLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class JLabelTextPanel extends JPanel {
+public class JLabelPasswordPanel extends JPanel {
    
    /**
     * ID de sérialisation.
@@ -33,12 +34,12 @@ public class JLabelTextPanel extends JPanel {
    protected JLabel label;
    protected JTextField textField;
    
-   public JLabelTextPanel(String textForLabel, int textFieldColumns) {
+   public JLabelPasswordPanel(String textForLabel, int textFieldColumns) {
       
       layout = new BorderLayout(5,5);
       label = new JLabel(textForLabel);
       
-      textField = new JTextField();
+      textField = new JPasswordField();
       textField.setColumns(textFieldColumns);
       
       setLayout(layout);
@@ -47,7 +48,7 @@ public class JLabelTextPanel extends JPanel {
       add(textField, BorderLayout.EAST);      
    }
    
-   public JLabelTextPanel(String textForLabel) {
+   public JLabelPasswordPanel(String textForLabel) {
       this(textForLabel, defaultColumnsSize);
    }
    

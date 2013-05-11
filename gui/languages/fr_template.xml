@@ -1,19 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language>
   <app_title>TODO</app_title>
-  <action_quit>TODO</action_quit>
-  <tab_home>TODO</tab_home>
   <validate_button>TODO</validate_button>
   <cancel_button>TODO</cancel_button>
-  <account_threshold_label>TODO</account_threshold_label>
-  <account_initial_amount_label>TODO</account_initial_amount_label>
-  <account_number_label>TODO</account_number_label>
-  <account_description_label>TODO</account_description_label>
-  <account_name_label>TODO</account_name_label>
-  <reset_button>TODO</reset_button>
-  <home_screen_name>TODO</home_screen_name>
-  <quick_expense_label>TODO</quick_expense_label>
-  <reason_label>TODO</reason_label>
-  <amount_label>TODO</amount_label>
-  <date_label>TODO</date_label>
+  <play_button>TODO</play_button>
+  <inventory_button>TODO</inventory_button>
+  <login_label>TODO</login_label>
+  <password_label>TODO</password_label>
 </language>

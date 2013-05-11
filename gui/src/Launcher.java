@@ -1,7 +1,11 @@
-import utils.Logs;
 import gui.controller.Login;
-import gui.view.JLogin;
 import gui.view.LogsFrame;
+
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
+import settings.Settings;
+import utils.Logs;
 
 /* ============================================================================
  * Nom du fichier   : Launcher.java
@@ -24,18 +28,44 @@ import gui.view.LogsFrame;
  *
  */
 public class Launcher {
+   
+   private static Settings sets;
 
    /**
     * @param args
     */
-   public static void main(String[] args) {
-      System.out.println("Je suis l'interface !");
+   public static void main(String[] args) {      
+      // Définition du look and feel.
+      try {
+         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+      }
+      catch (ClassNotFoundException ex) {
+         Logs.errors.push("Launcher", "Choosen LookAndFeel does not exists.");
+      }
+      catch (InstantiationException ex) {
+         Logs.errors.push("Launcher", "Unable to create the choosen LookAndFeel.");
+      }
+      catch (IllegalAccessException ex) {
+         Logs.errors.push("Launcher", "LookAndFeel class or initializer is not accessible.");
+      }
+      catch (UnsupportedLookAndFeelException ex) {
+         Logs.errors.push("Launcher", "Choosen LookAndFeel is not supported.");
+      }
+      catch (ClassCastException ex) {
+         Logs.errors.push("Launcher", "Choosen LookAndFeel is not a real LookAndFeel."); 
+      }
+      
+      sets = new Settings();
+      sets.loadSettings();
+      
+      
       new Login();
       
       // Temporaire en attendant de merge.
       (new Logs()).addLogsToFrame(new LogsFrame("Logs", 0, 0, 500, 400));
       
-      Logs.messages.push("Salut");
+      Settings.createTemplateForLanguage("fr");
+      Settings.createUpdateForLanguage("fr");
    }
 
 }

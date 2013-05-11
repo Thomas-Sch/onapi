@@ -11,9 +11,17 @@
  */
 package gui.controller;
 
+import gui.actions.AcCancel;
+import gui.actions.AcConnect;
+import gui.utils.Positions;
 import gui.view.JLogin;
 
 import java.awt.Component;
+
+import javax.swing.JFrame;
+
+import settings.Settings;
+import settings.Language.Text;
 
 /**
  * TODO
@@ -28,11 +36,16 @@ public class Login extends Controller {
 
    @Override
    protected void initComponents() {
-      view = new JLogin();
+      view = new JLogin(Text.APP_TITLE.toString());
+      Positions.setPositionOnScreen(view,  Settings.mainFrame.anchor);
+      view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      view.setVisible(true);
    }
 
    @Override
    protected void initListeners() {
+      view.addValidateListener(new AcConnect(view));
+      view.addCancelListener(new AcCancel(view));
    }
 
    @Override
