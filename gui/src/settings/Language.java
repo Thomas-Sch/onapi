@@ -24,7 +24,7 @@ import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
 import utils.xml.XMLGetters;
-import utils.MidasLogs;
+import utils.Logs;
 
 
 /**
@@ -91,7 +91,7 @@ public class Language {
    
    public static void loadFromFile(File languageFile) {
       
-      MidasLogs.messages.push("Language", "Start loading texts from " + languageFile.getAbsolutePath());
+      Logs.messages.push("Language", "Start loading texts from " + languageFile.getAbsolutePath());
       
       if (languageFile.exists()) {  
          Document document = null;
@@ -103,7 +103,7 @@ public class Language {
             document = saxBuilder.build(languageFile);
          }
          catch(Exception e) {
-            MidasLogs.errors.push("Language", "Unable to load the file \"" + languageFile.getName() + "\".");
+            Logs.errors.push("Language", "Unable to load the file \"" + languageFile.getName() + "\".");
          }
          
          // Reconfiguration du type enum en lisant le fichier de langue
@@ -123,7 +123,7 @@ public class Language {
          }         
       }
       else {
-         MidasLogs.errors.push("Language", "File \"" + languageFile.getName() + "\" does not exist.");
+         Logs.errors.push("Language", "File \"" + languageFile.getName() + "\" does not exist.");
       }
       
    }
@@ -144,7 +144,7 @@ public class Language {
          }
       }
       catch(Exception e) {
-         MidasLogs.errors.push("Settings", "Unable to create language folder.");
+         Logs.errors.push("Settings", "Unable to create language folder.");
       }
       
       Element root = new Element(xmlRootName);
@@ -176,7 +176,7 @@ public class Language {
          outputter.output(document, fileOutputStream);
       }
       catch (IOException ex) {
-         MidasLogs.errors.push("Language",
+         Logs.errors.push("Language",
                                "Unable to create template file for language.");
       }
       finally {
@@ -185,7 +185,7 @@ public class Language {
                fileOutputStream.close();
             }
             catch (IOException ex) {
-               MidasLogs.errors.push("Language",
+               Logs.errors.push("Language",
                                      "Error while closing the output stream.");
             }
          }

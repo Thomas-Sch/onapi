@@ -21,7 +21,6 @@ import java.awt.Component;
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
  */
 public class Login extends Controller {
    

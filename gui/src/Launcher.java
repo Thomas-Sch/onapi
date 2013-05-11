@@ -1,4 +1,5 @@
-import utils.MidasLogs;
+import utils.Logs;
+import gui.controller.Login;
 import gui.view.JLogin;
 import gui.view.LogsFrame;
 
@@ -29,12 +30,12 @@ public class Launcher {
     */
    public static void main(String[] args) {
       System.out.println("Je suis l'interface !");
-      new JLogin();
+      new Login();
       
       // Temporaire en attendant de merge.
-      (new MidasLogs()).addLogsToFrame(new LogsFrame("Logs", 0, 0, 500, 400));
+      (new Logs()).addLogsToFrame(new LogsFrame("Logs", 0, 0, 500, 400));
       
-      MidasLogs.messages.push("Salut");
+      Logs.messages.push("Salut");
    }
 
 }

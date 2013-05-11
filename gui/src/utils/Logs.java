@@ -27,7 +27,7 @@ import log.Log;
  * @author Sinniger Marcel
  *
  */
-public class MidasLogs {
+public class Logs {
    
    public static Log messages = new Log("messages", new File("Midas.log"), 1);
    

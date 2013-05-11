@@ -15,7 +15,7 @@ package utils.xml;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 
-import utils.MidasLogs;
+import utils.Logs;
 
 /**
  * Classe utilitaire regroupant des fonctions générales pour modifier des
@@ -49,13 +49,13 @@ public class XMLModifiers {
     */
    public static void addChild(Element parent, String childName, String childValue) {
       if (parent == null) {
-         MidasLogs.errors.push("XmlModifiers", "Parent is missing.");
+         Logs.errors.push("XmlModifiers", "Parent is missing.");
       }
       else if (childName == null || childName.isEmpty()) {
-         MidasLogs.errors.push("XmlModifiers", "Child name is missing.");
+         Logs.errors.push("XmlModifiers", "Child name is missing.");
       }
       else if (childValue == null) {
-         MidasLogs.errors.push("XmlModifiers", "Child value is missing.");
+         Logs.errors.push("XmlModifiers", "Child value is missing.");
       }
       else {
          Element newChild = new Element(childName);
@@ -84,13 +84,13 @@ public class XMLModifiers {
     */
    public static void addAttribute(Element node, String attributeName, String attributeValue) {
       if (node == null) {
-         MidasLogs.errors.push("XmlModifiers", "Node is missing.");
+         Logs.errors.push("XmlModifiers", "Node is missing.");
       }
       else if (attributeName == null || attributeName.isEmpty()) {
-         MidasLogs.errors.push("XmlModifiers", "Attribute name is missing.");
+         Logs.errors.push("XmlModifiers", "Attribute name is missing.");
       }
       else if (attributeValue == null) {
-         MidasLogs.errors.push("XmlModifiers", "Attribute value is missing.");
+         Logs.errors.push("XmlModifiers", "Attribute value is missing.");
       }
       else {
          node.setAttribute(new Attribute(attributeName, attributeValue));
