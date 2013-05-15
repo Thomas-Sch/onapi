@@ -1,9 +1,3 @@
-import java.util.Scanner;
-
-import javax.swing.JFrame;
-
-import utils.connections.Channel;
-
 /* ============================================================================
  * Nom du fichier   : ClientTest.java
  * ============================================================================
@@ -15,10 +9,13 @@ import utils.connections.Channel;
  *                    Schweizer Thomas
  * ============================================================================
  */
+import java.util.Scanner;
 
+import utils.connections.Channel;
+import utils.connections.protocol.ClientProtocol;
 
 /**
- * TODO
+ * TODO ATTENTION : code ignoble de test
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
@@ -27,10 +24,63 @@ import utils.connections.Channel;
  */
 public class ClientTest {
    
+   public static class ClientConnection implements Runnable {
+      
+      private ClientProtocol protocol;
+      
+      public ClientConnection(Channel channel) {
+         protocol = new ClientProtocol(channel);
+      }
+      
+      public void executeCommand(String command) {
+         
+         if(command.equalsIgnoreCase("-ping")) {
+            long ping;
+            
+            synchronized (protocol) {
+               ping = protocol.ping();
+            }
+            
+            System.out.println("Ping : " + ping + " ms");
+         }
+         // Autrement envoie le texte tel quel
+         else {
+            synchronized (protocol) {
+               protocol.sendMessage(command);
+            }
+         }
+         
+         
+         
+      }
+
+      @Override
+      public void run() {
+         while(true) {
+            
+            synchronized(protocol) {
+               protocol.keepAlive();
+            }
+            
+            try {
+               Thread.sleep(2500);
+            }
+            catch (Exception e) {}
+            
+         }
+         
+      }
+      
+   }
+   
    public static void main(String[] args) {
       boolean exit = false;
       String adresse;
       int port;
+      
+      ClientConnection connection;
+      Thread threadConnection;
+      
       
       Channel channel;
       
@@ -49,19 +99,19 @@ public class ClientTest {
       
       System.out.println("Connexion etablie !");
       
-      JFrame frame = (JFrame)channel.receiveObject();
-      frame.setVisible(true);
+      // Creation du thread de traitement
+      connection = new ClientConnection(channel);
+      threadConnection = new Thread(connection);
+      threadConnection.start();
       
       String message;
       while(!exit) {
          
-         System.out.print("Envoie du texte > ");
+         System.out.print("Saisie > ");
          
          message = sc.nextLine();
          
-         channel.sendString(message);
-         
-         System.out.println("Recu du serveur : " + channel.receiveString());
+         connection.executeCommand(message);
          
       }
       

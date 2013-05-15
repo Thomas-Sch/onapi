@@ -1,5 +1,5 @@
 /* ============================================================================
- * Nom du fichier   : JLogin.java
+ * Nom du fichier   : JMainFrame.java
  * ============================================================================
  * Date de création : 1 mai 2013
  * ============================================================================
@@ -11,52 +11,52 @@
  */
 package gui.view;
 
-import gui.component.JLabelPasswordPanel;
-import gui.component.JLabelTextPanel;
-import gui.component.JValidateCancel;
+import gui.component.JLabelInfo;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 
 import settings.Language.Text;
 
 /**
- * TODO
+ * Fenêtre principale de l'application.
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
-public class JLogin extends JFrame{
+public class JMainFrame extends JFrame {
 
    /**
     * ID de s�rialisation du composant graphique.
     */
-   private static final long serialVersionUID = -9093556072363479532L;
+   private static final long serialVersionUID = -8770775554830532082L;
    
-   private JValidateCancel vclActions;
-   private JLabelTextPanel ltpLogin;
-   private JLabelPasswordPanel lppPassword;
+   private JLabelInfo lbiUserGreeting;
+   private JButton btnPlay;
+   private JButton btnInventory;
    
-   public JLogin (String title) {
+   public JMainFrame(String title) {
       super(title);
       
       initContent();
-      
       setContentPane(buildContent());
+      
       pack();
    }
    
    public void initContent() {
-      vclActions = new JValidateCancel();
-      ltpLogin = new JLabelTextPanel(Text.LOGIN_LABEL.toString());
-      lppPassword = new JLabelPasswordPanel(Text.PASSWORD_LABEL.toString());
+      lbiUserGreeting = new JLabelInfo("Bienvenue !");
+      btnPlay = new JButton(Text.PLAY_BUTTON.toString());
+      btnInventory = new JButton(Text.INVENTORY_BUTTON.toString());
    }
    
    public JPanel buildContent() {
@@ -68,38 +68,35 @@ public class JLogin extends JFrame{
       constraints.fill = GridBagConstraints.HORIZONTAL;
       constraints.insets = new Insets(5, 5, 5, 5);
       constraints.weightx = 0.5;
-      constraints.weighty = 0.5;
+      constraints.weighty = 0.1;
       
       constraints.gridx = 0;
       constraints.gridy = 0;
-      pnlContent.add(ltpLogin, constraints);
+      constraints.gridwidth = 2;
+      pnlContent.add(lbiUserGreeting, constraints);
       
       constraints.gridy = 1;
-      pnlContent.add(lppPassword, constraints);
+      pnlContent.add(new JSeparator(), constraints);
       
+      constraints.gridx = 0;
       constraints.gridy = 2;
-      constraints.anchor = GridBagConstraints.EAST;
-      constraints.fill = GridBagConstraints.NONE;
-      constraints.weighty = 0.1;
-      pnlContent.add(vclActions, constraints);
+      constraints.gridwidth = 1;
+      constraints.fill = GridBagConstraints.BOTH;
+      constraints.insets = new Insets(100, 100, 100, 100);
+      constraints.weighty = 0.8;
+      pnlContent.add(btnPlay, constraints);
       
-      return pnlContent;
+      constraints.gridx = 1;
+      pnlContent.add(btnInventory, constraints);
+      
+      return pnlContent; 
    }
    
-   public void addValidateListener(ActionListener listener) {
-      vclActions.addValidateListener(listener);
-   }
-   
-   public void addCancelListener(ActionListener listener) {
-      vclActions.addCancelListener(listener);
-   }
-   
-   public String getLogin() {
-      return ltpLogin.getText();
-   }
-   
-   public String getPassword() {
-      return lppPassword.getText();
+   public void addPlayListener(ActionListener listener) {
+      btnPlay.addActionListener(listener);
    }
 
+   public void addInventoryListener(ActionListener listener) {
+      btnInventory.addActionListener(listener);
+   }
 }

@@ -14,7 +14,7 @@ package utils.xml;
 
 import org.jdom2.Element;
 
-import utils.MidasLogs;
+import utils.Logs;
 
 /**
  * Classe utilitaire regroupant des fonctions générales pour récupérer des
@@ -59,7 +59,7 @@ public class XMLGetters {
          }
       }
       catch (NumberFormatException ex) {
-         MidasLogs.errors.push("XMLGetters", "Integer parse error for child \""
+         Logs.errors.push("XMLGetters", "Integer parse error for child \""
                                + element.getName() + "." + childName + "\"");
       }
       
@@ -92,7 +92,7 @@ public class XMLGetters {
          result = Integer.parseInt(getStringAttribute(element, attributeName));
       }
       catch (NumberFormatException ex) {
-         MidasLogs.errors.push("XMLGetters",
+         Logs.errors.push("XMLGetters",
                                "Integer parse error for attribute \""
                                + element.getName() + "." + attributeName
                                + "\".");
@@ -129,7 +129,7 @@ public class XMLGetters {
       result = element.getChildTextTrim(childName);
       
       if (result == null) {
-         MidasLogs.errors.push("XMLGetters",
+         Logs.errors.push("XMLGetters",
                                "Missing XML child : \"" + childName + "\".");
          result = defaultValue;
       }
@@ -164,7 +164,7 @@ public class XMLGetters {
          result = element.getAttributeValue(attributeName).trim();
       }
       catch (NullPointerException ex) {
-         MidasLogs.errors.push("XMLGetters", "Missing XML attribute : \""
+         Logs.errors.push("XMLGetters", "Missing XML attribute : \""
                                + attributeName + "\".");
       }
       

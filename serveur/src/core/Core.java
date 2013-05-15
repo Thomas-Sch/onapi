@@ -28,6 +28,8 @@ import core.exceptions.PortException;
  */
 public class Core {
    
+   private static final int CLIENT_TIMEOUT = 15000;
+   
    private boolean exit = false;
    
    private InetAddress inetAddress = null;
@@ -78,7 +80,7 @@ public class Core {
             Socket socket = serverPort.accept();
             
             // Démarre le processus de gestion d'un nouveau client
-            UserConnection userConnection = new UserConnection(socket, 0);
+            UserConnection userConnection = new UserConnection(socket, CLIENT_TIMEOUT);
             
             Thread thread = new Thread(userConnection);
             thread.start();

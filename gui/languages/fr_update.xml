@@ -1,19 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language>
-  <app_title>Midas</app_title>
-  <action_quit>Quitter</action_quit>
-  <tab_home>Missing String</tab_home>
+  <app_title>Onapi</app_title>
   <validate_button>Valider</validate_button>
   <cancel_button>Annuler</cancel_button>
-  <account_threshold_label>Seuil</account_threshold_label>
-  <account_initial_amount_label>Montant initial</account_initial_amount_label>
-  <account_number_label>Numéro de compte</account_number_label>
-  <account_description_label>Description du compte</account_description_label>
-  <account_name_label>Nom du compte</account_name_label>
-  <reset_button>Initialiser</reset_button>
-  <home_screen_name>Accueil</home_screen_name>
-  <quick_expense_label>Effectuer une dépense rapide...</quick_expense_label>
-  <reason_label>Motif</reason_label>
-  <amount_label>Montant</amount_label>
-  <date_label>Date</date_label>
+  <play_button>Jouer</play_button>
+  <inventory_button>Inventaire</inventory_button>
+  <login_label>Identifiant</login_label>
+  <password_label>Mot de passe</password_label>
 </language>

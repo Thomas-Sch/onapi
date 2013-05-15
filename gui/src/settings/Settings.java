@@ -30,7 +30,7 @@ import settings.elements.FrameSettings;
 import utils.xml.HasXMLName;
 import utils.xml.XMLGetters;
 import utils.xml.XMLModifiers;
-import utils.MidasLogs;
+import utils.Logs;
 
 /**
  * TODO
@@ -60,7 +60,7 @@ public class Settings extends DefaultsSettings {
       
       boolean successfullyLoaded = false;
       
-      MidasLogs.messages.push("Settings", "Start loading settings");
+      Logs.messages.push("Settings", "Start loading settings");
       
       File file = new File(CONFIG_FOLDER_PATH + File.separator +
                            CONFIG_FILE_NAME + "." + CONFIG_FILE_EXTENSION);
@@ -100,20 +100,20 @@ public class Settings extends DefaultsSettings {
          
       }
       catch(IOException e) {
-         MidasLogs.errors.push("Settings",
+         Logs.errors.push("Settings",
                                "Unable to open and read the file \""
                                + file.getName() + "\".");
       }
       catch(JDOMParseException e) {
-         MidasLogs.errors.push("Settings", "The file \""
+         Logs.errors.push("Settings", "The file \""
                + file.getName() + "\" is corrupted.");
       }
       catch(JDOMException e) {
-         MidasLogs.errors.push("Settings", "Unable to load the file \""
+         Logs.errors.push("Settings", "Unable to load the file \""
                                + file.getName() + "\".");
       }
       catch(NullPointerException e) {
-         MidasLogs.errors.push("Settings",
+         Logs.errors.push("Settings",
                                "Configuration file is corrupted, elements are "
                                + "missing.");
       }
@@ -122,12 +122,12 @@ public class Settings extends DefaultsSettings {
        * ----------------------------------------------------------------------
        */
       if (!successfullyLoaded) {
-         MidasLogs.messages.push("Settings",
+         Logs.messages.push("Settings",
                "Settings file is missing, load defaults");
 
          loadDefaults();
          
-         MidasLogs.messages.push("Settings", "Creating new settings file.");
+         Logs.messages.push("Settings", "Creating new settings file.");
          
          saveSettings();
       }
@@ -152,7 +152,7 @@ public class Settings extends DefaultsSettings {
          file.createNewFile();
       }
       catch(Exception e) {
-         MidasLogs.errors.push("Settings", "Unable to create config file.");
+         Logs.errors.push("Settings", "Unable to create config file.");
       }
       
       /* Création de l'arborescence xml
@@ -188,7 +188,7 @@ public class Settings extends DefaultsSettings {
          outputter.output(document, fileOutputStream);
       }
       catch (IOException ex) {
-         MidasLogs.errors.push("Settings",
+         Logs.errors.push("Settings",
                                "Unable to create the config file.");
       }
       finally {
@@ -197,7 +197,7 @@ public class Settings extends DefaultsSettings {
                fileOutputStream.close();
             }
             catch (IOException ex) {
-               MidasLogs.errors.push("Settings",
+               Logs.errors.push("Settings",
                                      "Error while closing the output stream.");
             }
          }
@@ -252,7 +252,7 @@ public class Settings extends DefaultsSettings {
          
       }
       else {
-         MidasLogs.errors.push("Settings", "Node for frame " + frame.getName()
+         Logs.errors.push("Settings", "Node for frame " + frame.getName()
                                + " is missing.");
       }
    }

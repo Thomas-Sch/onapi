@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : JOnapi.java
+ * Nom du fichier   : ProtocolType.java
  * ============================================================================
- * Date de création : 1 mai 2013
+ * Date de création : 8 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,23 +9,25 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package gui.view;
-
-import javax.swing.JFrame;
+package utils.connections.protocol;
 
 /**
- * Fenêtre principale de l'application.
+ * TODO
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- * 
+ *
  */
-public class JOnapi extends JFrame {
-
-   /**
-    * ID de sérialisation du composant graphique.
-    */
-   private static final long serialVersionUID = -8770775554830532082L;
+public enum ProtocolType {
+   
+   AUTHENTIFICATION,
+   TEXT_MESSAGE,
+   PING;
+   
+   
+//   public String toString() {
+//      return name().toUpperCase();
+//   }
 
 }

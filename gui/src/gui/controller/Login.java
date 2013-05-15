@@ -11,7 +11,17 @@
  */
 package gui.controller;
 
+import gui.actions.AcCancel;
+import gui.actions.AcConnect;
+import gui.utils.Positions;
+import gui.view.JLogin;
+
 import java.awt.Component;
+
+import javax.swing.JFrame;
+
+import settings.Settings;
+import settings.Language.Text;
 
 /**
  * TODO
@@ -19,26 +29,28 @@ import java.awt.Component;
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
  */
 public class Login extends Controller {
+   
+   JLogin view;
 
    @Override
    protected void initComponents() {
-      // TODO Auto-generated method stub
-
+      view = new JLogin(Text.APP_TITLE.toString());
+      Positions.setPositionOnScreen(view,  Settings.mainFrame.anchor);
+      view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      view.setVisible(true);
    }
 
    @Override
    protected void initListeners() {
-      // TODO Auto-generated method stub
-
+      view.addValidateListener(new AcConnect(view));
+      view.addCancelListener(new AcCancel(view));
    }
 
    @Override
    public Component getGraphicalComponent() {
-      // TODO Auto-generated method stub
-      return null;
+      return view;
    }
 
 }
