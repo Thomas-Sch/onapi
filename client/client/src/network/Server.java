@@ -12,9 +12,10 @@
 package network;
 
 import java.net.InetAddress;
+import java.net.Socket;
 
 /**
- * Façade permettant de communiquer avec le serveur de jeu.
+ * Façade permettant d'initialiser la connexion avec le serveur de jeu.
  * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
@@ -25,17 +26,18 @@ import java.net.InetAddress;
 public class Server {
 
    private InetAddress address;
+   private int port;
 
-   public Server(InetAddress address) {
+   public Server(InetAddress address, int port) {
       this.address = address;
    }
 
    public void connect() {
-      // TODO implémenter connect
+      // TODO connexion...
    }
 
    public void disconnect() {
-      // TODO implémenter disconnect
+   // TODO déconnexion...
    }
 
    public InetAddress getAddress() {
@@ -46,4 +48,12 @@ public class Server {
       this.address = address;
    }
 
+   public void setPort(int port) {
+      this.port = port;
+   }
+   
+   public int getPort() {
+      return this.port;
+   }
+   
 }
