@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : Onapi.java
+ * Nom du fichier   : ActionRefusedException.java
  * ============================================================================
- * Date de création : 1 mai 2013
+ * Date de création : 8 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,32 +9,17 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package client;
-
-import game.screens.GameScreen;
-import game.screens.MainMenuScreen;
-
-import com.badlogic.gdx.Game;
+package game.controllers;
 
 /**
- * Classe d'initialisation du jeu. Gère la transition entre les différents
- * screens.
- * 
+ * TODO
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- * 
+ *
  */
-public class Onapi extends Game {
+public class ActionRefusedException extends Exception {
+   private static final long serialVersionUID = 1L;
 
-   private GameScreen gameScreen = new GameScreen();
-   private MainMenuScreen mainMenu = new MainMenuScreen();
-
-   @Override
-   public void create() {
-      setScreen(gameScreen); 
-   }
-   
-   
 }
