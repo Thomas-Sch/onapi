@@ -11,6 +11,7 @@
  */
 package utils.connections;
 
+import utils.connections.exceptions.ChannelClosedException;
 import utils.connections.exceptions.ChannelException;
 import utils.connections.exceptions.TimeOutException;
 import utils.connections.protocol.ProtocolType;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
 /**
@@ -85,6 +87,9 @@ public class Channel {
          outputStream.writeUTF(message);
          outputStream.flush();
       }
+      catch (SocketException e) {
+         throw new ChannelClosedException("Connection lost while sending a String");
+      }
       catch (IOException e) {
          throw new ChannelException("Unable to send the String");
       }
@@ -104,8 +109,183 @@ public class Channel {
       catch (SocketTimeoutException e) {
          throw new TimeOutException("Timeout while waiting for a String");
       }
+      catch (SocketException e) {
+         throw new ChannelClosedException("Connection lost while waiting for a String");
+      }
       catch (IOException e) {
          throw new ChannelException("Read operation for String aborted");
+      }
+
+      return result;
+   }
+   
+   /**
+    * Envoie la valeur entière donnée sur le canal.
+    * 
+    * @param value
+    *           - la valeur entière à transmettre.
+    */
+   public void sendInt(int value) {
+      try {
+         outputStream.writeInt(value);
+         outputStream.flush();
+      }
+      catch (SocketException e) {
+         throw new ChannelClosedException("Connection lost while sending an int");
+      }
+      catch (IOException e) {
+         throw new ChannelException("Unable to send the int");
+      }
+   }
+
+   /**
+    * Retourne la valeur entière reçue par le canal.
+    * 
+    * @return la valeur entière reçue.
+    */
+   public int receiveInt() {
+      int result;
+
+      try {
+         result = inputStream.readInt();
+      }
+      catch (SocketTimeoutException e) {
+         throw new TimeOutException("Timeout while waiting for an int");
+      }
+      catch (SocketException e) {
+         throw new ChannelClosedException("Connection lost while waiting for an int");
+      }
+      catch (IOException e) {
+         throw new ChannelException("Read operation for int aborted");
+      }
+
+      return result;
+   }
+   
+   /**
+    * Envoie la valeur entière donnée sur le canal.
+    * 
+    * @param value
+    *           - la valeur entière à transmettre.
+    */
+   public void sendLong(long value) {
+      try {
+         outputStream.writeLong(value);
+         outputStream.flush();
+      }
+      catch (SocketException e) {
+         throw new ChannelClosedException("Connection lost while sending a long");
+      }
+      catch (IOException e) {
+         throw new ChannelException("Unable to send the long");
+      }
+   }
+
+   /**
+    * Retourne la valeur entière reçue par le canal.
+    * 
+    * @return la valeur entière reçue.
+    */
+   public long receiveLong() {
+      long result;
+
+      try {
+         result = inputStream.readLong();
+      }
+      catch (SocketTimeoutException e) {
+         throw new TimeOutException("Timeout while waiting for a long");
+      }
+      catch (SocketException e) {
+         throw new ChannelClosedException("Connection lost while waiting for a long");
+      }
+      catch (IOException e) {
+         throw new ChannelException("Read operation for long aborted");
+      }
+
+      return result;
+   }
+   
+   /**
+    * Envoie un double donné sur le canal.
+    * 
+    * @param value
+    *           - le double à transmettre.
+    */
+   public void sendDouble(double value) {
+      try {
+         outputStream.writeDouble(value);
+         outputStream.flush();
+      }
+      catch (SocketException e) {
+         throw new ChannelClosedException("Connection lost while sending a double");
+      }
+      catch (IOException e) {
+         throw new ChannelException("Unable to send the double");
+      }
+   }
+
+   /**
+    * Retourne le double reçu par le canal.
+    * 
+    * @return la valeur entière reçue.
+    */
+   public double receiveDouble() {
+      double result;
+
+      try {
+         result = inputStream.readDouble();
+      }
+      catch (SocketTimeoutException e) {
+         throw new TimeOutException("Timeout while waiting for a double");
+      }
+      catch (SocketException e) {
+         throw new ChannelClosedException("Connection lost while waiting for a double");
+      }
+      catch (IOException e) {
+         throw new ChannelException("Read operation for double aborted");
+      }
+
+      return result;
+   }
+   
+   /**
+    * Envoie la valeur booléenne donnée sur le canal.
+    * 
+    * @param value
+    *           - la valeur booléenne à transmettre.
+    */
+   public void sendBoolean(boolean value) {
+      try {
+         outputStream.writeBoolean(value);
+         outputStream.flush();
+      }
+      catch (SocketException e) {
+         throw new ChannelClosedException("Connection lost while sending a boolean");
+      }
+      catch (IOException e) {
+         throw new ChannelException("Unable to send the boolean");
+      }
+   }
+
+   /**
+    * Retourne la valeur booléenne reçue par le canal.
+    * 
+    * @return la valeur booléenne reçue.
+    */
+   public boolean receiveBoolean() {
+      boolean result;
+
+      try {
+         result = inputStream.readBoolean();
+      }
+      catch (SocketTimeoutException e) {
+         throw new TimeOutException("Timeout while waiting for a boolean");
+      }
+      catch (SocketException e) {
+         throw new ChannelClosedException("Connection lost while waiting for a boolean");
+      }
+      catch (IOException e) {
+         throw new ChannelException("Read operation for boolean aborted");
       }
 
       return result;
@@ -121,6 +301,9 @@ public class Channel {
       try {
          outputStream.writeObject(object);
          outputStream.flush();
+      }
+      catch (SocketException e) {
+         throw new ChannelClosedException("Connection lost while sending an Object");
       }
       catch (IOException e) {
          throw new ChannelException("Unable to send the Object");
@@ -140,6 +323,9 @@ public class Channel {
       }
       catch (SocketTimeoutException e) {
          throw new TimeOutException("Timeout while waiting for an Object");
+      }
+      catch (SocketException e) {
+         throw new ChannelClosedException("Connection lost while waiting for an Object");
       }
       catch (IOException e) {
          throw new ChannelException("Read operation for Object aborted");
@@ -163,6 +349,9 @@ public class Channel {
          outputStream.writeObject(type);
          outputStream.flush();
       }
+      catch (SocketException e) {
+         throw new ChannelClosedException("Connection lost while sending a ProtocolType");
+      }
       catch (IOException e) {
          throw new ChannelException("Unable to send the ProtocolType");
       }
@@ -181,6 +370,9 @@ public class Channel {
       }
       catch (SocketTimeoutException e) {
          throw new TimeOutException("Timeout while waiting for a ProtocolType");
+      }
+      catch (SocketException e) {
+         throw new ChannelClosedException("Connection lost while waiting for a ProtocolType");
       }
       catch (IOException e) {
          throw new ChannelException("Read operation for ProtocolType aborted");

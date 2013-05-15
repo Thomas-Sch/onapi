@@ -16,7 +16,9 @@ import utils.connections.exceptions.ProtocolException;
 import utils.connections.exceptions.TimeOutException;
 
 /**
- * TODO
+ * Classe permettant de rassembler les protocoles utilisés par le client pour
+ * communiquer avec le serveur.
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
@@ -31,6 +33,10 @@ public class ClientProtocol {
       this.channel = channel;
    }
    
+   /**
+    * Envoi un ping au serveur pour déterminer le temps de latence.
+    * @return la durée en millisecondes nécessaire pour faire l'aller-retour.
+    */
    public long ping() {
       ProtocolType proType;
       
@@ -48,6 +54,10 @@ public class ClientProtocol {
       }
    }
    
+   /**
+    * Envoie un message bidon au serveur pour conserver la connexion.
+    * @return vrai si la connexion en encore active, faux sinon.
+    */
    public boolean keepAlive() {
       boolean stillAlive = false;
       

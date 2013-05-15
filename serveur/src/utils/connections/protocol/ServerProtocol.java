@@ -44,8 +44,9 @@ public class ServerProtocol {
    }
    
    public void authentifaction() {
+      String login = channel.receiveString();
+      String password = channel.receiveString();
       
-      // TODO
       
    }
 
