@@ -16,6 +16,7 @@ import java.net.Socket;
 import javax.swing.JFrame;
 
 import utils.connections.Channel;
+import utils.connections.exceptions.ChannelClosedException;
 import utils.connections.protocol.ClientProtocol;
 import utils.connections.protocol.ProtocolType;
 import utils.connections.protocol.ServerProtocol;
@@ -49,28 +50,35 @@ public class UserConnection implements Runnable {
       
       while(active) {
          
-         proType = channel.receiveProtocolType();
+         try {
          
-         System.out.println("Requete client : " + proType);
-         
-         switch(proType) {
+            proType = channel.receiveProtocolType();
             
-            case PING :
-               protocol.ping();
-               break;
+            System.out.println("Requete client : " + proType);
+            
+            switch(proType) {
                
-            case AUTHENTIFICATION :
-               protocol.authentifaction();
-               break;
-               
-            case TEXT_MESSAGE :
-               protocol.textMessage(System.out);
-               break;
-               
-            default :
-               System.out.println("Not yet implemented protocol");
+               case PING :
+                  protocol.ping();
+                  break;
+                  
+               case AUTHENTIFICATION :
+                  protocol.authentifaction();
+                  break;
+                  
+               case TEXT_MESSAGE :
+                  protocol.textMessage(System.out);
+                  break;
+                  
+               default :
+                  System.out.println("Not yet implemented protocol");
+            }
+            
          }
-         
+         catch (ChannelClosedException e) {
+            // oups perdu
+         }
+            
       }
       
    }

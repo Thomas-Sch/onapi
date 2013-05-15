@@ -51,6 +51,8 @@ public class Core {
       serverPort = new Port(1234);
       serverPort.activateFreePort();
       
+      System.out.println("DEBUG " + serverPort.getInetAddress().getHostAddress());
+      
       try {
          inetAddress = InetAddress.getLocalHost();
       }
