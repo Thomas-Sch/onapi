@@ -37,7 +37,7 @@ public class Server {
    }
 
    public void disconnect() {
-   // TODO déconnexion...
+      // TODO déconnexion...
    }
 
    public InetAddress getAddress() {
@@ -51,9 +51,9 @@ public class Server {
    public void setPort(int port) {
       this.port = port;
    }
-   
+
    public int getPort() {
       return this.port;
    }
-   
+
 }

@@ -30,6 +30,9 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class GameController {
 
+   /**
+    * Modèle du jeu à contrôler
+    */
    private GameModel game;
 
    /**
@@ -42,7 +45,50 @@ public class GameController {
     * 
     */
    public static enum Action {
-      UP, DOWN, LEFT, RIGHT, TURN_LEFT, TURN_RIGHT, FIRE, SKILL, LAMP;
+      /**
+       * Déplacement vers le haut
+       */
+      UP,
+
+      /**
+       * Déplacement vers le bas
+       */
+      DOWN,
+
+      /**
+       * Déplacement vers la gauche
+       */
+      LEFT,
+
+      /**
+       * Déplacement vers la droite
+       */
+      RIGHT,
+
+      /**
+       * Rotation gauche
+       */
+      TURN_LEFT,
+
+      /**
+       * Rotation droite
+       */
+      TURN_RIGHT,
+
+      /**
+       * Tir avec l'arme
+       */
+      FIRE,
+
+      /**
+       * Activation/Désactivation d'une compétence
+       */
+      SKILL,
+
+      /**
+       * Activation/Désactivation de la lampe torche
+       */
+      LAMP;
    }
 
    /**
@@ -105,7 +151,7 @@ public class GameController {
       if (getActionState(Action.LEFT)) {
          game.getPlayer().move(new Vector2(-0.1f, 0));
       }
-      
+
    }
 
 }

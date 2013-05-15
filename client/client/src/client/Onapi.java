@@ -12,7 +12,6 @@
 package client;
 
 import game.screens.GameScreen;
-import game.screens.MainMenuScreen;
 
 import com.badlogic.gdx.Game;
 
@@ -29,12 +28,10 @@ import com.badlogic.gdx.Game;
 public class Onapi extends Game {
 
    private GameScreen gameScreen = new GameScreen();
-   private MainMenuScreen mainMenu = new MainMenuScreen();
 
    @Override
    public void create() {
-      setScreen(gameScreen); 
+      setScreen(gameScreen);
    }
-   
-   
+
 }

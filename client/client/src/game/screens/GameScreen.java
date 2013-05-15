@@ -34,8 +34,19 @@ import com.badlogic.gdx.graphics.GL10;
  */
 public class GameScreen extends ScreenAdapter {
 
+   /**
+    * Contrôleur du jeu
+    */
    private GameController controller;
+
+   /**
+    * Modèle du jeu
+    */
    private GameModel game;
+
+   /**
+    * Gestionnaire d'affichage du jeu
+    */
    private GameRenderer renderer;
 
    @Override
@@ -115,24 +126,6 @@ public class GameScreen extends ScreenAdapter {
    public boolean mouseMoved(int screenX, int screenY) {
       // TODO Auto-generated method stub
       return false;
-   }
-
-   @Override
-   public void hide() {
-      System.out.println("GameScreen : hidden");
-      // TODO Auto-generated method stub
-   }
-
-   @Override
-   public void pause() {
-      System.out.println("GameScreen : paused");
-      // TODO Auto-generated method stub
-   }
-
-   @Override
-   public void resume() {
-      System.out.println("GameScreen : resumed");
-      // TODO Auto-generated method stub
    }
 
 }
