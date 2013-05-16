@@ -1,14 +1,3 @@
-package client;
-
-import gui.controller.Login;
-import gui.view.LogsFrame;
-
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
-import settings.Settings;
-import utils.Logs;
-
 /* ============================================================================
  * Nom du fichier   : Launcher.java
  * ============================================================================
@@ -20,6 +9,17 @@ import utils.Logs;
  *                    Schweizer Thomas
  * ============================================================================
  */
+
+package client;
+
+import gui.controller.Login;
+import gui.view.LogsFrame;
+
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
+import settings.Settings;
+import utils.Logs;
 
 /**
  * Classe d'amorce pour lancer le programme.
@@ -45,7 +45,7 @@ public class Launcher {
       }
       else {
 
-         // D�finition du look and feel.
+         // Définition du look and feel.
          try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
          }

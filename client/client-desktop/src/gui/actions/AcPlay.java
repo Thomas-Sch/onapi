@@ -1,7 +1,7 @@
 /* ============================================================================
  * Nom du fichier   : AcPlay.java
  * ============================================================================
- * Date de cr�ation : 11 mai 2013
+ * Date de création : 11 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -13,17 +13,12 @@ package gui.actions;
 
 import java.awt.event.ActionEvent;
 
-import client.Onapi;
-
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-
 import utils.Logs;
 
 /**
  * TODO
  * @author Crescenzio Fabio
- * @author Decorvet Gr�goire
+ * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
  *
