@@ -14,6 +14,7 @@ package game.views;
 import game.models.GameModel;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -31,6 +32,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
  */
 public class GameRenderer {
 
+   private static final float CAMERA_WIDTH = 10f;
+   private static final float CAMERA_HEIGHT = 7f;
+   
    /**
     * Modèle du jeu à afficher
     */
@@ -50,16 +54,19 @@ public class GameRenderer {
     * Largeur de la fenêtre graphique
     */
    private int height;
-
+   
+   /**
+    * Camera de la vue
+    */
+   private OrthographicCamera cam;
+   
    /**
     * Scène des contrôles d'interface graphique
     */
    private Stage ui;
 
-   /**
-    * Gère l'affichage en mode debug
-    */
-   ShapeRenderer debugRenderer;
+   // Objets pour le rendu en mode debug
+   ShapeRenderer debugRenderer = new ShapeRenderer();
 
    // Contrôles de l'interface
    private Label lblOut;
@@ -67,7 +74,14 @@ public class GameRenderer {
    public GameRenderer(GameModel game, boolean debug) {
       this.game = game;
       this.debug = debug;
-      if (debug) debugRenderer = new ShapeRenderer();
+      
+      // initialise la caméra
+      this.cam = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
+      this.cam.position.set(CAMERA_WIDTH / 2f, CAMERA_HEIGHT / 2f, 0);
+      this.cam.update();
+      
+      debugRenderer.setProjectionMatrix(cam.combined);
+      
       ui = new Stage(width, height, true);
       Gdx.input.setInputProcessor(ui);
       initUI();
@@ -115,7 +129,7 @@ public class GameRenderer {
     * Affiche des données de debug à l'écran
     */
    public void debugRender() {
-
+      game.getPlayer().debugRender(debugRenderer);
    }
 
    /**

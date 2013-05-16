@@ -11,9 +11,11 @@
  */
 package game.models;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
  * Représente le personnage principal du jeu.
@@ -24,7 +26,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  * @author Schweizer Thomas
  * 
  */
-public class Player extends Actor {
+public class Player extends Entity {
 
    /**
     * Position actuelle du personnage sur la map
@@ -43,9 +45,10 @@ public class Player extends Actor {
 
    public Player(Vector2 pos, Vector2 dir, Team team) {
       super();
-      this.pos = pos;
-      this.dir = dir;
-      this.setTeam(team);
+      setWidth(1);
+      setHeight(1);
+      moveTo(pos);
+      setTeam(team);
    }
 
    /**
@@ -63,6 +66,7 @@ public class Player extends Actor {
     */
    public void moveTo(Vector2 newPos) {
       this.pos = newPos;
+      setPosition(pos.x, pos.y);
    }
 
    /**
@@ -73,6 +77,7 @@ public class Player extends Actor {
     */
    public void move(Vector2 dir) {
       this.pos.add(dir);
+      setPosition(pos.x, pos.y);
    }
 
    /**
@@ -108,7 +113,14 @@ public class Player extends Actor {
    @Override
    public void draw(SpriteBatch batch, float parentAlpha) {
       super.draw(batch, parentAlpha);
-      System.out.println("Drawing Player...");
+   }
+   
+   @Override
+   public void debugRender(ShapeRenderer renderer) {
+      renderer.begin(ShapeType.Rectangle);
+      renderer.setColor(Color.RED);
+      renderer.rect(getX(), getY(), getWidth(), getHeight());
+      renderer.end();
    }
 
 }

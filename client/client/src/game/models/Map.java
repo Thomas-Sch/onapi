@@ -21,7 +21,7 @@ package game.models;
  * @author Schweizer Thomas
  * 
  */
-public class Map {
+public class Map extends Entity {
 
    public enum Tile {
       EMPTY, WALL;
