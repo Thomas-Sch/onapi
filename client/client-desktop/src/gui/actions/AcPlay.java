@@ -1,10 +1,10 @@
 /* ============================================================================
  * Nom du fichier   : AcPlay.java
  * ============================================================================
- * Date de création : 11 mai 2013
+ * Date de crï¿½ation : 11 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
- *                    Decorvet Grégoire
+ *                    Decorvet Grï¿½goire
  *                    Jaquier Kevin
  *                    Schweizer Thomas
  * ============================================================================
@@ -23,7 +23,7 @@ import utils.Logs;
 /**
  * TODO
  * @author Crescenzio Fabio
- * @author Decorvet Grégoire
+ * @author Decorvet Grï¿½goire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
  *
@@ -32,7 +32,7 @@ public class AcPlay extends UserAction {
 
    @Override
    protected void execute(ActionEvent event, Object[] dependencies) {
-      Logs.messages.push("Recherche d'une partie initiée !");
+      Logs.messages.push("Recherche d'une partie initiÃ©e !");
       LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
       cfg.title = "ONAPI";
       cfg.useGL20 = true;
