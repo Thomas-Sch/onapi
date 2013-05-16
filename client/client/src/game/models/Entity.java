@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : Onapi.java
+ * Nom du fichier   : Entity.java
  * ============================================================================
- * Date de création : 1 mai 2013
+ * Date de création : 15 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,15 +9,15 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package client;
+package game.models;
 
-import game.screens.GameScreen;
-
-import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
- * Classe d'initialisation du jeu. Gère la transition entre les différents
- * screens.
+ * Représente une entité du graphe de scène. Une telle entité est capable de
+ * s'afficher à l'écran.
+ * 
  * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
@@ -25,13 +25,10 @@ import com.badlogic.gdx.Game;
  * @author Schweizer Thomas
  * 
  */
-public class Onapi extends Game {
-
-   private GameScreen gameScreen = new GameScreen();
+public abstract class Entity extends Actor implements Debuggable {
 
    @Override
-   public void create() {
-      setScreen(gameScreen);
+   public void debugRender(ShapeRenderer renderer) {
    }
 
 }

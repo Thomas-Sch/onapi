@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : Onapi.java
+ * Nom du fichier   : Debuggable.java
  * ============================================================================
- * Date de création : 1 mai 2013
+ * Date de création : 15 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,15 +9,12 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package client;
+package game.models;
 
-import game.screens.GameScreen;
-
-import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
- * Classe d'initialisation du jeu. Gère la transition entre les différents
- * screens.
+ * Définit un objet pouvant être affiché en mode debug
  * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
@@ -25,13 +22,15 @@ import com.badlogic.gdx.Game;
  * @author Schweizer Thomas
  * 
  */
-public class Onapi extends Game {
+public interface Debuggable {
 
-   private GameScreen gameScreen = new GameScreen();
-
-   @Override
-   public void create() {
-      setScreen(gameScreen);
-   }
+   /**
+    * Définit ce qu'il faut afficher lorsqu'on souhaite afficher des
+    * informations de debug pour l'objet.
+    * 
+    * @param renderer
+    *           Fournit les méthodes nécessaires à l'affichage
+    */
+   void debugRender(ShapeRenderer renderer);
 
 }

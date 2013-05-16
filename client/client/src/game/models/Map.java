@@ -12,23 +12,23 @@
 package game.models;
 
 /**
- * La map est une grille dans laquelle on place les 
- * murs et autres éléments de la carte (spawners, sortie...). 
- *
+ * La map est une grille dans laquelle on place les murs et autres éléments de
+ * la carte (spawners, sortie...).
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
-public class Map {
+public class Map extends Entity {
 
    public enum Tile {
       EMPTY, WALL;
    }
-   
+
    private Tile[][] grid;
-   
+
    public Map(int size) {
       setGrid(new Tile[size][size]);
    }
@@ -40,5 +40,5 @@ public class Map {
    public void setGrid(Tile[][] grid) {
       this.grid = grid;
    }
-   
+
 }

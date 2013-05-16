@@ -15,8 +15,8 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 
 /**
- * Adapteur pour pas que les screens aient à implémenter les méthodes dont elles
- * ne se servent pas.
+ * Adapteur pour pas que les screens n'aient à implémenter les méthodes dont
+ * elles ne se servent pas.
  * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
