@@ -16,7 +16,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JFrame;
 
 /**
- * TODO
+ * Action de fermeture de connexion.
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin

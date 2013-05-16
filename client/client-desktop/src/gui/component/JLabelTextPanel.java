@@ -1,13 +1,12 @@
 /* ============================================================================
  * Nom du fichier   : JLabelTextPanel.java
  * ============================================================================
- * Date de création : 7 mai 2013
+ * Date de création : 11 mai 2013
  * ============================================================================
- * Auteurs          : Biolzi Sébastien
- *                    Brito Carvalho Bruno
+ * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
+ *                    Jaquier Kevin
  *                    Schweizer Thomas
- *                    Sinniger Marcel
  * ============================================================================
  */
 package gui.component;

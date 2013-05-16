@@ -1,13 +1,12 @@
 /* ============================================================================
  * Nom du fichier   : Controller.java
  * ============================================================================
- * Date de création : 25 avr. 2013
+ * Date de création : 11 mai 2013
  * ============================================================================
- * Auteurs          : Biolzi Sébastien
- *                    Brito Carvalho Bruno
+ * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
+ *                    Jaquier Kevin
  *                    Schweizer Thomas
- *                    Sinniger Marcel
  * ============================================================================
  */
 package gui.controller;
@@ -16,12 +15,12 @@ import java.awt.Component;
 
 
 /**
- * Modèle pour tous les contrôleurs graphiques.
- * @author Biolzi Sébastien
- * @author Brito Carvalho Bruno
+ * 
+ * TODO
+ * @author Crescenzio Fabio
  * @author Decorvet Grégoire
+ * @author Jaquier Kevin
  * @author Schweizer Thomas
- * @author Sinniger Marcel
  *
  */
 public abstract class Controller {

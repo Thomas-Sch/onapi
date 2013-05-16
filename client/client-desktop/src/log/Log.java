@@ -24,12 +24,11 @@ import java.io.OutputStreamWriter;
 import java.util.LinkedList;
 
 /**
- * TODO
- * @author Biolzi Sébastien
- * @author Brito Carvalho Bruno
+ * Gestionnaire de la fenêtre de log.
+ * @author Crescenzio Fabio
  * @author Decorvet Grégoire
+ * @author Jaquier Kevin
  * @author Schweizer Thomas
- * @author Sinniger Marcel
  *
  */
 public class Log {

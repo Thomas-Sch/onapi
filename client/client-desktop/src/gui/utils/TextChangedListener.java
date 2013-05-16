@@ -1,13 +1,12 @@
 /* ============================================================================
  * Nom du fichier   : TextChangedListener.java
  * ============================================================================
- * Date de création : 1 mai 2013
+ * Date de création : 11 mai 2013
  * ============================================================================
- * Auteurs          : Biolzi Sébastien
- *                    Brito Carvalho Bruno
+ * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
+ *                    Jaquier Kevin
  *                    Schweizer Thomas
- *                    Sinniger Marcel
  * ============================================================================
  */
 package gui.utils;
@@ -17,12 +16,12 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.JTextComponent;
 
 /**
- * Listener simplifié réagissant au changement d'un texte.
- * @author Biolzi Sébastien
- * @author Brito Carvalho Bruno
+ * 
+ * TODO
+ * @author Crescenzio Fabio
  * @author Decorvet Grégoire
+ * @author Jaquier Kevin
  * @author Schweizer Thomas
- * @author Sinniger Marcel
  *
  */
 abstract public class TextChangedListener implements DocumentListener {

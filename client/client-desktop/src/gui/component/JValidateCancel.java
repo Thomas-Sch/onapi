@@ -1,13 +1,12 @@
 /* ============================================================================
  * Nom du fichier   : JValidateCancel.java
  * ============================================================================
- * Date de création : 7 mai 2013
+ * Date de création : 11 mai 2013
  * ============================================================================
- * Auteurs          : Biolzi Sébastien
- *                    Brito Carvalho Bruno
+ * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
+ *                    Jaquier Kevin
  *                    Schweizer Thomas
- *                    Sinniger Marcel
  * ============================================================================
  */
 package gui.component;
@@ -20,6 +19,15 @@ import javax.swing.JPanel;
 
 import settings.Language.Text;
 
+/**
+ * 
+ * TODO
+ * @author Crescenzio Fabio
+ * @author Decorvet Grégoire
+ * @author Jaquier Kevin
+ * @author Schweizer Thomas
+ *
+ */
 public class JValidateCancel extends JPanel {
 
    /**

@@ -4,7 +4,7 @@
  * Date de création : 11 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
- *                    Decorvet Gr�goire
+ *                    Decorvet Grégoire
  *                    Jaquier Kevin
  *                    Schweizer Thomas
  * ============================================================================

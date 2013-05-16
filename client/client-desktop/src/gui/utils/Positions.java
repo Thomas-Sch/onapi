@@ -1,13 +1,12 @@
 /* ============================================================================
  * Nom du fichier   : Positions.java
  * ============================================================================
- * Date de création : 17 avr. 2013
+ * Date de création : 11 mai 2013
  * ============================================================================
- * Auteurs          : Biolzi Sébastien
- *                    Brito Carvalho Bruno
+ * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
+ *                    Jaquier Kevin
  *                    Schweizer Thomas
- *                    Sinniger Marcel
  * ============================================================================
  */
 package gui.utils;
@@ -19,12 +18,12 @@ import java.awt.Toolkit;
 import javax.swing.JFrame;
 
 /**
+ * 
  * TODO
- * @author Biolzi Sébastien
- * @author Brito Carvalho Bruno
+ * @author Crescenzio Fabio
  * @author Decorvet Grégoire
+ * @author Jaquier Kevin
  * @author Schweizer Thomas
- * @author Sinniger Marcel
  *
  */
 public class Positions {

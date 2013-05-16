@@ -1,3 +1,15 @@
+/* ============================================================================
+ * Nom du fichier   : MidasLog.java
+ * ============================================================================
+ * Date de création : 11 mai 2013
+ * ============================================================================
+ * Auteurs          : Crescenzio Fabio
+ *                    Decorvet Grégoire
+ *                    Jaquier Kevin
+ *                    Schweizer Thomas
+ * ============================================================================
+ */
+
 package utils;
 import gui.view.LogsFrame;
 
@@ -5,31 +17,18 @@ import java.io.File;
 
 import log.Log;
 
-/* ============================================================================
- * Nom du fichier   : MidasLog.java
- * ============================================================================
- * Date de création : 17 avr. 2013
- * ============================================================================
- * Auteurs          : Biolzi Sébastien
- *                    Brito Carvalho Bruno
- *                    Decorvet Grégoire
- *                    Schweizer Thomas
- *                    Sinniger Marcel
- * ============================================================================
- */
 
 /**
- * TODO
- * @author Biolzi Sébastien
- * @author Brito Carvalho Bruno
+ * Contrôleur de la fenêtre de login.
+ * @author Crescenzio Fabio
  * @author Decorvet Grégoire
+ * @author Jaquier Kevin
  * @author Schweizer Thomas
- * @author Sinniger Marcel
  *
  */
 public class Logs {
    
-   public static Log messages = new Log("messages", new File("Midas.log"), 1);
+   public static Log messages = new Log("messages", new File("Onapi.log"), 1);
    
    public static Log errors = new Log("errors", new File("Errors.log"), 1);
    

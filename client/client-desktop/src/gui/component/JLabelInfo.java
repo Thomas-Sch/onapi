@@ -1,13 +1,12 @@
 /* ============================================================================
  * Nom du fichier   : JLabelInfo.java
  * ============================================================================
- * Date de création : 8 mai 2013
+ * Date de création : 11 mai 2013
  * ============================================================================
- * Auteurs          : Biolzi Sébastien
- *                    Brito Carvalho Bruno
+ * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
+ *                    Jaquier Kevin
  *                    Schweizer Thomas
- *                    Sinniger Marcel
  * ============================================================================
  */
 package gui.component;
@@ -18,12 +17,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- * Classe représentant une pair de deux label adjacent horizontalement.
- * @author Biolzi Sébastien
- * @author Brito Carvalho Bruno
+ * Classe représentant une paire de deux label adjacent horizontalement.
+ * @author Crescenzio Fabio
  * @author Decorvet Grégoire
+ * @author Jaquier Kevin
  * @author Schweizer Thomas
- * @author Sinniger Marcel
  *
  */
 public class JLabelInfo extends JPanel {

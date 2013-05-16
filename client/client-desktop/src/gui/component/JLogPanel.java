@@ -1,13 +1,12 @@
 /* ============================================================================
  * Nom du fichier   : JLogPanel.java
  * ============================================================================
- * Date de création : 15 avr. 2013
+ * Date de création : 11 mai 2013
  * ============================================================================
- * Auteurs          : Biolzi Sébastien
- *                    Brito Carvalho Bruno
+ * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
+ *                    Jaquier Kevin
  *                    Schweizer Thomas
- *                    Sinniger Marcel
  * ============================================================================
  */
 package gui.component;
@@ -22,12 +21,12 @@ import javax.swing.JTextArea;
 import log.LogMessage;
 
 /**
+ * 
  * TODO
- * @author Biolzi Sébastien
- * @author Brito Carvalho Bruno
+ * @author Crescenzio Fabio
  * @author Decorvet Grégoire
+ * @author Jaquier Kevin
  * @author Schweizer Thomas
- * @author Sinniger Marcel
  *
  */
 @SuppressWarnings("serial")

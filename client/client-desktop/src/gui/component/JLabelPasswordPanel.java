@@ -1,13 +1,12 @@
 /* ============================================================================
- * Nom du fichier   : JLabelTextPanel.java
+ * Nom du fichier   : JLabelPasswordPanel.java
  * ============================================================================
- * Date de création : 7 mai 2013
+ * Date de création : 11 mai 2013
  * ============================================================================
- * Auteurs          : Biolzi Sébastien
- *                    Brito Carvalho Bruno
+ * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
+ *                    Jaquier Kevin
  *                    Schweizer Thomas
- *                    Sinniger Marcel
  * ============================================================================
  */
 package gui.component;
@@ -21,6 +20,15 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+/**
+ * 
+ * TODO
+ * @author Crescenzio Fabio
+ * @author Decorvet Grégoire
+ * @author Jaquier Kevin
+ * @author Schweizer Thomas
+ *
+ */
 public class JLabelPasswordPanel extends JPanel {
    
    /**

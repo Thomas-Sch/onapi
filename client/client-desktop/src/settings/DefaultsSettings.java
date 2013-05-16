@@ -1,13 +1,12 @@
 /* ============================================================================
  * Nom du fichier   : DefaultsSettings.java
  * ============================================================================
- * Date de création : 19 avr. 2013
+ * Date de création : 11 mai 2013
  * ============================================================================
- * Auteurs          : Biolzi Sébastien
- *                    Brito Carvalho Bruno
+ * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
+ *                    Jaquier Kevin
  *                    Schweizer Thomas
- *                    Sinniger Marcel
  * ============================================================================
  */
 package settings;
@@ -16,12 +15,12 @@ import gui.utils.Positions.ScreenPosition;
 import settings.elements.FrameSettings;
 
 /**
+ * 
  * TODO
- * @author Biolzi Sébastien
- * @author Brito Carvalho Bruno
+ * @author Crescenzio Fabio
  * @author Decorvet Grégoire
+ * @author Jaquier Kevin
  * @author Schweizer Thomas
- * @author Sinniger Marcel
  *
  */
 class DefaultsSettings {

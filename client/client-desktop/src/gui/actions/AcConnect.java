@@ -4,7 +4,7 @@
  * Date de création : 11 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
- *                    Decorvet Gr�goire
+ *                    Decorvet Grégoire
  *                    Jaquier Kevin
  *                    Schweizer Thomas
  * ============================================================================
@@ -19,9 +19,9 @@ import java.awt.event.ActionEvent;
 import utils.Logs;
 
 /**
- * TODO
+ * Contrôleur et action de connection.
  * @author Crescenzio Fabio
- * @author Decorvet Gr�goire
+ * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
  *
