@@ -27,8 +27,12 @@ import com.badlogic.gdx.Game;
  */
 public class Onapi extends Game {
 
-   private GameScreen gameScreen = new GameScreen();
+   private GameScreen gameScreen;
 
+   public Onapi(boolean debug) {
+      this.gameScreen = new GameScreen(debug);
+   }
+   
    @Override
    public void create() {
       setScreen(gameScreen);

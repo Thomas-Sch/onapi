@@ -33,13 +33,6 @@ public class AcPlay extends UserAction {
    @Override
    protected void execute(ActionEvent event, Object[] dependencies) {
       Logs.messages.push("Recherche d'une partie initiée !");
-      LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-      cfg.title = "ONAPI";
-      cfg.useGL20 = true;
-      cfg.width = 480;
-      cfg.height = 320;
-
-      new LwjglApplication(new Onapi(), cfg);
    }
 
 }
