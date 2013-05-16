@@ -43,7 +43,7 @@ public class Log {
    
    private int bufferSize = 1;
    
-   private LinkedList<LogMessage> messages = new LinkedList<>();
+   private LinkedList<LogMessage> messages = new LinkedList<LogMessage>();
    
    private JLogPanel messagesPanel = null;
    

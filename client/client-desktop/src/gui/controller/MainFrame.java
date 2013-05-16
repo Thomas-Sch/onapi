@@ -1,10 +1,10 @@
 /* ============================================================================
  * Nom du fichier   : Launcher.java
  * ============================================================================
- * Date de création : 8 mai 2013
+ * Date de crï¿½ation : 8 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
- *                    Decorvet Grégoire
+ *                    Decorvet GrÃ©goire
  *                    Jaquier Kevin
  *                    Schweizer Thomas
  * ============================================================================
@@ -24,9 +24,9 @@ import settings.Language.Text;
 import settings.Settings;
 
 /**
- * Contrôleur de la fenêtre principale.
+ * Contrï¿½leur de la fenï¿½tre principale.
  * @author Crescenzio Fabio
- * @author Decorvet Grégoire
+ * @author Decorvet GrÃ©goire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
  *

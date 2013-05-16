@@ -1,3 +1,4 @@
+package client;
 import gui.controller.Login;
 import gui.view.LogsFrame;
 
@@ -20,7 +21,7 @@ import utils.Logs;
  */
 
 /**
- * TODO
+ * Classe d'amorce pour lancer le programme.
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin

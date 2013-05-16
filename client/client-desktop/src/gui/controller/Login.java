@@ -1,10 +1,10 @@
 /* ============================================================================
  * Nom du fichier   : Login.java
  * ============================================================================
- * Date de création : 8 mai 2013
+ * Date de crÃ©ation : 8 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
- *                    Decorvet Grégoire
+ *                    Decorvet GrÃ©goire
  *                    Jaquier Kevin
  *                    Schweizer Thomas
  * ============================================================================
@@ -26,7 +26,7 @@ import settings.Language.Text;
 /**
  * TODO
  * @author Crescenzio Fabio
- * @author Decorvet Grégoire
+ * @author Decorvet GrÃ©goire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
  */

@@ -1,10 +1,10 @@
 /* ============================================================================
  * Nom du fichier   : AcCancel.java
  * ============================================================================
- * Date de création : 11 mai 2013
+ * Date de crï¿½ation : 11 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
- *                    Decorvet Grégoire
+ *                    Decorvet GrÃ©goire
  *                    Jaquier Kevin
  *                    Schweizer Thomas
  * ============================================================================
@@ -15,12 +15,10 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
 
-import gui.UserAction;
-
 /**
  * TODO
  * @author Crescenzio Fabio
- * @author Decorvet Grégoire
+ * @author Decorvet GrÃ©goire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
  *

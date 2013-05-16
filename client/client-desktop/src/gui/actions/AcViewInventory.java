@@ -1,10 +1,10 @@
 /* ============================================================================
  * Nom du fichier   : AcViewInventory.java
  * ============================================================================
- * Date de création : 11 mai 2013
+ * Date de crÃ©ation : 11 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
- *                    Decorvet Grégoire
+ *                    Decorvet Grï¿½goire
  *                    Jaquier Kevin
  *                    Schweizer Thomas
  * ============================================================================
@@ -15,12 +15,10 @@ import java.awt.event.ActionEvent;
 
 import utils.Logs;
 
-import gui.UserAction;
-
 /**
  * TODO
  * @author Crescenzio Fabio
- * @author Decorvet Grégoire
+ * @author Decorvet GrÃ©goire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
  *
@@ -29,7 +27,7 @@ public class AcViewInventory extends UserAction {
 
    @Override
    protected void execute(ActionEvent event, Object[] dependencies) {
-      Logs.messages.push("Ouverture de la fenêtre pour voir son inventaire");
+      Logs.messages.push("Ouverture de la fenÃªtre pour voir son inventaire");
    }
 
 }
