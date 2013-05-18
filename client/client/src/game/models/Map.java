@@ -30,6 +30,15 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Map extends Entity {
 
+   /**
+    * 
+    * TODO
+    * @author Crescenzio Fabio
+    * @author Decorvet Grégoire
+    * @author Jaquier Kevin
+    * @author Schweizer Thomas
+    *
+    */
    public enum Tile {
       EMPTY, WALL;
 
@@ -44,7 +53,7 @@ public class Map extends Entity {
             case WALL:
                return "[#]";
             default:
-               return "?";
+               return "[?]";
          }
       }
    }

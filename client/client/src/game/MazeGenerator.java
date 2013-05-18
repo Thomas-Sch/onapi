@@ -17,11 +17,12 @@ import java.util.Random;
 
 /**
  * TODO
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
 public abstract class MazeGenerator {
 
@@ -29,14 +30,14 @@ public abstract class MazeGenerator {
       Tile[][] grid = new Tile[size][size];
       Random r = new Random();
       Tile[] tileTypes = Tile.values();
-      
+
       for (int i = 0; i < grid.length; i++) {
          for (int j = 0; j < grid[i].length; j++) {
             grid[i][j] = tileTypes[r.nextInt(2)];
          }
       }
-      
+
       return grid;
    }
-   
+
 }

@@ -37,10 +37,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
  */
 public class GameRenderer {
 
-   private static final float CAMERA_WIDTH = 10f;
-   private static final float CAMERA_HEIGHT = 10f;
-
-   private static final float W_COEFF = 1/100f;
+   private static final float W_COEFF = 1 / 100f;
    private static final float H_COEFF = W_COEFF;
 
    /**
@@ -62,7 +59,7 @@ public class GameRenderer {
     * Largeur de la fenêtre graphique
     */
    private int height;
-
+   
    /**
     * Camera de la vue
     */
@@ -84,10 +81,9 @@ public class GameRenderer {
    public GameRenderer(GameModel game, boolean debug) {
       this.game = game;
       this.debug = debug;
-
+      
       // Initialise la caméra
-      this.cam = new OrthographicCamera(1280f, 720);
-      this.cam.position.set(128 / 2f, 72 / 2f, 0);
+      this.cam = new OrthographicCamera(width, height);
       viewport = new Rectangle(0, 0, 1280, 720);
 
       debugRenderer.setProjectionMatrix(cam.combined);
@@ -131,11 +127,10 @@ public class GameRenderer {
       update(Gdx.graphics.getDeltaTime());
 
       // Mise à jour de la caméra
-      gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
       gl.glViewport((int) viewport.x, (int) viewport.y, (int) viewport.width,
             (int) viewport.height);
-      Vector2.tmp.set(game.getPlayer().getPos().x - cam.position.x,
-            game.getPlayer().getPos().y - cam.position.y);
+      Vector2.tmp.set(game.getPlayer().getPos().x - cam.position.x, game
+            .getPlayer().getPos().y - cam.position.y);
       cam.translate(Vector2.tmp);
       cam.update();
 
@@ -169,8 +164,9 @@ public class GameRenderer {
    public void setSize(int width, int height) {
       this.width = width;
       this.height = height;
-      this.viewport.setHeight(height);
-      this.viewport.setWidth(width);
+      cam = new OrthographicCamera(width, height);
+      viewport.setHeight(height);
+      viewport.setWidth(width);
       ui.setViewport(width, height, true);
    }
 

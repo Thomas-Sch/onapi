@@ -30,7 +30,7 @@ public class Player extends Entity {
 
    private static final int WIDTH = 100;
    private static final int HEIGHT = WIDTH;
-   
+
    /**
     * Position actuelle du personnage sur la map
     */

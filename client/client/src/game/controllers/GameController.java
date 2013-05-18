@@ -140,7 +140,7 @@ public class GameController {
     */
    public void update(float delta) {
       float moveSpeed = 10.0f;
-      
+
       if (getActionState(Action.UP)) {
          game.getPlayer().move(new Vector2(0, +moveSpeed));
       }
