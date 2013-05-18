@@ -14,7 +14,8 @@ package game.views;
 import game.models.GameModel;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -85,10 +86,9 @@ public class GameRenderer {
       this.debug = debug;
 
       // Initialise la caméra
-      this.cam = new OrthographicCamera(1280f / 100f, 720f / 100f);
+      this.cam = new OrthographicCamera(1280f, 720);
       this.cam.position.set(128 / 2f, 72 / 2f, 0);
       viewport = new Rectangle(0, 0, 1280, 720);
-      // cam.update();
 
       debugRenderer.setProjectionMatrix(cam.combined);
 
@@ -116,10 +116,6 @@ public class GameRenderer {
 
    // temp
    public void update(float delta) {
-      Vector2.tmp.set(game.getPlayer().getPos());
-      cam.position.set(new Vector3(Vector2.tmp.x, Vector2.tmp.y, 0));
-      // cam.lookAt(Vector2.tmp.x, Vector2.tmp.y, 0);
-
       lblOut.setText("Pos : "
             + String.format("(%+3.2f, %+3.2f)", game.getPlayer().getPos().x,
                   game.getPlayer().getPos().y));
@@ -129,17 +125,19 @@ public class GameRenderer {
     * Méthode appelée à chaque rafraîchissement de l'écran
     */
    public void render() {
-      GL10 gl = Gdx.graphics.getGL10();
+      GL20 gl = Gdx.graphics.getGL20();
 
       // Mise à jour de la logique
       update(Gdx.graphics.getDeltaTime());
 
       // Mise à jour de la caméra
-      gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+      gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
       gl.glViewport((int) viewport.x, (int) viewport.y, (int) viewport.width,
             (int) viewport.height);
+      Vector2.tmp.set(game.getPlayer().getPos().x - cam.position.x,
+            game.getPlayer().getPos().y - cam.position.y);
+      cam.translate(Vector2.tmp);
       cam.update();
-      cam.apply(Gdx.graphics.getGL10());
 
       if (debug) debugRender();
 

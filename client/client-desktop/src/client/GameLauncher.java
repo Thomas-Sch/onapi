@@ -14,7 +14,7 @@ public class GameLauncher {
    public void run() {
       LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
       cfg.title = "ONAPI";
-      cfg.useGL20 = false;
+      cfg.useGL20 = true;
       cfg.width = 480;
       cfg.height = 320;
 
