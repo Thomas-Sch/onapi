@@ -13,6 +13,8 @@ package gui.actions;
 
 import java.awt.event.ActionEvent;
 
+import client.GameLauncher;
+
 import utils.Logs;
 
 /**
@@ -28,6 +30,7 @@ public class AcPlay extends UserAction {
    @Override
    protected void execute(ActionEvent event, Object[] dependencies) {
       Logs.messages.push("Recherche d'une partie initiée !");
+      new GameLauncher(true); // TODO true = temporaire
    }
 
 }
