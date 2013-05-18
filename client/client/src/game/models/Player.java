@@ -114,12 +114,13 @@ public class Player extends Entity {
    public void draw(SpriteBatch batch, float parentAlpha) {
       super.draw(batch, parentAlpha);
    }
-   
+
    @Override
    public void debugRender(ShapeRenderer renderer) {
       renderer.begin(ShapeType.Rectangle);
       renderer.setColor(Color.RED);
-      renderer.rect(getX(), getY(), getWidth(), getHeight());
+      renderer.rect(getX() - getWidth() / 2f, getY() - getHeight() / 2f,
+            getWidth(), getHeight());
       renderer.end();
    }
 

@@ -14,8 +14,12 @@ package game.views;
 import game.models.GameModel;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -33,8 +37,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 public class GameRenderer {
 
    private static final float CAMERA_WIDTH = 10f;
-   private static final float CAMERA_HEIGHT = 7f;
-   
+   private static final float CAMERA_HEIGHT = 10f;
+
+   private static final float W_COEFF = 1/100f;
+   private static final float H_COEFF = W_COEFF;
+
    /**
     * Modèle du jeu à afficher
     */
@@ -54,12 +61,14 @@ public class GameRenderer {
     * Largeur de la fenêtre graphique
     */
    private int height;
-   
+
    /**
     * Camera de la vue
     */
    private OrthographicCamera cam;
-   
+
+   private Rectangle viewport;
+
    /**
     * Scène des contrôles d'interface graphique
     */
@@ -74,14 +83,15 @@ public class GameRenderer {
    public GameRenderer(GameModel game, boolean debug) {
       this.game = game;
       this.debug = debug;
-      
-      // initialise la caméra
-      this.cam = new OrthographicCamera(CAMERA_WIDTH, CAMERA_HEIGHT);
-      this.cam.position.set(CAMERA_WIDTH / 2f, CAMERA_HEIGHT / 2f, 0);
-      this.cam.update();
-      
+
+      // Initialise la caméra
+      this.cam = new OrthographicCamera(1280f / 100f, 720f / 100f);
+      this.cam.position.set(128 / 2f, 72 / 2f, 0);
+      viewport = new Rectangle(0, 0, 1280, 720);
+      // cam.update();
+
       debugRenderer.setProjectionMatrix(cam.combined);
-      
+
       ui = new Stage(width, height, true);
       Gdx.input.setInputProcessor(ui);
       initUI();
@@ -105,7 +115,11 @@ public class GameRenderer {
    }
 
    // temp
-   public void update() {
+   public void update(float delta) {
+      Vector2.tmp.set(game.getPlayer().getPos());
+      cam.position.set(new Vector3(Vector2.tmp.x, Vector2.tmp.y, 0));
+      // cam.lookAt(Vector2.tmp.x, Vector2.tmp.y, 0);
+
       lblOut.setText("Pos : "
             + String.format("(%+3.2f, %+3.2f)", game.getPlayer().getPos().x,
                   game.getPlayer().getPos().y));
@@ -115,20 +129,34 @@ public class GameRenderer {
     * Méthode appelée à chaque rafraîchissement de l'écran
     */
    public void render() {
-      update();
+      GL10 gl = Gdx.graphics.getGL10();
+
+      // Mise à jour de la logique
+      update(Gdx.graphics.getDeltaTime());
+
+      // Mise à jour de la caméra
+      gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+      gl.glViewport((int) viewport.x, (int) viewport.y, (int) viewport.width,
+            (int) viewport.height);
+      cam.update();
+      cam.apply(Gdx.graphics.getGL10());
+
+      if (debug) debugRender();
 
       game.getPlayer().draw(ui.getSpriteBatch(), 1.0f);
+      game.getMap().draw(ui.getSpriteBatch(), 1.0f);
 
       ui.act(Gdx.graphics.getDeltaTime());
       ui.draw();
 
-      if (debug) debugRender();
    }
 
    /**
     * Affiche des données de debug à l'écran
     */
    public void debugRender() {
+      debugRenderer.setProjectionMatrix(cam.combined);
+      game.getMap().debugRender(debugRenderer);
       game.getPlayer().debugRender(debugRenderer);
    }
 
@@ -143,6 +171,8 @@ public class GameRenderer {
    public void setSize(int width, int height) {
       this.width = width;
       this.height = height;
+      this.viewport.setHeight(height);
+      this.viewport.setWidth(width);
       ui.setViewport(width, height, true);
    }
 

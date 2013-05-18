@@ -46,6 +46,7 @@ public class GameModel {
    public GameModel() {
       Team t1 = new Team(Color.RED);
       player = new Player(new Vector2(0f, 0f), new Vector2(0f, 1f), t1);
+      map = new Map(8);
    }
 
    /**
