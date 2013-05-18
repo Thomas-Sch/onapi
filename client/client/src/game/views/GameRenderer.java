@@ -82,12 +82,16 @@ public class GameRenderer {
       this.game = game;
       this.debug = debug;
       
+      // Active la synchronisation verticale
+      Gdx.graphics.setVSync(true);
+      
       // Initialise la caméra
       this.cam = new OrthographicCamera(width, height);
       viewport = new Rectangle(0, 0, 1280, 720);
 
       debugRenderer.setProjectionMatrix(cam.combined);
 
+      // Initialise la scène de l'interface utilisateur
       ui = new Stage(width, height, true);
       Gdx.input.setInputProcessor(ui);
       initUI();
