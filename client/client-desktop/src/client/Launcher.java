@@ -40,7 +40,7 @@ public class Launcher {
    public static void main(String[] args) {
 
       // Lance le jeu directement si mode debug
-      if (args[0].equals("--debug")) {
+      if (args.length > 0 && args[0].equals("--debug")) {
          new GameLauncher(true).run();
       }
       else {
