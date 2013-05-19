@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : ChannelClosedException.java
+ * Nom du fichier   : TimeOutException.java
  * ============================================================================
- * Date de création : 15 mai 2013
+ * Date de création : 8 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,7 +9,7 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package utils.connections.exceptions;
+package common.connections.exceptions;
 
 /**
  * TODO
@@ -19,23 +19,22 @@ package utils.connections.exceptions;
  * @author Schweizer Thomas
  *
  */
-public class ChannelClosedException extends RuntimeException {
+public class TimeOutException extends ChannelException {
    
-   public ChannelClosedException() {
+   public TimeOutException() {
       super();
    }
    
-   public ChannelClosedException(String message) {
+   public TimeOutException(String message) {
       super(message);
    }
    
-   public ChannelClosedException(Throwable cause) {
+   public TimeOutException(Throwable cause) {
       super(cause);
    }
    
-   public ChannelClosedException(String message, Throwable cause) {
+   public TimeOutException(String message, Throwable cause) {
       super(message,cause);
-   }  
+   }
 
 }
-

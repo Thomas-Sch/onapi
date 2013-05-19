@@ -1,14 +1,7 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
-
-import core.Core;
-
 /* ============================================================================
- * Nom du fichier   : Server.java
+ * Nom du fichier   : Lobby.java
  * ============================================================================
- * Date de création : 1 mai 2013
+ * Date de création : 19 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -16,6 +9,9 @@ import core.Core;
  *                    Schweizer Thomas
  * ============================================================================
  */
+package core.lobby;
+
+import core.UserInformations;
 
 /**
  * TODO
@@ -25,16 +21,16 @@ import core.Core;
  * @author Schweizer Thomas
  *
  */
-public class Server {
+public class Lobby {
    
+   private UserInformations[] players;
    
-   public static void main(String[] args) throws IOException {
+   public Lobby(int nbPlayers) {
+      players = new UserInformations[nbPlayers];
       
-      Core core = new Core();
-      
-      core.start();
-      
-      
+      for (UserInformations info : players) {
+         info = null;
+      }
    }
 
 }

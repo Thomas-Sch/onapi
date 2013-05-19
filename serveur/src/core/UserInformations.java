@@ -1,14 +1,7 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
-
-import core.Core;
-
 /* ============================================================================
- * Nom du fichier   : Server.java
+ * Nom du fichier   : Client.java
  * ============================================================================
- * Date de création : 1 mai 2013
+ * Date de création : 19 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -16,25 +9,35 @@ import core.Core;
  *                    Schweizer Thomas
  * ============================================================================
  */
+package core;
+
+import gui.logs.Log;
+import common.components.UserAccount;
+import common.connections.Channel;
 
 /**
- * TODO
+ * Classe regroupant les variables liées à un utilisateur.
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
  *
  */
-public class Server {
+public class UserInformations {
    
+   public Channel channelReceive;
+   public Channel channelUpdate;
    
-   public static void main(String[] args) throws IOException {
-      
-      Core core = new Core();
-      
-      core.start();
-      
+   public Log log;
+   
+   public boolean isConnected;
+   
+   public UserAccount account;
+   
+   public UserInformations() {
       
    }
+   
 
 }

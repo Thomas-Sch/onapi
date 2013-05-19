@@ -11,15 +11,14 @@
  */
 package core;
 
+import gui.logs.Log;
+import common.components.UserAccount;
+import common.connections.Channel;
+import common.connections.exceptions.ChannelClosedException;
+import common.connections.protocol.ProtocolType;
+import core.Core;
+import core.protocol.ServerReceiveProtocol;
 import java.net.Socket;
-
-import javax.swing.JFrame;
-
-import utils.connections.Channel;
-import utils.connections.exceptions.ChannelClosedException;
-import utils.connections.protocol.ClientProtocol;
-import utils.connections.protocol.ProtocolType;
-import utils.connections.protocol.ServerProtocol;
 
 /**
  * TODO
@@ -30,16 +29,23 @@ import utils.connections.protocol.ServerProtocol;
  *
  */
 public class UserConnection implements Runnable {
+   private Core core;
    
-   private Channel channel;
+   private UserInformations user;
    
-   private boolean active = true;
+   private ServerReceiveProtocol protocol;
    
-   private ServerProtocol protocol;
-   
-   public UserConnection(Socket socket, int timeout) {
-      channel = new Channel(socket, timeout);
-      protocol = new ServerProtocol(channel);
+   public UserConnection(Core core, Socket socket, int timeout) {
+      this.core = core;
+      user = new UserInformations();
+      user.isConnected = true;
+      
+      user.channelReceive = new Channel(socket, timeout);
+      user.log = new Log("Unknown");
+      
+      protocol = new ServerReceiveProtocol(core, user);
+      
+      core.addLogPanel(user.log.createLogPanel());
    }
 
 
@@ -48,13 +54,11 @@ public class UserConnection implements Runnable {
       
       ProtocolType proType;
       
-      while(active) {
+      while(user.isConnected) {
          
          try {
          
-            proType = channel.receiveProtocolType();
-            
-            System.out.println("Requete client : " + proType);
+            proType = user.channelReceive.receiveProtocolType();
             
             switch(proType) {
                
@@ -62,25 +66,54 @@ public class UserConnection implements Runnable {
                   protocol.ping();
                   break;
                   
-               case AUTHENTIFICATION :
-                  protocol.authentifaction();
+               case LOGIN :
+                  if (user.account == null) {
+                     acceptRequest();
+                     protocol.login();
+                  }
+                  else {
+                     refuseRequest();
+                  }  
+                     
+                  break;
+                  
+               case ACCOUNT_CREATE :
+                  if (user.account == null) {
+                     acceptRequest();
+                     protocol.createAccount();
+                  }
+                  else {
+                     refuseRequest();
+                  }
+                  
                   break;
                   
                case TEXT_MESSAGE :
-                  protocol.textMessage(System.out);
+                  protocol.textMessage();
                   break;
                   
                default :
-                  System.out.println("Not yet implemented protocol");
+                  user.log.push("Not yet implemented protocol");
             }
             
          }
          catch (ChannelClosedException e) {
-            // oups perdu
+            user.isConnected = false;
+            user.log.push("Client lost");
          }
             
       }
       
+      core.removeLogPanel(user.log.getLogPanel());
+      
+   }
+   
+   private void acceptRequest() {
+      user.channelReceive.sendProtocolType(ProtocolType.ACCEPT);
+   }
+   
+   private void refuseRequest() {
+      user.channelReceive.sendProtocolType(ProtocolType.REFUSE);
    }
 
 }

@@ -9,7 +9,7 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package utils.connections.exceptions;
+package common.connections.exceptions;
 
 /**
  * TODO

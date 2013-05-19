@@ -1,14 +1,7 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
-
-import core.Core;
-
 /* ============================================================================
- * Nom du fichier   : Server.java
+ * Nom du fichier   : ChannelClosedException.java
  * ============================================================================
- * Date de création : 1 mai 2013
+ * Date de création : 15 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -16,6 +9,7 @@ import core.Core;
  *                    Schweizer Thomas
  * ============================================================================
  */
+package common.connections.exceptions;
 
 /**
  * TODO
@@ -25,16 +19,23 @@ import core.Core;
  * @author Schweizer Thomas
  *
  */
-public class Server {
+public class ChannelClosedException extends RuntimeException {
    
-   
-   public static void main(String[] args) throws IOException {
-      
-      Core core = new Core();
-      
-      core.start();
-      
-      
+   public ChannelClosedException() {
+      super();
    }
+   
+   public ChannelClosedException(String message) {
+      super(message);
+   }
+   
+   public ChannelClosedException(Throwable cause) {
+      super(cause);
+   }
+   
+   public ChannelClosedException(String message, Throwable cause) {
+      super(message,cause);
+   }  
 
 }
+

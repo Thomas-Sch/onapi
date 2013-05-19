@@ -1,5 +1,5 @@
 /* ============================================================================
- * Nom du fichier   : ServerProtocol.java
+ * Nom du fichier   : ProtocolException.java
  * ============================================================================
  * Date de création : 8 mai 2013
  * ============================================================================
@@ -9,11 +9,7 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package utils.connections.protocol;
-
-import java.io.PrintStream;
-
-import utils.connections.Channel;
+package common.connections.exceptions;
 
 /**
  * TODO
@@ -23,31 +19,22 @@ import utils.connections.Channel;
  * @author Schweizer Thomas
  *
  */
-public class ServerProtocol {
+public class ProtocolException extends RuntimeException {
    
-   private Channel channel;
-   
-   public ServerProtocol(Channel channel) {
-      this.channel = channel;
+   public ProtocolException() {
+      super();
    }
    
-   public void ping() {
-      channel.sendProtocolType(ProtocolType.PING);
+   public ProtocolException(String message) {
+      super(message);
    }
    
-   public void textMessage(PrintStream stream) {
-      String message;
-      
-      message = channel.receiveString();
-      
-      stream.println(message);
+   public ProtocolException(Throwable cause) {
+      super(cause);
    }
    
-   public void authentifaction() {
-      String login = channel.receiveString();
-      String password = channel.receiveString();
-      
-      
-   }
+   public ProtocolException(String message, Throwable cause) {
+      super(message,cause);
+   }  
 
 }

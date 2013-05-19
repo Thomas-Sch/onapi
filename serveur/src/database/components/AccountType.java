@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : TimeOutException.java
+ * Nom du fichier   : AccountType.java
  * ============================================================================
- * Date de création : 8 mai 2013
+ * Date de création : 16 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,7 +9,7 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package utils.connections.exceptions;
+package database.components;
 
 /**
  * TODO
@@ -19,22 +19,8 @@ package utils.connections.exceptions;
  * @author Schweizer Thomas
  *
  */
-public class TimeOutException extends ChannelException {
+public enum AccountType {
    
-   public TimeOutException() {
-      super();
-   }
-   
-   public TimeOutException(String message) {
-      super(message);
-   }
-   
-   public TimeOutException(Throwable cause) {
-      super(cause);
-   }
-   
-   public TimeOutException(String message, Throwable cause) {
-      super(message,cause);
-   }
+   USER, ADMINISTRATOR;
 
 }
