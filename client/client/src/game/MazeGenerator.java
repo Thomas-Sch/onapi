@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : Onapi.java
+ * Nom du fichier   : MazeGenerator.java
  * ============================================================================
- * Date de création : 1 mai 2013
+ * Date de création : 16 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,15 +9,14 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package client;
+package game;
 
-import game.screens.GameScreen;
+import game.models.Map.Tile;
 
-import com.badlogic.gdx.Game;
+import java.util.Random;
 
 /**
- * Classe d'initialisation du jeu. Gère la transition entre les différents
- * screens.
+ * TODO
  * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
@@ -25,17 +24,20 @@ import com.badlogic.gdx.Game;
  * @author Schweizer Thomas
  * 
  */
-public class Onapi extends Game {
+public abstract class MazeGenerator {
 
-   private GameScreen gameScreen;
+   public static Tile[][] create(int size) {
+      Tile[][] grid = new Tile[size][size];
+      Random r = new Random();
+      Tile[] tileTypes = Tile.values();
 
-   public Onapi(boolean debug) {
-      this.gameScreen = new GameScreen(debug);
-   }
-   
-   @Override
-   public void create() {
-      setScreen(gameScreen);
+      for (int i = 0; i < grid.length; i++) {
+         for (int j = 0; j < grid[i].length; j++) {
+            grid[i][j] = tileTypes[r.nextInt(2)];
+         }
+      }
+
+      return grid;
    }
 
 }

@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : Onapi.java
+ * Nom du fichier   : Lobby.java
  * ============================================================================
- * Date de création : 1 mai 2013
+ * Date de création : 19 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,33 +9,28 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package client;
+package core.lobby;
 
-import game.screens.GameScreen;
-
-import com.badlogic.gdx.Game;
+import core.UserInformations;
 
 /**
- * Classe d'initialisation du jeu. Gère la transition entre les différents
- * screens.
- * 
+ * TODO
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- * 
+ *
  */
-public class Onapi extends Game {
-
-   private GameScreen gameScreen;
-
-   public Onapi(boolean debug) {
-      this.gameScreen = new GameScreen(debug);
-   }
+public class Lobby {
    
-   @Override
-   public void create() {
-      setScreen(gameScreen);
+   private UserInformations[] players;
+   
+   public Lobby(int nbPlayers) {
+      players = new UserInformations[nbPlayers];
+      
+      for (UserInformations info : players) {
+         info = null;
+      }
    }
 
 }

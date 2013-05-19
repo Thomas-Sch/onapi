@@ -139,17 +139,19 @@ public class GameController {
     *           Différence de temps depuis le dernier update
     */
    public void update(float delta) {
+      float moveSpeed = 10.0f;
+
       if (getActionState(Action.UP)) {
-         game.getPlayer().move(new Vector2(0, +0.1f));
+         game.getPlayer().move(new Vector2(0, +moveSpeed));
       }
       if (getActionState(Action.DOWN)) {
-         game.getPlayer().move(new Vector2(0, -0.1f));
+         game.getPlayer().move(new Vector2(0, -moveSpeed));
       }
       if (getActionState(Action.RIGHT)) {
-         game.getPlayer().move(new Vector2(+0.1f, 0));
+         game.getPlayer().move(new Vector2(+moveSpeed, 0));
       }
       if (getActionState(Action.LEFT)) {
-         game.getPlayer().move(new Vector2(-0.1f, 0));
+         game.getPlayer().move(new Vector2(-moveSpeed, 0));
       }
 
    }

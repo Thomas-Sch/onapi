@@ -9,12 +9,8 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package utils.connections;
+package common.connections;
 
-import utils.connections.exceptions.ChannelClosedException;
-import utils.connections.exceptions.ChannelException;
-import utils.connections.exceptions.TimeOutException;
-import utils.connections.protocol.ProtocolType;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -22,6 +18,11 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+
+import common.connections.exceptions.ChannelClosedException;
+import common.connections.exceptions.ChannelException;
+import common.connections.exceptions.TimeOutException;
+import common.connections.protocol.ProtocolType;
 
 /**
  * Canal utilisé pour se connecter à une machine distante.

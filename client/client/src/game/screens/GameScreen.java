@@ -34,6 +34,8 @@ import com.badlogic.gdx.graphics.GL10;
  */
 public class GameScreen extends ScreenAdapter {
 
+   private boolean debug;
+   
    /**
     * Contrôleur du jeu
     */
@@ -48,6 +50,13 @@ public class GameScreen extends ScreenAdapter {
     * Gestionnaire d'affichage du jeu
     */
    private GameRenderer renderer;
+
+   /**
+    * @param debug
+    */
+   public GameScreen(boolean debug) {
+      this.debug = debug;
+   }
 
    @Override
    public void show() {

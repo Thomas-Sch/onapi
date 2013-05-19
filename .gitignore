@@ -1,0 +1,6 @@
+*.log
+.metadata
+client/.git
+old/
+prototypes/
+*.class

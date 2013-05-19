@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : Onapi.java
+ * Nom du fichier   : ChannelClosedException.java
  * ============================================================================
- * Date de création : 1 mai 2013
+ * Date de création : 15 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,33 +9,33 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package client;
-
-import game.screens.GameScreen;
-
-import com.badlogic.gdx.Game;
+package common.connections.exceptions;
 
 /**
- * Classe d'initialisation du jeu. Gère la transition entre les différents
- * screens.
- * 
+ * TODO
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- * 
+ *
  */
-public class Onapi extends Game {
-
-   private GameScreen gameScreen;
-
-   public Onapi(boolean debug) {
-      this.gameScreen = new GameScreen(debug);
+public class ChannelClosedException extends RuntimeException {
+   
+   public ChannelClosedException() {
+      super();
    }
    
-   @Override
-   public void create() {
-      setScreen(gameScreen);
+   public ChannelClosedException(String message) {
+      super(message);
    }
+   
+   public ChannelClosedException(Throwable cause) {
+      super(cause);
+   }
+   
+   public ChannelClosedException(String message, Throwable cause) {
+      super(message,cause);
+   }  
 
 }
+

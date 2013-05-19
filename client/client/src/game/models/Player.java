@@ -28,6 +28,9 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Player extends Entity {
 
+   private static final int WIDTH = 100;
+   private static final int HEIGHT = WIDTH;
+
    /**
     * Position actuelle du personnage sur la map
     */
@@ -45,8 +48,8 @@ public class Player extends Entity {
 
    public Player(Vector2 pos, Vector2 dir, Team team) {
       super();
-      setWidth(1);
-      setHeight(1);
+      setWidth(WIDTH);
+      setHeight(HEIGHT);
       moveTo(pos);
       setTeam(team);
    }
@@ -114,12 +117,13 @@ public class Player extends Entity {
    public void draw(SpriteBatch batch, float parentAlpha) {
       super.draw(batch, parentAlpha);
    }
-   
+
    @Override
    public void debugRender(ShapeRenderer renderer) {
       renderer.begin(ShapeType.Rectangle);
       renderer.setColor(Color.RED);
-      renderer.rect(getX(), getY(), getWidth(), getHeight());
+      renderer.rect(getX() - getWidth() / 2f, getY() - getHeight() / 2f,
+            getWidth(), getHeight());
       renderer.end();
    }
 
