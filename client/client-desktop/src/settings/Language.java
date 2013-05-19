@@ -44,6 +44,7 @@ public class Language {
        */
       APP_TITLE,
       LOBBY_TITLE,
+      INVENTORY_TITLE,
       
       VALIDATE_BUTTON,
       CANCEL_BUTTON,

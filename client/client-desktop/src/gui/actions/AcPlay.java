@@ -11,6 +11,8 @@
  */
 package gui.actions;
 
+import gui.utils.Positions;
+import gui.utils.Positions.ScreenPosition;
 import gui.view.JLobby;
 
 import java.awt.event.ActionEvent;
@@ -32,9 +34,11 @@ public class AcPlay extends UserAction {
    @Override
    protected void execute(ActionEvent event, Object[] dependencies) {
       Logs.messages.push("Recherche d'une partie initiée !");
-      JLobby lobby = new JLobby();
-      lobby.setVisible(true);
-      lobby.setTitle(Text.APP_TITLE.toString() + " - " + Text.LOBBY_TITLE.toString());
+      JLobby view = new JLobby();
+      view.setTitle(Text.APP_TITLE.toString() + " - " + Text.LOBBY_TITLE.toString());
+      Positions.setPositionOnScreen(view, ScreenPosition.CENTER);
+      view.setVisible(true);
+      
       new GameLauncher(true); // TODO true = temporaire
    }
 
