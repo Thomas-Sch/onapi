@@ -43,6 +43,7 @@ public class Language {
        * nécessaires.
        */
       APP_TITLE,
+      LOBBY_TITLE,
       
       VALIDATE_BUTTON,
       CANCEL_BUTTON,
@@ -50,7 +51,9 @@ public class Language {
       INVENTORY_BUTTON,
 
       LOGIN_LABEL,
-      PASSWORD_LABEL;
+      PASSWORD_LABEL,
+      
+      READY_LABEL;
       
       
       

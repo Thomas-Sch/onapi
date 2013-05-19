@@ -35,9 +35,10 @@ public class AcConnect extends UserAction {
    @Override
    protected void execute(ActionEvent event, Object[] dependencies) {
       JLogin view = (JLogin)dependencies[0];
-      Logs.messages.push("Requ�te de connexion au serveur.");
+      Logs.messages.push("Requête de connexion au serveur.");
       Logs.messages.push("Login: " + view.getLogin());
       Logs.messages.push("Mdp: " + view.getPassword());
+      view.dispose(); // On fait disparaître l'ancienne fenêtre.
       
       //La connection est ok par défaut. Dans cette version.
       new MainFrame(view.getLogin(), view.getPassword());

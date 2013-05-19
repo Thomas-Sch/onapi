@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language>
   <app_title>TODO</app_title>
+  <lobby_title>TODO</lobby_title>
   <validate_button>TODO</validate_button>
   <cancel_button>TODO</cancel_button>
   <play_button>TODO</play_button>
   <inventory_button>TODO</inventory_button>
   <login_label>TODO</login_label>
   <password_label>TODO</password_label>
+  <ready_label>TODO</ready_label>
 </language>
