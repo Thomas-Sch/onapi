@@ -49,11 +49,11 @@ public class Map extends Entity {
       public String toString() {
          switch (this) {
             case EMPTY:
-               return "[ ]";
+               return " ";
             case WALL:
-               return "[#]";
+               return "#";
             default:
-               return "[?]";
+               return "?";
          }
       }
    }
@@ -99,16 +99,34 @@ public class Map extends Entity {
       renderer.end();
    }
 
+   /**
+    * Crée une séparation à afficher dans la console
+    * @param length Longueur de la séparation
+    * @return La chaîne à afficher
+    */
+   private String separation(int length) {
+      StringBuffer sb = new StringBuffer();
+      sb.append("+");
+      for (int j = 0; j < length; j++) {
+         sb.append("-");
+      }
+      sb.append("+\n");
+      return sb.toString();
+   }
+   
    @Override
    public String toString() {
       StringBuffer sb = new StringBuffer();
 
+      sb.append(separation(grid.length));
       for (int i = 0; i < grid.length; i++) {
+         sb.append("|");
          for (int j = 0; j < grid[i].length; j++) {
             sb.append(grid[i][j]);
          }
-         sb.append("\n");
+         sb.append("|\n");
       }
+      sb.append(separation(grid.length));
       return sb.toString();
    }
 
