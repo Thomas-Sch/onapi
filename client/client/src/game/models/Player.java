@@ -11,8 +11,11 @@
  */
 package game.models;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
@@ -115,6 +118,24 @@ public class Player extends Entity {
 
    @Override
    public void draw(SpriteBatch batch, float parentAlpha) {
+      //affecte le sprite pour l'utilisateur
+      SpriteBatch batch_player = new SpriteBatch();
+      Texture texture = new Texture(Gdx.files.internal("data/sprite1_perso.png"));
+      TextureRegion region = new TextureRegion(texture, 0, 0, 256, 256);          
+      
+
+      
+      int textureWidth = texture.getWidth();
+      int textureHeight = texture.getHeight();
+
+      //dessiner à l'ecran le joueur
+      batch_player.begin();
+      batch_player.draw(region, Gdx.graphics.getWidth() / 2 - region.getRegionWidth()/2,
+            Gdx.graphics.getHeight() / 2 -  region.getRegionHeight()/2, textureWidth / 2f, 
+                 textureHeight / 2f, textureWidth, 
+                 textureHeight, 1, 1, getRotation(), false);
+      
+      batch_player.end();
       super.draw(batch, parentAlpha);
    }
 

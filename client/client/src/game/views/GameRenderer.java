@@ -15,13 +15,18 @@ import game.models.GameModel;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -81,18 +86,21 @@ public class GameRenderer {
    public GameRenderer(GameModel game, boolean debug) {
       this.game = game;
       this.debug = debug;
+      this.height = 720;
+      this.width = 1280;
       
       // Active la synchronisation verticale
       Gdx.graphics.setVSync(true);
       
       // Initialise la caméra
       this.cam = new OrthographicCamera(width, height);
-      viewport = new Rectangle(0, 0, 1280, 720);
+      viewport = new Rectangle(0, 0, width, height);
 
       debugRenderer.setProjectionMatrix(cam.combined);
 
       // Initialise la scène de l'interface utilisateur
       ui = new Stage(width, height, true);
+      
       Gdx.input.setInputProcessor(ui);
       initUI();
    }
