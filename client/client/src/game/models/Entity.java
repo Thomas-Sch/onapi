@@ -31,4 +31,7 @@ public abstract class Entity extends Actor implements Debuggable {
    public void debugRender(ShapeRenderer renderer) {
    }
 
+   public void loadResources() {
+   }
+
 }

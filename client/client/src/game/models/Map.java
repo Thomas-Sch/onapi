@@ -33,11 +33,12 @@ public class Map extends Entity {
    /**
     * 
     * TODO
+    * 
     * @author Crescenzio Fabio
     * @author Decorvet Grégoire
     * @author Jaquier Kevin
     * @author Schweizer Thomas
-    *
+    * 
     */
    public enum Tile {
       EMPTY, WALL;
@@ -101,7 +102,9 @@ public class Map extends Entity {
 
    /**
     * Crée une séparation à afficher dans la console
-    * @param length Longueur de la séparation
+    * 
+    * @param length
+    *           Longueur de la séparation
     * @return La chaîne à afficher
     */
    private String separation(int length) {
@@ -113,7 +116,7 @@ public class Map extends Entity {
       sb.append("+\n");
       return sb.toString();
    }
-   
+
    @Override
    public String toString() {
       StringBuffer sb = new StringBuffer();

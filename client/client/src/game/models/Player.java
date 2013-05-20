@@ -49,12 +49,22 @@ public class Player extends Entity {
     */
    private Team team;
 
+   /**
+    * Texture du joueur à son affichage
+    */
+   Texture texture;
+
    public Player(Vector2 pos, Vector2 dir, Team team) {
       super();
       setWidth(WIDTH);
       setHeight(HEIGHT);
       moveTo(pos);
       setTeam(team);
+      loadResources();
+   }
+
+   public void loadResources() {
+      texture = new Texture(Gdx.files.internal("data/sprite1_perso.png"));
    }
 
    /**
@@ -118,25 +128,21 @@ public class Player extends Entity {
 
    @Override
    public void draw(SpriteBatch batch, float parentAlpha) {
-      //affecte le sprite pour l'utilisateur
-      SpriteBatch batch_player = new SpriteBatch();
-      Texture texture = new Texture(Gdx.files.internal("data/sprite1_perso.png"));
-      TextureRegion region = new TextureRegion(texture, 0, 0, 256, 256);          
-      
+      super.draw(batch, parentAlpha);
 
-      
+      // Affecte le sprite pour l'utilisateur
+      TextureRegion region = new TextureRegion(texture, 0, 0, 256, 256);
+
       int textureWidth = texture.getWidth();
       int textureHeight = texture.getHeight();
 
-      //dessiner à l'ecran le joueur
-      batch_player.begin();
-      batch_player.draw(region, Gdx.graphics.getWidth() / 2 - region.getRegionWidth()/2,
-            Gdx.graphics.getHeight() / 2 -  region.getRegionHeight()/2, textureWidth / 2f, 
-                 textureHeight / 2f, textureWidth, 
-                 textureHeight, 1, 1, getRotation(), false);
-      
-      batch_player.end();
-      super.draw(batch, parentAlpha);
+      // Dessiner à l'écran le joueur
+      batch.begin();
+      batch.draw(region, Gdx.graphics.getWidth() / 2 - region.getRegionWidth()
+            / 2, Gdx.graphics.getHeight() / 2 - region.getRegionHeight() / 2,
+            textureWidth / 2f, textureHeight / 2f, textureWidth, textureHeight,
+            1, 1, getRotation(), false);
+      batch.end();
    }
 
    @Override
