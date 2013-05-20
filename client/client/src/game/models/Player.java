@@ -128,7 +128,7 @@ public class Player extends Entity {
       int textureWidth = texture.getWidth();
       int textureHeight = texture.getHeight();
 
-      //dessiner à l'ecran le joueur
+      //dessiner Ã  l'ecran le joueur
       batch_player.begin();
       batch_player.draw(region, Gdx.graphics.getWidth() / 2 - region.getRegionWidth()/2,
             Gdx.graphics.getHeight() / 2 -  region.getRegionHeight()/2, textureWidth / 2f, 
