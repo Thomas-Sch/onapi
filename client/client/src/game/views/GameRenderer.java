@@ -64,7 +64,7 @@ public class GameRenderer {
     * Largeur de la fenêtre graphique
     */
    private int height;
-   
+
    /**
     * Camera de la vue
     */
@@ -81,18 +81,18 @@ public class GameRenderer {
    ShapeRenderer debugRenderer = new ShapeRenderer();
 
    // Contrôles de l'interface
-   private Label lblOut;
+   private Label lblFPS;
 
    public GameRenderer(GameModel game, boolean debug) {
       this.game = game;
       this.debug = debug;
-      //resolution jeu
+      // resolution jeu
       this.height = 720;
       this.width = 1280;
-      
+
       // Active la synchronisation verticale
       Gdx.graphics.setVSync(true);
-      
+
       // Initialise la caméra
       this.cam = new OrthographicCamera(width, height);
       viewport = new Rectangle(0, 0, width, height);
@@ -101,7 +101,7 @@ public class GameRenderer {
 
       // Initialise la scène de l'interface utilisateur
       ui = new Stage(width, height, true);
-      
+
       Gdx.input.setInputProcessor(ui);
       initUI();
    }
@@ -117,17 +117,10 @@ public class GameRenderer {
       table.setFillParent(true);
       ui.addActor(table);
 
-      lblOut = new Label("...", skin);
-      table.add(lblOut);
+      lblFPS = new Label("...", skin);
+      table.add(lblFPS);
 
       table.pack();
-   }
-
-   // temp
-   public void update(float delta) {
-      lblOut.setText("Pos : "
-            + String.format("(%+3.2f, %+3.2f)", game.getPlayer().getPos().x,
-                  game.getPlayer().getPos().y));
    }
 
    /**
@@ -135,9 +128,6 @@ public class GameRenderer {
     */
    public void render() {
       GL20 gl = Gdx.graphics.getGL20();
-
-      // Mise à jour de la logique
-      update(Gdx.graphics.getDeltaTime());
 
       // Mise à jour de la caméra
       gl.glViewport((int) viewport.x, (int) viewport.y, (int) viewport.width,
@@ -147,11 +137,14 @@ public class GameRenderer {
       cam.translate(Vector2.tmp);
       cam.update();
 
+      // Affichage des informations de debug
       if (debug) debugRender();
 
+      // Affichage des entités du jeu
       game.getPlayer().draw(ui.getSpriteBatch(), 1.0f);
       game.getMap().draw(ui.getSpriteBatch(), 1.0f);
 
+      // Affichage de l'interface graphique
       ui.act(Gdx.graphics.getDeltaTime());
       ui.draw();
 
@@ -161,6 +154,8 @@ public class GameRenderer {
     * Affiche des données de debug à l'écran
     */
    public void debugRender() {
+      lblFPS.setText("FPS : " + String.format("%4s", 42));
+      
       debugRenderer.setProjectionMatrix(cam.combined);
       game.getMap().debugRender(debugRenderer);
       game.getPlayer().debugRender(debugRenderer);

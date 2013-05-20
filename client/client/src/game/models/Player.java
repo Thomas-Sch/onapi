@@ -12,12 +12,10 @@
 package game.models;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -31,7 +29,7 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Player extends Entity {
 
-   private static final int WIDTH = 100;
+   private static final int WIDTH = 50;
    private static final int HEIGHT = WIDTH;
 
    /**
@@ -141,17 +139,18 @@ public class Player extends Entity {
       batch.draw(region, Gdx.graphics.getWidth() / 2 - region.getRegionWidth()
             / 2, Gdx.graphics.getHeight() / 2 - region.getRegionHeight() / 2,
             textureWidth / 2f, textureHeight / 2f, textureWidth, textureHeight,
-            1, 1, getRotation(), false);
+            getWidth() / textureWidth, getHeight() / textureHeight,
+            getRotation(), false);
       batch.end();
    }
 
    @Override
    public void debugRender(ShapeRenderer renderer) {
-      renderer.begin(ShapeType.Rectangle);
-      renderer.setColor(Color.RED);
-      renderer.rect(getX() - getWidth() / 2f, getY() - getHeight() / 2f,
-            getWidth(), getHeight());
-      renderer.end();
+      // renderer.begin(ShapeType.Rectangle);
+      // renderer.setColor(Color.RED);
+      // renderer.rect(getX() - getWidth() / 2f, getY() - getHeight() / 2f,
+      // getWidth(), getHeight());
+      // renderer.end();
    }
 
 }
