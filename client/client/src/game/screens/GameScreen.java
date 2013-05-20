@@ -164,11 +164,10 @@ public class GameScreen extends ScreenAdapter {
          adj = -mouseY;
       }
       
+      //calcul de l'angle
       float norme = (float) Math.sqrt(mouseX * mouseX+
                                mouseY * mouseY);
-      
       float cos = adj / norme;
-      //calcul de l'angle
       angle += Math.toDegrees(Math.acos(cos));
 
       //affecte le nouveau angle
