@@ -97,4 +97,12 @@ public class GameModel {
       this.map = map;
    }
 
+   /**
+    * Charge les ressources du jeu (images, sons...)
+    */
+   public void loadResources() {
+      player.loadResources();
+      map.loadResources();
+   }
+
 }

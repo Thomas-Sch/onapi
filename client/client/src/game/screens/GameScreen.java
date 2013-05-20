@@ -36,7 +36,7 @@ import com.badlogic.gdx.math.Vector2;
 public class GameScreen extends ScreenAdapter {
 
    private boolean debug;
-   
+
    /**
     * Contrôleur du jeu
     */
@@ -61,13 +61,15 @@ public class GameScreen extends ScreenAdapter {
 
    @Override
    public void show() {
-      System.out.println("GameScreen : showed");
+      System.out.println("Resources loading...");
       game = new GameModel();
       renderer = new GameRenderer(game, true);
       controller = new GameController(game);
       Gdx.input.setInputProcessor(this);
+      game.loadResources();
+      System.out.println("Resources loaded.");
    }
-
+   
    @Override
    public void render(float delta) {
       Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
@@ -134,46 +136,48 @@ public class GameScreen extends ScreenAdapter {
 
    @Override
    public boolean mouseMoved(int screenX, int screenY) {
-      float playerX = Gdx.graphics.getWidth() /2;
-      float playerY = Gdx.graphics.getHeight() /2;
-      
+      float playerX = Gdx.graphics.getWidth() / 2;
+      float playerY = Gdx.graphics.getHeight() / 2;
+
       float mouseX;
       float mouseY;
       float adj;
       float angle;
-      
-      if(screenX > playerX && screenY <= playerY){//Q1
+
+      if (screenX > playerX && screenY <= playerY) {// Q1
          angle = 0;
          mouseX = screenX - playerX;
          mouseY = playerY - screenY;
          adj = mouseX;
-      }else if(screenX <= playerX && screenY <= playerY){//Q2
+      }
+      else if (screenX <= playerX && screenY <= playerY) {// Q2
          angle = 0;
          mouseX = screenX - playerX;
          mouseY = playerY - screenY;
          adj = mouseX;
-      }else if(screenX <= playerX && screenY >= playerY){//Q3
+      }
+      else if (screenX <= playerX && screenY >= playerY) {// Q3
          angle = 90;
          mouseX = screenX - playerX;
          mouseY = playerY - screenY;
          adj = mouseY;
-      }else{//Q4
+      }
+      else {// Q4
          angle = 270;
          mouseX = screenX - playerX;
          mouseY = playerY - screenY;
          adj = -mouseY;
       }
-      
-      //calcul de l'angle
-      float norme = (float) Math.sqrt(mouseX * mouseX+
-                               mouseY * mouseY);
+
+      // Calcul de l'angle
+      float norme = (float) Math.sqrt(mouseX * mouseX + mouseY * mouseY);
       float cos = adj / norme;
       angle += Math.toDegrees(Math.acos(cos));
 
-      //affecte le nouveau angle
+      // Affecte le nouvel angle
       this.game.getPlayer().setDir(new Vector2(mouseX, mouseY));
       this.game.getPlayer().rotate(angle - this.game.getPlayer().getRotation());
-      
+
       return true;
    }
 
