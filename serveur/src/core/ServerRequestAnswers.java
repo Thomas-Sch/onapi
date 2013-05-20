@@ -1,5 +1,5 @@
 /* ============================================================================
- * Nom du fichier   : Client.java
+ * Nom du fichier   : ServerRequestAnswers.java
  * ============================================================================
  * Date de création : 19 mai 2013
  * ============================================================================
@@ -11,42 +11,18 @@
  */
 package core;
 
-import gui.logs.Log;
-import common.components.UserAccount;
-import common.connections.Channel;
+import common.connections.protocol.ProtocolType;
 
 /**
- * Classe regroupant les variables liées à un utilisateur.
- * 
+ * TODO
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
  *
  */
-public class UserInformations {
+public interface ServerRequestAnswers {
    
-   public Channel channelReceive;
-   public Channel channelUpdate;
-   
-   public Log log;
-   
-   public boolean isConnected;
-   
-   public UserAccount account;
-   
-   public UserState state;
-   
-   public ServerRequestAnswers server;
-   
-   public UserUpdateConnection update;
-   
-   public UserInformations() {
-      
-   }
-   
-   public enum UserState {
-      AUTHENTIFICATION, LOBBY, GAME;
-   }
+   public void answerRequest(ProtocolType type);
 
 }

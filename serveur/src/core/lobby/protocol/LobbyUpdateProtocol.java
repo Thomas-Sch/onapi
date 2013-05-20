@@ -1,5 +1,5 @@
 /* ============================================================================
- * Nom du fichier   : Client.java
+ * Nom du fichier   : LobbyUpdateProtocol.java
  * ============================================================================
  * Date de création : 19 mai 2013
  * ============================================================================
@@ -9,44 +9,32 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core;
+package core.lobby.protocol;
 
-import gui.logs.Log;
-import common.components.UserAccount;
-import common.connections.Channel;
+import core.Core;
+import core.UserInformations;
+import core.lobby.Lobby;
 
 /**
- * Classe regroupant les variables liées à un utilisateur.
- * 
+ * TODO
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
  *
  */
-public class UserInformations {
+public class LobbyUpdateProtocol {
    
-   public Channel channelReceive;
-   public Channel channelUpdate;
+   private Core core;
+   private Lobby lobby;
+   private UserInformations user;
    
-   public Log log;
-   
-   public boolean isConnected;
-   
-   public UserAccount account;
-   
-   public UserState state;
-   
-   public ServerRequestAnswers server;
-   
-   public UserUpdateConnection update;
-   
-   public UserInformations() {
-      
+   public LobbyUpdateProtocol(Core core, Lobby lobby, UserInformations user) {
+      this.core = core;
+      this.lobby = lobby;
+      this.user = user;
    }
    
-   public enum UserState {
-      AUTHENTIFICATION, LOBBY, GAME;
-   }
+   
 
 }

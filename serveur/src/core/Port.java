@@ -16,6 +16,8 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import common.connections.exceptions.ChannelException;
+
 import core.exceptions.PortException;
 
 /**
@@ -32,11 +34,13 @@ public class Port {
    private final static int PORT_NUMBER_MAX = 10000;
    
    private int portNumber;
+   private int timeout;
    
    private ServerSocket socket;
    
    public Port(int portNumber) {
       this.portNumber = portNumber;
+      this.timeout = 0;
    }
    
    public InetAddress getInetAddress() {
@@ -71,6 +75,21 @@ public class Port {
       }
       
       return portNumber;
+   }
+   
+
+   /**
+    * Fixe un timeout donné pour le port;
+    * @param timeout - le timeout en millisecondes.
+    */
+   public void setTimeout(int timeout) {
+      this.timeout = timeout > 0 ? timeout : 0;
+      try {
+         socket.setSoTimeout(this.timeout);
+      }
+      catch (IOException e) {
+         throw new ChannelException("Unable to setup timeout for socket");
+      }
    }
    
    public void reserve() throws PortException {

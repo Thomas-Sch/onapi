@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : ServerProtocol.java
+ * Nom du fichier   : AccountReceiveProtocol.java
  * ============================================================================
- * Date de création : 8 mai 2013
+ * Date de création : 19 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,47 +9,30 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core.protocol;
+package core.accountManagement.protocol;
 
 import common.components.UserAccount;
-import common.connections.protocol.ProtocolType;
 import core.Core;
 import core.UserInformations;
+import core.lobby.Lobby;
+import core.lobby.LobbyConnection;
+import core.lobby.exceptions.LobbyException;
+import core.lobby.protocol.LobbyReceiveProtocol;
+import core.protocol.ServerStandardProtocol;
 import database.components.AccountType;
 
 /**
- * Classe permettant de rassembler les protocoles concernant les requêtes
- * entrantes.
+ * TODO
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
  *
  */
-public class ServerReceiveProtocol {
+public class AccountReceiveProtocol extends ServerStandardProtocol {
    
-   private Core core;
-   private UserInformations user;
-   
-   public ServerReceiveProtocol(Core core, UserInformations user) {
-      this.core = core;
-      this.user = user;
-   }
-   
-   public void ping() {
-      user.channelReceive.sendProtocolType(ProtocolType.PING);
-   }
-   
-   /**
-    * Protocol de test bidon affichant le message reçu.
-    */
-   @Deprecated
-   public void textMessage() {
-      String message;
-      
-      message = user.channelReceive.receiveString();
-      
-      user.log.push(message);
+   public AccountReceiveProtocol(Core core, UserInformations user) {
+      super(core, user);
    }
    
    public void login() {
@@ -79,8 +62,7 @@ public class ServerReceiveProtocol {
    }
    
    public void logout() {
-      user.channelReceive.sendProtocolType(ProtocolType.LOGOUT);
-      
+      // Rien à envoyer au client, seulement à mettre à jour côté serveur.
       user.account = null;
       
       updateLogName();
@@ -93,6 +75,7 @@ public class ServerReceiveProtocol {
       String password = user.channelReceive.receiveString();
       
       user.log.push("Try creating account : " + login);
+      
       
       accountCreated = core.createAccount(login, password);
       
@@ -116,6 +99,30 @@ public class ServerReceiveProtocol {
    
    public void joinGame() {
       
+      Lobby freeLobby = core.getFreeLoby();
+      
+      boolean isFreeLobby = freeLobby != null;
+      
+      user.channelReceive.sendBoolean(isFreeLobby);
+      
+      if (isFreeLobby) {
+         user.channelReceive.sendInt(freeLobby.getUpdatePortNumber());
+         
+         try {
+            freeLobby.addPlayer(user);
+            
+            user.server = new LobbyConnection(core, freeLobby, user);
+            
+            user.log.push("Lobby joined with success");
+         }
+         catch (LobbyException e) {
+            user.log.push("Unable to join the lobby");
+         }
+      }
+      
+      
+      
+      
    }
    
    
@@ -129,6 +136,4 @@ public class ServerReceiveProtocol {
                               "Unknown");
       }
    }
-   
-
 }

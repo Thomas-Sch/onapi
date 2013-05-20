@@ -23,6 +23,7 @@ import java.net.Socket;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import core.exceptions.PortException;
+import core.lobby.Lobby;
 import database.DBController;
 
 /**
@@ -54,6 +55,8 @@ public class Core {
    private DBController dbController;
    
    private LinkedList<UserConnection> connections = new LinkedList<>();
+   
+   private Lobby lobby;
    
    public Core() {
       init();
@@ -118,6 +121,12 @@ public class Core {
       
    }
    
+   public void removeConnection(UserConnection userConnection) {
+      synchronized(connections) {
+         connections.remove(userConnection);
+      }
+   }
+   
    public InetAddress getInetAdress() {
       return inetAddresses[0];
    }
@@ -144,6 +153,15 @@ public class Core {
       dbController.closeConnection();
       
       return success;
+   }
+   
+   public Lobby getFreeLoby() {
+      if (lobby.getFreeSlots() > 0) {
+         return lobby;
+      }
+      else {
+         return null;
+      }
    }
    
    private InetAddress[] getIps() {
@@ -215,6 +233,8 @@ public class Core {
             + File.separator + DATABASE_NAME;
       
       dbController = new DBController(databasePath);
+      
+      lobby = new Lobby(10, DEFAULT_PORT + 1, CLIENT_TIMEOUT);
       
    }
    

@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : UserConnection.java
+ * Nom du fichier   : UserUpdateConnection.java
  * ============================================================================
- * Date de création : 6 mai 2013
+ * Date de création : 20 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -12,15 +12,15 @@
 package core;
 
 import gui.logs.Log;
-import common.components.UserAccount;
+
+import java.net.Socket;
+
 import common.connections.Channel;
 import common.connections.exceptions.ChannelClosedException;
 import common.connections.exceptions.TimeOutException;
 import common.connections.protocol.ProtocolType;
-import core.Core;
+
 import core.accountManagement.AccountConnection;
-import core.protocol.ServerStandardProtocol;
-import java.net.Socket;
 
 /**
  * TODO
@@ -30,37 +30,24 @@ import java.net.Socket;
  * @author Schweizer Thomas
  *
  */
-public class UserConnection implements Runnable {
-   private Core core;
+public class UserUpdateConnection implements Runnable {
    
    private UserInformations user;
    
-   public UserConnection(Core core, Socket socket, int timeout) {
-      this.core = core;
-      user = new UserInformations();
-      user.isConnected = true;
-      
-      user.channelReceive = new Channel(socket, timeout);
-      user.log = new Log("Unknown");
-      
-      user.server = new AccountConnection(core, user);
-      
-      core.addLogPanel(user.log.createLogPanel());
+   public UserUpdateConnection(UserInformations user, Socket socket, int timeout) {
+      this.user = user;
+      this.user.channelUpdate = new Channel(socket, timeout);
    }
 
 
    @Override
    public void run() {
       
-      ProtocolType proType;
-      
       while(user.isConnected) {
          
          try {
          
-            proType = user.channelReceive.receiveProtocolType();
-            
-            user.server.answerRequest(proType);
+            // TODO
             
             
          }
@@ -72,11 +59,9 @@ public class UserConnection implements Runnable {
             user.isConnected = false;
             user.log.push("Client lost");
          }
-            
+      
       }
       
-      core.removeLogPanel(user.log.getLogPanel());
-      core.removeConnection(this);
       
    }
    

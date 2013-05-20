@@ -29,6 +29,10 @@ public class ClientTest {
    
    private static Scanner scanner = new Scanner(System.in);
    
+   private static Channel channelRequest;
+   
+   private static Channel channelUpdate;
+   
    public static class ClientConnection implements Runnable {
       
       private ClientRequestProtocol protocol;
@@ -71,7 +75,7 @@ public class ClientTest {
             }
             
          }
-         else if (command.equalsIgnoreCase("-connect")) {
+         else if (command.equalsIgnoreCase("-login")) {
             String login;
             String password;
             
@@ -82,19 +86,21 @@ public class ClientTest {
             System.out.print("Password > ");
             password = scanner.nextLine();
             
-            UserAccount account = protocol.authentification(login, password);
+            UserAccount account = protocol.login(login, password);
             
             if(account == null) {
                System.out.println("Echec connexion");
             }
             else {
-               System.out.println("Connexion au compte client :");
-               
-               account.toString();
+               System.out.println("Connexion au compte client : " + account);
             }
-            
          }
-         
+         else if (command.equalsIgnoreCase("-logout")) {
+            protocol.logout();
+         }
+         else if (command.equalsIgnoreCase("-join")) {
+            channelUpdate = protocol.joinGame();
+         }
          // Autrement envoie le texte tel quel
          else {
             synchronized (protocol) {
@@ -110,9 +116,7 @@ public class ClientTest {
       public void run() {
          while(true) {
             
-            synchronized(protocol) {
-               protocol.keepAlive();
-            }
+            protocol.keepAlive();
             
             try {
                Thread.sleep(2500);
@@ -134,25 +138,21 @@ public class ClientTest {
       Thread threadConnection;
       
       
-      Channel channel;
-      
-      
-      
       System.out.print("Entrez l'addresse ip > ");
       adresse = scanner.nextLine().trim();
       
       System.out.print("Entrez le numero de port > ");
       
-      port = scanner.nextInt();
+      port = Integer.parseInt(scanner.nextLine());
       
       System.out.println("Connexion en cours...");
       
-      channel = new Channel(adresse, port, 5000);
+      channelRequest = new Channel(adresse, port, 5000);
       
       System.out.println("Connexion etablie !");
       
       // Creation du thread de traitement
-      connection = new ClientConnection(channel);
+      connection = new ClientConnection(channelRequest);
       threadConnection = new Thread(connection);
       threadConnection.start();
       

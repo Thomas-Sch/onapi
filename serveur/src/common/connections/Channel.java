@@ -37,6 +37,8 @@ public class Channel {
 
    private static final int DEFAULT_TIMEOUT = 5000;
 
+   private String address;
+   private int portNumber;
    private int timeout;
 
    private ObjectInputStream inputStream;
@@ -75,6 +77,30 @@ public class Channel {
     */
    public Channel(String address, int portNumber, int timeout) {
       initConnection(address, portNumber, timeout);
+   }
+   
+   /**
+    * Retourne l'addresse IPv4 à laquelle le canal est connecté.
+    * @return l'addresse IPv4, null si le canal n'est pas connecté.
+    */
+   public String getAddress() {
+      return address;
+   }
+   
+   /**
+    * Retourne le numéro de port auquel le canal est connecté.
+    * @return le numéro de port, 0 si le canal n'est pas connecté.
+    */
+   public int getPortNumber() {
+      return portNumber;
+   }
+   
+   /**
+    * Retourn le timeout configuré pour le canal.
+    * @return le timeout en millisecondes.
+    */
+   public int getTimeout() {
+      return timeout;
    }
 
    /**
@@ -393,6 +419,8 @@ public class Channel {
    private void initConnection(Socket socket, int timeout) {
       initTimeout(timeout);
       this.socket = socket;
+      this.address = socket.getInetAddress().getHostAddress();
+      this.portNumber = socket.getPort();
       setupSocket();
       initStreams();
    }
@@ -415,6 +443,8 @@ public class Channel {
 
    private void initSocket(String address, int portNumber) {
       try {
+         this.address = address;
+         this.portNumber = portNumber;
          socket = new Socket(address, portNumber);
       }
       catch (IOException e) {

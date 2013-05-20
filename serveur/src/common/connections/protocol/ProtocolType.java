@@ -22,7 +22,7 @@ package common.connections.protocol;
 public enum ProtocolType {
    ACCEPT, REFUSE,
    ACCOUNT_CREATE,
-   JOIN_GAME,
+   JOIN_GAME, LEAVE_GAME,
    LOGIN, LOGOUT,
    TEXT_MESSAGE,
    PING;

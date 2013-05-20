@@ -41,7 +41,6 @@ public class ClientRequestProtocol {
     * @return la durée en millisecondes nécessaire pour faire l'aller-retour.
     */
    public long ping() {
-      ProtocolType proType;
       
       synchronized(channel) {
       
@@ -49,9 +48,7 @@ public class ClientRequestProtocol {
          
          channel.sendProtocolType(ProtocolType.PING);
          
-         proType = channel.receiveProtocolType();
-         
-         if (proType == ProtocolType.PING) {
+         if (isRequestAccepted(ProtocolType.PING)) {
             return System.currentTimeMillis() - time;
          }
          else {
@@ -87,7 +84,7 @@ public class ClientRequestProtocol {
     * @return le compte client si les informations données sont exactes, null
     * le cas échéant.
     */
-   public UserAccount authentification(String login, String password) {
+   public UserAccount login(String login, String password) {
       UserAccount account = null;
       boolean loginAccepted = false;
       
@@ -95,7 +92,7 @@ public class ClientRequestProtocol {
          channel.sendProtocolType(ProtocolType.LOGIN);
          
          // Ne poursuit que si la requête est acceptée par le serveur.
-         if (isRequestAccepted()) {
+         if (isRequestAccepted(ProtocolType.LOGIN)) {
             channel.sendString(login);
             channel.sendString(password);
             
@@ -105,14 +102,35 @@ public class ClientRequestProtocol {
                account = (UserAccount)channel.receiveObject();
             }
          }
+         else {
+            System.out.println("Login request refuse by server.");
+         }
       }
       
       return account;
    }
    
    /**
+    * Se déconnecte du serveur.
+    */
+   public void logout() {
+      synchronized(channel) {
+         channel.sendProtocolType(ProtocolType.LOGOUT);
+         
+         if (isRequestAccepted(ProtocolType.LOGOUT)) {
+            System.out.println("Logout done.");
+         }
+         else {
+            System.out.println("Logout refused.");
+         }
+      }
+   }
+   
+   /**
     * Demande au serveur de créer un compte correspondant au nom de compte
-    * (login) et de lui associer le mot de passe donné.
+    * (login) et de lui associer le mot de passe donné. Si le compte est créé,
+    * le client sera automatiquement considéré comme authentifié auprès de ce
+    * compte. Un login n'est plus nécessaire pour cette session.
     * @param login - le nom du nouveau compte.
     * @param password - le mot de passe associé au compte créé.
     * @return le compte client si le compte a pu être créé, null le cas
@@ -126,7 +144,7 @@ public class ClientRequestProtocol {
          channel.sendProtocolType(ProtocolType.ACCOUNT_CREATE);
          
          // Ne poursuit que si le serveur a accepté la requête
-         if(isRequestAccepted()) {
+         if(isRequestAccepted(ProtocolType.ACCOUNT_CREATE)) {
             channel.sendString(login);
             channel.sendString(password);
             
@@ -149,22 +167,38 @@ public class ClientRequestProtocol {
     */
    public Channel joinGame() {
       
+      Channel updateChannel = null;
+      
       synchronized(channel) {
-         // TODO
+         
+         channel.sendProtocolType(ProtocolType.JOIN_GAME);
+         
+         if (isRequestAccepted(ProtocolType.JOIN_GAME)) {
+            
+            boolean isLobbyFree = channel.receiveBoolean();
+            
+            if (isLobbyFree) {
+               // Réception du nouveau numéro de port pour les updates.
+               int portNumber = channel.receiveInt();
+               
+               updateChannel = new Channel(channel.getAddress(), portNumber,
+                                           channel.getTimeout());
+            }
+            else {
+               System.out.println("No free lobbby for the moment.");
+            }
+            
+         }
+         else {
+            System.out.println("Join game request refused by server.");
+         }
+         
       }
       
-      return null;
+      return updateChannel;
    }
    
-   /**
-    * Se déconnecte du serveur.
-    */
-   public void disconnect() {
-      synchronized(channel) {
-         channel.sendProtocolType(ProtocolType.LOGOUT);
-         channel.receiveProtocolType();
-      }
-   }
+   
    
    /**
     * Protocole bidon pour test.
@@ -174,21 +208,28 @@ public class ClientRequestProtocol {
    public void sendMessage(String message) {
       synchronized(channel) {
          channel.sendProtocolType(ProtocolType.TEXT_MESSAGE);
-         channel.sendString(message);
+         
+         if (isRequestAccepted(ProtocolType.TEXT_MESSAGE)) {
+            channel.sendString(message);
+         }
+         else {
+            System.out.println("Server refuse to receive text message.");
+         }
+         
       }
    }
    
-   private boolean isRequestAccepted() {
+   private boolean isRequestAccepted(ProtocolType typeWanted) {
       ProtocolType type = channel.receiveProtocolType();
       
-      if (type == ProtocolType.ACCEPT) {
+      if (type == typeWanted) {
          return true;
       }
       else if (type == ProtocolType.REFUSE) {
          return false;
       }
       else {
-         throw new ProtocolException("Was wainting for " + ProtocolType.ACCEPT
+         throw new ProtocolException("Was wainting for " + typeWanted
                + " or " + ProtocolType.REFUSE + " but received " + type);
       }
       

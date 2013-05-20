@@ -1,5 +1,5 @@
 /* ============================================================================
- * Nom du fichier   : Client.java
+ * Nom du fichier   : LobbyException.java
  * ============================================================================
  * Date de création : 19 mai 2013
  * ============================================================================
@@ -9,14 +9,10 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core;
-
-import gui.logs.Log;
-import common.components.UserAccount;
-import common.connections.Channel;
+package core.lobby.exceptions;
 
 /**
- * Classe regroupant les variables liées à un utilisateur.
+ * Exception générique liée au salon d'attente.
  * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
@@ -24,29 +20,22 @@ import common.connections.Channel;
  * @author Schweizer Thomas
  *
  */
-public class UserInformations {
+public class LobbyException extends Exception {
    
-   public Channel channelReceive;
-   public Channel channelUpdate;
-   
-   public Log log;
-   
-   public boolean isConnected;
-   
-   public UserAccount account;
-   
-   public UserState state;
-   
-   public ServerRequestAnswers server;
-   
-   public UserUpdateConnection update;
-   
-   public UserInformations() {
-      
+   public LobbyException() {
+      super();
    }
    
-   public enum UserState {
-      AUTHENTIFICATION, LOBBY, GAME;
+   public LobbyException(String message) {
+      super(message);
+   }
+   
+   public LobbyException(Throwable cause) {
+      super(cause);
+   }
+   
+   public LobbyException(String message, Throwable cause) {
+      super(message, cause);
    }
 
 }

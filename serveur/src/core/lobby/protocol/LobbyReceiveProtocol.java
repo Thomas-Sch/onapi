@@ -1,5 +1,5 @@
 /* ============================================================================
- * Nom du fichier   : Client.java
+ * Nom du fichier   : LobbyReceiveProtocol.java
  * ============================================================================
  * Date de création : 19 mai 2013
  * ============================================================================
@@ -9,44 +9,41 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core;
+package core.lobby.protocol;
 
-import gui.logs.Log;
-import common.components.UserAccount;
-import common.connections.Channel;
+import common.connections.protocol.ProtocolType;
+import core.Core;
+import core.UserInformations;
+import core.lobby.Lobby;
+import core.protocol.ServerStandardProtocol;
 
 /**
- * Classe regroupant les variables liées à un utilisateur.
- * 
+ * TODO
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
  *
  */
-public class UserInformations {
+public class LobbyReceiveProtocol extends ServerStandardProtocol {
    
-   public Channel channelReceive;
-   public Channel channelUpdate;
+   private Lobby lobby;
    
-   public Log log;
+   public LobbyReceiveProtocol(Core core, Lobby lobby, UserInformations user) {
+      super(core, user);
+      this.lobby = lobby;
+   }
    
-   public boolean isConnected;
-   
-   public UserAccount account;
-   
-   public UserState state;
-   
-   public ServerRequestAnswers server;
-   
-   public UserUpdateConnection update;
-   
-   public UserInformations() {
+   public void leave() {
+      
+      
       
    }
    
-   public enum UserState {
-      AUTHENTIFICATION, LOBBY, GAME;
+   public void setReady() {
+      
+      
+      
    }
 
 }
