@@ -12,21 +12,15 @@
 package game.views;
 
 import game.models.GameModel;
+import box2dLight.RayHandler;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input.Keys;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -78,15 +72,18 @@ public class GameRenderer {
    private Stage ui;
 
    // Objets pour le rendu en mode debug
-   ShapeRenderer debugRenderer = new ShapeRenderer();
+   private ShapeRenderer debugRenderer = new ShapeRenderer();
 
    // Contrôles de l'interface
    private Label lblFPS;
+   
+   private RayHandler handler;
 
    public GameRenderer(GameModel game, boolean debug) {
       this.game = game;
       this.debug = debug;
-      // resolution jeu
+      
+      // Résolution jeu
       this.height = 720;
       this.width = 1280;
 
@@ -104,6 +101,11 @@ public class GameRenderer {
 
       Gdx.input.setInputProcessor(ui);
       initUI();
+      
+      // Initialise le gestionnaire de lumières
+      handler = game.getRayHandler();
+      handler.setBlurNum(3);
+            
    }
 
    /**
@@ -129,6 +131,9 @@ public class GameRenderer {
    public void render() {
       GL20 gl = Gdx.graphics.getGL20();
 
+      // Met à jour l'état du moteur physique
+      game.getWorld().step(1 / 60f, 6, 2);
+
       // Mise à jour de la caméra
       gl.glViewport((int) viewport.x, (int) viewport.y, (int) viewport.width,
             (int) viewport.height);
@@ -144,6 +149,10 @@ public class GameRenderer {
       game.getPlayer().draw(ui.getSpriteBatch(), 1.0f);
       game.getMap().draw(ui.getSpriteBatch(), 1.0f);
 
+      // Met à jour les lumières
+      handler.setCombinedMatrix(cam.combined);
+      handler.updateAndRender();
+      
       // Affichage de l'interface graphique
       ui.act(Gdx.graphics.getDeltaTime());
       ui.draw();
