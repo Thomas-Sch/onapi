@@ -140,4 +140,10 @@ public class Map extends Entity {
       return grid.length;
    }
 
+   @Override
+   public void update(float deltaTime) {
+      // TODO Auto-generated method stub
+
+   }
+
 }

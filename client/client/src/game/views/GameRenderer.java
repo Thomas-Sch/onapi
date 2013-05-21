@@ -75,14 +75,14 @@ public class GameRenderer {
    private ShapeRenderer debugRenderer = new ShapeRenderer();
 
    // Contrôles de l'interface
-   private Label lblFPS;
-   
+   private Label lblDebug;
+
    private RayHandler handler;
 
    public GameRenderer(GameModel game, boolean debug) {
       this.game = game;
       this.debug = debug;
-      
+
       // Résolution jeu
       this.height = 720;
       this.width = 1280;
@@ -101,11 +101,11 @@ public class GameRenderer {
 
       Gdx.input.setInputProcessor(ui);
       initUI();
-      
+
       // Initialise le gestionnaire de lumières
       handler = game.getRayHandler();
       handler.setBlurNum(3);
-            
+
    }
 
    /**
@@ -117,10 +117,11 @@ public class GameRenderer {
 
       Table table = new Table(skin);
       table.setFillParent(true);
+      table.top().left();
       ui.addActor(table);
 
-      lblFPS = new Label("...", skin);
-      table.add(lblFPS);
+      lblDebug = new Label("...", skin);
+      table.add(lblDebug);
 
       table.pack();
    }
@@ -142,17 +143,17 @@ public class GameRenderer {
       cam.translate(Vector2.tmp);
       cam.update();
 
-      // Affichage des informations de debug
-      if (debug) debugRender();
-
       // Affichage des entités du jeu
       game.getPlayer().draw(ui.getSpriteBatch(), 1.0f);
       game.getMap().draw(ui.getSpriteBatch(), 1.0f);
 
+      // Affichage des informations de debug
+      if (debug) debugRender();
+
       // Met à jour les lumières
       handler.setCombinedMatrix(cam.combined);
       handler.updateAndRender();
-      
+
       // Affichage de l'interface graphique
       ui.act(Gdx.graphics.getDeltaTime());
       ui.draw();
@@ -163,8 +164,9 @@ public class GameRenderer {
     * Affiche des données de debug à l'écran
     */
    public void debugRender() {
-      lblFPS.setText("FPS : " + String.format("%4s", 42));
-      
+      lblDebug.setText("FPS : "
+            + String.format("%4s\nPlayer : %s", 42, game.getPlayer()));
+
       debugRenderer.setProjectionMatrix(cam.combined);
       game.getMap().debugRender(debugRenderer);
       game.getPlayer().debugRender(debugRenderer);

@@ -30,10 +30,13 @@ import com.badlogic.gdx.physics.box2d.World;
  */
 public class GameModel {
 
+   public static final float WORLD_TO_SCREEN = 100f;
+   public static final float SCREEN_TO_WORLD = 1f / WORLD_TO_SCREEN;
+
    private static final Vector2 GRAVITY = new Vector2(0, 0);
-   
+
    private World world;
-   
+
    /**
     * Représentation de la carte sous forme de grille contenant des cases vides
     * ou pleines.
@@ -51,11 +54,11 @@ public class GameModel {
    private List<Team> teams;
 
    private RayHandler rayHandler;
-   
+
    public GameModel() {
       world = new World(GRAVITY, false);
       rayHandler = new RayHandler(world);
-      
+
       Team t1 = new Team(Color.RED);
       map = new Map(8);
 
@@ -130,5 +133,5 @@ public class GameModel {
    public RayHandler getRayHandler() {
       return rayHandler;
    }
-   
+
 }

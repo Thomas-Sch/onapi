@@ -69,16 +69,22 @@ public class GameScreen extends ScreenAdapter {
       game.loadResources();
       System.out.println("Resources loaded.");
    }
-   
+
    @Override
    public void render(float delta) {
-      
+      // Mise à jour de la logique du jeu
+      update(delta);
+
+      // Mise à jour de l'affichage
       Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
       Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-
-      // Il faudrait que les deux appels suivants se fassent en parallèle.
-      controller.update(delta);
       renderer.render();
+   }
+
+   private void update(float delta) {
+      controller.update(delta);
+      game.getMap().update(delta);
+      game.getPlayer().update(delta);
    }
 
    @Override
@@ -176,8 +182,8 @@ public class GameScreen extends ScreenAdapter {
       angle += Math.toDegrees(Math.acos(cos));
 
       // Affecte le nouvel angle
-      this.game.getPlayer().setDir(new Vector2(mouseX, mouseY));
-      this.game.getPlayer().rotate(angle - this.game.getPlayer().getRotation());
+      Vector2.tmp.set(mouseX, mouseY);
+      game.getPlayer().setDir(Vector2.tmp);
 
       return true;
    }
