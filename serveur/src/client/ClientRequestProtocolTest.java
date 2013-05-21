@@ -15,9 +15,6 @@ import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.sun.net.httpserver.Authenticator.Success;
-
 import common.components.UserAccount;
 import common.connections.Channel;
 import core.Core;
@@ -33,7 +30,13 @@ import core.Core;
 public class ClientRequestProtocolTest {
    private static final String ADDRESS = "127.0.0.1";
    private static final int TIMEOUT = 10000;
-   private static final int NUMBER_OF_CLIENTS = 1;
+   private static final int NUMBER_OF_CLIENTS = 100;
+   
+   /*
+    * ATTENTION : le test de création ne peut réussir qu'une fois. Après les
+    * comptes existent déjà et ne pourront plus être créés
+    */
+   private static final boolean createAccountsTest = true;
    
    private static int testNumber = 0;
    private static Server server;
@@ -125,7 +128,7 @@ public class ClientRequestProtocolTest {
       long value;
       for (int i = 0 ; i < NUMBER_OF_CLIENTS ; i++) {
          value = protocol[i].ping();
-         assertTrue(value > 0 && value < TIMEOUT);
+         assertTrue(value >= 0 && value < TIMEOUT);
       }
    }
 
@@ -195,11 +198,6 @@ public class ClientRequestProtocolTest {
     */
    @Test
    public void testCreateAccount() {
-      /*
-       * ATTENTION : ce test ne peut réussir qu'une fois. Après les comptes
-       * existent déjà et ne pourront plus être créés
-       */
-      boolean createAccountsTest = true;
       
       for (int i = 0 ; i < NUMBER_OF_CLIENTS ; i++) {
          
@@ -240,31 +238,46 @@ public class ClientRequestProtocolTest {
     */
    @Test
    public void testJoinGame() {
+      Channel channel;
+      boolean hasFreeSlots;
       
       for (int i = 0 ; i < NUMBER_OF_CLIENTS ; i++) {
          
-         Channel channel;
+         
          
          // Rejoindre une partie sans être connecté ne doit pas être possible
          channel = protocol[i].joinGame();
          assertNull(channel);
          
          // Se connecter puis rejoindre
+         hasFreeSlots = server.core.getFreeLoby() != null;
+         
          protocol[i].login("GregoireDec", "1234");
          channel = protocol[i].joinGame();
-         assertNotNull(channel);
-         
-         // rejoindre à nouveau (ne doit pas être possible et retourner null)
-         channel = protocol[i].joinGame();
-         assertNull(channel);
-         
-         // ne doit pas pouvoir se déconnecter (à ce stade il doit d'abord
-         // quitter la partie)
-         assertFalse(protocol[i].logout());
+         // Attention, si trop de client pour le test, le surplus de client se
+         // verra refuser l'accès au lobby
+         if (hasFreeSlots) {
+            assertNotNull(channel);
+            
+            // rejoindre à nouveau (ne doit pas être possible et retourner null)
+            channel = protocol[i].joinGame();
+            assertNull(channel);
+            
+            // ne doit pas pouvoir se déconnecter (à ce stade il doit d'abord
+            // quitter la partie)
+            assertFalse(protocol[i].logout());
 
-         // du coup, rejoindre à nouveau est toujours impossible
-         channel = protocol[i].joinGame();
-         assertNull(channel);
+            // du coup, rejoindre à nouveau est toujours impossible
+            channel = protocol[i].joinGame();
+            assertNull(channel);
+         }
+         
+         // Plus de place dans le lobby, aucun test supplémentaire
+         else {
+            assertNull(channel);
+         }
+         
+         
          
       }
       
