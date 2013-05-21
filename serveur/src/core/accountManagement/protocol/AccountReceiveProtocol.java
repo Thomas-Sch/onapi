@@ -111,6 +111,7 @@ public class AccountReceiveProtocol extends ServerStandardProtocol {
          try {
             freeLobby.addPlayer(user);
             
+            user.lobby = freeLobby;
             user.server = new LobbyConnection(core, freeLobby, user);
             
             user.log.push("Lobby joined with success");

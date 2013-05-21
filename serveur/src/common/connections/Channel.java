@@ -410,6 +410,23 @@ public class Channel {
 
       return result;
    }
+   
+   /**
+    * Ferme le canal.
+    */
+   public void close() {
+      
+      try {
+         inputStream.close();
+         outputStream.close();
+         socket.close();
+      }
+      catch (IOException e) {
+         throw new ChannelException("An error occured while closing one of " +
+                                    "the channel streams.");
+      }
+      
+   }
 
    /*
     * -------------------------------------------------------------------------

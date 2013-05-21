@@ -30,7 +30,7 @@ public class Server {
    
    public static void main(String[] args) throws IOException {
       
-      Core core = new Core();
+      Core core = new Core(true);
       
       core.start();
       

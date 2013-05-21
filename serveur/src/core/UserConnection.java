@@ -15,6 +15,7 @@ import gui.logs.Log;
 import common.components.UserAccount;
 import common.connections.Channel;
 import common.connections.exceptions.ChannelClosedException;
+import common.connections.exceptions.ChannelException;
 import common.connections.exceptions.TimeOutException;
 import common.connections.protocol.ProtocolType;
 import core.Core;
@@ -69,6 +70,10 @@ public class UserConnection implements Runnable {
             user.log.push("Timeout with client");
          }
          catch (ChannelClosedException e) {
+            user.isConnected = false;
+            user.log.push("Client lost");
+         }
+         catch (ChannelException e) {
             user.isConnected = false;
             user.log.push("Client lost");
          }

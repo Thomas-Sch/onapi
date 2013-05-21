@@ -113,17 +113,20 @@ public class ClientRequestProtocol {
    /**
     * Se déconnecte du serveur.
     */
-   public void logout() {
+   public boolean logout() {
+      boolean success = false;
       synchronized(channel) {
          channel.sendProtocolType(ProtocolType.LOGOUT);
          
          if (isRequestAccepted(ProtocolType.LOGOUT)) {
+            success = true;
             System.out.println("Logout done.");
          }
          else {
             System.out.println("Logout refused.");
          }
       }
+      return success;
    }
    
    /**

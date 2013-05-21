@@ -14,6 +14,7 @@ package core;
 import gui.logs.Log;
 import common.components.UserAccount;
 import common.connections.Channel;
+import core.lobby.Lobby;
 
 /**
  * Classe regroupant les variables liées à un utilisateur.
@@ -40,6 +41,8 @@ public class UserInformations {
    public ServerRequestAnswers server;
    
    public UserUpdateConnection update;
+   
+   public Lobby lobby;
    
    public UserInformations() {
       

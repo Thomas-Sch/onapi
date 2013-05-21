@@ -58,8 +58,8 @@ public class Core {
    
    private Lobby lobby;
    
-   public Core() {
-      init();
+   public Core(boolean enableLogFrame) {
+      init(enableLogFrame);
       
       if (!initSuccessful()) {
          throw new RuntimeException("Server not successfully initialized");
@@ -67,21 +67,35 @@ public class Core {
    }
    
    public void addLogPanel(LogPanel panel) {
-      logsFrame.addLogPanel(panel);
+      if (logsFrame != null) {
+         synchronized(logsFrame) {
+            logsFrame.addLogPanel(panel);
+         }
+      }
    }
    
    public void removeLogPanel(LogPanel panel) {
-      logsFrame.removeLogPanel(panel);
+      if (logsFrame != null) {
+         synchronized(logsFrame) {
+            logsFrame.removeLogPanel(panel);
+         }
+      }
    }
    
    public void setLogPanelTitle(LogPanel panel, String title) {
-      logsFrame.setLogPanelTitle(panel, title);
+      if (logsFrame != null) {
+         synchronized(logsFrame) {
+            logsFrame.setLogPanelTitle(panel, title);
+         }
+      }
    }
    
    public void start() {
       
-      logsFrame.setVisible(true);
-      logsFrame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+      if(logsFrame != null) {
+         logsFrame.setVisible(true);
+         logsFrame.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+      }
       
       log.push("Onapi server started.");
       
@@ -210,7 +224,7 @@ public class Core {
       
    }
    
-   private void init() {
+   private void init(boolean enableLogFrame) {
       serverPort = new Port(DEFAULT_PORT);
       serverPort.activateFreePort();
       
@@ -221,10 +235,11 @@ public class Core {
          System.err.println("Unable to obtain the IP address of the server");
       }
       
-      logsFrame = new LogsFrame("Onapi - Server", 15, 15, 500, 400);
-      
       log = new Log("main");
-      logsFrame.addLogPanel(log.createLogPanel());
+      if (enableLogFrame) {
+         logsFrame = new LogsFrame("Onapi - Server", 15, 15, 500, 400);
+         logsFrame.addLogPanel(log.createLogPanel());
+      }
       
       // Base de données
       File file = new File(".");
