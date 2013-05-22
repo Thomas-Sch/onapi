@@ -11,6 +11,8 @@
  */
 package game.models;
 
+import game.models.map.Map;
+
 import java.util.List;
 
 import box2dLight.RayHandler;

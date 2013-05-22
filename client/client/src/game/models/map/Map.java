@@ -9,7 +9,9 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package game.models;
+package game.models.map;
+
+import game.models.Entity;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -28,41 +30,11 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Map extends Entity {
 
-   /**
-    * 
-    * TODO
-    * 
-    * @author Crescenzio Fabio
-    * @author Decorvet Grégoire
-    * @author Jaquier Kevin
-    * @author Schweizer Thomas
-    * 
-    */
-   public enum Tile {
-      EMPTY, WALL;
-
-      public static final int WIDTH = 350;
-      public static final int HEIGHT = WIDTH;
-
-      @Override
-      public String toString() {
-         switch (this) {
-            case EMPTY:
-               return " ";
-            case WALL:
-               return "#";
-            default:
-               return "?";
-         }
-      }
-   }
-
    private Tile[][] grid;
 
    public Map(int size) {
-      //setGrid(new MazeGenerator().generateMaze(grid));
-      setGrid(MazeGenerator.createTest(10));
-      
+      setGrid(new MazeGenerator().generateMaze(8));
+
       System.out.println("Generated map :\n" + this);
    }
 
@@ -91,7 +63,7 @@ public class Map extends Entity {
       renderer.setColor(Color.GRAY);
       for (int i = 0; i < grid.length; i++) {
          for (int j = 0; j < grid[i].length; j++) {
-            if (grid[i][j] == Tile.EMPTY) {
+            if (grid[i][j] == Tile.WALL) {
                renderer.filledRect(i * Tile.WIDTH, j * Tile.HEIGHT, Tile.WIDTH,
                      Tile.HEIGHT);
             }

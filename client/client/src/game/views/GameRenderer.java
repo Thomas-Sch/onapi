@@ -15,6 +15,7 @@ import game.models.GameModel;
 import box2dLight.RayHandler;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -73,8 +74,7 @@ public class GameRenderer {
 
    // Objets pour le rendu en mode debug
    private ShapeRenderer debugRenderer = new ShapeRenderer();
-
-   // Contrôles de l'interface
+   private FPSLogger fpsLog;
    private Label lblDebug;
 
    private RayHandler handler;
@@ -95,6 +95,7 @@ public class GameRenderer {
       viewport = new Rectangle(0, 0, width, height);
 
       debugRenderer.setProjectionMatrix(cam.combined);
+      fpsLog = new FPSLogger();
 
       // Initialise la scène de l'interface utilisateur
       ui = new Stage(width, height, true);
@@ -164,8 +165,8 @@ public class GameRenderer {
     * Affiche des données de debug à l'écran
     */
    public void debugRender() {
-      lblDebug.setText("FPS : "
-            + String.format("%4s\nPlayer : %s", 42, game.getPlayer()));
+      fpsLog.log();
+      lblDebug.setText(String.format("%s", game.getPlayer(), game.getMap()));
 
       debugRenderer.setProjectionMatrix(cam.combined);
       game.getMap().debugRender(debugRenderer);

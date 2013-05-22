@@ -11,6 +11,7 @@
  */
 package game.models;
 
+import game.models.map.Tile;
 import box2dLight.ConeLight;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
@@ -26,10 +27,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 /**
  * Représente le personnage principal du jeu.
@@ -73,7 +74,6 @@ public class Player extends Entity {
       setHeight(HEIGHT);
       bounds = new Rectangle(pos.x, pos.y, getWidth(), getHeight());
 
-
       setTeam(team);
       loadResources();
 
@@ -92,12 +92,12 @@ public class Player extends Entity {
       body.createFixture(fix);
 
       // Initialise les lumières diffusées par le joueur
-      new PointLight(handler, 5000, Color.DARK_GRAY, 250, getPos().x,
-            getPos().y).attachToBody(body, 0, 0);
+      new PointLight(handler, 5000, new Color(1, 1, 1, 0.5f), Tile.WIDTH - 50,
+            getPos().x, getPos().y).attachToBody(body, 0, 0);
       torchLight = new ConeLight(handler, 5000, new Color(237f / 255f,
-            240f / 255f, 168f / 255f, 0.9f), 500, 1, 1, 270, 30);
-      //torchLight.attachToBody(body, 0, 0);
-      
+            240f / 255f, 168f / 255f, 0.9f), 750, 1, 1, 270, 30);
+      // torchLight.attachToBody(body, 0, 0);
+
       setDir(dir);
       moveTo(pos);
    }
@@ -207,7 +207,7 @@ public class Player extends Entity {
 
    @Override
    public String toString() {
-      return String.format("-");
+      return String.format("Pos=%s\n", getPos());
    }
 
 }

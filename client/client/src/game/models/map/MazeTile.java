@@ -9,34 +9,42 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package game.models;
+package game.models.map;
 
 /**
  * TODO
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
 public class MazeTile {
 
    private Tile type;
-   
+
    public final int x, y;
-   
+
    public MazeTile(Tile type, int x, int y) {
-      this.type = type;
+      setType(type);
       this.x = x;
       this.y = y;
    }
-   
-   void fill() {
-      type = Tile.EMPTY;
+
+   /**
+    * @return the type
+    */
+   public Tile getType() {
+      return type;
    }
-   
-   void empty() {
-      type = Tile.WALL;
+
+   /**
+    * @param type
+    *           the type to set
+    */
+   public void setType(Tile type) {
+      this.type = type;
    }
-   
+
 }

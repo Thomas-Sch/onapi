@@ -148,38 +148,23 @@ public class GameScreen extends ScreenAdapter {
 
       float mouseX;
       float mouseY;
-      float adj;
-      float angle;
 
       if (screenX > playerX && screenY <= playerY) {// Q1
-         angle = 0;
          mouseX = screenX - playerX;
          mouseY = playerY - screenY;
-         adj = mouseX;
       }
       else if (screenX <= playerX && screenY <= playerY) {// Q2
-         angle = 0;
          mouseX = screenX - playerX;
          mouseY = playerY - screenY;
-         adj = mouseX;
       }
       else if (screenX <= playerX && screenY >= playerY) {// Q3
-         angle = 90;
          mouseX = screenX - playerX;
          mouseY = playerY - screenY;
-         adj = mouseY;
       }
       else {// Q4
-         angle = 270;
          mouseX = screenX - playerX;
          mouseY = playerY - screenY;
-         adj = -mouseY;
       }
-
-      // Calcul de l'angle
-      float norme = (float) Math.sqrt(mouseX * mouseX + mouseY * mouseY);
-      float cos = adj / norme;
-      angle += Math.toDegrees(Math.acos(cos));
 
       // Affecte le nouvel angle
       Vector2.tmp.set(mouseX, mouseY);
