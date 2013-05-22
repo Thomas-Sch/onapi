@@ -78,7 +78,7 @@ public class DBController {
       }
    }
    public LinkedList<Item> getSkills(int player_id){
-      ResultSet result = database.getResultOf("SELECT id, name from Item INNER JOIN Skill ON Skill.id = Item.id where user_id='"
+      ResultSet result = database.getResultOf("SELECT id, name from Item INNER JOIN Skill ON Skill.id = Item.id where User_id='"
             + player_id + "'");
       LinkedList<Item> skills = new LinkedList<Item>();
       
@@ -96,7 +96,7 @@ public class DBController {
    }
 
    public LinkedList<Item> getWeapons(int player_id){
-      ResultSet result = database.getResultOf("SELECT id, name from Item INNER JOIN Weapon ON Skill.id = Item.id where user_id='"
+      ResultSet result = database.getResultOf("SELECT id, name from Item INNER JOIN Weapon ON Skill.id = Item.id where User_id='"
             + player_id + "'");
       LinkedList<Item> weapons = new LinkedList<Item>();
       
@@ -114,7 +114,7 @@ public class DBController {
    }
    
    public LinkedList<Item> getUpgrades(int player_id){
-      ResultSet result = database.getResultOf("SELECT id, name from Item INNER JOIN Upgrade ON Skill.id = Item.id where user_id='"
+      ResultSet result = database.getResultOf("SELECT id, name from Item INNER JOIN Upgrade ON Skill.id = Item.id where User_id='"
             + player_id + "'");
       LinkedList<Item> upgrades = new LinkedList<Item>();
       
