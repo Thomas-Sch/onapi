@@ -61,7 +61,7 @@ public class DBController {
          
             //recupère l'id inseré
             result = database.getResultOf("SELECT id, role from User where name='"
-               + login + "' oreder by id desc limit 0,1");
+               + login + "' order by id desc limit 0,1");
             return new UserAccount(result.getInt(result.findColumn("id")), 
                (result.getString(result.findColumn("role")).equals("admin")?
                      AccountType.ADMINISTRATOR:AccountType.USER),
@@ -77,18 +77,59 @@ public class DBController {
          return null;
       }
    }
-   
    public LinkedList<Item> getSkills(int player_id){
-      return null;   
+      ResultSet result = database.getResultOf("SELECT id, name from Item INNER JOIN Skill ON Skill.id = Item.id where user_id='"
+            + player_id + "'");
+      LinkedList<Item> skills = new LinkedList<Item>();
+      
+      try {
+         while(result.next()){
+            skills.add(new Item(result.getInt(result.findColumn("id")), result.getString(result.findColumn("name"))));
+         }
+         return null;
+      }
+      catch (SQLException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+         return null;
+      }
    }
 
    public LinkedList<Item> getWeapons(int player_id){
-      return null;   
+      ResultSet result = database.getResultOf("SELECT id, name from Item INNER JOIN Weapon ON Skill.id = Item.id where user_id='"
+            + player_id + "'");
+      LinkedList<Item> weapons = new LinkedList<Item>();
+      
+      try {
+         while(result.next()){
+            weapons.add(new Item(result.getInt(result.findColumn("id")), result.getString(result.findColumn("name"))));
+         }
+         return null;
+      }
+      catch (SQLException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+         return null;
+      }
    }
    
-   public LinkedList<Item> getUpgrade(int player_id){
-      return null;   
-   }
+   public LinkedList<Item> getUpgrades(int player_id){
+      ResultSet result = database.getResultOf("SELECT id, name from Item INNER JOIN Upgrade ON Skill.id = Item.id where user_id='"
+            + player_id + "'");
+      LinkedList<Item> upgrades = new LinkedList<Item>();
+      
+      try {
+         while(result.next()){
+            upgrades.add(new Item(result.getInt(result.findColumn("id")), result.getString(result.findColumn("name"))));
+         }
+         return null;
+      }
+      catch (SQLException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+         return null;
+      }
+    }
 
    /**
     * Test la connection avec le login password de l'utilisateur.
