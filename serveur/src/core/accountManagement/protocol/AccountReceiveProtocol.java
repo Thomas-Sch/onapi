@@ -11,6 +11,7 @@
  */
 package core.accountManagement.protocol;
 
+import common.components.AccountType;
 import common.components.UserAccount;
 import core.Core;
 import core.UserInformations;
@@ -19,7 +20,6 @@ import core.lobby.LobbyConnection;
 import core.lobby.exceptions.LobbyException;
 import core.lobby.protocol.LobbyReceiveProtocol;
 import core.protocol.ServerStandardProtocol;
-import database.components.AccountType;
 
 /**
  * TODO
@@ -50,7 +50,7 @@ public class AccountReceiveProtocol extends ServerStandardProtocol {
       if (isValidAccount) {
          user.log.push("Now connected as " + login);
          
-         user.account = new UserAccount(AccountType.USER, login, password, "Unknown", "User");
+         user.account = new UserAccount(0, AccountType.USER, login, password, "Unknown", "User");
          
          user.channelReceive.sendObject(user.account);
          
@@ -85,7 +85,7 @@ public class AccountReceiveProtocol extends ServerStandardProtocol {
          
          user.log.push("Account created with success");
          
-         user.account = new UserAccount(AccountType.USER, login, password, "Unknown", "User");
+         user.account = new UserAccount(0, AccountType.USER, login, password, "Unknown", "User");
          
          user.channelReceive.sendObject(user.account);
          
