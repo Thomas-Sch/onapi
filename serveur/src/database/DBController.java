@@ -13,6 +13,10 @@ package database;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+
+import common.components.AccountType;
+import common.components.UserAccount;
 
 /**
  * TODO
@@ -32,7 +36,7 @@ public class DBController {
    }
 
    /**
-    * Ouvre la connexion � la base de donn�es.
+    * Ouvre la connexion à la base de données.
     */
    public void openConnection() {
       database.connect();
@@ -45,22 +49,45 @@ public class DBController {
     * @param password
     * @return
     */
-   public boolean createUser(String login, String password) {
+   public UserAccount createUser(String login, String password, String role) {
       ResultSet result = database.getResultOf("SELECT 1 from User where name='"
             + login + "'");
       try {
          if (result.next())
-            return false;
-         else
-            database.execute("INSERT INTO User(name, password) VALUES('"
+            return null;
+         else{
+            database.execute("INSERT INTO User(name, password, role) VALUES('"
                   + login + "', '" + password + "')");
-         return true;
-      }
+         
+            //recupère l'id inseré
+            result = database.getResultOf("SELECT id, role from User where name='"
+               + login + "' oreder by id desc limit 0,1");
+            return new UserAccount(result.getInt(result.findColumn("id")), 
+               (result.getString(result.findColumn("role")).equals("admin")?
+                     AccountType.ADMINISTRATOR:AccountType.USER),
+               login,
+               password, 
+               "", 
+               "");
+            }
+         }
       catch (SQLException e) {
          // TODO Auto-generated catch block
          //e.printStackTrace();
-         return false;
+         return null;
       }
+   }
+   
+   public LinkedList<Item> getSkills(int player_id){
+      return null;   
+   }
+
+   public LinkedList<Item> getWeapons(int player_id){
+      return null;   
+   }
+   
+   public LinkedList<Item> getUpgrade(int player_id){
+      return null;   
    }
 
    /**
@@ -70,18 +97,25 @@ public class DBController {
     * @param password
     * @return correct ou non
     */
-   public boolean checkUserConnection(String login, String password) {
-      ResultSet result = database.getResultOf("SELECT 1 from User where name='"
+   public UserAccount checkUserConnection(String login, String password) {
+      ResultSet result = database.getResultOf("SELECT id, role from User where name='"
             + login + "' and password='" + password + "'");
       try {
-         if (result.next()) return true;
+         if (result.next()) 
+            return new UserAccount(result.getInt(result.findColumn("id")), 
+                                  (result.getString(result.findColumn("role")).equals("admin")?
+                                        AccountType.ADMINISTRATOR:AccountType.USER),
+                                  login,
+                                  password, 
+                                  "", 
+                                  "");
       }
       catch (SQLException e) {
          // TODO Auto-generated catch block
          // e.printStackTrace();
-         return false;
+         return null;
       }
-      return false;
+      return null;
    }
 
    /**
