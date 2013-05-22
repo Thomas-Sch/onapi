@@ -11,8 +11,6 @@
  */
 package game.models;
 
-import game.MazeGenerator;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -62,7 +60,9 @@ public class Map extends Entity {
    private Tile[][] grid;
 
    public Map(int size) {
-      setGrid(MazeGenerator.create(size));
+      //setGrid(new MazeGenerator().generateMaze(grid));
+      setGrid(MazeGenerator.createTest(10));
+      
       System.out.println("Generated map :\n" + this);
    }
 

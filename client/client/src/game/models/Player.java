@@ -72,8 +72,8 @@ public class Player extends Entity {
       setWidth(WIDTH);
       setHeight(HEIGHT);
       bounds = new Rectangle(pos.x, pos.y, getWidth(), getHeight());
-      setDir(dir);
-      moveTo(pos);
+
+
       setTeam(team);
       loadResources();
 
@@ -96,7 +96,10 @@ public class Player extends Entity {
             getPos().y).attachToBody(body, 0, 0);
       torchLight = new ConeLight(handler, 5000, new Color(237f / 255f,
             240f / 255f, 168f / 255f, 0.9f), 500, 1, 1, 270, 30);
-      torchLight.attachToBody(body, 0, 0);
+      //torchLight.attachToBody(body, 0, 0);
+      
+      setDir(dir);
+      moveTo(pos);
    }
 
    public void loadResources() {
@@ -118,6 +121,7 @@ public class Player extends Entity {
     */
    public void moveTo(Vector2 newPos) {
       setPosition(newPos.x - bounds.width / 2f, newPos.y - bounds.height / 2f);
+      torchLight.setPosition(getPos());
    }
 
    /**
@@ -128,6 +132,7 @@ public class Player extends Entity {
     */
    public void move(Vector2 dir) {
       setPosition(getPos().x + dir.x, getPos().y + dir.y);
+      torchLight.setPosition(getPos());
    }
 
    /**
@@ -144,6 +149,7 @@ public class Player extends Entity {
    public void setDir(Vector2 dir) {
       this.dir = dir;
       rotate(dir.angle() - getRotation());
+      torchLight.setDirection(dir.angle());
    }
 
    /**
