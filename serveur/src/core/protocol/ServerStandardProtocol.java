@@ -11,11 +11,11 @@
  */
 package core.protocol;
 
+import common.components.AccountType;
 import common.components.UserAccount;
 import common.connections.protocol.ProtocolType;
 import core.Core;
 import core.UserInformations;
-import database.components.AccountType;
 
 /**
  * Classe permettant de rassembler les protocoles concernant les requêtes

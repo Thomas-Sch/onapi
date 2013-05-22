@@ -9,7 +9,7 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package database.components;
+package common.components;
 
 /**
  * TODO
