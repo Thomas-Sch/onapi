@@ -47,7 +47,7 @@ public class DBController {
     * 
     * @param login
     * @param password
-    * @return
+    * @return le compte créé si ok, null sinon
     */
    public UserAccount createUser(String login, String password, String role) {
       ResultSet result = database.getResultOf("SELECT 1 from User where name='"
@@ -136,7 +136,7 @@ public class DBController {
     * 
     * @param login
     * @param password
-    * @return correct ou non
+    * @return le compte si connexion ok, null sinon
     */
    public UserAccount checkUserConnection(String login, String password) {
       ResultSet result = database.getResultOf("SELECT id, role from User where name='"
