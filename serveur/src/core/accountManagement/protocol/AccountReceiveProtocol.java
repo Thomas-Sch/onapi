@@ -36,21 +36,18 @@ public class AccountReceiveProtocol extends ServerStandardProtocol {
    }
    
    public void login() {
-      boolean isValidAccount = false;
       
       String login = user.channelReceive.receiveString();
       String password = user.channelReceive.receiveString();
       
       user.log.push("Try login account : " + login);
       
-      isValidAccount = core.checkAuthentification(login, password);
+      user.account = core.checkAuthentification(login, password);
       
-      user.channelReceive.sendBoolean(isValidAccount);
+      user.channelReceive.sendBoolean(user.account != null);
       
-      if (isValidAccount) {
+      if (user.account != null) {
          user.log.push("Now connected as " + login);
-         
-         user.account = new UserAccount(0, AccountType.USER, login, password, "Unknown", "User");
          
          user.channelReceive.sendObject(user.account);
          
@@ -69,7 +66,7 @@ public class AccountReceiveProtocol extends ServerStandardProtocol {
    }
    
    public void createAccount() {
-      boolean accountCreated = false;
+      UserAccount accountCreated = null;
       
       String login = user.channelReceive.receiveString();
       String password = user.channelReceive.receiveString();
@@ -79,9 +76,9 @@ public class AccountReceiveProtocol extends ServerStandardProtocol {
       
       accountCreated = core.createAccount(login, password);
       
-      user.channelReceive.sendBoolean(accountCreated);
+      user.channelReceive.sendBoolean(user.account != null);
       
-      if (accountCreated) {
+      if (user.account != null) {
          
          user.log.push("Account created with success");
          

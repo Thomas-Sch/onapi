@@ -22,6 +22,9 @@ import java.net.NetworkInterface;
 import java.net.Socket;
 import java.util.Enumeration;
 import java.util.LinkedList;
+
+import common.components.UserAccount;
+
 import core.exceptions.PortException;
 import core.lobby.Lobby;
 import database.DBController;
@@ -149,24 +152,24 @@ public class Core {
       return serverPort.getPortNumber();
    }
    
-   public boolean checkAuthentification(String login, String password) {
-      boolean result = false;
+   public UserAccount checkAuthentification(String login, String password) {
+      UserAccount user;
       
       dbController.openConnection();
-      result = dbController.checkUserConnection(login, password);
+      user = dbController.checkUserConnection(login, password);
       dbController.closeConnection();
       
-      return result;
+      return user;
    }
    
-   public boolean createAccount(String login, String password) {
-      boolean success = false;
+   public UserAccount createAccount(String login, String password) {
+      UserAccount user;
       
       dbController.openConnection();
-      success = dbController.createUser(login, password);
+      user = dbController.createUser(login, password, "user");
       dbController.closeConnection();
       
-      return success;
+      return user;
    }
    
    public Lobby getFreeLoby() {
