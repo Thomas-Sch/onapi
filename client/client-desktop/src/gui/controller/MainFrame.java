@@ -20,6 +20,8 @@ import java.awt.Component;
 
 import javax.swing.JFrame;
 
+import common.components.UserAccount;
+
 import settings.Language.Text;
 import settings.Settings;
 
@@ -34,18 +36,29 @@ import settings.Settings;
 public class MainFrame extends Controller {
    
    private JMainFrame view;
+   private String serverAdress;
+   private String serverPort;
+   private UserAccount user;
    
 
    /**
     * @param login Identifiant de l'utilisateur.
     * @param password Mot de passe de l'utilisateur.
     */
-   public MainFrame(String login, String password) {
+   public MainFrame(UserAccount user, String serverAdress, String serverPort) {
+      super(user, serverAdress, serverPort);
    }
 
    @Override
-   protected void initComponents() {
-      view = new JMainFrame(Text.APP_TITLE.toString());
+   protected void initComponents(Object ... objects) {
+      
+      // Pas besoin de tests on sait exactement ce que l'on met dedans.
+      user = (UserAccount) objects[0];
+      serverAdress = (String) objects[1];
+      serverPort = (String) objects[2];
+      
+      
+      view = new JMainFrame(Text.APP_TITLE.toString() + " - " + serverAdress + "/" + serverPort, this);
       
       view.setSize(Settings.mainFrame.width, Settings.mainFrame.height);
       Positions.setPositionOnScreen(view,  Settings.mainFrame.anchor);
@@ -62,5 +75,13 @@ public class MainFrame extends Controller {
    @Override
    public Component getGraphicalComponent() {
       return view;
+   }
+   
+   /**
+    * Renvoie le login de l'utilisateur.
+    * @return le login de l'utilisateur.
+    */
+   public String getUserName() {
+      return user.getLogin();
    }
 }

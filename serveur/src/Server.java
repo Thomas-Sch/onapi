@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.StringTokenizer;
 
 import core.Core;
 
@@ -18,7 +15,7 @@ import core.Core;
  */
 
 /**
- * TODO
+ * Classe d'amorce pour le serveur.
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin

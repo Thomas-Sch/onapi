@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : ProtocolType.java
+ * Nom du fichier   : ChannelClosedException.java
  * ============================================================================
- * Date de création : 8 mai 2013
+ * Date de création : 15 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,21 +9,33 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package common.connections.protocol;
+package common.connections.exceptions;
 
 /**
- * Type des protocoles.
+ * TODO
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
  *
  */
-public enum ProtocolType {
-   ACCEPT, REFUSE,
-   ACCOUNT_CREATE,
-   JOIN_GAME, LEAVE_GAME,
-   LOGIN, LOGOUT,
-   TEXT_MESSAGE,
-   PING;
+public class ChannelClosedException extends RuntimeException {
+   
+   public ChannelClosedException() {
+      super();
+   }
+   
+   public ChannelClosedException(String message) {
+      super(message);
+   }
+   
+   public ChannelClosedException(Throwable cause) {
+      super(cause);
+   }
+   
+   public ChannelClosedException(String message, Throwable cause) {
+      super(message,cause);
+   }  
+
 }
+

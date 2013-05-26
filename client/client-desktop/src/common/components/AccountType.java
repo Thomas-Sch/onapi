@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : ProtocolType.java
+ * Nom du fichier   : AccountType.java
  * ============================================================================
- * Date de création : 8 mai 2013
+ * Date de création : 16 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,21 +9,18 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package common.connections.protocol;
+package common.components;
 
 /**
- * Type des protocoles.
+ * TODO
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
  *
  */
-public enum ProtocolType {
-   ACCEPT, REFUSE,
-   ACCOUNT_CREATE,
-   JOIN_GAME, LEAVE_GAME,
-   LOGIN, LOGOUT,
-   TEXT_MESSAGE,
-   PING;
+public enum AccountType {
+   
+   USER, ADMINISTRATOR;
+
 }

@@ -27,18 +27,22 @@ public abstract class Controller {
    
    /**
     * Crée un contrôleur.
-    * @param core - le coeur du programme.
+    * @param objects - Paramètres à initialiser en premier par un enfant.
     */
-   protected Controller() {      
-      initComponents();
+   protected Controller(Object ... objects) {      
+      initComponents(objects);
       initListeners();
+   }
+   
+   protected Controller() {      
+      this((Object[])null);
    }
    
    /**
     * Initialise les composants internes du contrôleurs. Cette fonction ne doit
     * pas être appelée, elle est gérée automatiquement par le constructeur.
     */
-   protected abstract void initComponents();
+   protected abstract void initComponents(Object ... objects);
    
    /**
     * Initialise les listeners du contrôleur. Cette fonction ne doit

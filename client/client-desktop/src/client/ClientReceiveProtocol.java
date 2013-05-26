@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : ProtocolType.java
+ * Nom du fichier   : ClientReceiveProtocol.java
  * ============================================================================
- * Date de création : 8 mai 2013
+ * Date de création : 19 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,21 +9,30 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package common.connections.protocol;
+package client;
+
+import common.connections.Channel;
 
 /**
- * Type des protocoles.
+ * Classe permettant de rassembler les protocoles utilisés par le client pour
+ * réagir aux mises à jours en provenance du serveur.
+ * <p>Utilisé lors d'une partie pour la réception des informations de ladite
+ * partie.
+ * 
+ * <p><b>TODO</b>
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
  *
  */
-public enum ProtocolType {
-   ACCEPT, REFUSE,
-   ACCOUNT_CREATE,
-   JOIN_GAME, LEAVE_GAME,
-   LOGIN, LOGOUT,
-   TEXT_MESSAGE,
-   PING;
+public class ClientReceiveProtocol {
+
+   private Channel channel;
+   
+   public ClientReceiveProtocol(Channel channel) {
+      this.channel = channel;
+   }
+   
 }

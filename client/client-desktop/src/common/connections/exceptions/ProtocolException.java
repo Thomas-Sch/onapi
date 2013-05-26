@@ -1,5 +1,5 @@
 /* ============================================================================
- * Nom du fichier   : ProtocolType.java
+ * Nom du fichier   : ProtocolException.java
  * ============================================================================
  * Date de création : 8 mai 2013
  * ============================================================================
@@ -9,21 +9,32 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package common.connections.protocol;
+package common.connections.exceptions;
 
 /**
- * Type des protocoles.
+ * TODO
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
  *
  */
-public enum ProtocolType {
-   ACCEPT, REFUSE,
-   ACCOUNT_CREATE,
-   JOIN_GAME, LEAVE_GAME,
-   LOGIN, LOGOUT,
-   TEXT_MESSAGE,
-   PING;
+public class ProtocolException extends RuntimeException {
+   
+   public ProtocolException() {
+      super();
+   }
+   
+   public ProtocolException(String message) {
+      super(message);
+   }
+   
+   public ProtocolException(Throwable cause) {
+      super(cause);
+   }
+   
+   public ProtocolException(String message, Throwable cause) {
+      super(message,cause);
+   }  
+
 }

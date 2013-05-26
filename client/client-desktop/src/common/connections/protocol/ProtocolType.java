@@ -12,7 +12,7 @@
 package common.connections.protocol;
 
 /**
- * Type des protocoles.
+ * TODO
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin

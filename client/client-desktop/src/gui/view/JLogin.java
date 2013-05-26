@@ -15,19 +15,20 @@ import gui.component.JLabelPasswordPanel;
 import gui.component.JLabelTextPanel;
 import gui.component.JValidateCancel;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Insets;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import settings.Language.Text;
 
 /**
- * TODO
+ * Fenêtre de login.
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
@@ -37,7 +38,7 @@ import settings.Language.Text;
 public class JLogin extends JFrame{
 
    /**
-    * ID de s�rialisation du composant graphique.
+    * ID sérialisation du composant graphique.
     */
    private static final long serialVersionUID = -9093556072363479532L;
    
@@ -46,6 +47,7 @@ public class JLogin extends JFrame{
    private JLabelTextPanel ltpServerAdress;
    private JLabelTextPanel ltpServerPort;
    private JLabelPasswordPanel lppPassword;
+   private JLabel lblConnectionInfo;
    
    public JLogin (String title) {
       super(title);
@@ -62,20 +64,25 @@ public class JLogin extends JFrame{
       lppPassword = new JLabelPasswordPanel(Text.PASSWORD_LABEL.toString());
       ltpServerAdress = new JLabelTextPanel(Text.SERVER_ADRESS_LABEL.toString());
       ltpServerPort = new JLabelTextPanel(Text.SERVER_PORT_LABEL.toString());
+      lblConnectionInfo = new JLabel("");
+      lblConnectionInfo.setForeground(Color.RED);
    }
    
    public JPanel buildContent() {
+      JPanel pnlMargin = new JPanel();
       JPanel pnlContent = new JPanel();
-      
-      pnlContent.setLayout(new GridLayout(5, 0, 10, 10));
+      pnlMargin.setLayout(new FlowLayout(FlowLayout.CENTER, 10,10));
+      pnlContent.setLayout(new BoxLayout(pnlContent, BoxLayout.PAGE_AXIS));
       
       pnlContent.add(ltpLogin);
       pnlContent.add(lppPassword);
       pnlContent.add(ltpServerAdress);
       pnlContent.add(ltpServerPort);
+      pnlContent.add(lblConnectionInfo);
       pnlContent.add(vclActions);
       
-      return pnlContent;
+      pnlMargin.add(pnlContent,BorderLayout.CENTER);
+      return pnlMargin;
    }
    
    public void addValidateListener(ActionListener listener) {
@@ -100,5 +107,14 @@ public class JLogin extends JFrame{
    
    public String getServerPort() {
       return ltpServerPort.getText();
+   }
+   
+   public void setMessage(String message) {
+      lblConnectionInfo.setText(message);
+   }
+   
+   public void setMessage(String message, Color color) {
+      lblConnectionInfo.setForeground(color);
+      lblConnectionInfo.setText(message);
    }
 }
