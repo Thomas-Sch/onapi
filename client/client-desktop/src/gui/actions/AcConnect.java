@@ -61,7 +61,7 @@ public class AcConnect extends UserAction {
             System.out.println("Connexion au compte client : " + account);
             view.setMessage("Identification réussie.");
             view.dispose();
-            new MainFrame(account, view.getServerAdress(),  view.getServerPort());
+            new MainFrame(account, view.getServerAdress(),  view.getServerPort(), protocol);
          } else {
             view.setMessage("Identifiant/Mot de passe inconnus", Color.RED);
          }

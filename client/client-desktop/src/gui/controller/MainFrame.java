@@ -20,6 +20,8 @@ import java.awt.Component;
 
 import javax.swing.JFrame;
 
+import client.ClientRequestProtocol;
+
 import common.components.UserAccount;
 
 import settings.Language.Text;
@@ -39,14 +41,14 @@ public class MainFrame extends Controller {
    private String serverAdress;
    private String serverPort;
    private UserAccount user;
+   private ClientRequestProtocol protocol;
    
-
    /**
     * @param login Identifiant de l'utilisateur.
     * @param password Mot de passe de l'utilisateur.
     */
-   public MainFrame(UserAccount user, String serverAdress, String serverPort) {
-      super(user, serverAdress, serverPort);
+   public MainFrame(UserAccount user, String serverAdress, String serverPort, ClientRequestProtocol protocol) {
+      super(user, serverAdress, serverPort, protocol);
    }
 
    @Override
@@ -56,7 +58,7 @@ public class MainFrame extends Controller {
       user = (UserAccount) objects[0];
       serverAdress = (String) objects[1];
       serverPort = (String) objects[2];
-      
+      protocol = (ClientRequestProtocol) objects[3];      
       
       view = new JMainFrame(Text.APP_TITLE.toString() + " - " + serverAdress + "/" + serverPort, this);
       
@@ -68,7 +70,7 @@ public class MainFrame extends Controller {
 
    @Override
    protected void initListeners() {
-      view.addPlayListener(new AcPlay());
+      view.addPlayListener(new AcPlay(protocol));
       view.addInventoryListener(new AcViewInventory());
    }
 
