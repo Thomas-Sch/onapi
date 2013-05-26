@@ -53,6 +53,8 @@ public class Language {
 
       LOGIN_LABEL,
       PASSWORD_LABEL,
+      SERVER_ADRESS_LABEL,
+      SERVER_PORT_LABEL,
       
       READY_LABEL;
       
