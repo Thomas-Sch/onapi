@@ -15,6 +15,7 @@ import common.connections.protocol.ProtocolType;
 
 import core.Core;
 import core.ServerRequestAnswers;
+import core.ServerUpdateOrder;
 import core.UserInformations;
 import core.lobby.protocol.LobbyReceiveProtocol;
 import core.lobby.protocol.LobbyUpdateProtocol;
@@ -27,7 +28,7 @@ import core.lobby.protocol.LobbyUpdateProtocol;
  * @author Schweizer Thomas
  *
  */
-public class LobbyConnection implements ServerRequestAnswers {
+public class LobbyConnection implements ServerRequestAnswers, ServerUpdateOrder {
    
    private LobbyReceiveProtocol receiveProtocol;
    private LobbyUpdateProtocol updateProtocol;
@@ -43,7 +44,7 @@ public class LobbyConnection implements ServerRequestAnswers {
    @Override
    public void answerRequest(ProtocolType type) {
       
-switch(type) {
+      switch(type) {
          
          case PING :
             receiveProtocol.acceptRequest(ProtocolType.PING);
@@ -55,12 +56,22 @@ switch(type) {
             receiveProtocol.textMessage();
             break;
             
+         case LEAVE_GAME :
+            receiveProtocol.acceptRequest(type);
+            receiveProtocol.leave();
+            break;
+            
          default :
             receiveProtocol.refuseRequest(type);
             user.log.push("Bad request protocol");
       }
       
       
+   }
+
+   @Override
+   public void updateInformations() {
+      user.log.push("Ping : " + updateProtocol.ping() + " ms");
    }
    
    

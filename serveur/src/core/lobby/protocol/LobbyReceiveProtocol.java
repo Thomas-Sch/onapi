@@ -11,11 +11,14 @@
  */
 package core.lobby.protocol;
 
+import common.connections.exceptions.ChannelException;
 import common.connections.protocol.ProtocolType;
 import core.Core;
 import core.UserInformations;
+import core.accountManagement.AccountConnection;
 import core.lobby.Lobby;
-import core.protocol.ServerStandardProtocol;
+import core.lobby.exceptions.LobbyException;
+import core.protocol.ServerStandardReceiveProtocol;
 
 /**
  * TODO
@@ -25,7 +28,7 @@ import core.protocol.ServerStandardProtocol;
  * @author Schweizer Thomas
  *
  */
-public class LobbyReceiveProtocol extends ServerStandardProtocol {
+public class LobbyReceiveProtocol extends ServerStandardReceiveProtocol {
    
    private Lobby lobby;
    
@@ -35,6 +38,26 @@ public class LobbyReceiveProtocol extends ServerStandardProtocol {
    }
    
    public void leave() {
+      
+      try {
+         user.lobby.removePlayer(user);
+         
+         user.lobby = null;
+         user.update = null;
+         
+         try {
+            user.connectionsToClient.updateChannel.close();
+         }
+         catch (ChannelException e) {
+            user.log.push("Error while closing the update channel.");
+         }
+         user.connectionsToClient.updateChannel = null;
+         
+         user.server = new AccountConnection(core, user);
+      }
+      catch (LobbyException e) {
+         
+      }
       
       
       

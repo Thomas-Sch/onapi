@@ -27,8 +27,7 @@ import core.lobby.Lobby;
  */
 public class UserInformations {
    
-   public Channel channelReceive;
-   public Channel channelUpdate;
+   public ConnectionsToClient connectionsToClient;
    
    public Log log;
    
@@ -39,8 +38,9 @@ public class UserInformations {
    public UserState state;
    
    public ServerRequestAnswers server;
+   public ServerUpdateOrder update;
    
-   public UserUpdateConnection update;
+   public UserUpdateConnection updateActivity;
    
    public Lobby lobby;
    

@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : LobbyUpdateProtocol.java
+ * Nom du fichier   : ExpectedPlayer.java
  * ============================================================================
- * Date de création : 19 mai 2013
+ * Date de création : 22 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,12 +9,9 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core.lobby.protocol;
+package core.lobby;
 
-import core.Core;
 import core.UserInformations;
-import core.lobby.Lobby;
-import core.protocol.ServerStandardUpdateProtocol;
 
 /**
  * TODO
@@ -24,15 +21,15 @@ import core.protocol.ServerStandardUpdateProtocol;
  * @author Schweizer Thomas
  *
  */
-public class LobbyUpdateProtocol extends ServerStandardUpdateProtocol {
+class ExpectedPlayer {
    
-   private Lobby lobby;
+   UserInformations user;
    
-   public LobbyUpdateProtocol(Core core, Lobby lobby, UserInformations user) {
-      super(core, user);
-      this.lobby = lobby;
+   int code;
+   
+   ExpectedPlayer(UserInformations user, int code) {
+      this.user = user;
+      this.code = code;
    }
-   
-   
 
 }

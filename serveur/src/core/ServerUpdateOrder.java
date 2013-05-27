@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : LobbyUpdateProtocol.java
+ * Nom du fichier   : ServerUpdateOrder.java
  * ============================================================================
- * Date de création : 19 mai 2013
+ * Date de création : 23 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,12 +9,7 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core.lobby.protocol;
-
-import core.Core;
-import core.UserInformations;
-import core.lobby.Lobby;
-import core.protocol.ServerStandardUpdateProtocol;
+package core;
 
 /**
  * TODO
@@ -24,15 +19,8 @@ import core.protocol.ServerStandardUpdateProtocol;
  * @author Schweizer Thomas
  *
  */
-public class LobbyUpdateProtocol extends ServerStandardUpdateProtocol {
+public interface ServerUpdateOrder {
    
-   private Lobby lobby;
-   
-   public LobbyUpdateProtocol(Core core, Lobby lobby, UserInformations user) {
-      super(core, user);
-      this.lobby = lobby;
-   }
-   
-   
+   public void updateInformations();
 
 }

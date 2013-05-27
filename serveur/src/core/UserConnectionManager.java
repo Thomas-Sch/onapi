@@ -20,7 +20,7 @@ import common.connections.exceptions.TimeOutException;
 import common.connections.protocol.ProtocolType;
 import core.Core;
 import core.accountManagement.AccountConnection;
-import core.protocol.ServerStandardProtocol;
+import core.protocol.ServerStandardReceiveProtocol;
 import java.net.Socket;
 
 /**
@@ -31,22 +31,38 @@ import java.net.Socket;
  * @author Schweizer Thomas
  *
  */
-public class UserConnection implements Runnable {
+public class UserConnectionManager implements Runnable {
    private Core core;
    
    private UserInformations user;
    
-   public UserConnection(Core core, Socket socket, int timeout) {
+   public UserConnectionManager(Core core, Socket socket, int timeout) {
+      init(core, socket, timeout);
+   }
+   
+   private void init(Core core, Socket socket, int timeout) {
       this.core = core;
+      
+      // Création d'une entité propre au client
       user = new UserInformations();
+      
+      // Création du log
+      user.log = new Log("Unknown");
+      core.addLogPanel(user.log.createLogPanel());
+      
+      // Création du canal de mises à jour du client
+      user.log.push("Create ConnectionsToClient...");
+      user.connectionsToClient = new ConnectionsToClient(core, this, socket, timeout);
+      user.log.push("done.");
+      
+      
       user.isConnected = true;
       
-      user.channelReceive = new Channel(socket, timeout);
-      user.log = new Log("Unknown");
       
       user.server = new AccountConnection(core, user);
       
-      core.addLogPanel(user.log.createLogPanel());
+      
+      
    }
 
 
@@ -59,7 +75,7 @@ public class UserConnection implements Runnable {
          
          try {
          
-            proType = user.channelReceive.receiveProtocolType();
+            proType = user.connectionsToClient.receiveChannel.receiveProtocolType();
             
             user.server.answerRequest(proType);
             

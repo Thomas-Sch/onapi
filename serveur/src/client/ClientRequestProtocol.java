@@ -30,10 +30,45 @@ import common.connections.protocol.ProtocolType;
  */
 public class ClientRequestProtocol {
    
-   private Channel channel;
+   private Channel requestChannel;
    
    public ClientRequestProtocol(Channel channel) {
-      this.channel = channel;
+      this.requestChannel = channel;
+   }
+   
+   /**
+    * TODO Doit être appelé avant toute autre action !
+    * @return
+    */
+   public Channel connectToServer() {
+      System.out.println("DEBUG - want to connect update port.");
+      Channel channel;
+      
+      int port = requestChannel.receiveInt();
+      System.out.println("DEBUG - receive " + port + " as port number.");
+      
+      int code = requestChannel.receiveInt();
+      
+      System.out.println("DEBUG - receive " + code + " as client code.");
+      
+      System.out.print("DEBUG - create update channel...");
+      channel = new Channel(requestChannel.getAddress(), port, requestChannel.getTimeout());
+      System.out.println("done.");
+      
+      channel.sendInt(code);
+      
+      System.out.println("DEBUG - wainting for code confirmation...");
+      int codeConfirm = channel.receiveInt();
+      System.out.println("DEBUG - code confirmation received : " + codeConfirm);
+      
+      
+      if (codeConfirm != code) {
+         throw new ProtocolException("Error while connecting to update port");
+      }
+      
+      System.out.println("Connexion du canal update etablie.");
+      
+      return channel;
    }
    
    /**
@@ -42,11 +77,11 @@ public class ClientRequestProtocol {
     */
    public long ping() {
       
-      synchronized(channel) {
+      synchronized(requestChannel) {
       
          long time = System.currentTimeMillis();
          
-         channel.sendProtocolType(ProtocolType.PING);
+         requestChannel.sendProtocolType(ProtocolType.PING);
          
          if (isRequestAccepted(ProtocolType.PING)) {
             return System.currentTimeMillis() - time;
@@ -88,18 +123,18 @@ public class ClientRequestProtocol {
       UserAccount account = null;
       boolean loginAccepted = false;
       
-      synchronized(channel) {
-         channel.sendProtocolType(ProtocolType.LOGIN);
+      synchronized(requestChannel) {
+         requestChannel.sendProtocolType(ProtocolType.LOGIN);
          
          // Ne poursuit que si la requête est acceptée par le serveur.
          if (isRequestAccepted(ProtocolType.LOGIN)) {
-            channel.sendString(login);
-            channel.sendString(password);
+            requestChannel.sendString(login);
+            requestChannel.sendString(password);
             
-            loginAccepted = channel.receiveBoolean();
+            loginAccepted = requestChannel.receiveBoolean();
             
             if (loginAccepted) {
-               account = (UserAccount)channel.receiveObject();
+               account = (UserAccount)requestChannel.receiveObject();
             }
          }
          else {
@@ -115,8 +150,8 @@ public class ClientRequestProtocol {
     */
    public boolean logout() {
       boolean success = false;
-      synchronized(channel) {
-         channel.sendProtocolType(ProtocolType.LOGOUT);
+      synchronized(requestChannel) {
+         requestChannel.sendProtocolType(ProtocolType.LOGOUT);
          
          if (isRequestAccepted(ProtocolType.LOGOUT)) {
             success = true;
@@ -143,18 +178,18 @@ public class ClientRequestProtocol {
       UserAccount account = null;
       boolean accountCreated = false;
       
-      synchronized(channel) {
-         channel.sendProtocolType(ProtocolType.ACCOUNT_CREATE);
+      synchronized(requestChannel) {
+         requestChannel.sendProtocolType(ProtocolType.ACCOUNT_CREATE);
          
          // Ne poursuit que si le serveur a accepté la requête
          if(isRequestAccepted(ProtocolType.ACCOUNT_CREATE)) {
-            channel.sendString(login);
-            channel.sendString(password);
+            requestChannel.sendString(login);
+            requestChannel.sendString(password);
             
-            accountCreated = channel.receiveBoolean();
+            accountCreated = requestChannel.receiveBoolean();
             
             if (accountCreated) {
-               account = (UserAccount)channel.receiveObject();
+               account = (UserAccount)requestChannel.receiveObject();
             }
          }
       }
@@ -172,20 +207,20 @@ public class ClientRequestProtocol {
       
       Channel updateChannel = null;
       
-      synchronized(channel) {
+      synchronized(requestChannel) {
          
-         channel.sendProtocolType(ProtocolType.JOIN_GAME);
+         requestChannel.sendProtocolType(ProtocolType.JOIN_GAME);
          
          if (isRequestAccepted(ProtocolType.JOIN_GAME)) {
             
-            boolean isLobbyFree = channel.receiveBoolean();
+            boolean isLobbyFree = requestChannel.receiveBoolean();
             
             if (isLobbyFree) {
                // Réception du nouveau numéro de port pour les updates.
-               int portNumber = channel.receiveInt();
+               int portNumber = requestChannel.receiveInt();
                
-               updateChannel = new Channel(channel.getAddress(), portNumber,
-                                           channel.getTimeout());
+               updateChannel = new Channel(requestChannel.getAddress(), portNumber,
+                                           requestChannel.getTimeout());
             }
             else {
                System.out.println("No free lobbby for the moment.");
@@ -209,11 +244,11 @@ public class ClientRequestProtocol {
     */
    @Deprecated
    public void sendMessage(String message) {
-      synchronized(channel) {
-         channel.sendProtocolType(ProtocolType.TEXT_MESSAGE);
+      synchronized(requestChannel) {
+         requestChannel.sendProtocolType(ProtocolType.TEXT_MESSAGE);
          
          if (isRequestAccepted(ProtocolType.TEXT_MESSAGE)) {
-            channel.sendString(message);
+            requestChannel.sendString(message);
          }
          else {
             System.out.println("Server refuse to receive text message.");
@@ -223,7 +258,7 @@ public class ClientRequestProtocol {
    }
    
    private boolean isRequestAccepted(ProtocolType typeWanted) {
-      ProtocolType type = channel.receiveProtocolType();
+      ProtocolType type = requestChannel.receiveProtocolType();
       
       if (type == typeWanted) {
          return true;
