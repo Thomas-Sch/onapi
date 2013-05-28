@@ -135,8 +135,8 @@ public class Core {
             UserConnectionManager userConnection =
                   new UserConnectionManager(this, socket, CLIENT_TIMEOUT);
             
-            Thread thread = new Thread(userConnection);
-            thread.start();
+//            Thread thread = new Thread(userConnection);
+//            thread.start();
             
             // Enregistre le nouveau client
             synchronized(connections) {

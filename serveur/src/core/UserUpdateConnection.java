@@ -46,7 +46,7 @@ public class UserUpdateConnection implements Runnable {
          
          try {
          
-            user.update.updateInformations();
+//            user.update.updateInformations();
             
             try {
                Thread.sleep(500);

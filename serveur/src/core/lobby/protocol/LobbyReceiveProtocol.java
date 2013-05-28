@@ -43,7 +43,6 @@ public class LobbyReceiveProtocol extends ServerStandardReceiveProtocol {
          user.lobby.removePlayer(user);
          
          user.lobby = null;
-         user.update = null;
          
          try {
             user.connectionsToClient.updateChannel.close();
@@ -53,7 +52,7 @@ public class LobbyReceiveProtocol extends ServerStandardReceiveProtocol {
          }
          user.connectionsToClient.updateChannel = null;
          
-         user.server = new AccountConnection(core, user);
+         user.serverReceive = new AccountConnection(core, user);
       }
       catch (LobbyException e) {
          

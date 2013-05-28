@@ -44,9 +44,9 @@ public class ServerStandardUpdateProtocol {
    public long ping() {
       long time = System.currentTimeMillis();
       
-      user.connectionsToClient.receiveChannel.sendProtocolType(ProtocolType.PING);
+      user.connectionsToClient.updateChannel.sendProtocolType(ProtocolType.PING);
       
-      if (user.connectionsToClient.receiveChannel.receiveProtocolType() == ProtocolType.PING) {
+      if (user.connectionsToClient.updateChannel.receiveProtocolType() == ProtocolType.PING) {
          return System.currentTimeMillis() - time;
       }
       else {
@@ -59,7 +59,8 @@ public class ServerStandardUpdateProtocol {
     */
    @Deprecated
    public void textMessage(String message) {
-      user.connectionsToClient.receiveChannel.sendString(message);
+      user.connectionsToClient.updateChannel.sendProtocolType(ProtocolType.TEXT_MESSAGE);
+      user.connectionsToClient.updateChannel.sendString(message);
    }
 
 }

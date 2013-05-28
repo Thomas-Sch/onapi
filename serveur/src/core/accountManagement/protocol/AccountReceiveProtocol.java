@@ -109,8 +109,8 @@ public class AccountReceiveProtocol extends ServerStandardReceiveProtocol {
             user.log.push("Try to connect to Lobby...");
             user.lobby = freeLobby;
             LobbyConnection connection = new LobbyConnection(core, freeLobby, user);
-            user.server = connection;
-            user.update = connection;
+            user.serverReceive = connection;
+            user.serverUpdate = connection;
             
             int code = freeLobby.addPlayer(user);
             

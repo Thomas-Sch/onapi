@@ -21,7 +21,11 @@ import common.connections.protocol.ProtocolType;
 import core.Core;
 import core.accountManagement.AccountConnection;
 import core.protocol.ServerStandardReceiveProtocol;
+import core.protocol.ServerStandardUpdateProtocol;
+
 import java.net.Socket;
+
+import sun.util.logging.resources.logging;
 
 /**
  * TODO
@@ -31,10 +35,13 @@ import java.net.Socket;
  * @author Schweizer Thomas
  *
  */
-public class UserConnectionManager implements Runnable {
+public class UserConnectionManager {
    private Core core;
    
    private UserInformations user;
+   
+   private Thread threadReceive;
+   private Thread threadUpdate;
    
    public UserConnectionManager(Core core, Socket socket, int timeout) {
       init(core, socket, timeout);
@@ -55,49 +62,107 @@ public class UserConnectionManager implements Runnable {
       user.connectionsToClient = new ConnectionsToClient(core, this, socket, timeout);
       user.log.push("done.");
       
-      
       user.isConnected = true;
       
+      user.serverReceive = new AccountConnection(core, user);
       
-      user.server = new AccountConnection(core, user);
+      // Création des threads de communications
+      threadReceive = new Thread(new ClientRequests());
+      threadUpdate = new Thread(new ClientUpdate());
       
+      threadReceive.start();
+      threadUpdate.start();
       
       
    }
-
-
-   @Override
-   public void run() {
+   
+   private class ClientRequests implements Runnable {
       
-      ProtocolType proType;
-      
-      while(user.isConnected) {
+      private ClientRequests() {
          
-         try {
+      }
+
+      @Override
+      public void run() {
+         ProtocolType proType;
          
-            proType = user.connectionsToClient.receiveChannel.receiveProtocolType();
+         while(user.isConnected) {
             
-            user.server.answerRequest(proType);
+            try {
             
-            
+               proType = user.connectionsToClient.receiveChannel.receiveProtocolType();
+               
+               user.serverReceive.answerRequest(proType);
+               
+            }
+            catch (TimeOutException e) {
+               user.isConnected = false;
+               user.log.push("Timeout with client");
+            }
+            catch (ChannelClosedException e) {
+               user.isConnected = false;
+               user.log.push("Client lost");
+            }
+            catch (ChannelException e) {
+               user.isConnected = false;
+               user.log.push("Client lost");
+            }
+               
          }
-         catch (TimeOutException e) {
-            user.isConnected = false;
-            user.log.push("Timeout with client");
-         }
-         catch (ChannelClosedException e) {
-            user.isConnected = false;
-            user.log.push("Client lost");
-         }
-         catch (ChannelException e) {
-            user.isConnected = false;
-            user.log.push("Client lost");
-         }
-            
+         
+         core.removeLogPanel(user.log.getLogPanel());
+         core.removeConnection(UserConnectionManager.this);
+         
       }
       
-      core.removeLogPanel(user.log.getLogPanel());
-      core.removeConnection(this);
+   }
+
+   private class ClientUpdate implements Runnable {
+      
+      private ClientUpdate() {
+         
+      }
+
+      @Override
+      public void run() {
+         
+         // TODO to change !
+         ServerStandardUpdateProtocol protocol = new ServerStandardUpdateProtocol(core, user);
+         
+         while (user.isConnected) {
+            
+            try {
+               
+               user.log.push("Ping to client : " + protocol.ping() + " ms.");
+               
+               protocol.textMessage("still here ?");
+               
+               try {
+                  Thread.sleep(5000);
+               }
+               catch (InterruptedException e) { }
+               
+               
+            }
+            catch (TimeOutException e) {
+               user.isConnected = false;
+               user.log.push("Timeout with client");
+            }
+            catch (ChannelClosedException e) {
+               user.isConnected = false;
+               user.log.push("Client lost");
+            }
+            catch (ChannelException e) {
+               user.isConnected = false;
+               user.log.push("Client lost");
+            }
+            
+         }
+         
+      }
+      
+      
+      
       
    }
    

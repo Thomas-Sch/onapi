@@ -37,8 +37,8 @@ public class UserInformations {
    
    public UserState state;
    
-   public ServerRequestAnswers server;
-   public ServerUpdateOrder update;
+   public ServerRequestAnswers serverReceive;
+   public ServerUpdateOrder serverUpdate;
    
    public UserUpdateConnection updateActivity;
    
