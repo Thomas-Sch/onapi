@@ -15,6 +15,8 @@ import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import client.ClientRequestProtocol.ConnectionChannels;
 import common.components.UserAccount;
 import common.connections.Channel;
 import core.Core;
@@ -42,7 +44,7 @@ public class ClientRequestProtocolTest {
    private static Server server;
    private static int portNumber;
    
-   private Channel[] channel;
+   private ConnectionChannels[] connections;
    private ClientRequestProtocol[] protocol;
    
    
@@ -81,12 +83,12 @@ public class ClientRequestProtocolTest {
       System.out.println("+" + String.format("%78s", "").replace(' ', '-') + "+");
       System.out.print("Connexion(s) au serveur...");
       
-      channel = new Channel[NUMBER_OF_CLIENTS];
+      connections = new ConnectionChannels[NUMBER_OF_CLIENTS];
       protocol = new ClientRequestProtocol[NUMBER_OF_CLIENTS];
       
       for (int i = 0 ; i < NUMBER_OF_CLIENTS ; i++) {
-         channel[i] = new Channel(ADDRESS, portNumber, TIMEOUT);
-         protocol[i] = new ClientRequestProtocol(channel[i]);
+         protocol[i] = new ClientRequestProtocol();
+         connections[i] = protocol[i].connectToServer(ADDRESS, portNumber, TIMEOUT);
       }      
       
       System.out.println("Etablie(s).");
@@ -100,7 +102,8 @@ public class ClientRequestProtocolTest {
    public void tearDown() throws Exception {
       
       for (int i = 0 ; i < NUMBER_OF_CLIENTS ; i++) {
-         channel[i].close();
+         connections[i].requestChannel.close();
+         connections[i].updateChannel.close();
       }
       
       System.out.println("Fin du test " + testNumber + ".");

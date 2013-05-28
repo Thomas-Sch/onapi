@@ -12,6 +12,7 @@
 package client;
 
 import common.connections.Channel;
+import common.connections.protocol.ProtocolType;
 
 /**
  * Classe permettant de rassembler les protocoles utilisés par le client pour
@@ -34,5 +35,10 @@ public class ClientReceiveProtocol {
    public ClientReceiveProtocol(Channel channel) {
       this.channel = channel;
    }
+   
+   public void ping() {
+      channel.sendProtocolType(ProtocolType.PING);
+   }
+   
    
 }

@@ -19,6 +19,7 @@ import java.awt.event.ActionEvent;
 
 import utils.Logs;
 import client.ClientRequestProtocol;
+import client.ClientRequestProtocol.ConnectionChannels;
 
 import common.components.UserAccount;
 import common.connections.Channel;
@@ -34,7 +35,7 @@ import common.connections.exceptions.ChannelException;
  */
 public class AcConnect extends UserAction {
    
-   private static Channel channelRequest;
+   private static ConnectionChannels connections;
    private ClientRequestProtocol protocol;
    
    public AcConnect(Object ... dependencies) {
@@ -51,10 +52,14 @@ public class AcConnect extends UserAction {
       Logs.messages.push("Port: " + view.getServerPort());
       
       try {
-         channelRequest = new Channel(view.getServerAdress(), Integer.valueOf(view.getServerPort()), 1000);
+         
+         protocol = new ClientRequestProtocol();
+         connections = protocol.connectToServer(
+               view.getServerAdress(), Integer.valueOf(view.getServerPort()),
+               10000);
          
          view.setMessage("Connection au serveur effectuée.", Color.GREEN);
-         protocol = new ClientRequestProtocol(channelRequest);
+         
          UserAccount account = protocol.login(view.getLogin(), view.getPassword());
          
          if(account != null) {

@@ -78,10 +78,10 @@ public class ClientTest {
       
       private ClientRequestProtocol protocol;
       
-      public ClientConnection(Channel channel) {
-         protocol = new ClientRequestProtocol(channel);
+      public ClientConnection(String address, int port, int timeout) {
+         protocol = new ClientRequestProtocol();
          System.out.println("DEBUG - call to connectServer()");
-         channelUpdate = protocol.connectToServer();
+         channelUpdate = protocol.connectToServer(address, port, timeout).updateChannel;
          System.out.println("DEBUG - update channel created.");
       }
       
@@ -192,13 +192,11 @@ public class ClientTest {
       port = Integer.parseInt(scanner.nextLine());
       
       System.out.println("Connexion en cours...");
-     
-      channelRequest = new Channel(adresse, port, 10000);
       
       System.out.println("Connexion etablie !");
       
       // Creation du thread de traitement
-      connection = new ClientConnection(channelRequest);
+      connection = new ClientConnection(adresse, port, 10000);
       updates = new ClientUpdates(channelUpdate);
 
       threadConnection = new Thread(connection);
