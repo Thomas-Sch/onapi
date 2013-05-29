@@ -21,6 +21,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -71,6 +72,7 @@ public class GameRenderer {
 
    // Objets pour le rendu en mode debug
    private ShapeRenderer debugRenderer = new ShapeRenderer();
+   private Box2DDebugRenderer physicsDebugRenderer = new Box2DDebugRenderer();
    private FPSLogger fpsLog;
    private Label lblDebug;
 
@@ -102,7 +104,7 @@ public class GameRenderer {
 
       // Initialise le gestionnaire de lumières
       handler = game.getRayHandler();
-      handler.setBlurNum(3);
+      handler.setBlurNum(10);
 
    }
 

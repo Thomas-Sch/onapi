@@ -62,7 +62,7 @@ public class GameModel {
       rayHandler = new RayHandler(world);
 
       Team t1 = new Team(Color.RED);
-      map = new Map(8);
+      map = new Map(8, world);
 
       // Fait commencer le joueur au milieu de la map
       player = new Player(map.getRealPos(map.getSize() / 2, map.getSize() / 2),
