@@ -26,6 +26,7 @@ import core.UserInformations;
  * @author Schweizer Thomas
  *
  */
+@Deprecated
 public class ServerStandardProtocol {
    
    protected final Core core;

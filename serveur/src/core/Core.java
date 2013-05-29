@@ -45,7 +45,7 @@ import database.DBController;
 public class Core {
    
    private static final int CLIENT_TIMEOUT = 15000;
-   private static final int DEFAULT_PORT = 5000;
+   private static final int DEFAULT_PORT = 1234;
    
    private static final String DATABASE_DIRECTORY = "database";
    private static final String DATABASE_NAME = "onapi.db";

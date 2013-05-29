@@ -30,6 +30,7 @@ import core.accountManagement.AccountConnection;
  * @author Schweizer Thomas
  *
  */
+@Deprecated
 public class UserUpdateConnection implements Runnable {
    
    private UserInformations user;

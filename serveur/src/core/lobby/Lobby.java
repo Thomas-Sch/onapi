@@ -51,7 +51,7 @@ public class Lobby {
       init(nbPlayers);
    }
    
-   public int addPlayer(UserInformations user) throws LobbyException {
+   public int addPlayer(UserInformations user) {
       int code;
       
       synchronized(players) {
@@ -77,7 +77,8 @@ public class Lobby {
       return code;
    }
    
-   public void removePlayer(UserInformations user) throws LobbyException {
+   
+   public void removePlayer(UserInformations user) {
       
       synchronized (players) {
          if (players.remove(user)) {

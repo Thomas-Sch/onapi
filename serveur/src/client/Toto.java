@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : LobbyException.java
+ * Nom du fichier   : Toto.java
  * ============================================================================
- * Date de création : 19 mai 2013
+ * Date de création : 29 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,33 +9,16 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core.lobby.exceptions;
+package client;
 
 /**
- * Exception générique liée au salon d'attente.
- * 
+ * TODO
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
  *
  */
-public class LobbyException extends RuntimeException {
-   
-   public LobbyException() {
-      super();
-   }
-   
-   public LobbyException(String message) {
-      super(message);
-   }
-   
-   public LobbyException(Throwable cause) {
-      super(cause);
-   }
-   
-   public LobbyException(String message, Throwable cause) {
-      super(message, cause);
-   }
+public interface Toto {
 
 }
