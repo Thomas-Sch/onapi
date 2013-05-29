@@ -11,12 +11,26 @@
  */
 package game.models;
 
+import game.models.map.Tile;
+import box2dLight.ConeLight;
+import box2dLight.PointLight;
+import box2dLight.RayHandler;
+
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 
 /**
  * Représente le personnage principal du jeu.
@@ -33,11 +47,6 @@ public class Player extends Entity {
    private static final int HEIGHT = WIDTH;
 
    /**
-    * Position actuelle du personnage sur la map
-    */
-   private Vector2 pos;
-
-   /**
     * Orientation du personnage
     */
    private Vector2 dir;
@@ -50,15 +59,47 @@ public class Player extends Entity {
    /**
     * Texture du joueur à son affichage
     */
-   Texture texture;
+   private Texture texture;
 
-   public Player(Vector2 pos, Vector2 dir, Team team) {
+   private ConeLight torchLight;
+
+   private Body body;
+
+   private Rectangle bounds;
+
+   public Player(Vector2 pos, Vector2 dir, Team team, World world,
+         RayHandler handler) {
       super();
       setWidth(WIDTH);
       setHeight(HEIGHT);
-      moveTo(pos);
+      bounds = new Rectangle(pos.x, pos.y, getWidth(), getHeight());
+
       setTeam(team);
       loadResources();
+
+      // Définit la consistance physique du joueur
+      BodyDef bodyDef = new BodyDef();
+      bodyDef.type = BodyType.DynamicBody;
+      bodyDef.position.set(getPos());
+      body = world.createBody(bodyDef);
+      PolygonShape shape = new PolygonShape();
+      shape.setAsBox(bounds.height / 2, bounds.width / 2);
+      FixtureDef fix = new FixtureDef();
+      fix.shape = shape;
+      fix.density = 0.4f;
+      fix.friction = 0.5f;
+      fix.restitution = 0.8f;
+      body.createFixture(fix);
+
+      // Initialise les lumières diffusées par le joueur
+      new PointLight(handler, 5000, new Color(1, 1, 1, 0.5f), Tile.WIDTH - 50,
+            getPos().x, getPos().y).attachToBody(body, 0, 0);
+      torchLight = new ConeLight(handler, 5000, new Color(237f / 255f,
+            240f / 255f, 168f / 255f, 0.9f), 750, 1, 1, 270, 30);
+      // torchLight.attachToBody(body, 0, 0);
+
+      setDir(dir);
+      moveTo(pos);
    }
 
    public void loadResources() {
@@ -69,7 +110,7 @@ public class Player extends Entity {
     * @return Position du joueur sur la map
     */
    public Vector2 getPos() {
-      return pos;
+      return new Vector2(getX(), getY());
    }
 
    /**
@@ -79,8 +120,8 @@ public class Player extends Entity {
     *           Nouvelle position
     */
    public void moveTo(Vector2 newPos) {
-      this.pos = newPos;
-      setPosition(pos.x, pos.y);
+      setPosition(newPos.x - bounds.width / 2f, newPos.y - bounds.height / 2f);
+      torchLight.setPosition(getPos());
    }
 
    /**
@@ -90,8 +131,8 @@ public class Player extends Entity {
     *           Vecteur de déplacement (additionné à sa position actuelle)
     */
    public void move(Vector2 dir) {
-      this.pos.add(dir);
-      setPosition(pos.x, pos.y);
+      setPosition(getPos().x + dir.x, getPos().y + dir.y);
+      torchLight.setPosition(getPos());
    }
 
    /**
@@ -107,6 +148,8 @@ public class Player extends Entity {
     */
    public void setDir(Vector2 dir) {
       this.dir = dir;
+      rotate(dir.angle() - getRotation());
+      torchLight.setDirection(dir.angle());
    }
 
    /**
@@ -122,6 +165,11 @@ public class Player extends Entity {
     */
    public void setTeam(Team team) {
       this.team = team;
+   }
+
+   @Override
+   public void update(float deltaTime) {
+      body.setTransform(getPos(), dir.angle());
    }
 
    @Override
@@ -146,11 +194,20 @@ public class Player extends Entity {
 
    @Override
    public void debugRender(ShapeRenderer renderer) {
-      // renderer.begin(ShapeType.Rectangle);
-      // renderer.setColor(Color.RED);
-      // renderer.rect(getX() - getWidth() / 2f, getY() - getHeight() / 2f,
-      // getWidth(), getHeight());
-      // renderer.end();
+      renderer.begin(ShapeType.Rectangle);
+      renderer.setColor(Color.RED);
+      renderer.rect(body.getPosition().x, body.getPosition().y, bounds.width,
+            bounds.height);
+      renderer.end();
+   }
+
+   public Body getBody() {
+      return body;
+   }
+
+   @Override
+   public String toString() {
+      return String.format("Pos=%s\n", getPos());
    }
 
 }

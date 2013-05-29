@@ -14,6 +14,7 @@ package core.lobby.protocol;
 import core.Core;
 import core.UserInformations;
 import core.lobby.Lobby;
+import core.protocol.ServerStandardUpdateProtocol;
 
 /**
  * TODO
@@ -23,16 +24,13 @@ import core.lobby.Lobby;
  * @author Schweizer Thomas
  *
  */
-public class LobbyUpdateProtocol {
+public class LobbyUpdateProtocol extends ServerStandardUpdateProtocol {
    
-   private Core core;
    private Lobby lobby;
-   private UserInformations user;
    
    public LobbyUpdateProtocol(Core core, Lobby lobby, UserInformations user) {
-      this.core = core;
+      super(core, user);
       this.lobby = lobby;
-      this.user = user;
    }
    
    

@@ -12,6 +12,7 @@
 package gui.view;
 
 import gui.component.JLabelInfo;
+import gui.controller.MainFrame;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -36,17 +37,18 @@ import settings.Language.Text;
 public class JMainFrame extends JFrame {
 
    /**
-    * ID de sérialisation du composant graphique.
+    * ID de sï¿½rialisation du composant graphique.
     */
    private static final long serialVersionUID = -8770775554830532082L;
    
    private JLabelInfo lbiUserGreeting;
    private JButton btnPlay;
    private JButton btnInventory;
+   private MainFrame controller;
    
-   public JMainFrame(String title) {
+   public JMainFrame(String title, MainFrame controller) {
       super(title);
-      
+      this.controller = controller;
       initContent();
       setContentPane(buildContent());
       
@@ -54,7 +56,7 @@ public class JMainFrame extends JFrame {
    }
    
    public void initContent() {
-      lbiUserGreeting = new JLabelInfo("Bienvenue !");
+      lbiUserGreeting = new JLabelInfo("Bienvenue !" + controller.getUserName());
       btnPlay = new JButton(Text.PLAY_BUTTON.toString());
       btnInventory = new JButton(Text.INVENTORY_BUTTON.toString());
    }

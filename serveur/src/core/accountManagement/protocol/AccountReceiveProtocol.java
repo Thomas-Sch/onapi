@@ -11,6 +11,7 @@
  */
 package core.accountManagement.protocol;
 
+import common.components.AccountType;
 import common.components.UserAccount;
 import core.Core;
 import core.UserInformations;
@@ -18,8 +19,7 @@ import core.lobby.Lobby;
 import core.lobby.LobbyConnection;
 import core.lobby.exceptions.LobbyException;
 import core.lobby.protocol.LobbyReceiveProtocol;
-import core.protocol.ServerStandardProtocol;
-import database.components.AccountType;
+import core.protocol.ServerStandardReceiveProtocol;
 
 /**
  * TODO
@@ -29,31 +29,31 @@ import database.components.AccountType;
  * @author Schweizer Thomas
  *
  */
-public class AccountReceiveProtocol extends ServerStandardProtocol {
+public class AccountReceiveProtocol extends ServerStandardReceiveProtocol {
    
    public AccountReceiveProtocol(Core core, UserInformations user) {
       super(core, user);
    }
    
    public void login() {
+      UserAccount account = null;
       boolean isValidAccount = false;
       
-      String login = user.channelReceive.receiveString();
-      String password = user.channelReceive.receiveString();
+      String login = user.connectionsToClient.receiveChannel.receiveString();
+      String password = user.connectionsToClient.receiveChannel.receiveString();
       
       user.log.push("Try login account : " + login);
       
-      isValidAccount = core.checkAuthentification(login, password);
+      account = core.checkAuthentification(login, password);
       
-      user.channelReceive.sendBoolean(isValidAccount);
+      isValidAccount = account != null;
+      
+      user.connectionsToClient.receiveChannel.sendBoolean(isValidAccount);
       
       if (isValidAccount) {
          user.log.push("Now connected as " + login);
-         
-         user.account = new UserAccount(AccountType.USER, login, password, "Unknown", "User");
-         
-         user.channelReceive.sendObject(user.account);
-         
+         user.account = account;
+         user.connectionsToClient.receiveChannel.sendObject(user.account);
          updateLogName();
       }
       else {
@@ -69,26 +69,23 @@ public class AccountReceiveProtocol extends ServerStandardProtocol {
    }
    
    public void createAccount() {
+      UserAccount account = null;
       boolean accountCreated = false;
       
-      String login = user.channelReceive.receiveString();
-      String password = user.channelReceive.receiveString();
+      String login = user.connectionsToClient.receiveChannel.receiveString();
+      String password = user.connectionsToClient.receiveChannel.receiveString();
       
       user.log.push("Try creating account : " + login);
       
+      account = core.createAccount(login, password, AccountType.USER);
+      accountCreated = account != null;
       
-      accountCreated = core.createAccount(login, password);
-      
-      user.channelReceive.sendBoolean(accountCreated);
+      user.connectionsToClient.receiveChannel.sendBoolean(accountCreated);
       
       if (accountCreated) {
-         
          user.log.push("Account created with success");
-         
-         user.account = new UserAccount(AccountType.USER, login, password, "Unknown", "User");
-         
-         user.channelReceive.sendObject(user.account);
-         
+         user.account = account;
+         user.connectionsToClient.receiveChannel.sendObject(user.account);
          updateLogName();
       }
       else {
@@ -103,17 +100,22 @@ public class AccountReceiveProtocol extends ServerStandardProtocol {
       
       boolean isFreeLobby = freeLobby != null;
       
-      user.channelReceive.sendBoolean(isFreeLobby);
+      user.connectionsToClient.receiveChannel.sendBoolean(isFreeLobby);
       
       if (isFreeLobby) {
-         user.channelReceive.sendInt(freeLobby.getUpdatePortNumber());
+//         user.channelReceive.sendInt(freeLobby.getUpdatePortNumber());
          
          try {
-            freeLobby.addPlayer(user);
+            user.log.push("Try to connect to Lobby...");
+            user.lobby = freeLobby;
+            LobbyConnection connection = new LobbyConnection(core, freeLobby, user);
+            user.serverReceive = connection;
+            user.serverUpdate = connection;
             
-            user.server = new LobbyConnection(core, freeLobby, user);
+            int code = freeLobby.addPlayer(user);
             
-            user.log.push("Lobby joined with success");
+            // Envoi d'un numéro de code
+            user.connectionsToClient.receiveChannel.sendInt(code);
          }
          catch (LobbyException e) {
             user.log.push("Unable to join the lobby");

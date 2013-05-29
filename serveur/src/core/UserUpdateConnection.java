@@ -34,9 +34,8 @@ public class UserUpdateConnection implements Runnable {
    
    private UserInformations user;
    
-   public UserUpdateConnection(UserInformations user, Socket socket, int timeout) {
+   public UserUpdateConnection(UserInformations user) {
       this.user = user;
-      this.user.channelUpdate = new Channel(socket, timeout);
    }
 
 
@@ -47,7 +46,12 @@ public class UserUpdateConnection implements Runnable {
          
          try {
          
-            // TODO
+//            user.update.updateInformations();
+            
+            try {
+               Thread.sleep(500);
+            }
+            catch (InterruptedException e) {}
             
             
          }

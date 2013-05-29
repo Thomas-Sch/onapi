@@ -11,6 +11,12 @@
  */
 package core.lobby;
 
+import java.net.Socket;
+import java.util.LinkedList;
+import java.util.Random;
+
+import common.connections.Channel;
+
 import core.Port;
 import core.UserInformations;
 import core.UserUpdateConnection;
@@ -27,74 +33,128 @@ import core.lobby.exceptions.LobbyException;
  */
 public class Lobby {
    
-   private UserInformations[] players;
+   private boolean exit = false;
    
-   private int numberOfPlayers = 0;
+   private Thread activity;
+   
+   private LinkedList<UserInformations> players = new LinkedList<>();
+   
+   private int numberMaxOfPlayers;
    
    private int updateTimeout;
    
-   private Port updatePort;
+   private LinkedList<ExpectedPlayer> expectedPlayers = new LinkedList<>();
    
+   private boolean waiting = false;
    
-   
-   public Lobby(int nbPlayers, int updatePortWanted, int updateTimeout) {
-      init(nbPlayers, updatePortWanted, updateTimeout);
-      
+   public Lobby(int nbPlayers) {
+      init(nbPlayers);
    }
    
-   public synchronized void addPlayer(UserInformations user) throws LobbyException {
+   public int addPlayer(UserInformations user) throws LobbyException {
+      int code;
       
-      if (numberOfPlayers < players.length) {
-         players[numberOfPlayers] = user;
-         numberOfPlayers++;
-         
-         // Attendra un temps maximum fixé, au-delà : échec de connexion
-         updatePort.setTimeout(3000);
-         
-         try {
-            user.update = new UserUpdateConnection(user, updatePort.accept(),
-                                                   updateTimeout);
+      synchronized(players) {
+         if (players.size() < numberMaxOfPlayers && !isUserAlreadyIn(user)) {
+            players.add(user);
             
-            Thread thread = new Thread(user.update);
-            thread.start();
+            code = generateConnectionCode();
+            
+            System.out.println("Generated code : " + code);
+            
+            synchronized (expectedPlayers) {
+               expectedPlayers.add(new ExpectedPlayer(user, code));
+            }
+            
          }
-         catch (PortException e) {
-            numberOfPlayers--;
-            players[numberOfPlayers] = null;
+         else {
+            throw new LobbyException("This lobby is already full.");
          }
          
-         updatePort.setTimeout(0);
+         
       }
-      else {
-         throw new LobbyException("This lobby is already full.");
+      
+      return code;
+   }
+   
+   public void removePlayer(UserInformations user) throws LobbyException {
+      
+      synchronized (players) {
+         if (players.remove(user)) {
+            user.log.push("Removed from the lobby list.");
+         }
+         else {
+            user.log.push("Tryed to remove from a wrong lobby.");
+            throw new LobbyException("This player was not in that lobby.");
+         }
       }
       
    }
    
    public int getNumberOfPlayers() {
-      return numberOfPlayers;
+      int result;
+      synchronized (players) {
+         result = players.size();
+      }
+      return result;
    }
    
    public int getMaxNumberOfPlayers() {
-      return players.length;
+      return numberMaxOfPlayers;
    }
    
    public int getFreeSlots() {
       return getMaxNumberOfPlayers() - getNumberOfPlayers();
    }
    
-   public int getUpdatePortNumber() {
-      return updatePort.getPortNumber();
+   
+   private void init(int nbPlayers) {
+      numberMaxOfPlayers = nbPlayers;
    }
    
+   private int generateConnectionCode() {
+      int code;
+      
+      do {
+         code = (int)(Math.random() * Integer.MAX_VALUE);
+      } while (!isCodeFree(code));
+      
+      return code;
+   }
    
-   private void init(int nbPlayers, int updatePortNumber, int updateTimeout) {
-      players = new UserInformations[nbPlayers];
+   private boolean isCodeFree(int code) {
       
-      this.updateTimeout = updateTimeout;
+      synchronized (expectedPlayers) {
+         
+         for(ExpectedPlayer player : expectedPlayers) {
+            if (player.code == code) {
+               return false;
+            }
+         }
+         
+         return true;
+      }
+   }
+   
+   private boolean isUserAlreadyIn(UserInformations user) {
       
-      updatePort = new Port(updatePortNumber);
-      updatePort.activateFreePort();
+      synchronized(players) {
+         for (UserInformations player : players) {
+            if (player.account.getId() == user.account.getId()) {
+               return true;
+            }
+         }
+      }
+      
+      synchronized (expectedPlayers) {
+         for (ExpectedPlayer player : expectedPlayers) {
+            if (player.user.account.getId() == user.account.getId()) {
+               return true;
+            }
+         }
+      }
+      
+      return false;
       
    }
 

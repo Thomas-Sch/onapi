@@ -12,7 +12,6 @@
 package network;
 
 import java.net.InetAddress;
-import java.net.Socket;
 
 /**
  * Façade permettant d'initialiser la connexion avec le serveur de jeu.

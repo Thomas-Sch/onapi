@@ -13,6 +13,8 @@ import java.util.Scanner;
 
 import common.components.UserAccount;
 import common.connections.Channel;
+import common.connections.protocol.ProtocolType;
+import client.ClientReceiveProtocol;
 import client.ClientRequestProtocol;
 
 
@@ -33,12 +35,54 @@ public class ClientTest {
    
    private static Channel channelUpdate;
    
+   public static class ClientUpdates implements Runnable {
+      
+      private ClientReceiveProtocol protocol;
+      
+      private Channel channel;
+      
+      public ClientUpdates(Channel channel) {
+         this.channel = channel;
+         protocol = new ClientReceiveProtocol(channel);
+      }
+
+      @Override
+      public void run() {
+         ProtocolType type;
+         
+         while(true) {
+            
+            type = channel.receiveProtocolType();
+            
+            switch (type) {
+               
+               case PING :
+                  protocol.ping();
+                  break;
+                  
+               case TEXT_MESSAGE :
+                  System.out.println("Test update : " + channel.receiveString());
+                  break;
+               
+               default :
+                  System.out.println("Oups, bad protocol");
+            }
+            
+         }
+         
+      }
+      
+   }
+   
    public static class ClientConnection implements Runnable {
       
       private ClientRequestProtocol protocol;
       
-      public ClientConnection(Channel channel) {
-         protocol = new ClientRequestProtocol(channel);
+      public ClientConnection(String address, int port, int timeout) {
+         protocol = new ClientRequestProtocol();
+         System.out.println("DEBUG - call to connectServer()");
+         channelUpdate = protocol.connectToServer(address, port, timeout).updateChannel;
+         System.out.println("DEBUG - update channel created.");
       }
       
       public void executeCommand(String command) {
@@ -135,7 +179,9 @@ public class ClientTest {
       int port;
       
       ClientConnection connection;
+      ClientUpdates updates;
       Thread threadConnection;
+      Thread threadUpdates;
       
       
       System.out.print("Entrez l'addresse ip > ");
@@ -147,14 +193,17 @@ public class ClientTest {
       
       System.out.println("Connexion en cours...");
       
-      channelRequest = new Channel(adresse, port, 5000);
-      
       System.out.println("Connexion etablie !");
       
       // Creation du thread de traitement
-      connection = new ClientConnection(channelRequest);
+      connection = new ClientConnection(adresse, port, 10000);
+      updates = new ClientUpdates(channelUpdate);
+
       threadConnection = new Thread(connection);
       threadConnection.start();
+      
+      threadUpdates = new Thread(updates);
+      threadUpdates.start();
       
       String message;
       while(!exit) {

@@ -39,11 +39,21 @@ public class LogsFrame extends JFrame {
    }
 
    public void addLogPanel(LogPanel panel) {
-      tabbedPaneLogs.addTab(panel.getName(), panel);
+      try {
+         tabbedPaneLogs.addTab(panel.getName(), panel);
+      }
+      catch(IndexOutOfBoundsException e) {
+         System.out.println("DEBUG - ou la");
+      }
    }
    
    public void removeLogPanel(LogPanel panel) {
-      tabbedPaneLogs.remove(panel);
+      try {
+         tabbedPaneLogs.remove(panel);
+      }
+      catch(IndexOutOfBoundsException e) {
+         System.out.println("DEBUG - ici");
+      }
    }
    
    public void setLogPanelTitle(LogPanel panel, String title) {
@@ -51,7 +61,12 @@ public class LogsFrame extends JFrame {
       int index = tabbedPaneLogs.indexOfComponent(panel);
       
       if (index >= 0 && index < tabbedPaneLogs.getTabCount()) {
-         tabbedPaneLogs.setTitleAt(index, title);
+         try{
+            tabbedPaneLogs.setTitleAt(index, title);
+         }
+         catch(IndexOutOfBoundsException e) {
+            System.out.println("DEBUG - la");
+         }
       }
       
    }

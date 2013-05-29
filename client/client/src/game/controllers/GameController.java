@@ -66,16 +66,6 @@ public class GameController {
       RIGHT,
 
       /**
-       * Rotation gauche
-       */
-      TURN_LEFT,
-
-      /**
-       * Rotation droite
-       */
-      TURN_RIGHT,
-
-      /**
        * Tir avec l'arme
        */
       FIRE,

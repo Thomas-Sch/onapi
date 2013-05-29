@@ -11,10 +11,15 @@
  */
 package game.models;
 
+import game.models.map.Map;
+
 import java.util.List;
+
+import box2dLight.RayHandler;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 
 /**
  * Modèle du jeu. Gère les différentes entités au sein du jeu.
@@ -26,6 +31,13 @@ import com.badlogic.gdx.math.Vector2;
  * 
  */
 public class GameModel {
+
+   public static final float WORLD_TO_SCREEN = 100f;
+   public static final float SCREEN_TO_WORLD = 1f / WORLD_TO_SCREEN;
+
+   private static final Vector2 GRAVITY = new Vector2(0, 0);
+
+   private World world;
 
    /**
     * Représentation de la carte sous forme de grille contenant des cases vides
@@ -43,13 +55,18 @@ public class GameModel {
     */
    private List<Team> teams;
 
+   private RayHandler rayHandler;
+
    public GameModel() {
+      world = new World(GRAVITY, false);
+      rayHandler = new RayHandler(world);
+
       Team t1 = new Team(Color.RED);
       map = new Map(8);
 
       // Fait commencer le joueur au milieu de la map
       player = new Player(map.getRealPos(map.getSize() / 2, map.getSize() / 2),
-            new Vector2(0f, 1f), t1);
+            new Vector2(0f, 1f), t1, world, rayHandler);
    }
 
    /**
@@ -103,6 +120,20 @@ public class GameModel {
    public void loadResources() {
       player.loadResources();
       map.loadResources();
+   }
+
+   /**
+    * @return Le "world" du moteur physique
+    */
+   public World getWorld() {
+      return world;
+   }
+
+   /**
+    * @return Gestionnaire de lancers de rayons
+    */
+   public RayHandler getRayHandler() {
+      return rayHandler;
    }
 
 }

@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : AccountType.java
+ * Nom du fichier   : ConnectionException.java
  * ============================================================================
- * Date de création : 16 mai 2013
+ * Date de création : 8 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,7 +9,7 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package database.components;
+package common.connections.exceptions;
 
 /**
  * TODO
@@ -19,8 +19,22 @@ package database.components;
  * @author Schweizer Thomas
  *
  */
-public enum AccountType {
+public class ChannelException extends RuntimeException {
    
-   USER, ADMINISTRATOR;
+   public ChannelException() {
+      super();
+   }
+   
+   public ChannelException(String message) {
+      super(message);
+   }
+   
+   public ChannelException(Throwable cause) {
+      super(cause);
+   }
+   
+   public ChannelException(String message, Throwable cause) {
+      super(message,cause);
+   }  
 
 }

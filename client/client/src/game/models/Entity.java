@@ -33,5 +33,7 @@ public abstract class Entity extends Actor implements Debuggable {
 
    public void loadResources() {
    }
+   
+   abstract public void update(float deltaTime);
 
 }

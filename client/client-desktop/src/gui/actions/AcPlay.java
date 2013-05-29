@@ -17,8 +17,11 @@ import gui.view.JLobby;
 
 import java.awt.event.ActionEvent;
 
+import common.connections.Channel;
+
 import settings.Language.Text;
 import utils.Logs;
+import client.ClientRequestProtocol;
 import client.GameLauncher;
 
 /**
@@ -30,9 +33,19 @@ import client.GameLauncher;
  *
  */
 public class AcPlay extends UserAction {
+   
+   private ClientRequestProtocol protocol;
+   private Channel gameUpdate;
+   
+   public AcPlay(Object ... dependencies) {
+      super(dependencies);
+   }
 
    @Override
    protected void execute(ActionEvent event, Object[] dependencies) {
+      protocol = (ClientRequestProtocol) dependencies[0];
+      gameUpdate = protocol.joinGame();
+      
       Logs.messages.push("Recherche d'une partie initiée !");
       JLobby view = new JLobby();
       view.setTitle(Text.APP_TITLE.toString() + " - " + Text.LOBBY_TITLE.toString());

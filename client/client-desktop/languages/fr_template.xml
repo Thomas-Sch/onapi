@@ -9,5 +9,7 @@
   <inventory_button>TODO</inventory_button>
   <login_label>TODO</login_label>
   <password_label>TODO</password_label>
+  <server_adress_label>TODO</server_adress_label>
+  <server_port_label>TODO</server_port_label>
   <ready_label>TODO</ready_label>
 </language>

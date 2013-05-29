@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : MazeGenerator.java
+ * Nom du fichier   : MazeTile.java
  * ============================================================================
- * Date de création : 16 mai 2013
+ * Date de création : 21 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,11 +9,7 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package game;
-
-import game.models.Map.Tile;
-
-import java.util.Random;
+package game.models.map;
 
 /**
  * TODO
@@ -24,20 +20,21 @@ import java.util.Random;
  * @author Schweizer Thomas
  * 
  */
-public abstract class MazeGenerator {
+public enum Tile {
+   EMPTY, WALL;
 
-   public static Tile[][] create(int size) {
-      Tile[][] grid = new Tile[size][size];
-      Random r = new Random();
-      Tile[] tileTypes = Tile.values();
+   public static final int WIDTH = 450;
+   public static final int HEIGHT = WIDTH;
 
-      for (int i = 0; i < grid.length; i++) {
-         for (int j = 0; j < grid[i].length; j++) {
-            grid[i][j] = tileTypes[r.nextInt(2)];
-         }
+   @Override
+   public String toString() {
+      switch (this) {
+         case EMPTY:
+            return " ";
+         case WALL:
+            return "#";
+         default:
+            return "?";
       }
-
-      return grid;
    }
-
 }

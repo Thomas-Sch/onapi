@@ -13,10 +13,9 @@ package common.components;
 
 import java.io.Serializable;
 
-import database.components.AccountType;
 
 /**
- * TODO
+ * Représente un compte d'utilisateur de la base de donnée.
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
@@ -27,6 +26,8 @@ public class UserAccount implements Serializable {
    
    private AccountType type;
    
+   private int id;
+   
    private String login;
    
    private String password;
@@ -35,13 +36,18 @@ public class UserAccount implements Serializable {
    
    private String lastName;
    
-   public UserAccount(AccountType type, String login, String password,
+   public UserAccount(int id, AccountType type, String login, String password,
          String firstName, String lastName) {
+      this.id = id;
       this.type = type;
       this.login = login;
       this.password = password;
       this.firstName = firstName;
       this.lastName = lastName;
+   }
+   
+   public int getId() {
+      return id;
    }
    
    public void setType(AccountType type) {

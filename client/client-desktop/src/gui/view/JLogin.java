@@ -15,18 +15,20 @@ import gui.component.JLabelPasswordPanel;
 import gui.component.JLabelTextPanel;
 import gui.component.JValidateCancel;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
 
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import settings.Language.Text;
 
 /**
- * TODO
+ * Fenêtre de login.
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
@@ -36,13 +38,16 @@ import settings.Language.Text;
 public class JLogin extends JFrame{
 
    /**
-    * ID de s�rialisation du composant graphique.
+    * ID sérialisation du composant graphique.
     */
    private static final long serialVersionUID = -9093556072363479532L;
    
    private JValidateCancel vclActions;
    private JLabelTextPanel ltpLogin;
+   private JLabelTextPanel ltpServerAdress;
+   private JLabelTextPanel ltpServerPort;
    private JLabelPasswordPanel lppPassword;
+   private JLabel lblConnectionInfo;
    
    public JLogin (String title) {
       super(title);
@@ -57,33 +62,27 @@ public class JLogin extends JFrame{
       vclActions = new JValidateCancel();
       ltpLogin = new JLabelTextPanel(Text.LOGIN_LABEL.toString());
       lppPassword = new JLabelPasswordPanel(Text.PASSWORD_LABEL.toString());
+      ltpServerAdress = new JLabelTextPanel(Text.SERVER_ADRESS_LABEL.toString());
+      ltpServerPort = new JLabelTextPanel(Text.SERVER_PORT_LABEL.toString());
+      lblConnectionInfo = new JLabel("");
+      lblConnectionInfo.setForeground(Color.RED);
    }
    
    public JPanel buildContent() {
+      JPanel pnlMargin = new JPanel();
       JPanel pnlContent = new JPanel();
+      pnlMargin.setLayout(new FlowLayout(FlowLayout.CENTER, 10,10));
+      pnlContent.setLayout(new BoxLayout(pnlContent, BoxLayout.PAGE_AXIS));
       
-      pnlContent.setLayout(new GridBagLayout());
+      pnlContent.add(ltpLogin);
+      pnlContent.add(lppPassword);
+      pnlContent.add(ltpServerAdress);
+      pnlContent.add(ltpServerPort);
+      pnlContent.add(lblConnectionInfo);
+      pnlContent.add(vclActions);
       
-      GridBagConstraints constraints = new GridBagConstraints();
-      constraints.fill = GridBagConstraints.HORIZONTAL;
-      constraints.insets = new Insets(5, 5, 5, 5);
-      constraints.weightx = 0.5;
-      constraints.weighty = 0.5;
-      
-      constraints.gridx = 0;
-      constraints.gridy = 0;
-      pnlContent.add(ltpLogin, constraints);
-      
-      constraints.gridy = 1;
-      pnlContent.add(lppPassword, constraints);
-      
-      constraints.gridy = 2;
-      constraints.anchor = GridBagConstraints.EAST;
-      constraints.fill = GridBagConstraints.NONE;
-      constraints.weighty = 0.1;
-      pnlContent.add(vclActions, constraints);
-      
-      return pnlContent;
+      pnlMargin.add(pnlContent,BorderLayout.CENTER);
+      return pnlMargin;
    }
    
    public void addValidateListener(ActionListener listener) {
@@ -101,5 +100,21 @@ public class JLogin extends JFrame{
    public String getPassword() {
       return lppPassword.getText();
    }
-
+   
+   public String getServerAdress() {
+      return ltpServerAdress.getText();
+   }
+   
+   public String getServerPort() {
+      return ltpServerPort.getText();
+   }
+   
+   public void setMessage(String message) {
+      lblConnectionInfo.setText(message);
+   }
+   
+   public void setMessage(String message, Color color) {
+      lblConnectionInfo.setForeground(color);
+      lblConnectionInfo.setText(message);
+   }
 }

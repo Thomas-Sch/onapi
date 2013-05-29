@@ -11,11 +11,11 @@
  */
 package core.protocol;
 
+import common.components.AccountType;
 import common.components.UserAccount;
 import common.connections.protocol.ProtocolType;
 import core.Core;
 import core.UserInformations;
-import database.components.AccountType;
 
 /**
  * Classe permettant de rassembler les protocoles concernant les requêtes
@@ -48,17 +48,17 @@ public class ServerStandardProtocol {
    public void textMessage() {
       String message;
       
-      message = user.channelReceive.receiveString();
+      message = user.connectionsToClient.receiveChannel.receiveString();
       
       user.log.push(message);
    }
    
    public void acceptRequest(ProtocolType type) {
-      user.channelReceive.sendProtocolType(type);
+      user.connectionsToClient.receiveChannel.sendProtocolType(type);
    }
    
    public void refuseRequest(ProtocolType type) {
-      user.channelReceive.sendProtocolType(ProtocolType.REFUSE);
+      user.connectionsToClient.receiveChannel.sendProtocolType(ProtocolType.REFUSE);
    }
 
 }

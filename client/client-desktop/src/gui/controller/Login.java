@@ -24,7 +24,7 @@ import settings.Settings;
 import settings.Language.Text;
 
 /**
- * TODO
+ * Contrôleur de la fenêtre de login.
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
@@ -35,7 +35,7 @@ public class Login extends Controller {
    JLogin view;
 
    @Override
-   protected void initComponents() {
+   protected void initComponents(Object ... object) {
       view = new JLogin(Text.APP_TITLE.toString());
       Positions.setPositionOnScreen(view,  Settings.mainFrame.anchor);
       view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
