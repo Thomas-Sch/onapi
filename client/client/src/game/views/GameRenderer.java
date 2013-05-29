@@ -142,8 +142,11 @@ public class GameRenderer {
       cam.update();
 
       // Affichage des entités du jeu
-      game.getPlayer().draw(ui.getSpriteBatch(), 1.0f);
+      ui.getSpriteBatch().setProjectionMatrix(cam.combined);
+      ui.getSpriteBatch().begin();
       game.getMap().draw(ui.getSpriteBatch(), 1.0f);
+      game.getPlayer().draw(ui.getSpriteBatch(), 1.0f);
+      ui.getSpriteBatch().end();
 
       // Affichage des informations de debug
       if (debug) debugRender();

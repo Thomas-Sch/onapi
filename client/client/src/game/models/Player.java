@@ -96,7 +96,6 @@ public class Player extends Entity {
             getPos().x, getPos().y).attachToBody(body, 0, 0);
       torchLight = new ConeLight(handler, 5000, new Color(237f / 255f,
             240f / 255f, 168f / 255f, 0.9f), 750, 1, 1, 270, 30);
-      // torchLight.attachToBody(body, 0, 0);
 
       setDir(dir);
       moveTo(pos);
@@ -183,13 +182,10 @@ public class Player extends Entity {
       int textureHeight = texture.getHeight();
 
       // Dessiner à l'écran le joueur
-      batch.begin();
-      batch.draw(region, Gdx.graphics.getWidth() / 2 - region.getRegionWidth()
-            / 2, Gdx.graphics.getHeight() / 2 - region.getRegionHeight() / 2,
-            textureWidth / 2f, textureHeight / 2f, textureWidth, textureHeight,
-            getWidth() / textureWidth, getHeight() / textureHeight,
-            getRotation(), false);
-      batch.end();
+      batch.draw(region, getPos().x - texture.getWidth() / 2, getPos().y
+            - texture.getHeight() / 2, textureWidth / 2f, textureHeight / 2f,
+            textureWidth, textureHeight, getWidth() / textureWidth, getHeight()
+                  / textureHeight, getRotation(), false);
    }
 
    @Override
