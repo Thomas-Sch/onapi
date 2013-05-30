@@ -31,8 +31,6 @@ import javax.swing.JTextArea;
 @SuppressWarnings("serial")
 public class LogPanel extends JPanel {
    
-   private final static int MAX_CHAR = 80;
-   
    private JTextArea textArea;
    
    private JScrollPane scrollPane;
