@@ -92,9 +92,9 @@ public class Player extends Entity {
       body.createFixture(fix);
 
       // Initialise les lumières diffusées par le joueur
-      new PointLight(handler, 5000, new Color(1, 1, 1, 0.5f), Tile.WIDTH - 50,
+      new PointLight(handler, 500, new Color(1, 1, 1, 0.5f), Tile.WIDTH - 50,
             getPos().x, getPos().y).attachToBody(body, 0, 0);
-      torchLight = new ConeLight(handler, 5000, new Color(237f / 255f,
+      torchLight = new ConeLight(handler, 500, new Color(237f / 255f,
             240f / 255f, 168f / 255f, 0.9f), 750, 1, 1, 270, 30);
 
       setDir(dir);

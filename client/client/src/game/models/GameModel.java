@@ -36,6 +36,9 @@ public class GameModel {
    public static final float SCREEN_TO_WORLD = 1f / WORLD_TO_SCREEN;
 
    private static final Vector2 GRAVITY = new Vector2(0, 0);
+   private static final int NB_TEAMS = 2;
+   private static final int MAZE_SIZE = 8; // Largeur du labyrinthe en nombre de
+                                           // sommets (croisements)
 
    private World world;
 
@@ -62,7 +65,7 @@ public class GameModel {
       rayHandler = new RayHandler(world);
 
       Team t1 = new Team(Color.RED);
-      map = new Map(8, world, 2);
+      map = new Map(MAZE_SIZE, world, NB_TEAMS);
 
       // Fait commencer le joueur au milieu de la map
       player = new Player(map.getRealPos(map.getSize() / 2, map.getSize() / 2),
