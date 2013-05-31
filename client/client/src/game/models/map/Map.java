@@ -50,6 +50,7 @@ public class Map extends Entity {
    private Texture textureMur;
    private Texture textureSol;
    private LinkedList<Spawner> spawners = new LinkedList<Spawner>();
+   private Body[][] wallBodies;
 
    public void loadResources() {
       textureSol = new Texture(Gdx.files.internal("data/sol.png"));
@@ -57,12 +58,16 @@ public class Map extends Entity {
    }
 
    public Map(World world, Team[] teams) {
+      super();
+      setZIndex(3000000);
+      
       // Crée la map et ajoute les spawners
       MazeGenerator generator = new MazeGenerator();
       setGrid(generator.generateMaze(teams.length * 3));
       spawners = generator.generateSpawners(teams);
 
       // Définit la consistance physique des murs
+      wallBodies = new Body[grid.length][grid.length];
       for (int i = 0; i < grid.length; i++) {
          for (int j = 0; j < grid[i].length; j++) {
             Tile t = grid[i][j];
@@ -81,6 +86,7 @@ public class Map extends Entity {
                fix.friction = 0.5f;
                fix.restitution = 0.8f;
                body.createFixture(fix);
+               wallBodies[i][j] = body;
             }
          }
       }
@@ -134,13 +140,13 @@ public class Map extends Entity {
       for (int i = 0; i < grid.length; i++) {
          for (int j = 0; j < grid[i].length; j++) {
             if (grid[i][j] == Tile.WALL) {
-               // Dessiner un mur
+               // Dessine un mur
                batch.draw(textureMur, (i - 0.5f) * Tile.WIDTH, (j - 0.5f)
                      * Tile.HEIGHT, (float) Tile.WIDTH, (float) Tile.HEIGHT,
                      0f, 0f, 1f, 1f);
             }
             else {
-               // dessine un sol
+               // Dessine un sol
                batch.draw(textureSol, (i - 0.5f) * Tile.WIDTH, (j - 0.5f)
                      * Tile.HEIGHT, (float) Tile.WIDTH, (float) Tile.HEIGHT,
                      0f, 0f, 8f, 8f);
@@ -193,8 +199,13 @@ public class Map extends Entity {
 
    @Override
    public void update(float deltaTime) {
-      // TODO Auto-generated method stub
-
+      for (int i = 0; i < wallBodies.length; i++) {
+         for (int j = 0; j < wallBodies.length; j++) {
+            if (wallBodies[i][j] != null) {
+               //wallBodies[i][j].setTransform(grid[i][j]., y, angle)
+            }
+         }
+      }
    }
 
 }

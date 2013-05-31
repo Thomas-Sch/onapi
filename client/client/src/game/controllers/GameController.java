@@ -11,12 +11,14 @@
  */
 package game.controllers;
 
+import game.models.Entity;
 import game.models.GameModel;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
  * Traite les entrées de l'utilisateur, les fait valider auprès du serveur puis
@@ -144,6 +146,9 @@ public class GameController {
          game.getPlayer().move(new Vector2(-moveSpeed, 0));
       }
 
+      for (Actor e : game.getEntities().getChildren()) {
+         ((Entity) e).update(delta);
+      }
    }
 
 }

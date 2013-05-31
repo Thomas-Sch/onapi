@@ -63,11 +63,12 @@ public class GameScreen extends ScreenAdapter {
    public void show() {
       System.out.println("Resources loading...");
       game = new GameModel();
+      game.loadResources();
+      System.out.println("Resources loaded.");
       renderer = new GameRenderer(game, true);
       controller = new GameController(game);
       Gdx.input.setInputProcessor(this);
-      game.loadResources();
-      System.out.println("Resources loaded.");
+      System.out.println("Game ready.");
    }
 
    @Override
@@ -83,8 +84,6 @@ public class GameScreen extends ScreenAdapter {
 
    private void update(float delta) {
       controller.update(delta);
-      game.getMap().update(delta);
-      game.getPlayer().update(delta);
    }
 
    @Override

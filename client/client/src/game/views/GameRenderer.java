@@ -11,9 +11,8 @@
  */
 package game.views;
 
+import game.models.Entity;
 import game.models.GameModel;
-import game.models.Player;
-import game.models.Team;
 import box2dLight.RayHandler;
 
 import com.badlogic.gdx.Gdx;
@@ -21,9 +20,11 @@ import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -31,12 +32,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 /**
  * Gère l'affichage du jeu à l'écran.
- *
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
 public class GameRenderer {
 
@@ -75,6 +76,7 @@ public class GameRenderer {
    // Objets pour le rendu en mode debug
    private ShapeRenderer debugRenderer = new ShapeRenderer();
    private Box2DDebugRenderer physicsDebugRenderer = new Box2DDebugRenderer();
+   private Matrix4 physicsDebugMatrix;
    private FPSLogger fpsLog;
    private Label lblDebug;
 
@@ -95,7 +97,12 @@ public class GameRenderer {
       this.cam = new OrthographicCamera(width, height);
       viewport = new Rectangle(0, 0, width, height);
 
+      // Initialise les objets de debug
       debugRenderer.setProjectionMatrix(cam.combined);
+      physicsDebugMatrix = new Matrix4(cam.combined);
+      // physicsDebugMatrix.scale(GameModel.WORLD_TO_SCREEN,
+      // GameModel.WORLD_TO_SCREEN, 1f);
+
       fpsLog = new FPSLogger();
 
       // Initialise la scène de l'interface utilisateur
@@ -148,27 +155,26 @@ public class GameRenderer {
       // Affichage des entités du jeu
       ui.getSpriteBatch().setProjectionMatrix(cam.combined);
       ui.getSpriteBatch().begin();
-      game.getMap().draw(ui.getSpriteBatch(), 1.0f);
-      for (Team t : game.getTeams()) {
-         for (Player p : t.getMembers()) {
-            p.draw(ui.getSpriteBatch(), 1.0f);
-         }
+      for (Actor e : game.getEntities().getChildren()) {
+         e.draw(ui.getSpriteBatch(), 1.0f);
       }
+      if (debug)
+         physicsDebugRenderer.render(game.getWorld(), physicsDebugMatrix);
       ui.getSpriteBatch().end();
 
       // Affichage des informations de debug
       if (debug) debugRender();
 
       // Met à jour les lumières
-      handler.setCombinedMatrix(cam.combined);
-      handler.updateAndRender();
+      // handler.setCombinedMatrix(cam.combined);
+      // handler.updateAndRender();
 
       // Affichage de l'interface graphique
       ui.act(Gdx.graphics.getDeltaTime());
       ui.draw();
 
    }
-   
+
    /**
     * Affiche des données de debug à l'écran
     */
@@ -177,17 +183,14 @@ public class GameRenderer {
       lblDebug.setText(String.format("%s", game.getPlayer(), game.getMap()));
 
       debugRenderer.setProjectionMatrix(cam.combined);
-      game.getMap().debugRender(debugRenderer);
-      for (Team t : game.getTeams()) {
-         for (Player p : t.getMembers()) {
-            p.debugRender(debugRenderer);
-         }
+      for (Actor e : game.getEntities().getChildren()) {
+         ((Entity) e).debugRender(debugRenderer);
       }
    }
 
    /**
     * (Re)définit la hauteur et la largeur de l'écran graphique
-    *
+    * 
     * @param width
     *           Nouvelle largeur de l'écran graphique
     * @param height

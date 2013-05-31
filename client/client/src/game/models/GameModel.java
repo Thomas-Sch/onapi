@@ -17,6 +17,8 @@ import box2dLight.RayHandler;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
 
 /**
  * Modèle du jeu. Gère les différentes entités au sein du jeu.
@@ -35,6 +37,16 @@ public class GameModel {
    private static final Vector2 GRAVITY = new Vector2(0, 0);
 
    private World world;
+
+   private Group entities = new Group();
+
+   /*
+    * private Collection<Entity> entities = new LinkedList<Entity>();new
+    * PriorityQueue<Entity>(11, new Comparator<Entity>() {
+    * 
+    * @Override public int compare(Entity e1, Entity e2) { return e1.,
+    * e2.getName()); } });
+    */
 
    /**
     * Représentation de la carte sous forme de grille contenant des cases vides
@@ -60,26 +72,33 @@ public class GameModel {
 
       teams = new Team[] { new Team(Color.BLUE), new Team(Color.RED) };
       map = new Map(world, teams);
-      
+
       // Fait commencer le joueur au milieu de la map
       player = new Player(Map.getRealPos(0, 0), new Vector2(0f, 1f), teams[0],
             world, rayHandler);
 
       // Ajoute d'autres joueurs
-      for (int i = 0; i < 14; i++) {
-         new Player(Map.getRealPos(0, 0), new Vector2(0f, 1f), teams[0], world,
-               rayHandler);
-      }
-      for (int i = 0; i < 15; i++) {
-         new Player(Map.getRealPos(0, 0), new Vector2(0f, 1f), teams[1], world,
-               rayHandler);
-      }
+      // for (int i = 0; i < 14; i++) {
+      // new Player(Map.getRealPos(0, 0), new Vector2(0f, 1f), teams[0], world,
+      // rayHandler);
+      // }
+      // for (int i = 0; i < 15; i++) {
+      // new Player(Map.getRealPos(0, 0), new Vector2(0f, 1f), teams[1], world,
+      // rayHandler);
+      // }
 
       // Fait "spawner" (apparaitre) les joueurs sur la carte, autrement dit,
       // leur donne à chaque une position initiale
       for (Team t : teams) {
          t.spawnPlayers();
       }
+
+      // entities.add(player);
+      // entities.add(map);
+
+
+      entities.addActorAt(2, player);
+      entities.addActorAt(1, map);
    }
 
    /**
@@ -131,8 +150,9 @@ public class GameModel {
     * Charge les ressources du jeu (images, sons...)
     */
    public void loadResources() {
-      player.loadResources();
-      map.loadResources();
+      for (Actor e : entities.getChildren()) {
+         ((Entity) e).loadResources();
+      }
    }
 
    /**
@@ -147,6 +167,10 @@ public class GameModel {
     */
    public RayHandler getRayHandler() {
       return rayHandler;
+   }
+
+   public Group getEntities() {
+      return entities;
    }
 
 }

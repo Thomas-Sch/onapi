@@ -22,7 +22,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -45,7 +44,7 @@ public class Player extends Entity {
 
    private static int lastId = 1;
    private final int id = lastId++;
-   
+
    private static final int WIDTH = 50;
    private static final int HEIGHT = WIDTH;
 
@@ -73,6 +72,8 @@ public class Player extends Entity {
    public Player(Vector2 pos, Vector2 dir, Team team, World world,
          RayHandler handler) {
       super();
+      setZIndex(2000000);
+      
       setWidth(WIDTH);
       setHeight(HEIGHT);
       bounds = new Rectangle(pos.x, pos.y, getWidth(), getHeight());
@@ -98,8 +99,13 @@ public class Player extends Entity {
       // Initialise les lumières diffusées par le joueur
       new PointLight(handler, 250, new Color(1, 1, 1, 0.5f), Tile.WIDTH - 50,
             getPos().x, getPos().y).attachToBody(body, 0, 0);
-      torchLight = new ConeLight(handler, 250, team.getColor()/*new Color(237f / 255f,
-            240f / 255f, 168f / 255f, 0.9f)*/, 750, 1, 1, 270, 30);
+      torchLight = new ConeLight(handler, 250, team.getColor()/*
+                                                               * new Color(237f
+                                                               * / 255f, 240f /
+                                                               * 255f, 168f /
+                                                               * 255f, 0.9f)
+                                                               */, 750, 1, 1,
+            270, 30);
 
       setDir(dir);
       moveTo(pos);
@@ -194,11 +200,11 @@ public class Player extends Entity {
 
    @Override
    public void debugRender(ShapeRenderer renderer) {
-      renderer.begin(ShapeType.Rectangle);
-      renderer.setColor(Color.RED);
-      renderer.rect(body.getPosition().x, body.getPosition().y, bounds.width,
-            bounds.height);
-      renderer.end();
+      // renderer.begin(ShapeType.Rectangle);
+      // renderer.setColor(Color.RED);
+      // renderer.rect(body.getPosition().x, body.getPosition().y, bounds.width,
+      // bounds.height);
+      // renderer.end();
    }
 
    public Body getBody() {
@@ -207,7 +213,6 @@ public class Player extends Entity {
 
    @Override
    public String toString() {
-      return String.format("%d", id);//Pos=%s\n", getPos());
+      return String.format("Pos=%s\n", getPos());
    }
-
 }
