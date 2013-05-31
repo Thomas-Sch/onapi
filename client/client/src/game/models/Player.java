@@ -43,6 +43,9 @@ import com.badlogic.gdx.physics.box2d.World;
  */
 public class Player extends Entity {
 
+   private static int lastId = 1;
+   private final int id = lastId++;
+   
    private static final int WIDTH = 50;
    private static final int HEIGHT = WIDTH;
 
@@ -75,6 +78,7 @@ public class Player extends Entity {
       bounds = new Rectangle(pos.x, pos.y, getWidth(), getHeight());
 
       setTeam(team);
+      team.getMembers().add(this);
       loadResources();
 
       // Définit la consistance physique du joueur
@@ -92,10 +96,10 @@ public class Player extends Entity {
       body.createFixture(fix);
 
       // Initialise les lumières diffusées par le joueur
-      new PointLight(handler, 500, new Color(1, 1, 1, 0.5f), Tile.WIDTH - 50,
+      new PointLight(handler, 250, new Color(1, 1, 1, 0.5f), Tile.WIDTH - 50,
             getPos().x, getPos().y).attachToBody(body, 0, 0);
-      torchLight = new ConeLight(handler, 500, new Color(237f / 255f,
-            240f / 255f, 168f / 255f, 0.9f), 750, 1, 1, 270, 30);
+      torchLight = new ConeLight(handler, 250, team.getColor()/*new Color(237f / 255f,
+            240f / 255f, 168f / 255f, 0.9f)*/, 750, 1, 1, 270, 30);
 
       setDir(dir);
       moveTo(pos);
@@ -203,7 +207,7 @@ public class Player extends Entity {
 
    @Override
    public String toString() {
-      return String.format("Pos=%s\n", getPos());
+      return String.format("%d", id);//Pos=%s\n", getPos());
    }
 
 }

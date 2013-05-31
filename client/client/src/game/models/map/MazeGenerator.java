@@ -124,7 +124,7 @@ public class MazeGenerator {
       } while (pathStack.size() > 0);
 
       addExit();
-      
+
       return grid;
    }
 
@@ -132,15 +132,15 @@ public class MazeGenerator {
     * 
     */
    public LinkedList<Spawner> generateSpawners(Team[] teams) {
-      LinkedList<Spawner> spawners = new LinkedList<Spawner>(); 
+      LinkedList<Spawner> spawners = new LinkedList<Spawner>();
       int x, y;
       for (int i = 0; i < mazeSize; i++) {
          for (int j = 0; j < mazeSize; j++) {
             x = gridCoord(i);
             y = gridCoord(j);
             if (grid[x][y] != Tile.EXIT) {
-               grid[x][y] = Tile.SPAWNER;//.spawner((x + y) % (nbTeams + 1));
-               spawners.add(new Spawner(x, y, teams[(x + y) % teams.length]));
+               grid[x][y] = Tile.SPAWNER;
+               spawners.add(new Spawner(x, y, teams[(i + j) % teams.length]));
             }
          }
       }
@@ -155,7 +155,7 @@ public class MazeGenerator {
       int y = gridCoord(rand.nextInt(mazeSize));
       grid[x][y] = Tile.EXIT;
    }
-   
+
    /**
     * Crée le chemin entre les deux sommets (doivent être à une case l'un de
     * l'autre)

@@ -35,6 +35,9 @@ import com.badlogic.gdx.physics.box2d.World;
  * La map est une grille dans laquelle on place les murs et autres éléments de
  * la carte (spawners, sortie...).
  * 
+ * La map générée est (3 * nb de teams) x (3 * nb de teams) sommets de labyrinthe,
+ * soit une grille carrée de 6 * nb de teams + 1 cellules de côté.
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
@@ -105,7 +108,7 @@ public class Map extends Entity {
     * @param j
     * @return
     */
-   public Vector2 getRealPos(int i, int j) {
+   public static Vector2 getRealPos(int i, int j) {
       return new Vector2((0.5f + i) * Tile.WIDTH, (0.5f + j) * Tile.HEIGHT);
    }
 

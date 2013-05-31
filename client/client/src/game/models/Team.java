@@ -12,8 +12,12 @@
 package game.models;
 
 import java.util.LinkedList;
+import java.util.ListIterator;
+
+import utils.ListUtils;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * TODO
@@ -62,6 +66,27 @@ public class Team {
     */
    public LinkedList<Spawner> getSpawners() {
       return spawners;
+   }
+
+   /**
+    * Déplace les membres de l'équipe en les plaçant aléatoirement sur les
+    * spawners à disposition de l'équipe. Il peut ne pas y avoir de joueur à la
+    * fin sur un spawner, comme il peut y en avoir plusieurs.
+    */
+   public void spawnPlayers() {
+      LinkedList<Spawner> spawns = ListUtils.shuffled(spawners);
+      ListIterator<Spawner> spawnIt = spawns.listIterator();
+      Spawner currentSpawner;
+      for (Player p : members) {
+         if (!spawnIt.hasNext()) {
+            spawnIt = spawns.listIterator();
+            currentSpawner = spawns.get(0);
+         }
+         else {
+            currentSpawner = spawnIt.next();
+         }
+         p.moveTo(new Vector2(currentSpawner.getRealX(), currentSpawner.getRealY()));
+      }
    }
 
 }

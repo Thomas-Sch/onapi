@@ -12,6 +12,8 @@
 package game.views;
 
 import game.models.GameModel;
+import game.models.Player;
+import game.models.Team;
 import box2dLight.RayHandler;
 
 import com.badlogic.gdx.Gdx;
@@ -147,7 +149,11 @@ public class GameRenderer {
       ui.getSpriteBatch().setProjectionMatrix(cam.combined);
       ui.getSpriteBatch().begin();
       game.getMap().draw(ui.getSpriteBatch(), 1.0f);
-      game.getPlayer().draw(ui.getSpriteBatch(), 1.0f);
+      for (Team t : game.getTeams()) {
+         for (Player p : t.getMembers()) {
+            p.draw(ui.getSpriteBatch(), 1.0f);
+         }
+      }
       ui.getSpriteBatch().end();
 
       // Affichage des informations de debug
@@ -162,7 +168,7 @@ public class GameRenderer {
       ui.draw();
 
    }
-
+   
    /**
     * Affiche des données de debug à l'écran
     */
@@ -172,7 +178,11 @@ public class GameRenderer {
 
       debugRenderer.setProjectionMatrix(cam.combined);
       game.getMap().debugRender(debugRenderer);
-      game.getPlayer().debugRender(debugRenderer);
+      for (Team t : game.getTeams()) {
+         for (Player p : t.getMembers()) {
+            p.debugRender(debugRenderer);
+         }
+      }
    }
 
    /**

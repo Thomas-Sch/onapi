@@ -12,10 +12,6 @@
 package game.models;
 
 import game.models.map.Map;
-
-import java.util.LinkedList;
-import java.util.List;
-
 import box2dLight.RayHandler;
 
 import com.badlogic.gdx.graphics.Color;
@@ -62,12 +58,28 @@ public class GameModel {
       world = new World(GRAVITY, false);
       rayHandler = new RayHandler(world);
 
-      teams = new Team[]{ new Team(Color.BLUE), new Team(Color.RED) };
+      teams = new Team[] { new Team(Color.BLUE), new Team(Color.RED) };
       map = new Map(world, teams);
-
+      
       // Fait commencer le joueur au milieu de la map
-      player = new Player(map.getRealPos(map.getSize() / 2, map.getSize() / 2),
-            new Vector2(0f, 1f), teams[0], world, rayHandler);
+      player = new Player(Map.getRealPos(0, 0), new Vector2(0f, 1f), teams[0],
+            world, rayHandler);
+
+      // Ajoute d'autres joueurs
+      for (int i = 0; i < 14; i++) {
+         new Player(Map.getRealPos(0, 0), new Vector2(0f, 1f), teams[0], world,
+               rayHandler);
+      }
+      for (int i = 0; i < 15; i++) {
+         new Player(Map.getRealPos(0, 0), new Vector2(0f, 1f), teams[1], world,
+               rayHandler);
+      }
+
+      // Fait "spawner" (apparaitre) les joueurs sur la carte, autrement dit,
+      // leur donne à chaque une position initiale
+      for (Team t : teams) {
+         t.spawnPlayers();
+      }
    }
 
    /**
