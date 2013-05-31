@@ -13,6 +13,7 @@ package game.models;
 
 import game.models.map.Map;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import box2dLight.RayHandler;
@@ -36,9 +37,6 @@ public class GameModel {
    public static final float SCREEN_TO_WORLD = 1f / WORLD_TO_SCREEN;
 
    private static final Vector2 GRAVITY = new Vector2(0, 0);
-   private static final int NB_TEAMS = 2;
-   private static final int MAZE_SIZE = 8; // Largeur du labyrinthe en nombre de
-                                           // sommets (croisements)
 
    private World world;
 
@@ -56,7 +54,7 @@ public class GameModel {
    /**
     * Equipes en jeu
     */
-   private List<Team> teams;
+   private Team[] teams;
 
    private RayHandler rayHandler;
 
@@ -64,18 +62,18 @@ public class GameModel {
       world = new World(GRAVITY, false);
       rayHandler = new RayHandler(world);
 
-      Team t1 = new Team(Color.RED);
-      map = new Map(MAZE_SIZE, world, NB_TEAMS);
+      teams = new Team[]{ new Team(Color.BLUE), new Team(Color.RED) };
+      map = new Map(world, teams);
 
       // Fait commencer le joueur au milieu de la map
       player = new Player(map.getRealPos(map.getSize() / 2, map.getSize() / 2),
-            new Vector2(0f, 1f), t1, world, rayHandler);
+            new Vector2(0f, 1f), teams[0], world, rayHandler);
    }
 
    /**
     * @return Liste des équipes en jeu
     */
-   public List<Team> getTeams() {
+   public Team[] getTeams() {
       return teams;
    }
 
@@ -83,7 +81,7 @@ public class GameModel {
     * @param teams
     *           Liste des équipes en jeu
     */
-   public void setTeams(List<Team> teams) {
+   public void setTeams(Team[] teams) {
       this.teams = teams;
    }
 

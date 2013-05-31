@@ -11,6 +11,9 @@
  */
 package game.models.map;
 
+import game.models.Spawner;
+import game.models.Team;
+
 import java.util.LinkedList;
 import java.util.Random;
 
@@ -88,7 +91,7 @@ public class MazeGenerator {
     * Génère un labyrinthe sur le graphe donné selon l'algorithme de de
     * l'exploration exhaustive.
     */
-   public Tile[][] generateMaze(int size, int nbTeams) {
+   public Tile[][] generateMaze(int size) {
       init(size);
       LinkedList<MazeTile> nextSteps;
       MazeTile nextVertice;
@@ -121,7 +124,6 @@ public class MazeGenerator {
       } while (pathStack.size() > 0);
 
       addExit();
-      addSpawners(nbTeams);
       
       return grid;
    }
@@ -129,17 +131,20 @@ public class MazeGenerator {
    /**
     * 
     */
-   private void addSpawners(int nbTeams) {
+   public LinkedList<Spawner> generateSpawners(Team[] teams) {
+      LinkedList<Spawner> spawners = new LinkedList<Spawner>(); 
       int x, y;
       for (int i = 0; i < mazeSize; i++) {
          for (int j = 0; j < mazeSize; j++) {
             x = gridCoord(i);
             y = gridCoord(j);
             if (grid[x][y] != Tile.EXIT) {
-               grid[x][y] = Tile.spawner((x + y) % (nbTeams + 1));
+               grid[x][y] = Tile.SPAWNER;//.spawner((x + y) % (nbTeams + 1));
+               spawners.add(new Spawner(x, y, teams[(x + y) % teams.length]));
             }
          }
       }
+      return spawners;
    }
 
    /**

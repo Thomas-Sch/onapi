@@ -12,6 +12,10 @@
 package game.models.map;
 
 import game.models.Entity;
+import game.models.Spawner;
+import game.models.Team;
+
+import java.util.LinkedList;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -42,14 +46,18 @@ public class Map extends Entity {
    private Tile[][] grid;
    private Texture textureMur;
    private Texture textureSol;
+   private LinkedList<Spawner> spawners = new LinkedList<Spawner>();
 
    public void loadResources() {
       textureSol = new Texture(Gdx.files.internal("data/sol.png"));
       textureMur = new Texture(Gdx.files.internal("data/mur.jpg"));
    }
 
-   public Map(int size, World world, int nbTeams) {
-      setGrid(new MazeGenerator().generateMaze(8, nbTeams));
+   public Map(World world, Team[] teams) {
+      // Crée la map et ajoute les spawners
+      MazeGenerator generator = new MazeGenerator();
+      setGrid(generator.generateMaze(teams.length * 3));
+      spawners = generator.generateSpawners(teams);
 
       // Définit la consistance physique des murs
       for (int i = 0; i < grid.length; i++) {
@@ -86,6 +94,10 @@ public class Map extends Entity {
       this.grid = grid;
    }
 
+   public LinkedList<Spawner> getSpawners() {
+      return spawners;
+   }
+   
    /**
     * Retourne les coordonnées du centre de la case voulue sur la map
     * 

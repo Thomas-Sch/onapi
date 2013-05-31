@@ -17,27 +17,30 @@ import com.badlogic.gdx.graphics.Color;
 
 /**
  * TODO
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
 public class Team {
 
    private Color color;
    private LinkedList<Player> members;
-   
+   private LinkedList<Spawner> spawners;
+
    public Team(Color color) {
       this(color, new LinkedList<Player>());
    }
-   
+
    public Team(Color color, LinkedList<Player> members) {
       super();
       this.color = color;
       this.members = members;
+      this.spawners = new LinkedList<Spawner>();
    }
-   
+
    public Color getColor() {
       return color;
    }
@@ -46,7 +49,6 @@ public class Team {
       this.color = color;
    }
 
-
    public LinkedList<Player> getMembers() {
       return members;
    }
@@ -54,5 +56,12 @@ public class Team {
    public void setMembers(LinkedList<Player> members) {
       this.members = members;
    }
-   
+
+   /**
+    * @return La liste des spawners actuellement utilisés par l'équipe
+    */
+   public LinkedList<Spawner> getSpawners() {
+      return spawners;
+   }
+
 }
