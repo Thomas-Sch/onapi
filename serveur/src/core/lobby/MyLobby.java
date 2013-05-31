@@ -11,6 +11,7 @@
  */
 package core.lobby;
 
+import java.io.Serializable;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -44,7 +45,12 @@ public class MyLobby implements Observer {
          throw new LobbyException("Number of players has to be greater than 0.");
       }
       
+      // Initialisation des emplacements
       players = new PlayerSlot[nbPlayers];
+      for(int i = 0 ; i < players.length ; i++) {
+         players[i] = new PlayerSlot(i);
+         players[i].addObserver(this);
+      }
       
    }
    
@@ -83,8 +89,12 @@ public class MyLobby implements Observer {
             return false;
          }
          
-         players[index].user = user;
-         players[index].status.setReady(false);
+         if (players[index].setUser(user)) {
+            System.out.println("DEBUG - Lobby - add player successfully !");
+         }
+         else {
+            System.out.println("DEBUG - Lobby - error while adding player !");
+         }
          
       }
       
@@ -97,7 +107,7 @@ public class MyLobby implements Observer {
       synchronized(players) {
          for (PlayerSlot slot : players) {
             index++;
-            if(slot.user == null) {
+            if(slot.isFree()) {
                return index;
             }
          }
@@ -112,8 +122,11 @@ public class MyLobby implements Observer {
       
       private PlayerStatus status;
       
-      private PlayerSlot() {
-         status = new PlayerStatus();
+      private int slotNumber;
+      
+      private PlayerSlot(int slotNumber) {
+         this.slotNumber = slotNumber;
+         status = new PlayerStatus(user.account.getLogin());
          status.addObserver(this);
       }
 
@@ -123,19 +136,78 @@ public class MyLobby implements Observer {
          notifyObservers();
       }
       
+      public boolean isFree() {
+         return user == null;
+      }
+      
+      public int getSlotNumber() {
+         return slotNumber;
+      }
+      
+      public boolean setUser(UserInformations user) {
+         boolean success = false;
+         
+         if(isFree()) {
+            this.user = user;
+            success = true;
+            setChanged();
+            notifyObservers();
+         }
+         
+         return success;
+      }
+      
+      public UserInformations removeUser() {
+         UserInformations result = user;
+         
+         if(!isFree()) {
+            user = null;
+            setChanged();
+            notifyObservers();
+         }
+         
+         return result;
+      }
+      
+      public PlayerStatus getStatus() {
+         return status;
+      }
+      
       
    }
    
-   public class PlayerStatus extends Observable {
+   public class PlayerStatus extends Observable implements Serializable {
+      
+      private String name;
+      
+      private int teamNumber = 0;
       
       private boolean isReady = false;
       
-      public PlayerStatus() {
-         
+      public PlayerStatus(String name) {
+         this.name = name;
       }
       
       public boolean isReady() {
          return isReady;
+      }
+      
+      public String getName() {
+         return name;
+      }
+      
+      public int getTeamNumber() {
+         return teamNumber;
+      }
+      
+      /**
+       * Définit le numéro d'équipe du joueur à cet emplacement.
+       * @param number - le numéro d'équipe, un 0 indique qu'il n'en a pas.
+       */
+      public void setTeamNumber(int number) {
+         this.teamNumber = number;
+         setChanged();
+         notifyObservers();
       }
       
       public void setReady(boolean ready) {
@@ -150,19 +222,22 @@ public class MyLobby implements Observer {
    @Override
    public void update(Observable o, Object arg) {
       
-      synchronized(players) {
+      // Ne s'occupe que de la mise à jour d'un slot
+      if (o instanceof PlayerSlot) {
+         PlayerSlot updtatedSlot = (PlayerSlot)o;
          
-         for (PlayerSlot slot : players) {
+         synchronized(players) {
             
-            if (slot.user != null) {
-               // TODO
+            for (PlayerSlot slot : players) {
                
-               
-               
+               if (! slot.isFree()) {
+                  // TODO
+                  
+               }
             }
+            
+            
          }
-         
-         
       }
       
    }

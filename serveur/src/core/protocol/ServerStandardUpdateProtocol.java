@@ -11,8 +11,6 @@
  */
 package core.protocol;
 
-import common.components.AccountType;
-import common.components.UserAccount;
 import common.connections.exceptions.ProtocolException;
 import common.connections.protocol.ProtocolType;
 import core.Core;

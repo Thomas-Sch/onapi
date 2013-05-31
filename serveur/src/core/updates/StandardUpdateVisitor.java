@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : LobbyUpdateProtocol.java
+ * Nom du fichier   : Visitor.java
  * ============================================================================
- * Date de création : 19 mai 2013
+ * Date de création : 31 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,13 +9,8 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core.lobby.protocol;
+package core.updates;
 
-import core.Core;
-import core.UserInformations;
-import core.lobby.Lobby;
-import core.lobby.MyLobby.PlayerStatus;
-import core.protocol.ServerStandardUpdateProtocol;
 
 /**
  * TODO
@@ -25,19 +20,8 @@ import core.protocol.ServerStandardUpdateProtocol;
  * @author Schweizer Thomas
  *
  */
-public class LobbyUpdateProtocol extends ServerStandardUpdateProtocol {
+public interface StandardUpdateVisitor {
    
-   private Lobby lobby;
-   
-   public LobbyUpdateProtocol(Core core, Lobby lobby, UserInformations user) {
-      super(core, user);
-      this.lobby = lobby;
-   }
-   
-   
-   public void updatePlayerStatus(int slotNumber, PlayerStatus status) {
-      
-   }
-   
+   void casePing(Update update);
 
 }

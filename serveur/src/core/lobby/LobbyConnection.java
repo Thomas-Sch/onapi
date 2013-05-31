@@ -28,7 +28,7 @@ import core.lobby.protocol.LobbyUpdateProtocol;
  * @author Schweizer Thomas
  *
  */
-public class LobbyConnection implements ServerRequestAnswers, ServerUpdateOrder {
+public class LobbyConnection implements ServerRequestAnswers {
    
    private LobbyReceiveProtocol receiveProtocol;
    private LobbyUpdateProtocol updateProtocol;
@@ -67,11 +67,6 @@ public class LobbyConnection implements ServerRequestAnswers, ServerUpdateOrder 
       }
       
       
-   }
-
-   @Override
-   public void updateInformations() {
-      user.log.push("Ping : " + updateProtocol.ping() + " ms");
    }
    
    

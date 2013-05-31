@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : LobbyUpdateProtocol.java
+ * Nom du fichier   : Update.java
  * ============================================================================
- * Date de création : 19 mai 2013
+ * Date de création : 31 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,13 +9,9 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core.lobby.protocol;
+package core.updates;
 
-import core.Core;
-import core.UserInformations;
-import core.lobby.Lobby;
-import core.lobby.MyLobby.PlayerStatus;
-import core.protocol.ServerStandardUpdateProtocol;
+
 
 /**
  * TODO
@@ -25,19 +21,15 @@ import core.protocol.ServerStandardUpdateProtocol;
  * @author Schweizer Thomas
  *
  */
-public class LobbyUpdateProtocol extends ServerStandardUpdateProtocol {
-   
-   private Lobby lobby;
-   
-   public LobbyUpdateProtocol(Core core, Lobby lobby, UserInformations user) {
-      super(core, user);
-      this.lobby = lobby;
-   }
-   
-   
-   public void updatePlayerStatus(int slotNumber, PlayerStatus status) {
-      
-   }
-   
+public abstract class Update {
 
+      public Update() {
+         
+      }
+
+      /**
+       * the method for applying visitors to Update
+       */
+      public abstract void apply(StandardUpdateVisitor v);
+      
 }

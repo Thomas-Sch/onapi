@@ -22,6 +22,7 @@ import core.Core;
 import core.accountManagement.AccountConnection;
 import core.protocol.ServerStandardReceiveProtocol;
 import core.protocol.ServerStandardUpdateProtocol;
+import core.updates.standard.Ping;
 
 import java.net.Socket;
 
@@ -36,6 +37,10 @@ import sun.util.logging.resources.logging;
  *
  */
 public class UserConnectionManager {
+   private static final int DELAY_BETWEEN_UPDATES = 100;
+   
+   private final int TIME_ALAPSED_FOR_CHECK;
+   
    private Core core;
    
    private UserInformations user;
@@ -44,11 +49,12 @@ public class UserConnectionManager {
    private Thread threadUpdate;
    
    public UserConnectionManager(Core core, Socket socket, int timeout) {
-      init(core, socket, timeout);
+      this.TIME_ALAPSED_FOR_CHECK = timeout / 2;
+      this.core = core;
+      init(socket, timeout);
    }
    
-   private void init(Core core, Socket socket, int timeout) {
-      this.core = core;
+   private void init(Socket socket, int timeout) {
       
       // Création d'une entité propre au client
       user = new UserInformations();
@@ -65,6 +71,7 @@ public class UserConnectionManager {
       user.isConnected = true;
       
       user.serverReceive = new AccountConnection(core, user);
+      user.serverUpdate = new ServerUpdateOrder(core, user);
       
       // Création des threads de communications
       threadReceive = new Thread(new ClientRequests());
@@ -126,19 +133,25 @@ public class UserConnectionManager {
       @Override
       public void run() {
          
-         // TODO to change !
-         ServerStandardUpdateProtocol protocol = new ServerStandardUpdateProtocol(core, user);
+         int timeSinceLastUpdate = 0;
          
          while (user.isConnected) {
             
             try {
                
-               user.log.push("Ping to client : " + protocol.ping() + " ms.");
-               
-               protocol.textMessage("still here ?");
+               if (user.serverUpdate.sendUpdate()) {
+                  timeSinceLastUpdate = 0;
+               }
+               else {
+                  timeSinceLastUpdate += DELAY_BETWEEN_UPDATES;
+                  
+                  if (TIME_ALAPSED_FOR_CHECK < timeSinceLastUpdate) {
+                     user.serverUpdate.pushUpdate(new Ping());
+                  }
+               }
                
                try {
-                  Thread.sleep(5000);
+                  Thread.sleep(DELAY_BETWEEN_UPDATES);
                }
                catch (InterruptedException e) { }
                

@@ -11,6 +11,12 @@
  */
 package core;
 
+import java.util.LinkedList;
+
+import core.protocol.ServerStandardUpdateProtocol;
+import core.updates.Update;
+import core.updates.StandardUpdateVisitor;
+
 /**
  * TODO
  * @author Crescenzio Fabio
@@ -19,8 +25,43 @@ package core;
  * @author Schweizer Thomas
  *
  */
-public interface ServerUpdateOrder {
+public class ServerUpdateOrder implements StandardUpdateVisitor {
    
-   public void updateInformations();
+   private UserInformations user;
+   
+   private ServerStandardUpdateProtocol protocol;
+   
+   private LinkedList<Update> waitingUpdates = new LinkedList<>();
+   
+   public ServerUpdateOrder(Core core, UserInformations user) {
+      this.user = user;
+      protocol = new ServerStandardUpdateProtocol(core, user);
+   }
+   
+   public void pushUpdate(Update update) {
+      synchronized (waitingUpdates) {
+         waitingUpdates.add(update);
+      }
+   }
+   
+   
+   public boolean sendUpdate() {
+      boolean updateSent = false;
+      synchronized(waitingUpdates) {
+         if(!waitingUpdates.isEmpty()) {
+            Update update = waitingUpdates.remove();
+            update.apply(this);
+            updateSent = true;
+         }
+      }
+      return updateSent;
+   }
+
+
+   @Override
+   public void casePing(Update update) {
+      long ping = protocol.ping();
+      user.log.push("Ping : " + ping + " ms");
+   }
 
 }
