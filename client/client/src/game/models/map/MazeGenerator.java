@@ -67,7 +67,7 @@ public class MazeGenerator {
       }
    }
 
-   private int gridCoord(int mazeCoord) {
+   public static int gridCoord(int mazeCoord) {
       return 2 * mazeCoord + 1;
    }
 
@@ -88,7 +88,7 @@ public class MazeGenerator {
     * Génère un labyrinthe sur le graphe donné selon l'algorithme de de
     * l'exploration exhaustive.
     */
-   public Tile[][] generateMaze(int size) {
+   public Tile[][] generateMaze(int size, int nbTeams) {
       init(size);
       LinkedList<MazeTile> nextSteps;
       MazeTile nextVertice;
@@ -120,9 +120,37 @@ public class MazeGenerator {
          }
       } while (pathStack.size() > 0);
 
+      addExit();
+      addSpawners(nbTeams);
+      
       return grid;
    }
 
+   /**
+    * 
+    */
+   private void addSpawners(int nbTeams) {
+      int x, y;
+      for (int i = 0; i < mazeSize; i++) {
+         for (int j = 0; j < mazeSize; j++) {
+            x = gridCoord(i);
+            y = gridCoord(j);
+            if (grid[x][y] != Tile.EXIT) {
+               grid[x][y] = Tile.spawner((x + y) % (nbTeams + 1));
+            }
+         }
+      }
+   }
+
+   /**
+    * 
+    */
+   private void addExit() {
+      int x = gridCoord(rand.nextInt(mazeSize));
+      int y = gridCoord(rand.nextInt(mazeSize));
+      grid[x][y] = Tile.EXIT;
+   }
+   
    /**
     * Crée le chemin entre les deux sommets (doivent être à une case l'un de
     * l'autre)

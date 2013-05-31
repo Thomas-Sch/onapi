@@ -21,11 +21,11 @@ package game.models.map;
  * 
  */
 public enum Tile {
-   EMPTY, WALL;
+   EMPTY, WALL, SPAWNER1, SPAWNER2, EXIT;
 
    public static final int WIDTH = 450;
    public static final int HEIGHT = WIDTH;
-
+   
    @Override
    public String toString() {
       switch (this) {
@@ -33,8 +33,27 @@ public enum Tile {
             return " ";
          case WALL:
             return "#";
+         case SPAWNER1:
+            return "R";
+         case SPAWNER2:
+            return "B";
+         case EXIT:
+            return "!";
          default:
             return "?";
+      }
+   }
+   
+   public static Tile spawner(int teamNumber) {
+      switch(teamNumber) {
+         case 0:
+            return EMPTY;
+         case 1:
+            return SPAWNER1;
+         case 2:
+            return SPAWNER2;
+         default:
+            throw new RuntimeException(String.format("No team corresponding to number %d", teamNumber));
       }
    }
 }

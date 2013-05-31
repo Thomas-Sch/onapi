@@ -48,8 +48,8 @@ public class Map extends Entity {
       textureMur = new Texture(Gdx.files.internal("data/mur.jpg"));
    }
 
-   public Map(int size, World world) {
-      setGrid(new MazeGenerator().generateMaze(8));
+   public Map(int size, World world, int nbTeams) {
+      setGrid(new MazeGenerator().generateMaze(8, nbTeams));
 
       // Définit la consistance physique des murs
       for (int i = 0; i < grid.length; i++) {
