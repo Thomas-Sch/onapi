@@ -49,11 +49,6 @@ public class Player extends Entity {
    private static final int HEIGHT = WIDTH;
 
    /**
-    * Orientation du personnage
-    */
-   private Vector2 dir;
-
-   /**
     * Référence de l'équipe à laquelle appartient le personnage
     */
    private Team team;
@@ -73,7 +68,7 @@ public class Player extends Entity {
          RayHandler handler) {
       super();
       setZIndex(2000000);
-      
+
       setWidth(WIDTH);
       setHeight(HEIGHT);
       bounds = new Rectangle(pos.x, pos.y, getWidth(), getHeight());
@@ -98,7 +93,7 @@ public class Player extends Entity {
 
       // Initialise les lumières diffusées par le joueur
       new PointLight(handler, 250, new Color(1, 1, 1, 0.5f), Tile.WIDTH - 50,
-            getPos().x, getPos().y).attachToBody(body, 0, 0);
+            getX(), getY()).attachToBody(body, 0, 0);
       torchLight = new ConeLight(handler, 250, team.getColor()/*
                                                                * new Color(237f
                                                                * / 255f, 240f /
@@ -106,6 +101,7 @@ public class Player extends Entity {
                                                                * 255f, 0.9f)
                                                                */, 750, 1, 1,
             270, 30);
+      torchLight.attachToBody(body, 1, 1);
 
       setDir(dir);
       moveTo(pos);
@@ -130,7 +126,6 @@ public class Player extends Entity {
     */
    public void moveTo(Vector2 newPos) {
       setPosition(newPos.x - bounds.width / 2f, newPos.y - bounds.height / 2f);
-      torchLight.setPosition(getPos());
    }
 
    /**
@@ -140,15 +135,7 @@ public class Player extends Entity {
     *           Vecteur de déplacement (additionné à sa position actuelle)
     */
    public void move(Vector2 dir) {
-      setPosition(getPos().x + dir.x, getPos().y + dir.y);
-      torchLight.setPosition(getPos());
-   }
-
-   /**
-    * @return Orientation du joueur
-    */
-   public Vector2 getDir() {
-      return dir;
+      setPosition(getX() + dir.x, getY() + dir.y);
    }
 
    /**
@@ -156,9 +143,7 @@ public class Player extends Entity {
     *           Orientation du joueur
     */
    public void setDir(Vector2 dir) {
-      this.dir = dir;
-      rotate(dir.angle() - getRotation());
-      torchLight.setDirection(dir.angle());
+      setRotation(dir.angle());
    }
 
    /**
@@ -178,7 +163,7 @@ public class Player extends Entity {
 
    @Override
    public void update(float deltaTime) {
-      body.setTransform(getPos(), dir.angle());
+      body.setTransform(getPos(), getRotation() * ((float) Math.PI) / 180f);
    }
 
    @Override
@@ -213,6 +198,6 @@ public class Player extends Entity {
 
    @Override
    public String toString() {
-      return String.format("Pos=%s\n", getPos());
+      return String.format("[ID=%s,Pos=%s]\n", id, getPos());
    }
 }

@@ -76,7 +76,6 @@ public class GameRenderer {
    // Objets pour le rendu en mode debug
    private ShapeRenderer debugRenderer = new ShapeRenderer();
    private Box2DDebugRenderer physicsDebugRenderer = new Box2DDebugRenderer();
-   private Matrix4 physicsDebugMatrix;
    private FPSLogger fpsLog;
    private Label lblDebug;
 
@@ -99,7 +98,6 @@ public class GameRenderer {
 
       // Initialise les objets de debug
       debugRenderer.setProjectionMatrix(cam.combined);
-      physicsDebugMatrix = new Matrix4(cam.combined);
       // physicsDebugMatrix.scale(GameModel.WORLD_TO_SCREEN,
       // GameModel.WORLD_TO_SCREEN, 1f);
 
@@ -107,6 +105,7 @@ public class GameRenderer {
 
       // Initialise la scène de l'interface utilisateur
       ui = new Stage(width, height, true);
+      //ui.addActor(game.getEntities());
 
       Gdx.input.setInputProcessor(ui);
       initUI();
@@ -147,8 +146,8 @@ public class GameRenderer {
       // Mise à jour de la caméra
       gl.glViewport((int) viewport.x, (int) viewport.y, (int) viewport.width,
             (int) viewport.height);
-      Vector2.tmp.set(game.getPlayer().getPos().x - cam.position.x, game
-            .getPlayer().getPos().y - cam.position.y);
+      Vector2.tmp.set(game.getPlayer().getX() - cam.position.x, game
+            .getPlayer().getY() - cam.position.y);
       cam.translate(Vector2.tmp);
       cam.update();
 
@@ -156,19 +155,24 @@ public class GameRenderer {
       ui.getSpriteBatch().setProjectionMatrix(cam.combined);
       ui.getSpriteBatch().begin();
       for (Actor e : game.getEntities().getChildren()) {
+         System.out.println("DRAWING : " + e.getClass().getSimpleName());
          e.draw(ui.getSpriteBatch(), 1.0f);
       }
-      if (debug)
-         physicsDebugRenderer.render(game.getWorld(), physicsDebugMatrix);
       ui.getSpriteBatch().end();
 
       // Affichage des informations de debug
       if (debug) debugRender();
 
       // Met à jour les lumières
-      // handler.setCombinedMatrix(cam.combined);
-      // handler.updateAndRender();
-
+//       handler.setCombinedMatrix(cam.combined);
+//       handler.updateAndRender();
+ 
+      if (debug) {
+         ui.getSpriteBatch().begin();
+         physicsDebugRenderer.render(game.getWorld(), cam.combined);
+         ui.getSpriteBatch().end();
+      }
+       
       // Affichage de l'interface graphique
       ui.act(Gdx.graphics.getDeltaTime());
       ui.draw();

@@ -59,7 +59,7 @@ public class Map extends Entity {
 
    public Map(World world, Team[] teams) {
       super();
-      setZIndex(3000000);
+      setZIndex(10);
       
       // Crée la map et ajoute les spawners
       MazeGenerator generator = new MazeGenerator();
@@ -133,7 +133,7 @@ public class Map extends Entity {
    public void draw(SpriteBatch batch, float parentAlpha) {
       super.draw(batch, parentAlpha);
 
-      // repete la texture
+      // Répète la texture
       textureSol.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
       textureMur.setWrap(TextureWrap.Repeat, TextureWrap.Repeat);
 
