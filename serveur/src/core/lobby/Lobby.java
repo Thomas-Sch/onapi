@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : Lobby.java
+ * Nom du fichier   : MyLobby.java
  * ============================================================================
- * Date de création : 19 mai 2013
+ * Date de création : 29 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -11,17 +11,15 @@
  */
 package core.lobby;
 
-import java.net.Socket;
-import java.util.LinkedList;
-import java.util.Random;
+import java.io.Serializable;
+import java.util.Observable;
+import java.util.Observer;
 
-import common.connections.Channel;
+import common.components.lobby.PlayerStatus;
 
-import core.Port;
 import core.UserInformations;
-import core.UserUpdateConnection;
-import core.exceptions.PortException;
 import core.lobby.exceptions.LobbyException;
+import core.updates.components.LobbyUpdateSlot;
 
 /**
  * TODO
@@ -31,131 +29,197 @@ import core.lobby.exceptions.LobbyException;
  * @author Schweizer Thomas
  *
  */
-public class Lobby {
+public class Lobby implements Observer {
    
-   private boolean exit = false;
-   
-   private Thread activity;
-   
-   private LinkedList<UserInformations> players = new LinkedList<>();
-   
-   private int numberMaxOfPlayers;
-   
-   private int updateTimeout;
-   
-   private LinkedList<ExpectedPlayer> expectedPlayers = new LinkedList<>();
-   
-   private boolean waiting = false;
+   private PlayerSlot[] players;
    
    public Lobby(int nbPlayers) {
       init(nbPlayers);
    }
    
-   public int addPlayer(UserInformations user) {
-      int code;
+   /**
+    * Initialise le salon d'attente.
+    * @param nbPlayers - le nombre de joueurs que pourra accueillir le salon.
+    * @throws LobbyException si le nombre de places est négatif ou nul.
+    */
+   private void init(int nbPlayers) {
       
-      synchronized(players) {
-         if (players.size() < numberMaxOfPlayers && !isUserAlreadyIn(user)) {
-            players.add(user);
-            
-            code = generateConnectionCode();
-            
-            System.out.println("Generated code : " + code);
-            
-            synchronized (expectedPlayers) {
-               expectedPlayers.add(new ExpectedPlayer(user, code));
-            }
-            
-         }
-         else {
-            throw new LobbyException("This lobby is already full.");
-         }
-         
-         
+      if (nbPlayers <= 0) {
+         throw new LobbyException("Number of players has to be greater than 0.");
       }
       
-      return code;
-   }
-   
-   
-   public void removePlayer(UserInformations user) {
-      
-      synchronized (players) {
-         if (players.remove(user)) {
-            user.log.push("Removed from the lobby list.");
-         }
-         else {
-            user.log.push("Tryed to remove from a wrong lobby.");
-            throw new LobbyException("This player was not in that lobby.");
-         }
+      // Initialisation des emplacements
+      players = new PlayerSlot[nbPlayers];
+      for(int i = 0 ; i < players.length ; i++) {
+         players[i] = new PlayerSlot(i);
+         players[i].addObserver(this);
       }
       
-   }
-   
-   public int getNumberOfPlayers() {
-      int result;
-      synchronized (players) {
-         result = players.size();
-      }
-      return result;
    }
    
    public int getMaxNumberOfPlayers() {
-      return numberMaxOfPlayers;
+      return players.length;
    }
    
-   public int getFreeSlots() {
-      return getMaxNumberOfPlayers() - getNumberOfPlayers();
-   }
-   
-   
-   private void init(int nbPlayers) {
-      numberMaxOfPlayers = nbPlayers;
-   }
-   
-   private int generateConnectionCode() {
-      int code;
+   public int getNumberOfFreeSlots() {
+      int count = 0;
       
-      do {
-         code = (int)(Math.random() * Integer.MAX_VALUE);
-      } while (!isCodeFree(code));
-      
-      return code;
-   }
-   
-   private boolean isCodeFree(int code) {
-      
-      synchronized (expectedPlayers) {
-         
-         for(ExpectedPlayer player : expectedPlayers) {
-            if (player.code == code) {
-               return false;
+      synchronized (players) {
+         for(PlayerSlot player : players) {
+            if (player.user == null) {
+               count++;
             }
          }
+      }
+      
+      return count;
+   }
+   
+   public int getNumberOfPlayers() {
+      return getMaxNumberOfPlayers() - getNumberOfFreeSlots();
+   }
+   
+   public boolean hasFreeSlot() {
+      return getNumberOfFreeSlots() > 0;
+   }
+   
+   public PlayerStatus addPlayer(UserInformations user) {
+      synchronized (players) {
+         int index = getFirstFreeIndex();
          
-         return true;
+         // Indice négatif => aucun emplacement de libre
+         if (index < 0) {
+            return null;
+         }
+         
+         if (players[index].setUser(user)) {
+            System.out.println("DEBUG - Lobby - add player successfully !");
+            
+            // Transmet alors les données actuelles
+            for(PlayerSlot slot : players) {
+               if(!slot.isFree()) {
+                  user.serverUpdate.pushUpdate(new LobbyUpdateSlot(slot.slotNumber, slot.getStatus()));
+               }
+            }
+            
+         }
+         else {
+            System.out.println("DEBUG - Lobby - error while adding player !");
+         }
+         
+         return players[index].status;
       }
    }
    
-   private boolean isUserAlreadyIn(UserInformations user) {
+   public boolean removePlayer(UserInformations user) {
+      synchronized (players) {
+         // Recherche du bon joueur
+         for (PlayerSlot slot : players) {
+            if (slot.user == user) {
+               slot.removeUser();
+               System.out.println("DEBUG - Lobby - player " + user.account.getLogin() + " removed");
+               user.serverUpdate.pushUpdate(new LobbyUpdateSlot(slot.slotNumber, slot.getStatus()));
+               return true;
+            }
+         }
+      }
+      return false;
+   }
+   
+   private int getFirstFreeIndex() {
+      int index = -1;
       
       synchronized(players) {
-         for (UserInformations player : players) {
-            if (player.account.getId() == user.account.getId()) {
-               return true;
+         for (PlayerSlot slot : players) {
+            index++;
+            if(slot.isFree()) {
+               return index;
             }
          }
       }
       
-      synchronized (expectedPlayers) {
-         for (ExpectedPlayer player : expectedPlayers) {
-            if (player.user.account.getId() == user.account.getId()) {
-               return true;
-            }
-         }
+      return index;
+   }
+   
+   private class PlayerSlot extends Observable implements Observer {
+      
+      private UserInformations user = null;
+      
+      private PlayerStatus status;
+      
+      private int slotNumber;
+      
+      private PlayerSlot(int slotNumber) {
+         this.slotNumber = slotNumber;
+         status = new PlayerStatus(user.account.getLogin());
+         status.addObserver(this);
+      }
+
+      @Override
+      public void update(Observable arg0, Object arg1) {
+         setChanged();
+         notifyObservers();
       }
       
-      return false;
+      public boolean isFree() {
+         return user == null;
+      }
+      
+      public int getSlotNumber() {
+         return slotNumber;
+      }
+      
+      public boolean setUser(UserInformations user) {
+         boolean success = false;
+         
+         if(isFree()) {
+            this.user = user;
+            success = true;
+            setChanged();
+            notifyObservers();
+         }
+         
+         return success;
+      }
+      
+      public UserInformations removeUser() {
+         UserInformations result = user;
+         
+         if(!isFree()) {
+            user = null;
+            setChanged();
+            notifyObservers();
+         }
+         
+         return result;
+      }
+      
+      public PlayerStatus getStatus() {
+         return status;
+      }
+      
+   }
+   
+   @Override
+   public void update(Observable o, Object arg) {
+      
+      // Ne s'occupe que de la mise à jour d'un slot
+      if (o instanceof PlayerSlot) {
+         PlayerSlot updtatedSlot = (PlayerSlot)o;
+         
+         synchronized(players) {
+            
+            for (PlayerSlot slot : players) {
+               
+               if (! slot.isFree()) {
+                  // TODO
+                  
+               }
+            }
+            
+            
+         }
+      }
       
    }
 

@@ -13,9 +13,12 @@ package core;
 
 import java.util.LinkedList;
 
-import core.protocol.ServerStandardUpdateProtocol;
+import core.protocol.updates.ServerUpdateProtocol;
 import core.updates.Update;
-import core.updates.StandardUpdateVisitor;
+import core.updates.UpdateVisitor;
+import core.updates.components.LobbyGameReady;
+import core.updates.components.LobbyUpdateSlot;
+import core.updates.components.StandardPing;
 
 /**
  * TODO
@@ -25,17 +28,17 @@ import core.updates.StandardUpdateVisitor;
  * @author Schweizer Thomas
  *
  */
-public class ServerUpdateOrder implements StandardUpdateVisitor {
+public class ServerUpdateOrder implements UpdateVisitor {
    
    private UserInformations user;
    
-   private ServerStandardUpdateProtocol protocol;
+   private ServerUpdateProtocol protocol;
    
    private LinkedList<Update> waitingUpdates = new LinkedList<>();
    
    public ServerUpdateOrder(Core core, UserInformations user) {
       this.user = user;
-      protocol = new ServerStandardUpdateProtocol(core, user);
+      protocol = new ServerUpdateProtocol(core, user);
    }
    
    public void pushUpdate(Update update) {
@@ -59,9 +62,21 @@ public class ServerUpdateOrder implements StandardUpdateVisitor {
 
 
    @Override
-   public void casePing(Update update) {
+   public void casePing(StandardPing update) {
       long ping = protocol.ping();
       user.log.push("Ping : " + ping + " ms");
    }
 
+   @Override
+   public void caseLobbyGameReady(LobbyGameReady update) {
+      protocol.lobbyGameIsReady();
+      user.log.push("Update lobby : signal game is ready to start");
+   }
+
+   @Override
+   public void caseLobbyUpdateSlot(LobbyUpdateSlot update) {
+      protocol.lobbyUpdateSlot(update.slotNumber, update.status);
+      user.log.push("Update lobby : a player slot has changed");
+   }
+   
 }

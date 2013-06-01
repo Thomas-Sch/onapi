@@ -9,8 +9,9 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core.protocol;
+package core.protocol.updates;
 
+import common.components.lobby.PlayerStatus;
 import common.connections.exceptions.ProtocolException;
 import common.connections.protocol.ProtocolType;
 import core.Core;
@@ -25,12 +26,12 @@ import core.UserInformations;
  * @author Schweizer Thomas
  *
  */
-public class ServerStandardUpdateProtocol {
+public class ServerUpdateProtocol {
    
    protected final Core core;
    protected final UserInformations user;
    
-   public ServerStandardUpdateProtocol(Core core, UserInformations user) {
+   public ServerUpdateProtocol(Core core, UserInformations user) {
       this.core = core;
       this.user = user;
    }
@@ -59,6 +60,16 @@ public class ServerStandardUpdateProtocol {
    public void textMessage(String message) {
       user.connectionsToClient.updateChannel.sendProtocolType(ProtocolType.TEXT_MESSAGE);
       user.connectionsToClient.updateChannel.sendString(message);
+   }
+   
+   public void lobbyUpdateSlot(int slotNumber, PlayerStatus status) {
+      
+   }
+   
+   public void lobbyGameIsReady() {
+      user.connectionsToClient.updateChannel.sendProtocolType(ProtocolType.LOBBY_GAME_READY);
+      
+      // TODO more ?
    }
 
 }

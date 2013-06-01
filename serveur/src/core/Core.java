@@ -204,7 +204,7 @@ public class Core {
    }
    
    public Lobby getFreeLoby() {
-      if (lobby.getFreeSlots() > 0) {
+      if (lobby.getNumberOfFreeSlots() > 0) {
          return lobby;
       }
       else {

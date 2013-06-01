@@ -1,5 +1,5 @@
 /* ============================================================================
- * Nom du fichier   : Update.java
+ * Nom du fichier   : GameReady.java
  * ============================================================================
  * Date de création : 31 mai 2013
  * ============================================================================
@@ -9,8 +9,10 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core.updates;
+package core.updates.components;
 
+import core.updates.Update;
+import core.updates.UpdateVisitor;
 
 
 /**
@@ -21,15 +23,15 @@ package core.updates;
  * @author Schweizer Thomas
  *
  */
-public abstract class Update {
-
-      public Update() {
-         
-      }
-
-      /**
-       * the method for applying visitors to Update
-       */
-      public abstract void apply(UpdateVisitor v);
+public class LobbyGameReady extends Update {
+   
+   public LobbyGameReady() {
       
+   }
+
+   @Override
+   public void apply(UpdateVisitor v) {
+      v.caseLobbyGameReady(this);
+   }
+   
 }

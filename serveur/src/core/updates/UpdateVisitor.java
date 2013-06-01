@@ -11,6 +11,10 @@
  */
 package core.updates;
 
+import core.updates.components.LobbyGameReady;
+import core.updates.components.LobbyUpdateSlot;
+import core.updates.components.StandardPing;
+
 
 /**
  * TODO
@@ -20,8 +24,13 @@ package core.updates;
  * @author Schweizer Thomas
  *
  */
-public interface StandardUpdateVisitor {
+public interface UpdateVisitor {
    
-   void casePing(Update update);
+   // Général
+   void casePing(StandardPing update);
+   
+   // Salon d'attente
+   void caseLobbyGameReady(LobbyGameReady update);
+   void caseLobbyUpdateSlot(LobbyUpdateSlot update);
 
 }

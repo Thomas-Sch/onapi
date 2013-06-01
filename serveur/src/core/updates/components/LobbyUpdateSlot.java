@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : Ping.java
+ * Nom du fichier   : LobbyUpdateSlot.java
  * ============================================================================
- * Date de création : 31 mai 2013
+ * Date de création : 1 juin 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,11 +9,12 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core.updates.standard;
+package core.updates.components;
+
+import common.components.lobby.PlayerStatus;
 
 import core.updates.Update;
-import core.updates.StandardUpdateVisitor;
-
+import core.updates.UpdateVisitor;
 
 /**
  * TODO
@@ -23,15 +24,20 @@ import core.updates.StandardUpdateVisitor;
  * @author Schweizer Thomas
  *
  */
-public class Ping extends Update {
+public class LobbyUpdateSlot extends Update {
    
-   public Ping() {
+   public int slotNumber;
+   public PlayerStatus status;
+   
+   public LobbyUpdateSlot(int slotNumber, PlayerStatus status) {
       super();
+      this.slotNumber = slotNumber;
+      this.status = status;
    }
 
    @Override
-   public void apply(StandardUpdateVisitor v) {
-      v.casePing(this);
+   public void apply(UpdateVisitor v) {
+      v.caseLobbyUpdateSlot(this);
    }
 
 }

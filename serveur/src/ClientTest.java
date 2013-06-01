@@ -143,7 +143,7 @@ public class ClientTest {
             protocol.logout();
          }
          else if (command.equalsIgnoreCase("-join")) {
-            channelUpdate = protocol.joinGame();
+            protocol.joinLobby();
          }
          // Autrement envoie le texte tel quel
          else {

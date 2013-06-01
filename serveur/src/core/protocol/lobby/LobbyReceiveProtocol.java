@@ -9,15 +9,13 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core.lobby.protocol;
+package core.protocol.lobby;
 
-import common.connections.exceptions.ChannelException;
-import common.connections.protocol.ProtocolType;
+import common.components.lobby.PlayerStatus;
 import core.Core;
 import core.UserInformations;
 import core.accountManagement.AccountConnection;
 import core.lobby.Lobby;
-import core.lobby.exceptions.LobbyException;
 import core.protocol.ServerStandardReceiveProtocol;
 
 /**
@@ -32,40 +30,28 @@ public class LobbyReceiveProtocol extends ServerStandardReceiveProtocol {
    
    private Lobby lobby;
    
-   public LobbyReceiveProtocol(Core core, Lobby lobby, UserInformations user) {
+   private PlayerStatus status;
+   
+   public LobbyReceiveProtocol(Core core, Lobby lobby, UserInformations user,
+                               PlayerStatus status) {
       super(core, user);
       this.lobby = lobby;
+      this.status = status;
    }
    
    public void leave() {
-      
-      try {
-         user.lobby.removePlayer(user);
-         
+      if (lobby.removePlayer(user)) {
          user.lobby = null;
-         
-         try {
-            user.connectionsToClient.updateChannel.close();
-         }
-         catch (ChannelException e) {
-            user.log.push("Error while closing the update channel.");
-         }
-         user.connectionsToClient.updateChannel = null;
-         
+            
+         // On retourne au protocol de connexion.
          user.serverReceive = new AccountConnection(core, user);
       }
-      catch (LobbyException e) {
-         
-      }
-      
-      
-      
    }
    
    public void setReady() {
+      boolean ready = user.connectionsToClient.receiveChannel.receiveBoolean();
       
-      
-      
+      status.setReady(ready);
    }
 
 }
