@@ -21,8 +21,8 @@ import common.connections.protocol.ProtocolType;
 import core.Core;
 import core.accountManagement.AccountConnection;
 import core.protocol.ServerStandardReceiveProtocol;
-import core.protocol.ServerStandardUpdateProtocol;
-import core.updates.standard.Ping;
+import core.protocol.updates.ServerUpdateProtocol;
+import core.updates.components.StandardPing;
 
 import java.net.Socket;
 
@@ -146,7 +146,7 @@ public class UserConnectionManager {
                   timeSinceLastUpdate += DELAY_BETWEEN_UPDATES;
                   
                   if (TIME_ALAPSED_FOR_CHECK < timeSinceLastUpdate) {
-                     user.serverUpdate.pushUpdate(new Ping());
+                     user.serverUpdate.pushUpdate(new StandardPing());
                   }
                }
                

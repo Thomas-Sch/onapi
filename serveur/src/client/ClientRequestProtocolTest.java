@@ -241,22 +241,21 @@ public class ClientRequestProtocolTest {
     */
    @Test
    public void testJoinGame() {
-      Channel channel;
       boolean hasFreeSlots;
-      
+      boolean lobbyJoined;
       for (int i = 0 ; i < NUMBER_OF_CLIENTS ; i++) {
          
          
          
          // Rejoindre une partie sans être connecté ne doit pas être possible
-         channel = protocol[i].joinGame();
-         assertNull(channel);
+         lobbyJoined = protocol[i].joinLobby();
+         assertFalse(lobbyJoined);
          
          // Se connecter puis rejoindre
          hasFreeSlots = server.core.getFreeLoby() != null;
          
          protocol[i].login("GregoireDec", "1234");
-         channel = protocol[i].joinGame();
+         protocol[i].joinLobby();
          // Attention, si trop de client pour le test, le surplus de client se
          // verra refuser l'accès au lobby
          if (hasFreeSlots) {

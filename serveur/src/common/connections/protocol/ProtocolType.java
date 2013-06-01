@@ -25,5 +25,6 @@ public enum ProtocolType {
    JOIN_GAME, LEAVE_GAME,
    LOGIN, LOGOUT,
    TEXT_MESSAGE,
-   PING;
+   PING,
+   LOBBY_GAME_READY;
 }

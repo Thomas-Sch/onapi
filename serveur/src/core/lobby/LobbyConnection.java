@@ -11,14 +11,13 @@
  */
 package core.lobby;
 
+import common.components.lobby.PlayerStatus;
 import common.connections.protocol.ProtocolType;
 
 import core.Core;
 import core.ServerRequestAnswers;
-import core.ServerUpdateOrder;
 import core.UserInformations;
-import core.lobby.protocol.LobbyReceiveProtocol;
-import core.lobby.protocol.LobbyUpdateProtocol;
+import core.protocol.lobby.LobbyReceiveProtocol;
 
 /**
  * TODO
@@ -31,14 +30,13 @@ import core.lobby.protocol.LobbyUpdateProtocol;
 public class LobbyConnection implements ServerRequestAnswers {
    
    private LobbyReceiveProtocol receiveProtocol;
-   private LobbyUpdateProtocol updateProtocol;
    
    private UserInformations user;
    
-   public LobbyConnection(Core core, Lobby lobby, UserInformations user) {
+   public LobbyConnection(Core core, Lobby lobby, UserInformations user,
+                          PlayerStatus status) {
       this.user = user;
-      receiveProtocol = new LobbyReceiveProtocol(core, lobby, user);
-      updateProtocol = new LobbyUpdateProtocol(core, lobby, user);
+      receiveProtocol = new LobbyReceiveProtocol(core, lobby, user, status);
    }
 
    @Override

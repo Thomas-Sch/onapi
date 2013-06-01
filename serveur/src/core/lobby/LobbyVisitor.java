@@ -11,7 +11,7 @@
  */
 package core.lobby;
 
-import core.updates.StandardUpdateVisitor;
+import core.updates.UpdateVisitor;
 
 /**
  * TODO
@@ -21,6 +21,6 @@ import core.updates.StandardUpdateVisitor;
  * @author Schweizer Thomas
  *
  */
-public interface LobbyVisitor extends StandardUpdateVisitor {
+public interface LobbyVisitor extends UpdateVisitor {
 
 }

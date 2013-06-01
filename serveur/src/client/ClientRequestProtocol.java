@@ -298,16 +298,16 @@ public class ClientRequestProtocol {
     * alors créé, servant de canal d'écoute pour recevoir les mises à jour du
     * serveur.
     * 
-    * @return le canal de réception en provenance du serveur.
+    * @return Le résultat de la tentative de.
     */
-   public Channel joinGame() {
+   public boolean joinLobby() {
 
       if (!initDone) {
          throw new ProtocolException(
                "Error, connection to server has not been initialized");
       }
 
-      Channel updateChannel = null;
+      boolean success = false;
 
       synchronized (requestChannel) {
 
@@ -318,11 +318,8 @@ public class ClientRequestProtocol {
             boolean isLobbyFree = requestChannel.receiveBoolean();
 
             if (isLobbyFree) {
-               // Réception du nouveau numéro de port pour les updates.
-               int portNumber = requestChannel.receiveInt();
-
-               updateChannel = new Channel(requestChannel.getAddress(),
-                     portNumber, requestChannel.getTimeout());
+               // Réception de la confirmation
+               success = requestChannel.receiveBoolean();
             }
             else {
                System.out.println("No free lobbby for the moment.");
@@ -335,7 +332,7 @@ public class ClientRequestProtocol {
 
       }
 
-      return updateChannel;
+      return success;
    }
 
    /**

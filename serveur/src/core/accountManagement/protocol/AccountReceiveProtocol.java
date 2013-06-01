@@ -13,13 +13,14 @@ package core.accountManagement.protocol;
 
 import common.components.AccountType;
 import common.components.UserAccount;
+import common.components.lobby.PlayerStatus;
 import core.Core;
 import core.UserInformations;
 import core.lobby.Lobby;
 import core.lobby.LobbyConnection;
 import core.lobby.exceptions.LobbyException;
-import core.lobby.protocol.LobbyReceiveProtocol;
 import core.protocol.ServerStandardReceiveProtocol;
+import core.protocol.lobby.LobbyReceiveProtocol;
 
 /**
  * TODO
@@ -94,7 +95,7 @@ public class AccountReceiveProtocol extends ServerStandardReceiveProtocol {
       
    }
    
-   public void joinGame() {
+   public void joinLobby() {
       
       Lobby freeLobby = core.getFreeLoby();
       
@@ -103,18 +104,23 @@ public class AccountReceiveProtocol extends ServerStandardReceiveProtocol {
       user.connectionsToClient.receiveChannel.sendBoolean(isFreeLobby);
       
       if (isFreeLobby) {
-//         user.channelReceive.sendInt(freeLobby.getUpdatePortNumber());
-         
          try {
             user.log.push("Try to connect to Lobby...");
-            user.lobby = freeLobby;
-            LobbyConnection connection = new LobbyConnection(core, freeLobby, user);
-            user.serverReceive = connection;
             
-            int code = freeLobby.addPlayer(user);
+            PlayerStatus status = freeLobby.addPlayer(user);
             
-            // Envoi d'un numéro de code
-            user.connectionsToClient.receiveChannel.sendInt(code);
+            if (status != null) {
+               user.lobby = freeLobby;
+               LobbyConnection connection = new LobbyConnection(core, freeLobby, user, status);
+               user.serverReceive = connection;
+               
+               // Confirmation d'avoir rejoint TODO (temp)
+               user.connectionsToClient.receiveChannel.sendBoolean(true);
+            }
+            else {
+               user.log.push("Error, there was a free lobby, but error while joining it.");
+            }
+            
          }
          catch (LobbyException e) {
             user.log.push("Unable to join the lobby");

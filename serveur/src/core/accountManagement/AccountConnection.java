@@ -84,7 +84,7 @@ public class AccountConnection implements ServerRequestAnswers {
          case JOIN_GAME :
             if (user.account != null && user.lobby == null) {
                receiveProtocol.acceptRequest(type);
-               receiveProtocol.joinGame();
+               receiveProtocol.joinLobby();
             }
             else {
                receiveProtocol.refuseRequest(type);
