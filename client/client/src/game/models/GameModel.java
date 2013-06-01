@@ -38,15 +38,13 @@ public class GameModel {
 
    private World world;
 
-   private Group entities = new Group();
-
-   /*
-    * private Collection<Entity> entities = new LinkedList<Entity>();new
-    * PriorityQueue<Entity>(11, new Comparator<Entity>() {
+   /**
+    * Stocke les entités de la scène. Attention, l'ordre d'insertion correspond
+    * à l'ordre d'affichage : le premier élément inséré sera en arrière-plan, le
+    * dernier en avant-plan.
     * 
-    * @Override public int compare(Entity e1, Entity e2) { return e1.,
-    * e2.getName()); } });
     */
+   private Group entities = new Group();
 
    /**
     * Représentation de la carte sous forme de grille contenant des cases vides
@@ -73,19 +71,22 @@ public class GameModel {
       teams = new Team[] { new Team(Color.BLUE), new Team(Color.RED) };
       map = new Map(world, teams);
 
+      entities.addActor(map);
+
       // Fait commencer le joueur au milieu de la map
       player = new Player(Map.getRealPos(0, 0), new Vector2(0f, 1f), teams[0],
             world, rayHandler);
+      entities.addActor(player);
 
       // Ajoute d'autres joueurs
-      // for (int i = 0; i < 14; i++) {
-      // new Player(Map.getRealPos(0, 0), new Vector2(0f, 1f), teams[0], world,
-      // rayHandler);
-      // }
-      // for (int i = 0; i < 15; i++) {
-      // new Player(Map.getRealPos(0, 0), new Vector2(0f, 1f), teams[1], world,
-      // rayHandler);
-      // }
+      for (int i = 0; i < 14; i++) {
+         entities.addActor(new Player(Map.getRealPos(0, 0), new Vector2(-1f,
+               -1f), teams[0], world, rayHandler));
+      }
+      for (int i = 0; i < 15; i++) {
+         entities.addActor(new Player(Map.getRealPos(0, 0), new Vector2(-1f,
+               -1f), teams[1], world, rayHandler));
+      }
 
       // Fait "spawner" (apparaitre) les joueurs sur la carte, autrement dit,
       // leur donne à chaque une position initiale
@@ -93,12 +94,6 @@ public class GameModel {
          t.spawnPlayers();
       }
 
-      // entities.add(player);
-      // entities.add(map);
-
-
-      entities.addActorAt(2, player);
-      entities.addActorAt(1, map);
    }
 
    /**

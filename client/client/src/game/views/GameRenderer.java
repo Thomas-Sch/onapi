@@ -20,7 +20,6 @@ import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -98,14 +97,11 @@ public class GameRenderer {
 
       // Initialise les objets de debug
       debugRenderer.setProjectionMatrix(cam.combined);
-      // physicsDebugMatrix.scale(GameModel.WORLD_TO_SCREEN,
-      // GameModel.WORLD_TO_SCREEN, 1f);
 
       fpsLog = new FPSLogger();
 
       // Initialise la scène de l'interface utilisateur
       ui = new Stage(width, height, true);
-      //ui.addActor(game.getEntities());
 
       Gdx.input.setInputProcessor(ui);
       initUI();
@@ -155,7 +151,6 @@ public class GameRenderer {
       ui.getSpriteBatch().setProjectionMatrix(cam.combined);
       ui.getSpriteBatch().begin();
       for (Actor e : game.getEntities().getChildren()) {
-         System.out.println("DRAWING : " + e.getClass().getSimpleName());
          e.draw(ui.getSpriteBatch(), 1.0f);
       }
       ui.getSpriteBatch().end();
@@ -164,15 +159,15 @@ public class GameRenderer {
       if (debug) debugRender();
 
       // Met à jour les lumières
-//       handler.setCombinedMatrix(cam.combined);
-//       handler.updateAndRender();
- 
+      handler.setCombinedMatrix(cam.combined);
+      handler.updateAndRender();
+
       if (debug) {
          ui.getSpriteBatch().begin();
          physicsDebugRenderer.render(game.getWorld(), cam.combined);
          ui.getSpriteBatch().end();
       }
-       
+
       // Affichage de l'interface graphique
       ui.act(Gdx.graphics.getDeltaTime());
       ui.draw();

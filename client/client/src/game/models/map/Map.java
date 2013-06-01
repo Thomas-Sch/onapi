@@ -35,8 +35,8 @@ import com.badlogic.gdx.physics.box2d.World;
  * La map est une grille dans laquelle on place les murs et autres éléments de
  * la carte (spawners, sortie...).
  * 
- * La map générée est (3 * nb de teams) x (3 * nb de teams) sommets de labyrinthe,
- * soit une grille carrée de 6 * nb de teams + 1 cellules de côté.
+ * La map générée est (3 * nb de teams) x (3 * nb de teams) sommets de
+ * labyrinthe, soit une grille carrée de 6 * nb de teams + 1 cellules de côté.
  * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
@@ -59,8 +59,7 @@ public class Map extends Entity {
 
    public Map(World world, Team[] teams) {
       super();
-      setZIndex(10);
-      
+
       // Crée la map et ajoute les spawners
       MazeGenerator generator = new MazeGenerator();
       setGrid(generator.generateMaze(teams.length * 3));
@@ -106,7 +105,7 @@ public class Map extends Entity {
    public LinkedList<Spawner> getSpawners() {
       return spawners;
    }
-   
+
    /**
     * Retourne les coordonnées du centre de la case voulue sur la map
     * 
@@ -202,7 +201,7 @@ public class Map extends Entity {
       for (int i = 0; i < wallBodies.length; i++) {
          for (int j = 0; j < wallBodies.length; j++) {
             if (wallBodies[i][j] != null) {
-               //wallBodies[i][j].setTransform(grid[i][j]., y, angle)
+               // wallBodies[i][j].setTransform(grid[i][j]., y, angle)
             }
          }
       }

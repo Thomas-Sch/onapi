@@ -67,7 +67,6 @@ public class Player extends Entity {
    public Player(Vector2 pos, Vector2 dir, Team team, World world,
          RayHandler handler) {
       super();
-      setZIndex(2000000);
 
       setWidth(WIDTH);
       setHeight(HEIGHT);
@@ -185,11 +184,6 @@ public class Player extends Entity {
 
    @Override
    public void debugRender(ShapeRenderer renderer) {
-      // renderer.begin(ShapeType.Rectangle);
-      // renderer.setColor(Color.RED);
-      // renderer.rect(body.getPosition().x, body.getPosition().y, bounds.width,
-      // bounds.height);
-      // renderer.end();
    }
 
    public Body getBody() {
@@ -198,6 +192,6 @@ public class Player extends Entity {
 
    @Override
    public String toString() {
-      return String.format("[ID=%s,Pos=%s]\n", id, getPos());
+      return String.format("Pos=%s", getPos());
    }
 }
