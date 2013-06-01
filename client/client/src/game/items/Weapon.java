@@ -11,6 +11,10 @@
  */
 package game.items;
 
+import game.models.Player;
+
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 /**
  * TODO
  * @author Crescenzio Fabio
@@ -19,6 +23,11 @@ package game.items;
  * @author Schweizer Thomas
  *
  */
-public abstract  class Weapon extends Item {
+public abstract class Weapon extends Item {
 
+   public abstract void onHit(Player target);
+
+   public abstract void drawProjectile(SpriteBatch batch, float parentAlpha);
+   
+   
 }

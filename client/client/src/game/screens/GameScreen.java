@@ -65,7 +65,7 @@ public class GameScreen extends ScreenAdapter {
       game = new GameModel();
       game.loadResources();
       System.out.println("Resources loaded.");
-      renderer = new GameRenderer(game, true);
+      renderer = new GameRenderer(game, debug);
       controller = new GameController(game);
       Gdx.input.setInputProcessor(this);
       System.out.println("Game ready.");
@@ -106,6 +106,8 @@ public class GameScreen extends ScreenAdapter {
          controller.setActionState(GameController.Action.LEFT, true);
       if (keycode == Keys.D)
          controller.setActionState(GameController.Action.RIGHT, true);
+      if (keycode == Keys.X)
+         controller.setActionState(GameController.Action.DEV_CHEAT, true);
       return true;
    }
 
@@ -119,13 +121,15 @@ public class GameScreen extends ScreenAdapter {
          controller.setActionState(GameController.Action.LEFT, false);
       if (keycode == Keys.D)
          controller.setActionState(GameController.Action.RIGHT, false);
+
       return true;
    }
 
    @Override
    public boolean keyTyped(char character) {
-      // TODO Auto-generated method stub
-      return false;
+      if (character == 'X' || character == 'x')
+         game.executeDevCheat();
+      return true;
    }
 
    @Override

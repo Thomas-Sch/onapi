@@ -11,6 +11,12 @@
  */
 package game.models;
 
+import java.util.LinkedList;
+import java.util.Random;
+
+import game.items.bonus.DefaultBonus;
+import game.items.skills.DefaultSkill;
+import game.items.weapons.DefaultWeapon;
 import game.models.map.Map;
 import box2dLight.RayHandler;
 
@@ -75,17 +81,20 @@ public class GameModel {
 
       // Fait commencer le joueur au milieu de la map
       player = new Player(Map.getRealPos(0, 0), new Vector2(0f, 1f), teams[0],
-            world, rayHandler);
+            new DefaultWeapon(), new DefaultSkill(), new DefaultBonus(), world,
+            rayHandler);
       entities.addActor(player);
 
       // Ajoute d'autres joueurs
       for (int i = 0; i < 14; i++) {
          entities.addActor(new Player(Map.getRealPos(0, 0), new Vector2(-1f,
-               -1f), teams[0], world, rayHandler));
+               -1f), teams[0], new DefaultWeapon(), new DefaultSkill(),
+               new DefaultBonus(), world, rayHandler));
       }
       for (int i = 0; i < 15; i++) {
          entities.addActor(new Player(Map.getRealPos(0, 0), new Vector2(-1f,
-               -1f), teams[1], world, rayHandler));
+               -1f), teams[1], new DefaultWeapon(), new DefaultSkill(),
+               new DefaultBonus(), world, rayHandler));
       }
 
       // Fait "spawner" (apparaitre) les joueurs sur la carte, autrement dit,
@@ -168,4 +177,11 @@ public class GameModel {
       return entities;
    }
 
+   public void executeDevCheat() {
+      System.out.println("CHEAT");
+      LinkedList<Player> ennemies = teams[1].getMembers();
+      Player target = ennemies.get(new Random().nextInt(ennemies.size()));
+      player.getWeapon().onHit(target);
+   }
+   
 }

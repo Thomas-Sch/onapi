@@ -17,7 +17,6 @@ import java.util.ListIterator;
 import utils.ListUtils;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.math.Vector2;
 
 /**
  * TODO

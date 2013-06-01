@@ -13,9 +13,12 @@ package game.controllers;
 
 import game.models.Entity;
 import game.models.GameModel;
+import game.models.Player;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Random;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -80,7 +83,12 @@ public class GameController {
       /**
        * Activation/Désactivation de la lampe torche
        */
-      LAMP;
+      LAMP,
+      
+      /**
+       * Commande spéciale pour le debug
+       */
+      DEV_CHEAT;
    }
 
    /**

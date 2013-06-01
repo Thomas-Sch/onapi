@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : Item.java
+ * Nom du fichier   : DefaultSkill.java
  * ============================================================================
- * Date de création : 1 mai 2013
+ * Date de création : 2 juin 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,10 +9,9 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package game.items;
+package game.items.skills;
 
-import game.models.Entity;
-import game.models.Player;
+import game.items.Skill;
 
 /**
  * TODO
@@ -22,27 +21,12 @@ import game.models.Player;
  * @author Schweizer Thomas
  *
  */
-public abstract class Item extends Entity {
+public class DefaultSkill extends Skill {
 
-   /**
-    * Propriétaire de l'arme
-    */
-   private Player owner;
-
-   /**
-    * @return Propriétaire de l'arme
-    */
-   public Player getOwner() {
-      return owner;
+   @Override
+   public void update(float deltaTime) {
+      // TODO Auto-generated method stub
+      
    }
 
-   /**
-    * @param owner Propriétaire de l'arme
-    */
-   public void setOwner(Player owner) {
-      this.owner = owner;
-   }
-   
-   
-   
 }

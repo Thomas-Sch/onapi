@@ -11,6 +11,9 @@
  */
 package game.models;
 
+import game.items.Bonus;
+import game.items.Skill;
+import game.items.Weapon;
 import game.models.map.Tile;
 import box2dLight.ConeLight;
 import box2dLight.PointLight;
@@ -47,15 +50,57 @@ public class Player extends Entity {
 
    private static final int WIDTH = 50;
    private static final int HEIGHT = WIDTH;
-   
-   private static final Color TORCH_COLOR = new Color(237f / 255f,
-         240f / 255f, 168f / 255f, 0.6f);
+
+   private static final Color TORCH_COLOR = new Color(237f / 255f, 240f / 255f,
+         168f / 255f, 0.6f);
    private static final Color HALO_COLOR = new Color(1, 1, 1, 0.3f);
+   private static int HP_START = 100;
 
    /**
     * Référence de l'équipe à laquelle appartient le personnage
     */
    private Team team;
+
+   /**
+    * Nombre de points de santé (health points) du joueur
+    */
+   private int hp = HP_START;
+
+   /**
+    * Arme équipée par le joueur
+    */
+   private Weapon weapon;
+
+   /**
+    * Compétence spéciale du joueur
+    */
+   private Skill skill;
+
+   /**
+    * Amélioration d'arme équipée par le joueur
+    */
+   private Bonus bonus;
+
+   /**
+    * @return Arme équipée par le joueur
+    */
+   public Weapon getWeapon() {
+      return weapon;
+   }
+
+   /**
+    * @return Compétence spéciale du joueur
+    */
+   public Skill getSkill() {
+      return skill;
+   }
+
+   /**
+    * @return Amélioration d'arme équipée par le joueur
+    */
+   public Bonus getBonus() {
+      return bonus;
+   }
 
    /**
     * Texture du joueur à son affichage
@@ -68,8 +113,8 @@ public class Player extends Entity {
 
    private Rectangle bounds;
 
-   public Player(Vector2 pos, Vector2 dir, Team team, World world,
-         RayHandler handler) {
+   public Player(Vector2 pos, Vector2 dir, Team team, Weapon weapon,
+         Skill skill, Bonus bonus, World world, RayHandler handler) {
       super();
 
       setWidth(WIDTH);
@@ -78,6 +123,13 @@ public class Player extends Entity {
 
       setTeam(team);
       team.getMembers().add(this);
+      this.weapon = weapon;
+      this.weapon.setOwner(this);
+      this.skill = skill;
+      this.skill.setOwner(this);
+      this.bonus = bonus;
+      this.bonus.setOwner(this);
+
       loadResources();
 
       // Définit la consistance physique du joueur
@@ -95,8 +147,8 @@ public class Player extends Entity {
       body.createFixture(fix);
 
       // Initialise les lumières diffusées par le joueur
-      new PointLight(handler, 50, HALO_COLOR, Tile.WIDTH - 50,
-            getX(), getY()).attachToBody(body, 0, 0);
+      new PointLight(handler, 50, HALO_COLOR, Tile.WIDTH - 50, getX(), getY())
+            .attachToBody(body, 0, 0);
       torchLight = new ConeLight(handler, 50, TORCH_COLOR, 750, 1, 1, 270, 30);
       torchLight.attachToBody(body, 1, 1);
 
@@ -167,17 +219,26 @@ public class Player extends Entity {
    public void draw(SpriteBatch batch, float parentAlpha) {
       super.draw(batch, parentAlpha);
 
-      // Affecte le sprite pour l'utilisateur
-      TextureRegion region = new TextureRegion(texture, 0, 0, 256, 256);
+      if (hp > 0) {
 
-      int textureWidth = texture.getWidth();
-      int textureHeight = texture.getHeight();
+         // Affecte le sprite pour l'utilisateur
+         TextureRegion region = new TextureRegion(texture, 0, 0, 256, 256);
 
-      // Dessiner à l'écran le joueur
-      batch.draw(region, getPos().x - texture.getWidth() / 2, getPos().y
-            - texture.getHeight() / 2, textureWidth / 2f, textureHeight / 2f,
-            textureWidth, textureHeight, getWidth() / textureWidth, getHeight()
-                  / textureHeight, getRotation(), false);
+         int textureWidth = texture.getWidth();
+         int textureHeight = texture.getHeight();
+
+         Color previousTint = batch.getColor();
+         batch.setColor(team.getColor());
+
+         // Dessiner à l'écran le joueur
+         batch.draw(region, getPos().x - texture.getWidth() / 2, getPos().y
+               - texture.getHeight() / 2, textureWidth / 2f,
+               textureHeight / 2f, textureWidth, textureHeight, getWidth()
+                     / textureWidth, getHeight() / textureHeight,
+               getRotation(), false);
+
+         batch.setColor(previousTint);
+      }
    }
 
    @Override
@@ -193,4 +254,37 @@ public class Player extends Entity {
    public String toString() {
       return String.format("Pos=%s", getPos());
    }
+
+   /**
+    * @return Nombre de points de santé (health points) du joueur
+    */
+   public int getHP() {
+      return hp;
+   }
+
+   /**
+    * @param hp
+    *           Nombre de points de santé (health points) du joueur
+    */
+   public void setHP(int hp) {
+      this.hp = hp;
+   }
+
+   /**
+    * Inflige un certain nombre de points de dégats au joueur.
+    * 
+    * @param damagePoints
+    *           Points de dégats à infliger
+    */
+   public void damage(int damagePoints) {
+      hp -= damagePoints;
+      System.out.println(this + "\t : HP = " + hp);
+      if (hp < 0) die();
+   }
+
+   public void die() {
+      this.hp = 0;
+      System.out.println(this + "\t DEAD");
+   }
+
 }

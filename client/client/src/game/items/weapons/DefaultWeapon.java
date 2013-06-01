@@ -11,7 +11,10 @@
  */
 package game.items.weapons;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+
 import game.items.Weapon;
+import game.models.Player;
 
 /**
  * TODO
@@ -22,5 +25,21 @@ import game.items.Weapon;
  *
  */
 public class DefaultWeapon extends Weapon {
+
+   @Override
+   public void onHit(Player target) {
+      target.damage(10);
+   }
+
+   @Override
+   public void drawProjectile(SpriteBatch batch, float parentAlpha) {
+      // TODO Auto-generated method stub
+   }
+
+   @Override
+   public void update(float deltaTime) {
+      // TODO Auto-generated method stub
+      
+   }
 
 }

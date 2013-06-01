@@ -16,6 +16,7 @@ import game.models.GameModel;
 import box2dLight.RayHandler;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -77,6 +78,7 @@ public class GameRenderer {
    private Box2DDebugRenderer physicsDebugRenderer = new Box2DDebugRenderer();
    private FPSLogger fpsLog;
    private Label lblDebug;
+   private Label lblHP;
 
    private RayHandler handler;
 
@@ -124,8 +126,13 @@ public class GameRenderer {
       table.top().left();
       ui.addActor(table);
 
-      lblDebug = new Label("...", skin);
+      lblDebug = new Label("[DEBUG]", skin);
       table.add(lblDebug);
+      table.row();
+      lblHP = new Label("[HP]", skin);
+      lblHP.setColor(Color.RED);
+      lblHP.setFontScale(2);
+      table.add(lblHP);
 
       table.pack();
    }
@@ -162,13 +169,14 @@ public class GameRenderer {
       handler.setCombinedMatrix(cam.combined);
       handler.updateAndRender();
 
-//      if (debug) {
-//         ui.getSpriteBatch().begin();
-//         physicsDebugRenderer.render(game.getWorld(), cam.combined);
-//         ui.getSpriteBatch().end();
-//      }
+      if (debug) {
+         ui.getSpriteBatch().begin();
+         physicsDebugRenderer.render(game.getWorld(), cam.combined);
+         ui.getSpriteBatch().end();
+      }
 
       // Affichage de l'interface graphique
+      lblHP.setText("HP : " + game.getPlayer().getHP());
       ui.act(Gdx.graphics.getDeltaTime());
       ui.draw();
 
