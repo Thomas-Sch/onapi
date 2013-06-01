@@ -23,7 +23,7 @@ package game.models.map;
 public enum Tile {
    EMPTY, WALL, SPAWNER, EXIT;
 
-   public static final int WIDTH = 100;
+   public static final int WIDTH = 200;
    public static final int HEIGHT = WIDTH;
    
    @Override

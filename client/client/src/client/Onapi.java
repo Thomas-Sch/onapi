@@ -14,6 +14,7 @@ package client;
 import game.screens.GameScreen;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 
 /**
  * Classe d'initialisation du jeu. Gère la transition entre les différents

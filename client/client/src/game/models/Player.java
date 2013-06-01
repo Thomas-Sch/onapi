@@ -91,9 +91,9 @@ public class Player extends Entity {
       body.createFixture(fix);
 
       // Initialise les lumières diffusées par le joueur
-      new PointLight(handler, 250, new Color(1, 1, 1, 0.5f), Tile.WIDTH - 50,
+      new PointLight(handler, 50, new Color(1, 1, 1, 0.5f), Tile.WIDTH - 50,
             getX(), getY()).attachToBody(body, 0, 0);
-      torchLight = new ConeLight(handler, 250, team.getColor()/*
+      torchLight = new ConeLight(handler, 50, team.getColor()/*
                                                                * new Color(237f
                                                                * / 255f, 240f /
                                                                * 255f, 168f /
@@ -184,6 +184,7 @@ public class Player extends Entity {
 
    @Override
    public void debugRender(ShapeRenderer renderer) {
+      
    }
 
    public Body getBody() {

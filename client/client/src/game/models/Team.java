@@ -85,7 +85,7 @@ public class Team {
          else {
             currentSpawner = spawnIt.next();
          }
-         p.moveTo(new Vector2(currentSpawner.getRealX(), currentSpawner.getRealY()));
+         currentSpawner.spawn(p);
       }
    }
 

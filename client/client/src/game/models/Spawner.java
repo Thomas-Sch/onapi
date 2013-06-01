@@ -14,6 +14,7 @@ package game.models;
 import com.badlogic.gdx.math.Vector2;
 
 import game.models.map.Map;
+import game.models.map.Tile;
 
 /**
  * TODO
@@ -51,17 +52,13 @@ public class Spawner {
       return x;
    }
 
-   public float getRealX() {
-      Vector2.tmp.set(Map.getRealPos(x, y));
-      return Vector2.tmp.x;
-   }
-
    public int getY() {
       return y;
    }
-
-   public float getRealY() {
+   
+   public void spawn(Player p) {
       Vector2.tmp.set(Map.getRealPos(x, y));
-      return Vector2.tmp.y;
+      Vector2.tmp.sub(Tile.WIDTH / 2, Tile.HEIGHT / 2);
+      p.moveTo(Vector2.tmp);
    }
 }
