@@ -162,11 +162,11 @@ public class GameRenderer {
       handler.setCombinedMatrix(cam.combined);
       handler.updateAndRender();
 
-      if (debug) {
-         ui.getSpriteBatch().begin();
-         physicsDebugRenderer.render(game.getWorld(), cam.combined);
-         ui.getSpriteBatch().end();
-      }
+//      if (debug) {
+//         ui.getSpriteBatch().begin();
+//         physicsDebugRenderer.render(game.getWorld(), cam.combined);
+//         ui.getSpriteBatch().end();
+//      }
 
       // Affichage de l'interface graphique
       ui.act(Gdx.graphics.getDeltaTime());

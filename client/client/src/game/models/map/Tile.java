@@ -23,7 +23,7 @@ package game.models.map;
 public enum Tile {
    EMPTY, WALL, SPAWNER, EXIT;
 
-   public static final int WIDTH = 200;
+   public static final int WIDTH = 600;
    public static final int HEIGHT = WIDTH;
    
    @Override
@@ -41,17 +41,5 @@ public enum Tile {
             return "?";
       }
    }
-   
-//   public static Tile spawner(int teamNumber) {
-//      switch(teamNumber) {
-//         case 0:
-//            return EMPTY;
-//         case 1:
-//            return SPAWNER1;
-//         case 2:
-//            return SPAWNER2;
-//         default:
-//            throw new RuntimeException(String.format("No team corresponding to number %d", teamNumber));
-//      }
-//   }
+  
 }

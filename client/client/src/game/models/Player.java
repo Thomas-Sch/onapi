@@ -47,6 +47,10 @@ public class Player extends Entity {
 
    private static final int WIDTH = 50;
    private static final int HEIGHT = WIDTH;
+   
+   private static final Color TORCH_COLOR = new Color(237f / 255f,
+         240f / 255f, 168f / 255f, 0.6f);
+   private static final Color HALO_COLOR = new Color(1, 1, 1, 0.3f);
 
    /**
     * Référence de l'équipe à laquelle appartient le personnage
@@ -91,15 +95,9 @@ public class Player extends Entity {
       body.createFixture(fix);
 
       // Initialise les lumières diffusées par le joueur
-      new PointLight(handler, 50, new Color(1, 1, 1, 0.5f), Tile.WIDTH - 50,
+      new PointLight(handler, 50, HALO_COLOR, Tile.WIDTH - 50,
             getX(), getY()).attachToBody(body, 0, 0);
-      torchLight = new ConeLight(handler, 50, team.getColor()/*
-                                                               * new Color(237f
-                                                               * / 255f, 240f /
-                                                               * 255f, 168f /
-                                                               * 255f, 0.9f)
-                                                               */, 750, 1, 1,
-            270, 30);
+      torchLight = new ConeLight(handler, 50, TORCH_COLOR, 750, 1, 1, 270, 30);
       torchLight.attachToBody(body, 1, 1);
 
       setDir(dir);
@@ -184,7 +182,7 @@ public class Player extends Entity {
 
    @Override
    public void debugRender(ShapeRenderer renderer) {
-      
+
    }
 
    public Body getBody() {
