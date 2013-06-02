@@ -11,6 +11,7 @@
  */
 package game.models;
 
+import game.controllers.GameController.Action;
 import game.items.Bonus;
 import game.items.Skill;
 import game.items.Weapon;
@@ -30,7 +31,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -43,10 +49,12 @@ import com.badlogic.gdx.physics.box2d.World;
  * @author Schweizer Thomas
  * 
  */
-public class Player extends Entity {
+public class Player extends Entity implements ContactListener {
 
    private static int lastId = 1;
    private final int id = lastId++;
+   private boolean canMove;
+   
 
    private static final int WIDTH = 50;
    private static final int HEIGHT = WIDTH;
@@ -104,7 +112,8 @@ public class Player extends Entity {
    public Bonus getBonus() {
       return bonus;
    }
-   
+
+
    /**
     * Texture du joueur à son affichage
     */
@@ -132,7 +141,8 @@ public class Player extends Entity {
       this.skill.setOwner(this);
       this.bonus = bonus;
       this.bonus.setOwner(this);
-      
+
+
       loadResources();
 
       // Définit la consistance physique du joueur
@@ -140,20 +150,25 @@ public class Player extends Entity {
       bodyDef.type = BodyType.DynamicBody;
       bodyDef.position.set(getPos());
       body = world.createBody(bodyDef);
-      PolygonShape shape = new PolygonShape();
-      shape.setAsBox(bounds.height / 2, bounds.width / 2);
+      //PolygonShape shape = new PolygonShape();
+   // Create a circle shape and set its radius to 6
+      CircleShape circle = new CircleShape();
+      circle.setRadius((float) (Math.sqrt(2)*bounds.height / 2));
+      //shape.setAsBox(bounds.height / 2 , bounds.width/ 2);
       FixtureDef fix = new FixtureDef();
-      fix.shape = shape;
+      fix.shape = circle;
       fix.density = 0.4f;
       fix.friction = 0.5f;
       fix.restitution = 0.8f;
       body.createFixture(fix);
+      canMove = true;
 
       // Initialise les lumières diffusées par le joueur
       new PointLight(handler, 50, HALO_COLOR, Tile.WIDTH - 50, getX(), getY())
             .attachToBody(body, 0, 0);
       torchLight = new ConeLight(handler, 50, TORCH_COLOR, 750, 1, 1, 270, 30);
       torchLight.attachToBody(body, 1, 1);
+      this.torchLight.setActive(true);
 
       setDir(dir);
       moveTo(pos);
@@ -178,7 +193,7 @@ public class Player extends Entity {
     *           Nouvelle position
     */
    public void moveTo(Vector2 newPos) {
-      setPosition(newPos.x - bounds.width / 2f, newPos.y - bounds.height / 2f);
+         setPosition(newPos.x - bounds.width / 2f, newPos.y - bounds.height / 2f);
    }
 
    /**
@@ -188,7 +203,8 @@ public class Player extends Entity {
     *           Vecteur de déplacement (additionné à sa position actuelle)
     */
    public void move(Vector2 dir) {
-      setPosition(getX() + dir.x, getY() + dir.y);
+      if(canMove)
+         setPosition(getX() + dir.x, getY() + dir.y);
    }
 
    /**
@@ -218,10 +234,11 @@ public class Player extends Entity {
    @Override
    public void update(float deltaTime) {
       body.setTransform(getPos(), getRotation() * ((float) Math.PI) / 180f);
-      weapon.update(deltaTime);
-      skill.update(deltaTime);
-      bonus.update(deltaTime);
+
+
+
    }
+   
 
    public void shoot(float delta) {
       weapon.shoot(delta);
@@ -257,11 +274,13 @@ public class Player extends Entity {
    public void debugRender(ShapeRenderer renderer) {
 
    }
+   
 
    /**
     * Orientation du personnage
     */
    private Vector2 dir;
+   private Action lastAction;
 
    /**
     * @return Orientation du joueur
@@ -311,6 +330,7 @@ public class Player extends Entity {
       moveTo(deadPos);
       System.out.println(this + "\t DEAD");
    }
+   
 
    /**
     * 
@@ -330,6 +350,48 @@ public class Player extends Entity {
 
    public int getId() {
       return id;
+   }
+
+   @Override
+   public void beginContact(Contact contact) {
+      canMove = false;
+      //Si collision, repositionne le joueur pour supprimer la collision
+      //TODO : Caster pour savoir si joueur / mur / munition
+      if (lastAction == Action.RIGHT)
+         setX((float) (Math.floor(getX() / Tile.WIDTH) * Tile.WIDTH
+               + Tile.WIDTH / 2 - (float) ((getWidth() / 2) * Math.sqrt(2))) - 1);
+      if (lastAction == Action.DOWN)
+         setY((float) (Math.floor(getY() / Tile.WIDTH) * Tile.WIDTH
+               + Tile.WIDTH / 2 + (float) ((getWidth() / 2) * Math.sqrt(2))) + 1);
+      
+      if (lastAction == Action.LEFT)
+         setX((float) (Math.floor(getX() / Tile.WIDTH) * Tile.WIDTH
+               + Tile.WIDTH / 2 + (float) ((getWidth() / 2) * Math.sqrt(2))) + 1);
+      if (lastAction == Action.UP)
+         setY((float) (Math.floor(getY() / Tile.WIDTH) * Tile.WIDTH
+               + Tile.WIDTH / 2 - (float) ((getWidth() / 2) * Math.sqrt(2))) - 1);
+   }
+
+   @Override
+   public void endContact(Contact contact) {
+      canMove = true;
+   }
+
+   @Override
+   public void preSolve(Contact contact, Manifold oldManifold) {
+   }
+
+   @Override
+   public void postSolve(Contact contact, ContactImpulse impulse) {
+      // TODO Auto-generated method stub
+      
+   }
+
+   /**
+    * @param right
+    */
+   public void setLastAction(Action action) {
+      this.lastAction = action;      
    }
 
 }

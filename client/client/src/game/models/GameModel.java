@@ -20,8 +20,14 @@ import game.items.weapons.DefaultWeapon;
 import game.models.map.Map;
 import box2dLight.RayHandler;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -103,8 +109,16 @@ public class GameModel {
          t.spawnPlayers();
       }
 
+      //créer les contact listener
+      createCollisionListener();
+
    }
 
+   private void createCollisionListener() {
+      world.setContactListener(player);
+  }
+
+   
    /**
     * @return Liste des équipes en jeu
     */

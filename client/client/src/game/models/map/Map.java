@@ -27,7 +27,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -44,7 +48,7 @@ import com.badlogic.gdx.physics.box2d.World;
  * @author Schweizer Thomas
  * 
  */
-public class Map extends Entity {
+public class Map extends Entity implements ContactListener{
 
    private Tile[][] grid;
    private Texture textureMur;
@@ -205,6 +209,30 @@ public class Map extends Entity {
             }
          }
       }
+   }
+
+   @Override
+   public void beginContact(Contact contact) {
+      // TODO Auto-generated method stub
+      System.out.println("HERE 2");
+   }
+
+   @Override
+   public void endContact(Contact contact) {
+      // TODO Auto-generated method stub
+      
+   }
+
+   @Override
+   public void preSolve(Contact contact, Manifold oldManifold) {
+      // TODO Auto-generated method stub
+      
+   }
+
+   @Override
+   public void postSolve(Contact contact, ContactImpulse impulse) {
+      // TODO Auto-generated method stub
+      
    }
 
 }

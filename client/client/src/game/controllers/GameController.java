@@ -137,15 +137,19 @@ public class GameController {
       float moveSpeed = 10.0f;
 
       if (getActionState(Action.UP)) {
+         game.getPlayer().setLastAction(Action.UP);
          game.getPlayer().move(new Vector2(0, +moveSpeed));
       }
       if (getActionState(Action.DOWN)) {
+         game.getPlayer().setLastAction(Action.DOWN);
          game.getPlayer().move(new Vector2(0, -moveSpeed));
       }
       if (getActionState(Action.RIGHT)) {
+         game.getPlayer().setLastAction(Action.RIGHT);
          game.getPlayer().move(new Vector2(+moveSpeed, 0));
       }
       if (getActionState(Action.LEFT)) {
+         game.getPlayer().setLastAction(Action.LEFT);
          game.getPlayer().move(new Vector2(-moveSpeed, 0));
       }
 
