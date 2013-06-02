@@ -83,7 +83,7 @@ public class GameController {
       /**
        * Activation/Désactivation de la lampe torche
        */
-      LAMP,
+      TORCH,
       
       /**
        * Commande spéciale pour le debug
@@ -153,6 +153,9 @@ public class GameController {
       if (getActionState(Action.LEFT)) {
          game.getPlayer().move(new Vector2(-moveSpeed, 0));
       }
+      
+      game.getPlayer().setTorch(getActionState(Action.TORCH));
+      
 
       for (Actor e : game.getEntities().getChildren()) {
          ((Entity) e).update(delta);

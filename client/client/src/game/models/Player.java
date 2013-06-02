@@ -56,6 +56,9 @@ public class Player extends Entity {
    private static final Color HALO_COLOR = new Color(1, 1, 1, 0.3f);
    private static int HP_START = 100;
 
+   private static final Vector2 GRAVEYARD_POS = new Vector2(-500, -500);
+   private final Vector2 deadPos;
+
    /**
     * Référence de l'équipe à laquelle appartient le personnage
     */
@@ -112,6 +115,7 @@ public class Player extends Entity {
    private Body body;
 
    private Rectangle bounds;
+   private boolean isTorchActive;
 
    public Player(Vector2 pos, Vector2 dir, Team team, Weapon weapon,
          Skill skill, Bonus bonus, World world, RayHandler handler) {
@@ -129,6 +133,7 @@ public class Player extends Entity {
       this.skill.setOwner(this);
       this.bonus = bonus;
       this.bonus.setOwner(this);
+      isTorchActive = true;
 
       loadResources();
 
@@ -154,6 +159,7 @@ public class Player extends Entity {
 
       setDir(dir);
       moveTo(pos);
+      deadPos = new Vector2(GRAVEYARD_POS.x + pos.x, GRAVEYARD_POS.y + pos.y);
    }
 
    public void loadResources() {
@@ -213,32 +219,29 @@ public class Player extends Entity {
    @Override
    public void update(float deltaTime) {
       body.setTransform(getPos(), getRotation() * ((float) Math.PI) / 180f);
+      torchLight.setActive(isTorchActive);
    }
 
    @Override
    public void draw(SpriteBatch batch, float parentAlpha) {
       super.draw(batch, parentAlpha);
 
-      if (hp > 0) {
+      // Affecte le sprite pour l'utilisateur
+      TextureRegion region = new TextureRegion(texture, 0, 0, 256, 256);
 
-         // Affecte le sprite pour l'utilisateur
-         TextureRegion region = new TextureRegion(texture, 0, 0, 256, 256);
+      int textureWidth = texture.getWidth();
+      int textureHeight = texture.getHeight();
 
-         int textureWidth = texture.getWidth();
-         int textureHeight = texture.getHeight();
+      Color previousTint = batch.getColor();
+      batch.setColor(team.getColor());
 
-         Color previousTint = batch.getColor();
-         batch.setColor(team.getColor());
+      // Dessiner à l'écran le joueur
+      batch.draw(region, getPos().x - texture.getWidth() / 2, getPos().y
+            - texture.getHeight() / 2, textureWidth / 2f, textureHeight / 2f,
+            textureWidth, textureHeight, getWidth() / textureWidth, getHeight()
+                  / textureHeight, getRotation(), false);
 
-         // Dessiner à l'écran le joueur
-         batch.draw(region, getPos().x - texture.getWidth() / 2, getPos().y
-               - texture.getHeight() / 2, textureWidth / 2f,
-               textureHeight / 2f, textureWidth, textureHeight, getWidth()
-                     / textureWidth, getHeight() / textureHeight,
-               getRotation(), false);
-
-         batch.setColor(previousTint);
-      }
+      batch.setColor(previousTint);
    }
 
    @Override
@@ -284,7 +287,16 @@ public class Player extends Entity {
 
    public void die() {
       this.hp = 0;
+      moveTo(deadPos);
       System.out.println(this + "\t DEAD");
+   }
+
+   /**
+    * @param isTorchActive
+    *           Active / désactive la lampe torche (true = lampe active)
+    */
+   public void setTorch(boolean isTorchActive) {
+      this.isTorchActive = isTorchActive;
    }
 
 }

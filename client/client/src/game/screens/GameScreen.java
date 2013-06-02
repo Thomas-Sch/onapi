@@ -35,6 +35,9 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class GameScreen extends ScreenAdapter {
 
+   private static final int MOUSE_LEFT_BUTTON = 0;
+   private static final int MOUSE_RIGHT_BUTTON = 1;
+   
    private boolean debug;
 
    /**
@@ -106,8 +109,6 @@ public class GameScreen extends ScreenAdapter {
          controller.setActionState(GameController.Action.LEFT, true);
       if (keycode == Keys.D)
          controller.setActionState(GameController.Action.RIGHT, true);
-      if (keycode == Keys.X)
-         controller.setActionState(GameController.Action.DEV_CHEAT, true);
       return true;
    }
 
@@ -134,8 +135,11 @@ public class GameScreen extends ScreenAdapter {
 
    @Override
    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-      // TODO Auto-generated method stub
-      return false;
+      if (button == MOUSE_RIGHT_BUTTON) {
+         boolean isLampActive = controller.getActionState(GameController.Action.TORCH);
+         controller.setActionState(GameController.Action.TORCH, !isLampActive);
+      }
+      return true;
    }
 
    @Override
@@ -143,6 +147,8 @@ public class GameScreen extends ScreenAdapter {
       // TODO Auto-generated method stub
       return false;
    }
+   
+   
 
    @Override
    public boolean mouseMoved(int screenX, int screenY) {
