@@ -79,7 +79,7 @@ public class GameController {
        * Activation/Désactivation de la lampe torche
        */
       TORCH,
-      
+
       /**
        * Commande spéciale pour le debug
        */
@@ -127,12 +127,11 @@ public class GameController {
       return keys.get(action).booleanValue();
    }
 
-   
    /**
     * Méthode de mise à jour de la logique de jeu
     * 
     * @param delta
-    *           Différence de temps depuis le dernier update
+    *           Différence de temps (en secondes) depuis le dernier update
     */
    public void update(float delta) {
       float moveSpeed = 10.0f;
@@ -149,18 +148,15 @@ public class GameController {
       if (getActionState(Action.LEFT)) {
          game.getPlayer().move(new Vector2(-moveSpeed, 0));
       }
-      
+
       if (getActionState(Action.TORCH)) {
-         game.getPlayer().changeTorchLight();
+         game.getPlayer().toggleTorch();
          setActionState(GameController.Action.TORCH, false);
       }
       if (getActionState(Action.FIRE)) {
-         game.getPlayer().shoot();
-         setActionState(GameController.Action.FIRE, false);
+         game.getPlayer().shoot(delta);
       }
-     
-      game.getPlayer().setTorch(getActionState(Action.TORCH));
-      
+
 
       for (Actor e : game.getEntities().getChildren()) {
          ((Entity) e).update(delta);

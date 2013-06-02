@@ -146,10 +146,18 @@ public class GameScreen extends ScreenAdapter {
 
    @Override
    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-      // TODO Auto-generated method stub
-      return false;
+      if (button == MOUSE_LEFT_BUTTON) {
+         controller.setActionState(GameController.Action.FIRE, false);
+      }
+      return true;
    }
    
+   @Override
+   public boolean touchDragged(int screenX, int screenY, int pointer) {
+      touchDown(screenX, screenY, pointer, MOUSE_LEFT_BUTTON);
+      mouseMoved(screenX, screenY);
+      return true;
+   }
    
 
    @Override

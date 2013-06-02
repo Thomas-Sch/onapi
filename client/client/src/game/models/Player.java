@@ -104,7 +104,7 @@ public class Player extends Entity {
    public Bonus getBonus() {
       return bonus;
    }
-
+   
    /**
     * Texture du joueur à son affichage
     */
@@ -115,7 +115,6 @@ public class Player extends Entity {
    private Body body;
 
    private Rectangle bounds;
-   private boolean isTorchActive;
 
    public Player(Vector2 pos, Vector2 dir, Team team, Weapon weapon,
          Skill skill, Bonus bonus, World world, RayHandler handler) {
@@ -133,8 +132,7 @@ public class Player extends Entity {
       this.skill.setOwner(this);
       this.bonus = bonus;
       this.bonus.setOwner(this);
-      isTorchActive = true;
-
+      
       loadResources();
 
       // Définit la consistance physique du joueur
@@ -220,10 +218,13 @@ public class Player extends Entity {
    @Override
    public void update(float deltaTime) {
       body.setTransform(getPos(), getRotation() * ((float) Math.PI) / 180f);
+      weapon.update(deltaTime);
+      skill.update(deltaTime);
+      bonus.update(deltaTime);
    }
-   
-   public void shoot() {
-      System.out.println("j'ai tiré dans la direction" + dir.x + " " + getDir().y);
+
+   public void shoot(float delta) {
+      weapon.shoot(delta);
    }
 
    @Override
@@ -236,6 +237,10 @@ public class Player extends Entity {
       int textureWidth = texture.getWidth();
       int textureHeight = texture.getHeight();
 
+      weapon.draw(batch, parentAlpha);
+      skill.draw(batch, parentAlpha);
+      bonus.draw(batch, parentAlpha);
+      
       Color previousTint = batch.getColor();
       batch.setColor(team.getColor());
 
@@ -252,7 +257,7 @@ public class Player extends Entity {
    public void debugRender(ShapeRenderer renderer) {
 
    }
-   
+
    /**
     * Orientation du personnage
     */
@@ -308,19 +313,23 @@ public class Player extends Entity {
    }
 
    /**
-    * @param isTorchActive
-    *           Active / désactive la lampe torche (true = lampe active)
-    */
-   public void setTorch(boolean isTorchActive) {
-      this.isTorchActive = isTorchActive;
-   }
-
-   /**
     * 
     */
-   public void changeTorchLight() {
+   public void toggleTorch() {
       // TODO Auto-generated method stub
       this.torchLight.setActive(!torchLight.isActive());
+   }
+
+   public void setTorchColor(Color color) {
+      torchLight.setColor(color);
+   }
+
+   public Color getTorchColor() {
+      return torchLight.getColor();
+   }
+
+   public int getId() {
+      return id;
    }
 
 }

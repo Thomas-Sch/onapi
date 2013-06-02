@@ -23,7 +23,12 @@ import game.models.Player;
  *
  */
 public abstract class Item extends Entity {
-
+   
+   /**
+    * Temps de cooldown en chaque utilisation de l'item (en secondes)
+    */
+   private float cooldown = 0.5f;
+   
    /**
     * Propriétaire de l'arme
     */
@@ -43,6 +48,12 @@ public abstract class Item extends Entity {
       this.owner = owner;
    }
    
+   protected void setCooldown(float cooldown) {
+      this.cooldown = cooldown;
+   }
    
+   protected float getCooldown() {
+      return cooldown;
+   }
    
 }
