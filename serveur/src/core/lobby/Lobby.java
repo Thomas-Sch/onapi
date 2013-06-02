@@ -11,6 +11,9 @@
  */
 package core.lobby;
 
+import gui.LogsFrame;
+import gui.logs.Log;
+
 import java.io.Serializable;
 import java.util.Observable;
 import java.util.Observer;
@@ -33,16 +36,23 @@ public class Lobby implements Observer {
    
    private PlayerSlot[] players;
    
-   public Lobby(int nbPlayers) {
-      init(nbPlayers);
+   private Log log;
+   
+   public Lobby(int nbPlayers, LogsFrame logsFrame) {
+      init(nbPlayers, logsFrame);
    }
    
    /**
     * Initialise le salon d'attente.
     * @param nbPlayers - le nombre de joueurs que pourra accueillir le salon.
+    * @param logsFrame - la fenêtre de logs pour y ajouter celui du lobby.
     * @throws LobbyException si le nombre de places est négatif ou nul.
     */
-   private void init(int nbPlayers) {
+   private void init(int nbPlayers, LogsFrame logsFrame) {
+      log = new Log("Lobby");
+      logsFrame.addLogPanel(log.createLogPanel());
+      
+      log.push("Starting the lobby...");
       
       if (nbPlayers <= 0) {
          throw new LobbyException("Number of players has to be greater than 0.");
@@ -55,6 +65,7 @@ public class Lobby implements Observer {
          players[i].addObserver(this);
       }
       
+      log.push("Lobby is ready for " + nbPlayers + " players.");
    }
    
    public int getMaxNumberOfPlayers() {
@@ -93,7 +104,9 @@ public class Lobby implements Observer {
          }
          
          if (players[index].setUser(user)) {
-            System.out.println("DEBUG - Lobby - add player successfully !");
+            log.push("DEBUG - Added a new player successfully !");
+            
+            printStatus();
             
             // Transmet alors les données actuelles
             for(PlayerSlot slot : players) {
@@ -104,7 +117,7 @@ public class Lobby implements Observer {
             
          }
          else {
-            System.out.println("DEBUG - Lobby - error while adding player !");
+            log.push("DEBUG - Error while adding player !");
          }
          
          return players[index].status;
@@ -117,8 +130,10 @@ public class Lobby implements Observer {
          for (PlayerSlot slot : players) {
             if (slot.user == user) {
                slot.removeUser();
-               System.out.println("DEBUG - Lobby - player " + user.account.getLogin() + " removed");
+               log.push("DEBUG - Player " + user.account.getLogin() + " removed");
                user.serverUpdate.pushUpdate(new LobbyUpdateSlot(slot.slotNumber, slot.getStatus()));
+               
+               printStatus();
                return true;
             }
          }
@@ -141,6 +156,13 @@ public class Lobby implements Observer {
       return index;
    }
    
+   private void printStatus() {
+      int slotRemainings = getNumberOfFreeSlots();
+      log.push(" Current lobby status : " + getNumberOfPlayers() +
+            " / " + getMaxNumberOfPlayers() + " (" + slotRemainings +
+            " free slot" + (slotRemainings > 1 ? "s" : "") + ")");
+   }
+   
    private class PlayerSlot extends Observable implements Observer {
       
       private UserInformations user = null;
@@ -151,7 +173,7 @@ public class Lobby implements Observer {
       
       private PlayerSlot(int slotNumber) {
          this.slotNumber = slotNumber;
-         status = new PlayerStatus(user.account.getLogin());
+         status = new PlayerStatus("No player");
          status.addObserver(this);
       }
 
@@ -174,6 +196,7 @@ public class Lobby implements Observer {
          
          if(isFree()) {
             this.user = user;
+            status.setName(user.account.getLogin());
             success = true;
             setChanged();
             notifyObservers();
@@ -212,7 +235,9 @@ public class Lobby implements Observer {
             for (PlayerSlot slot : players) {
                
                if (! slot.isFree()) {
-                  // TODO
+                  slot.user.serverUpdate.pushUpdate(
+                        new LobbyUpdateSlot(updtatedSlot.getSlotNumber(),
+                                            updtatedSlot.getStatus()));
                   
                }
             }

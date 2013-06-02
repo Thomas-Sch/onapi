@@ -172,6 +172,11 @@ public class UserConnectionManager {
             
          }
          
+         // Utilisateur perdu
+         if (user.lobby != null) {
+            user.lobby.removePlayer(user);
+         }
+         
       }
       
       

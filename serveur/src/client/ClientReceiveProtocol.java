@@ -12,6 +12,7 @@
 package client;
 
 import common.connections.Channel;
+import common.connections.exceptions.ProtocolException;
 import common.connections.protocol.ProtocolType;
 
 /**
@@ -37,8 +38,23 @@ public class ClientReceiveProtocol {
    }
    
    public void ping() {
-      channel.sendProtocolType(ProtocolType.PING);
+      synchronized (channel) {
+         channel.sendProtocolType(ProtocolType.PING);
+      }
    }
    
+   /**
+    * Protocole bidon pour test.
+    */
+   @Deprecated
+   public String updateMessage() {
+      String message;
+      
+      synchronized (channel) {
+         message = channel.receiveString();
+      }
+      
+      return message;
+   }
    
 }

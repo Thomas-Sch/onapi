@@ -46,6 +46,12 @@ public class PlayerStatus extends Observable implements Serializable {
       return teamNumber;
    }
    
+   public void setName(String name) {
+      this.name = name;
+      setChanged();
+      notifyObservers();
+   }
+   
    /**
     * Définit le numéro d'équipe du joueur à cet emplacement.
     * @param number - le numéro d'équipe, un 0 indique qu'il n'en a pas.

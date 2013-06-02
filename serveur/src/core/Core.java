@@ -51,8 +51,8 @@ public class Core {
    private static final String DATABASE_NAME = "onapi.db";
    private static String databasePath;
    
+   // Logs
    private LogsFrame logsFrame;
-   
    private Log log;
    
    private boolean exit = false;
@@ -134,9 +134,6 @@ public class Core {
             // Démarre le processus de gestion d'un nouveau client
             UserConnectionManager userConnection =
                   new UserConnectionManager(this, socket, CLIENT_TIMEOUT);
-            
-//            Thread thread = new Thread(userConnection);
-//            thread.start();
             
             // Enregistre le nouveau client
             synchronized(connections) {
@@ -327,7 +324,7 @@ public class Core {
       System.out.println("done.");
       
       // Base de données
-      System.out.print("Create path to database...");
+      log.push("Create path to database...");
       File file = new File("");
       file = file.getAbsoluteFile();
       
@@ -339,17 +336,17 @@ public class Core {
       
       databasePath = file.getAbsolutePath() + File.separator
             + DATABASE_DIRECTORY + File.separator + DATABASE_NAME;
-      System.out.println("done.");
+      log.push("Done.");
       
       log.push("Database used : " + databasePath);
       
-      System.out.print("Create dbController...");
+      log.push("Create dbController...");
       dbController = new DBController(databasePath);
-      System.out.println("done.");
+      log.push("Done.");
       
-      System.out.print("Create lobby...");
-      lobby = new Lobby(10);
-      System.out.println("done.");
+      log.push("Create lobby...");
+      lobby = new Lobby(10, logsFrame);
+      log.push("Done.");
       
    }
    

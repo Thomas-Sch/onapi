@@ -30,50 +30,22 @@ import common.connections.protocol.ProtocolType;
 public class ClientRequestProtocol {
 
    private boolean initDone = false;
-
-   /**
-    * Conteneur comprenant une référence sur le canal à utiliser pour envoyer
-    * une requête au serveur, et une seconde référence sur le canal utilisé par
-    * le serveur pour envoyer diverses informations quand il le souhaite.
-    * 
-    * @author Crescenzio Fabio
-    * @author Decorvet Grégoire
-    * @author Jaquier Kevin
-    * @author Schweizer Thomas
-    * 
-    */
-   public class ConnectionChannels {
-
-      /**
-       * Canal à utiliser pour envoyer des requêtes au serveur.
-       */
-      public Channel requestChannel;
-
-      /**
-       * Canal utilisé par le serveur pour transmettre des informations au
-       * client.
-       */
-      public Channel updateChannel;
-
-      /**
-       * Constructeur privé, pour simplifier la création de la pair de canaux.
-       * 
-       * @param request
-       *           - le canal pour les requêtes du client.
-       * @param update
-       *           - le canal recevant les informations du serveur.
-       */
-      private ConnectionChannels(Channel request, Channel update) {
-         requestChannel = request;
-         updateChannel = update;
-      }
-
-   }
-
+   
    private Channel requestChannel;
 
    public ClientRequestProtocol() {
 
+   }
+   
+   /**
+    * <p>
+    * <b><u>ATTENTION :</b></u> le canal doit déjà être connecté au serveur.
+    * @param channel
+    */
+   @Deprecated
+   public ClientRequestProtocol(Channel channel) {
+      requestChannel = channel;
+      initDone = true;
    }
 
    /**
@@ -373,6 +345,45 @@ public class ClientRequestProtocol {
       else {
          throw new ProtocolException("Was wainting for " + typeWanted + " or "
                + ProtocolType.REFUSE + " but received " + type);
+      }
+
+   }
+   
+   /**
+    * Conteneur comprenant une référence sur le canal à utiliser pour envoyer
+    * une requête au serveur, et une seconde référence sur le canal utilisé par
+    * le serveur pour envoyer diverses informations quand il le souhaite.
+    * 
+    * @author Crescenzio Fabio
+    * @author Decorvet Grégoire
+    * @author Jaquier Kevin
+    * @author Schweizer Thomas
+    * 
+    */
+   public class ConnectionChannels {
+
+      /**
+       * Canal à utiliser pour envoyer des requêtes au serveur.
+       */
+      public Channel requestChannel;
+
+      /**
+       * Canal utilisé par le serveur pour transmettre des informations au
+       * client.
+       */
+      public Channel updateChannel;
+
+      /**
+       * Constructeur privé, pour simplifier la création de la pair de canaux.
+       * 
+       * @param request
+       *           - le canal pour les requêtes du client.
+       * @param update
+       *           - le canal recevant les informations du serveur.
+       */
+      private ConnectionChannels(Channel request, Channel update) {
+         requestChannel = request;
+         updateChannel = update;
       }
 
    }
