@@ -12,12 +12,14 @@ import client.ClientRequestProtocol.ConnectionChannels;
 
 public class TESTConnectionController {
    
-   public ConnectionChannels connections;
+   public static ConnectionChannels connections;
    
    private Updater updateActivity;
    private KeepAlive keepAliveActivity;
    
    public TESTConnectionController (ConnectionChannels connections) {
+      this.connections = connections; // SUPER MOCHE, sert pour les test uniquement !
+      
       updateActivity = new Updater(connections.updateChannel);
       updateActivity.start();
       

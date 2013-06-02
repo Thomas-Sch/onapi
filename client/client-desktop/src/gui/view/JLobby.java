@@ -1,5 +1,6 @@
 package gui.view;
 
+import gui.TESTConnectionController;
 import gui.component.JAbilityComboBox;
 import gui.component.JPlayerList;
 import gui.component.JUpgradeComboBox;
@@ -8,10 +9,14 @@ import gui.component.JWeaponComboBox;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+
+import client.ClientRequestProtocol;
 
 import settings.Language.Text;
 
@@ -61,7 +66,18 @@ public class JLobby extends JDialog {
       
       pnlContent.add(pnlTop, BorderLayout.CENTER);
       
-      pnlContent.add(new JCheckBox(Text.READY_LABEL.toString()), BorderLayout.SOUTH);
+      // TODO Attention, modifications très moches effectuées ci-dessous pour test
+      JCheckBox checkReady = new JCheckBox(Text.READY_LABEL.toString());
+      checkReady.addActionListener(new ActionListener() {
+         @Override
+         public void actionPerformed(ActionEvent arg0) {
+            ClientRequestProtocol protocol = new ClientRequestProtocol(
+                  TESTConnectionController.connections.requestChannel);
+            protocol.lobbySetReady(((JCheckBox)arg0.getSource()).isSelected());
+         }
+      });
+      
+      pnlContent.add(checkReady, BorderLayout.SOUTH);
       
       return pnlContent;
    }

@@ -68,6 +68,11 @@ public class ServerUpdateProtocol {
    }
    
    public void lobbyUpdateSlot(int slotNumber, PlayerStatus status) {
+      // Partie debug TODO
+      
+      user.log.push("DEBUG - update slot status : name :" + status.getName() +
+            ", team : " + status.getTeamNumber() + ", ready ? " + status.isReady());
+      
       synchronized(user.connectionsToClient.updateChannel) {
          user.connectionsToClient.updateChannel.sendProtocolType(ProtocolType.LOBBY_UPDATED_SLOT_STATUS);
          user.connectionsToClient.updateChannel.sendObject(status);

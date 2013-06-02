@@ -228,7 +228,7 @@ public class Lobby implements Observer {
       
       // Ne s'occupe que de la mise à jour d'un slot
       if (o instanceof PlayerSlot) {
-         PlayerSlot updtatedSlot = (PlayerSlot)o;
+         PlayerSlot updatedSlot = (PlayerSlot)o;
          
          synchronized(players) {
             
@@ -236,8 +236,8 @@ public class Lobby implements Observer {
                
                if (! slot.isFree()) {
                   slot.user.serverUpdate.pushUpdate(
-                        new LobbyUpdateSlot(updtatedSlot.getSlotNumber(),
-                                            updtatedSlot.getStatus()));
+                        new LobbyUpdateSlot(updatedSlot.getSlotNumber(),
+                                            updatedSlot.getStatus()));
                   
                }
             }

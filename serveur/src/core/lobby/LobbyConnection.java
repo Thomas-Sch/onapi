@@ -59,6 +59,11 @@ public class LobbyConnection implements ServerRequestAnswers {
             receiveProtocol.leave();
             break;
             
+         case LOBBY_SET_READY :
+            receiveProtocol.acceptRequest(type);
+            receiveProtocol.setReady();
+            break;
+            
          default :
             receiveProtocol.refuseRequest(type);
             user.log.push("Bad request protocol");
