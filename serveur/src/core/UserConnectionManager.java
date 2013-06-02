@@ -22,6 +22,7 @@ import core.Core;
 import core.accountManagement.AccountConnection;
 import core.protocol.ServerStandardReceiveProtocol;
 import core.protocol.updates.ServerUpdateProtocol;
+import core.updates.ServerUpdateOrder;
 import core.updates.components.StandardPing;
 
 import java.net.Socket;

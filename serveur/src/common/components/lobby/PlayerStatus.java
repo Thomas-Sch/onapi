@@ -24,6 +24,8 @@ import java.util.Observable;
  */
 public class PlayerStatus extends Observable implements Serializable {
    
+   private static final long serialVersionUID = 4610616944538954831L;
+
    private String name;
    
    private int teamNumber = 0;
@@ -69,4 +71,5 @@ public class PlayerStatus extends Observable implements Serializable {
          notifyObservers();
       }
    }
+   
 }

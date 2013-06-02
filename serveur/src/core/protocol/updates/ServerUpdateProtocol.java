@@ -43,14 +43,17 @@ public class ServerUpdateProtocol {
    public long ping() {
       long time = System.currentTimeMillis();
       
-      user.connectionsToClient.updateChannel.sendProtocolType(ProtocolType.PING);
+      synchronized(user.connectionsToClient.updateChannel) {
+         user.connectionsToClient.updateChannel.sendProtocolType(ProtocolType.PING);
       
-      if (user.connectionsToClient.updateChannel.receiveProtocolType() == ProtocolType.PING) {
-         return System.currentTimeMillis() - time;
+         if (user.connectionsToClient.updateChannel.receiveProtocolType() == ProtocolType.PING) {
+            return System.currentTimeMillis() - time;
+         }
+         else {
+            throw new ProtocolException("Wrong protocol for PING");
+         }
       }
-      else {
-         throw new ProtocolException("Wrong protocol for PING");
-      }
+      
    }
    
    /**
@@ -58,17 +61,28 @@ public class ServerUpdateProtocol {
     */
    @Deprecated
    public void textMessage(String message) {
-      user.connectionsToClient.updateChannel.sendProtocolType(ProtocolType.TEXT_MESSAGE);
-      user.connectionsToClient.updateChannel.sendString(message);
+      synchronized(user.connectionsToClient.updateChannel) {
+         user.connectionsToClient.updateChannel.sendProtocolType(ProtocolType.TEXT_MESSAGE);
+         user.connectionsToClient.updateChannel.sendString(message);
+      }
    }
    
    public void lobbyUpdateSlot(int slotNumber, PlayerStatus status) {
+      // Partie debug TODO
       
+      user.log.push("DEBUG - update slot status : name :" + status.getName() +
+            ", team : " + status.getTeamNumber() + ", ready ? " + status.isReady());
+      
+      synchronized(user.connectionsToClient.updateChannel) {
+         user.connectionsToClient.updateChannel.sendProtocolType(ProtocolType.LOBBY_UPDATED_SLOT_STATUS);
+         user.connectionsToClient.updateChannel.sendObject(status);
+      }
    }
    
    public void lobbyGameIsReady() {
-      user.connectionsToClient.updateChannel.sendProtocolType(ProtocolType.LOBBY_GAME_READY);
-      
+      synchronized(user.connectionsToClient.updateChannel) {
+         user.connectionsToClient.updateChannel.sendProtocolType(ProtocolType.LOBBY_GAME_READY);
+      }
       // TODO more ?
    }
 

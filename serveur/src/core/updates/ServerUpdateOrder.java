@@ -9,13 +9,13 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core;
+package core.updates;
 
 import java.util.LinkedList;
 
+import core.Core;
+import core.UserInformations;
 import core.protocol.updates.ServerUpdateProtocol;
-import core.updates.Update;
-import core.updates.UpdateVisitor;
 import core.updates.components.LobbyGameReady;
 import core.updates.components.LobbyUpdateSlot;
 import core.updates.components.StandardPing;

@@ -12,12 +12,14 @@ import client.ClientRequestProtocol.ConnectionChannels;
 
 public class TESTConnectionController {
    
-   public ConnectionChannels connections;
+   public static ConnectionChannels connections;
    
    private Updater updateActivity;
    private KeepAlive keepAliveActivity;
    
    public TESTConnectionController (ConnectionChannels connections) {
+      this.connections = connections; // SUPER MOCHE, sert pour les test uniquement !
+      
       updateActivity = new Updater(connections.updateChannel);
       updateActivity.start();
       
@@ -87,6 +89,15 @@ public class TESTConnectionController {
 
                   case TEXT_MESSAGE:
                      System.out.println(protocol.updateMessage());
+                     break;
+                     
+                  case LOBBY_UPDATED_SLOT_STATUS:
+                     protocol.lobbyUpdateSlotStatus(42);
+                     break;
+                     
+                  case LOBBY_GAME_READY :
+                     protocol.lobbyUpdateGameReady(42);
+                     System.out.println("DEBUG - game ready !");
                      break;
 
                   default:

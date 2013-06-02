@@ -306,6 +306,33 @@ public class ClientRequestProtocol {
 
       return success;
    }
+   
+   /**
+    * Envoie au lobby un changement d'état du joueur, s'il est prêt à jouer ou
+    * non.
+    * 
+    * @param ready
+    *           - le changement d'état du joueur.
+    */
+   public void lobbySetReady(boolean ready) {
+      if (!initDone) {
+         throw new ProtocolException(
+               "Error, connection to server has not been initialized");
+      }
+
+      synchronized (requestChannel) {
+
+         requestChannel.sendProtocolType(ProtocolType.LOBBY_SET_READY);
+
+         if (isRequestAccepted(ProtocolType.LOBBY_SET_READY)) {
+            requestChannel.sendBoolean(ready);
+         }
+         else {
+            System.out.println("Set ready request refused by server.");
+         }
+
+      }
+   }
 
    /**
     * Protocole bidon pour test.

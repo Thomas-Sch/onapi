@@ -11,7 +11,9 @@
  */
 package client;
 
+import common.components.lobby.PlayerStatus;
 import common.connections.Channel;
+import common.connections.exceptions.ProtocolException;
 import common.connections.protocol.ProtocolType;
 
 /**
@@ -20,7 +22,8 @@ import common.connections.protocol.ProtocolType;
  * <p>Utilisé lors d'une partie pour la réception des informations de ladite
  * partie.
  * 
- * <p><b>TODO</b>
+ * <p><b>TODO</b> : définir les objets à modifier. Définir s'ils sont modifiés
+ * ici ou donnés en valeur de retour.
  * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
@@ -36,6 +39,9 @@ public class ClientReceiveProtocol {
       this.channel = channel;
    }
    
+   /**
+    * Protocol à utiliser en réponse à un ping du serveur.
+    */
    public void ping() {
       synchronized (channel) {
          channel.sendProtocolType(ProtocolType.PING);
@@ -54,6 +60,29 @@ public class ClientReceiveProtocol {
       }
       
       return message;
+   }
+   
+   /**
+    * TODO
+    * @param toDefine - TODO
+    */
+   public void lobbyUpdateSlotStatus(int toDefine) {
+      PlayerStatus status;
+      
+      synchronized (channel) {
+         status = (PlayerStatus)channel.receiveObject();
+         
+         System.out.println("DEBUG - update slot status : name :" + status.getName() +
+               ", team : " + status.getTeamNumber() + ", ready ? " + status.isReady());
+      }
+   }
+   
+   /**
+    * TODO
+    * @param toDefine - TODO
+    */
+   public void lobbyUpdateGameReady(int toDefine) {
+      // TODO something ?
    }
    
 }

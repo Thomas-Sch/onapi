@@ -12,7 +12,7 @@
 package common.connections.protocol;
 
 /**
- * TODO
+ * Type des protocoles.
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
@@ -25,5 +25,7 @@ public enum ProtocolType {
    JOIN_GAME, LEAVE_GAME,
    LOGIN, LOGOUT,
    TEXT_MESSAGE,
-   PING;
+   PING,
+   
+   LOBBY_SET_READY, LOBBY_UPDATED_SLOT_STATUS, LOBBY_GAME_READY;
 }
