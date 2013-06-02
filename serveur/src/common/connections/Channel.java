@@ -326,6 +326,7 @@ public class Channel {
     */
    public void sendObject(Object object) {
       try {
+         outputStream.reset();
          outputStream.writeObject(object);
          outputStream.flush();
       }
