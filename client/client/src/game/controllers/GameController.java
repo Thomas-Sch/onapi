@@ -13,13 +13,8 @@ package game.controllers;
 
 import game.models.Entity;
 import game.models.GameModel;
-import game.models.Player;
-
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.Map;
-import java.util.Random;
-
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
@@ -132,6 +127,7 @@ public class GameController {
       return keys.get(action).booleanValue();
    }
 
+   
    /**
     * Méthode de mise à jour de la logique de jeu
     * 
@@ -154,6 +150,15 @@ public class GameController {
          game.getPlayer().move(new Vector2(-moveSpeed, 0));
       }
       
+      if (getActionState(Action.TORCH)) {
+         game.getPlayer().changeTorchLight();
+         setActionState(GameController.Action.TORCH, false);
+      }
+      if (getActionState(Action.FIRE)) {
+         game.getPlayer().shoot();
+         setActionState(GameController.Action.FIRE, false);
+      }
+     
       game.getPlayer().setTorch(getActionState(Action.TORCH));
       
 

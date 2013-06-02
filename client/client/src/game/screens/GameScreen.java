@@ -136,8 +136,10 @@ public class GameScreen extends ScreenAdapter {
    @Override
    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
       if (button == MOUSE_RIGHT_BUTTON) {
-         boolean isLampActive = controller.getActionState(GameController.Action.TORCH);
-         controller.setActionState(GameController.Action.TORCH, !isLampActive);
+         controller.setActionState(GameController.Action.TORCH, true);
+      }
+      if (button == MOUSE_LEFT_BUTTON) {
+         controller.setActionState(GameController.Action.FIRE, true);
       }
       return true;
    }

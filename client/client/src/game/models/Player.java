@@ -199,6 +199,7 @@ public class Player extends Entity {
     */
    public void setDir(Vector2 dir) {
       setRotation(dir.angle());
+      this.dir = dir;
    }
 
    /**
@@ -219,7 +220,10 @@ public class Player extends Entity {
    @Override
    public void update(float deltaTime) {
       body.setTransform(getPos(), getRotation() * ((float) Math.PI) / 180f);
-      torchLight.setActive(isTorchActive);
+   }
+   
+   public void shoot() {
+      System.out.println("j'ai tiré dans la direction" + dir.x + " " + getDir().y);
    }
 
    @Override
@@ -247,6 +251,18 @@ public class Player extends Entity {
    @Override
    public void debugRender(ShapeRenderer renderer) {
 
+   }
+   
+   /**
+    * Orientation du personnage
+    */
+   private Vector2 dir;
+
+   /**
+    * @return Orientation du joueur
+    */
+   public Vector2 getDir() {
+      return dir;
    }
 
    public Body getBody() {
@@ -297,6 +313,14 @@ public class Player extends Entity {
     */
    public void setTorch(boolean isTorchActive) {
       this.isTorchActive = isTorchActive;
+   }
+
+   /**
+    * 
+    */
+   public void changeTorchLight() {
+      // TODO Auto-generated method stub
+      this.torchLight.setActive(!torchLight.isActive());
    }
 
 }
