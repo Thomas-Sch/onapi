@@ -26,5 +26,6 @@ public enum ProtocolType {
    LOGIN, LOGOUT,
    TEXT_MESSAGE,
    PING,
-   LOBBY_GAME_READY;
+   
+   LOBBY_UPDATED_SLOT_STATUS, LOBBY_GAME_READY;
 }

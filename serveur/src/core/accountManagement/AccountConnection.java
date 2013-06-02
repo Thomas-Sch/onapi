@@ -15,9 +15,9 @@ import common.connections.protocol.ProtocolType;
 
 import core.Core;
 import core.ServerRequestAnswers;
-import core.ServerUpdateOrder;
 import core.UserInformations;
-import core.accountManagement.protocol.AccountReceiveProtocol;
+import core.protocol.account.AccountReceiveProtocol;
+import core.updates.ServerUpdateOrder;
 
 /**
  * TODO

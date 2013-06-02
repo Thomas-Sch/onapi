@@ -88,6 +88,15 @@ public class TESTConnectionController {
                   case TEXT_MESSAGE:
                      System.out.println(protocol.updateMessage());
                      break;
+                     
+                  case LOBBY_UPDATED_SLOT_STATUS:
+                     protocol.lobbyUpdateSlotStatus(42);
+                     break;
+                     
+                  case LOBBY_GAME_READY :
+                     protocol.lobbyUpdateGameReady(42);
+                     System.out.println("DEBUG - game ready !");
+                     break;
 
                   default:
                      System.out.println("Bad request protocol");

@@ -9,7 +9,7 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core.accountManagement.protocol;
+package core.protocol.account;
 
 import common.components.AccountType;
 import common.components.UserAccount;

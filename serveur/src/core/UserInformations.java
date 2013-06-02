@@ -15,6 +15,7 @@ import gui.logs.Log;
 import common.components.UserAccount;
 import common.connections.Channel;
 import core.lobby.Lobby;
+import core.updates.ServerUpdateOrder;
 
 /**
  * Classe regroupant les variables liées à un utilisateur.
