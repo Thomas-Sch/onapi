@@ -11,6 +11,7 @@
  */
 package gui.actions;
 
+import gui.TESTConnectionController;
 import gui.controller.MainFrame;
 import gui.view.JLogin;
 
@@ -35,7 +36,11 @@ import common.connections.exceptions.ChannelException;
  */
 public class AcConnect extends UserAction {
    
+   // TODO - A changer, c'est pour les test
+   public static TESTConnectionController connectionsControl;
+   
    private static ConnectionChannels connections;
+   
    private ClientRequestProtocol protocol;
    
    public AcConnect(Object ... dependencies) {
@@ -52,11 +57,12 @@ public class AcConnect extends UserAction {
       Logs.messages.push("Port: " + view.getServerPort());
       
       try {
-         
          protocol = new ClientRequestProtocol();
          connections = protocol.connectToServer(
                view.getServerAdress(), Integer.valueOf(view.getServerPort()),
-               10000);
+               15000);
+         
+         connectionsControl = new TESTConnectionController(connections);
          
          view.setMessage("Connection au serveur effectuée.", Color.GREEN);
          

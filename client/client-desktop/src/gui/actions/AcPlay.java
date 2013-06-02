@@ -35,7 +35,6 @@ import client.GameLauncher;
 public class AcPlay extends UserAction {
    
    private ClientRequestProtocol protocol;
-   private Channel gameUpdate;
    
    public AcPlay(Object ... dependencies) {
       super(dependencies);
@@ -44,7 +43,8 @@ public class AcPlay extends UserAction {
    @Override
    protected void execute(ActionEvent event, Object[] dependencies) {
       protocol = (ClientRequestProtocol) dependencies[0];
-      gameUpdate = protocol.joinGame();
+      
+      boolean success = protocol.joinLobby();
       
       Logs.messages.push("Recherche d'une partie initiée !");
       JLobby view = new JLobby();
