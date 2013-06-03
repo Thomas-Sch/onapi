@@ -109,7 +109,7 @@ public class GameModel {
          t.spawnPlayers();
       }
 
-      //créer les contact listener
+      // Créer les contact listener
       createCollisionListener();
 
    }
