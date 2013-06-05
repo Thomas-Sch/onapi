@@ -71,4 +71,5 @@ public class PlayerStatus extends Observable implements Serializable {
          notifyObservers();
       }
    }
+   
 }

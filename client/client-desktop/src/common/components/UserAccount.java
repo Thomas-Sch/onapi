@@ -15,7 +15,7 @@ import java.io.Serializable;
 
 
 /**
- * Représente un utilisateur de la base de donnée.
+ * Représente un compte d'utilisateur de la base de donnée.
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
@@ -24,11 +24,6 @@ import java.io.Serializable;
  */
 public class UserAccount implements Serializable {
    
-   /**
-    * ID de sérialisation.
-    */
-   private static final long serialVersionUID = 3154100529354245563L;
-
    private AccountType type;
    
    private int id;

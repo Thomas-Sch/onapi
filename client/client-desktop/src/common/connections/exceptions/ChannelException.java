@@ -12,7 +12,7 @@
 package common.connections.exceptions;
 
 /**
- * TODO
+ * Exception relatives à un canal de communication.
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
