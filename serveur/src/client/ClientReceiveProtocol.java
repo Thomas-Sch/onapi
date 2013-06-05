@@ -71,9 +71,6 @@ public class ClientReceiveProtocol {
       
       synchronized (channel) {
          status = (PlayerStatus)channel.receiveObject();
-         
-         System.out.println("DEBUG - update slot status : name :" + status.getName() +
-               ", team : " + status.getTeamNumber() + ", ready ? " + status.isReady());
       }
    }
    
