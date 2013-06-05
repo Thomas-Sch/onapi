@@ -20,6 +20,7 @@ import java.util.LinkedList;
 import org.omg.CORBA.Bounds;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -79,8 +80,8 @@ public class Map extends Entity implements ContactListener{
          for (int j = 0; j < grid[i].length; j++) {
             Tile t = grid[i][j];
             if (t == Tile.WALL) {
-               bounds[i][j] = new Rectangle(i * Tile.WIDTH,
-                     j * Tile.HEIGHT, Tile.WIDTH/2, Tile.HEIGHT/2);
+               bounds[i][j] = new Rectangle(i * Tile.WIDTH - Tile.WIDTH/2,
+                     j * Tile.HEIGHT - Tile.HEIGHT/2, Tile.WIDTH, Tile.HEIGHT);
                BodyDef bodyDef = new BodyDef();
                bodyDef.type = BodyType.StaticBody;
                bodyDef.position.set(bounds[i][j].x, bounds[i][j].y);
@@ -114,7 +115,7 @@ public class Map extends Entity implements ContactListener{
       return spawners;
    }
    
-   public Rectangle getRectangle(int i, int j){
+   public Rectangle getBounds(int i, int j){
       return bounds[i][j];
    }
 
@@ -128,7 +129,7 @@ public class Map extends Entity implements ContactListener{
    public static Vector2 getRealPos(int i, int j) {
       return new Vector2((0.5f + i) * Tile.WIDTH, (0.5f + j) * Tile.HEIGHT);
    }
-
+   
    @Override
    public void debugRender(ShapeRenderer renderer) {
       /*
@@ -150,15 +151,26 @@ public class Map extends Entity implements ContactListener{
 
       for (int i = 0; i < grid.length; i++) {
          for (int j = 0; j < grid[i].length; j++) {
+            int x = j;//grid.length - i;
+            int y = grid.length-i;//grid[i].length - i;
             if (grid[i][j] == Tile.WALL) {
                // Dessine un mur
-               batch.draw(textureMur, (i - 0.5f) * Tile.WIDTH, (j - 0.5f)
+               batch.draw(textureMur, (x - 0.5f) * Tile.WIDTH, (y - 0.5f)
                      * Tile.HEIGHT, (float) Tile.WIDTH, (float) Tile.HEIGHT,
                      0f, 0f, 1f, 1f);
             }
+            else if (grid[i][j] == Tile.EXIT) {
+               // Dessine un sol coloré
+               Color previousTint = batch.getColor();
+               batch.setColor(Color.GREEN);
+               batch.draw(textureSol, (x - 0.5f) * Tile.WIDTH, (y - 0.5f)
+                     * Tile.HEIGHT, (float) Tile.WIDTH, (float) Tile.HEIGHT,
+                     0f, 0f, 8f, 8f);
+               batch.setColor(previousTint);
+            }
             else {
                // Dessine un sol
-               batch.draw(textureSol, (i - 0.5f) * Tile.WIDTH, (j - 0.5f)
+               batch.draw(textureSol, (x - 0.5f) * Tile.WIDTH, (y - 0.5f)
                      * Tile.HEIGHT, (float) Tile.WIDTH, (float) Tile.HEIGHT,
                      0f, 0f, 8f, 8f);
 

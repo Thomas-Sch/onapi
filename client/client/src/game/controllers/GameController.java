@@ -132,11 +132,14 @@ public class GameController {
       return keys.get(action).booleanValue();
    }
 
-   public boolean isCollidingWithWall(float moveSpeedX, float moveSpeedY) {
+   public boolean isCollidingWithWall(float moveSpeed) {
 
-      int playerCaseX = (int) Math.floor((game.getPlayer().getX() / Tile.WIDTH));
-      int playerCaseY = (int) Math.floor(game.getMap().getGrid().length
-            - (int) (game.getPlayer().getY() / Tile.WIDTH));
+      int n = game.getMap().getGrid().length;
+      int playerCaseX = 1 + (int) Math.floor((game.getPlayer().getX() - 0.5f * Tile.WIDTH) / Tile.WIDTH);
+      int playerCaseY = 1 + (int) Math.floor((game.getPlayer().getY() - 0.5f * Tile.HEIGHT) / Tile.HEIGHT);
+      
+      //game.getMap().getGrid()[n - playerCaseY][playerCaseX] = Tile.EXIT;
+      
       //
       // int playerPosX = (int) (game.getPlayer().getX() + moveSpeedX);
       // int playerPosY = (int) (game.getPlayer().getY() + moveSpeedY);
@@ -153,23 +156,23 @@ public class GameController {
       // % Tile.HEIGHT) / Tile.HEIGHT > moveSpeedY)
       // return false;
       //
-      System.out.println("Case : " + playerCaseX + " " + playerCaseY);
-      int k = 0;
-      for (Tile[] blocks : game.getMap().getGrid()) {
-         int l = 0;
-         for (Tile block : blocks) {
-            if (k == playerCaseY && l == playerCaseX)
-               System.out.print("p");
-            else if (block == Tile.WALL)
-               System.out.print("#");
-            else {
-               System.out.print(" ");
-            }
-            l++;
-         }
-         k++;
-         System.out.println();
-      }
+//      System.out.println("Case : " + playerCaseX + " " + playerCaseY);
+//      int k = 0;
+////      for (Tile[] blocks : game.getMap().getGrid()) {
+////         int l = 0;
+////         for (Tile block : blocks) {
+////            if (k == playerCaseY && l == playerCaseX)
+////               System.out.print("p");
+////            else if (block == Tile.WALL)
+////               System.out.print("#");
+////            else {
+////               System.out.print(" ");
+////            }
+////            l++;
+////         }
+////         k++;
+////         System.out.println();
+////      }
 
       // Test les collisions possible
       // LEFT 
@@ -177,18 +180,25 @@ public class GameController {
       boolean collision = false;
       Map map = game.getMap();
       Player player = game.getPlayer();
-      for (int i = playerCaseY - 1; i < playerCaseY; ++i)
-         for (int j = playerCaseX - 1; j < playerCaseX; ++j)
-            if (i != playerCaseY && j != playerCaseX) {
-               player.getRectangle().x += moveSpeedX;
-               player.getRectangle().y += moveSpeedY;
-               if (map.getGrid()[i][j] == Tile.WALL
-                     && Intersector.overlapRectangles(player.getRectangle(),
-                           map.getRectangle(i, j))) collision = true;
-               player.getRectangle().x -= moveSpeedX;
-               player.getRectangle().y -= moveSpeedY;
+      for (int i = playerCaseX - 1; i <= playerCaseX + 1; ++i) {
+         for (int j = playerCaseY - 1; j <= playerCaseY + 1; ++j) {
+            if (i != playerCaseX || j != playerCaseY) {
+               //map.getGrid()[n-j][i] = Tile.EXIT;
+               player.getBounds().x += moveSpeed;
+               player.getBounds().y += moveSpeed;
+               if (map.getGrid()[n-j][i] == Tile.WALL) {
+                  System.out.println("TEST COLLISION");
+                  System.out.println(player.getBounds().x + " =?= " + map.getBounds(n-j, i).x);
+                  collision = Intersector.overlapRectangles(player.getBounds(),
+                              map.getBounds(n-j, i));
+               }
+               player.getBounds().x -= moveSpeed;
+               player.getBounds().y -= moveSpeed;
                if (collision) return false;
             }
+         }
+      }
+
       return false;
 
    }
@@ -200,24 +210,23 @@ public class GameController {
     *           Différence de temps (en secondes) depuis le dernier update
     */
    public void update(float delta) {
-      float moveSpeed = 10.0f;
+      float moveSpeed = 3.0f;
 
+      Vector2.tmp.set(0, 0);
       if (getActionState(Action.UP)) {
-         if (!isCollidingWithWall(0, +moveSpeed))
-            game.getPlayer().move(new Vector2(0, +moveSpeed));
+         Vector2.tmp.y += moveSpeed;
       }
       if (getActionState(Action.DOWN)) {
-         if (!isCollidingWithWall(0, -moveSpeed))
-            game.getPlayer().move(new Vector2(0, -moveSpeed));
+         Vector2.tmp.y -= moveSpeed;
       }
       if (getActionState(Action.RIGHT)) {
-         if (!isCollidingWithWall(moveSpeed, 0))
-            game.getPlayer().move(new Vector2(+moveSpeed, 0));
+         Vector2.tmp.x += moveSpeed;
       }
       if (getActionState(Action.LEFT)) {
-         if (!isCollidingWithWall(-moveSpeed, 0))
-            game.getPlayer().move(new Vector2(-moveSpeed, 0));
+         Vector2.tmp.x -= moveSpeed;
       }
+      if ((Vector2.tmp.x != 0 || Vector2.tmp.y != 0) && !isCollidingWithWall(moveSpeed))
+         game.getPlayer().move(Vector2.tmp);
 
       if (getActionState(Action.TORCH)) {
          game.getPlayer().toggleTorch();

@@ -166,8 +166,8 @@ public class GameRenderer {
       if (debug) debugRender();
 
       // Met à jour les lumières
-      handler.setCombinedMatrix(cam.combined);
-      handler.updateAndRender();
+//      handler.setCombinedMatrix(cam.combined);
+//      handler.updateAndRender();
 
       if (debug) {
          ui.getSpriteBatch().begin();

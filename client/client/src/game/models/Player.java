@@ -129,7 +129,7 @@ public class Player extends Entity implements ContactListener {
 
       setWidth(WIDTH);
       setHeight(HEIGHT);
-      bounds = new Rectangle(pos.x, pos.y, getWidth() / 2, getHeight() / 2);
+      bounds = new Rectangle(pos.x - getWidth() / 2, pos.y - getHeight() / 2, getWidth(), getHeight());
 
       setTeam(team);
       team.getMembers().add(this);
@@ -139,7 +139,6 @@ public class Player extends Entity implements ContactListener {
       this.skill.setOwner(this);
       this.bonus = bonus;
       this.bonus.setOwner(this);
-
 
       loadResources();
 
@@ -173,7 +172,7 @@ public class Player extends Entity implements ContactListener {
       texture = new Texture(Gdx.files.internal("data/sprite1_perso.png"));
    }
    
-   public Rectangle getRectangle(){
+   public Rectangle getBounds(){
       return bounds;
    }
 
@@ -192,8 +191,8 @@ public class Player extends Entity implements ContactListener {
     */
    public void moveTo(Vector2 newPos) {
          setPosition(newPos.x - bounds.width / 2f, newPos.y - bounds.height / 2f);
-         bounds.x = newPos.x;
-         bounds.y = newPos.y; 
+         bounds.x = newPos.x  - bounds.width / 2f;
+         bounds.y = newPos.y  - bounds.width / 2f; 
    }
 
    /**
@@ -260,11 +259,13 @@ public class Player extends Entity implements ContactListener {
       batch.setColor(team.getColor());
 
       // Dessiner à l'écran le joueur
-      batch.draw(region, getPos().x - texture.getWidth() / 2, getPos().y
-            - texture.getHeight() / 2, textureWidth / 2f, textureHeight / 2f,
-            textureWidth, textureHeight, getWidth() / textureWidth, getHeight()
-                  / textureHeight, getRotation(), false);
-
+//      batch.draw(region, getPos().x - texture.getWidth() / 2, getPos().y
+//            - texture.getHeight() / 2, textureWidth / 2f, textureHeight / 2f,
+//            textureWidth, textureHeight, getWidth() / textureWidth, getHeight()
+//                  / textureHeight, getRotation(), false);
+      batch.draw(region, bounds.x - bounds.width, bounds.y - bounds.height, textureWidth / 2f, textureHeight / 2f,
+            bounds.width, bounds.height, bounds.width / textureWidth, bounds.height
+                  / textureHeight, 0, false);
       batch.setColor(previousTint);
    }
 
