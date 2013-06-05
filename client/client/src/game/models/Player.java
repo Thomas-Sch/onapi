@@ -53,8 +53,6 @@ public class Player extends Entity implements ContactListener {
 
    private static int lastId = 1;
    private final int id = lastId++;
-   private boolean canMove;
-   
 
    private static final int WIDTH = 50;
    private static final int HEIGHT = WIDTH;
@@ -113,7 +111,7 @@ public class Player extends Entity implements ContactListener {
       return bonus;
    }
 
-
+   
    /**
     * Texture du joueur à son affichage
     */
@@ -131,7 +129,7 @@ public class Player extends Entity implements ContactListener {
 
       setWidth(WIDTH);
       setHeight(HEIGHT);
-      bounds = new Rectangle(pos.x, pos.y, getWidth(), getHeight());
+      bounds = new Rectangle(pos.x, pos.y, getWidth() / 2, getHeight() / 2);
 
       setTeam(team);
       team.getMembers().add(this);
@@ -150,18 +148,14 @@ public class Player extends Entity implements ContactListener {
       bodyDef.type = BodyType.DynamicBody;
       bodyDef.position.set(getPos());
       body = world.createBody(bodyDef);
-      //PolygonShape shape = new PolygonShape();
-   // Create a circle shape and set its radius to 6
-      CircleShape circle = new CircleShape();
-      circle.setRadius((float) (Math.sqrt(2)*bounds.height / 2));
-      //shape.setAsBox(bounds.height / 2 , bounds.width/ 2);
+      PolygonShape shape = new PolygonShape();
+      shape.setAsBox(bounds.height, bounds.width);
       FixtureDef fix = new FixtureDef();
-      fix.shape = circle;
+      fix.shape = shape;
       fix.density = 0.4f;
       fix.friction = 0.5f;
       fix.restitution = 0.8f;
       body.createFixture(fix);
-      canMove = true;
 
       // Initialise les lumières diffusées par le joueur
       new PointLight(handler, 50, HALO_COLOR, Tile.WIDTH - 50, getX(), getY())
@@ -177,6 +171,10 @@ public class Player extends Entity implements ContactListener {
 
    public void loadResources() {
       texture = new Texture(Gdx.files.internal("data/sprite1_perso.png"));
+   }
+   
+   public Rectangle getRectangle(){
+      return bounds;
    }
 
    /**
@@ -194,6 +192,8 @@ public class Player extends Entity implements ContactListener {
     */
    public void moveTo(Vector2 newPos) {
          setPosition(newPos.x - bounds.width / 2f, newPos.y - bounds.height / 2f);
+         bounds.x = newPos.x;
+         bounds.y = newPos.y;
    }
 
    /**
@@ -203,8 +203,9 @@ public class Player extends Entity implements ContactListener {
     *           Vecteur de déplacement (additionné à sa position actuelle)
     */
    public void move(Vector2 dir) {
-      if(canMove)
-         setPosition(getX() + dir.x, getY() + dir.y);
+      setPosition(getX() + dir.x, getY() + dir.y);
+      bounds.x += dir.x;
+      bounds.y += dir.y;
    }
 
    /**
@@ -234,9 +235,6 @@ public class Player extends Entity implements ContactListener {
    @Override
    public void update(float deltaTime) {
       body.setTransform(getPos(), getRotation() * ((float) Math.PI) / 180f);
-
-
-
    }
    
 
@@ -354,27 +352,25 @@ public class Player extends Entity implements ContactListener {
 
    @Override
    public void beginContact(Contact contact) {
-      canMove = false;
-      //Si collision, repositionne le joueur pour supprimer la collision
-      //TODO : Caster pour savoir si joueur / mur / munition
-      if (lastAction == Action.RIGHT)
-         setX((float) (Math.floor(getX() / Tile.WIDTH) * Tile.WIDTH
-               + Tile.WIDTH / 2 - (float) ((getWidth() / 2) * Math.sqrt(2))) - 1);
-      if (lastAction == Action.DOWN)
-         setY((float) (Math.floor(getY() / Tile.WIDTH) * Tile.WIDTH
-               + Tile.WIDTH / 2 + (float) ((getWidth() / 2) * Math.sqrt(2))) + 1);
-      
-      if (lastAction == Action.LEFT)
-         setX((float) (Math.floor(getX() / Tile.WIDTH) * Tile.WIDTH
-               + Tile.WIDTH / 2 + (float) ((getWidth() / 2) * Math.sqrt(2))) + 1);
-      if (lastAction == Action.UP)
-         setY((float) (Math.floor(getY() / Tile.WIDTH) * Tile.WIDTH
-               + Tile.WIDTH / 2 - (float) ((getWidth() / 2) * Math.sqrt(2))) - 1);
+//      //Si collision, repositionne le joueur pour supprimer la collision
+//      //TODO : Caster pour savoir si joueur / mur / munition
+//      if (lastAction == Action.RIGHT)
+//         setX((float) (Math.floor(getX() / Tile.WIDTH) * Tile.WIDTH
+//               + Tile.WIDTH / 2 - (float) ((getWidth() / 2) * Math.sqrt(2))) - 1);
+//      if (lastAction == Action.DOWN)
+//         setY((float) (Math.floor(getY() / Tile.WIDTH) * Tile.WIDTH
+//               + Tile.WIDTH / 2 + (float) ((getWidth() / 2) * Math.sqrt(2))) + 1);
+//      
+//      if (lastAction == Action.LEFT)
+//         setX((float) (Math.floor(getX() / Tile.WIDTH) * Tile.WIDTH
+//               + Tile.WIDTH / 2 + (float) ((getWidth() / 2) * Math.sqrt(2))) + 1);
+//      if (lastAction == Action.UP)
+//         setY((float) (Math.floor(getY() / Tile.WIDTH) * Tile.WIDTH
+//               + Tile.WIDTH / 2 - (float) ((getWidth() / 2) * Math.sqrt(2))) - 1);
    }
 
    @Override
    public void endContact(Contact contact) {
-      canMove = true;
    }
 
    @Override
