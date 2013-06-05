@@ -172,7 +172,7 @@ public class GameController {
       }
 
       // Test les collisions possible
-      // LEFT
+      // LEFT 
 
       boolean collision = false;
       Map map = game.getMap();

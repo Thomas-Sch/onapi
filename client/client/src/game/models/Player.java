@@ -193,7 +193,7 @@ public class Player extends Entity implements ContactListener {
    public void moveTo(Vector2 newPos) {
          setPosition(newPos.x - bounds.width / 2f, newPos.y - bounds.height / 2f);
          bounds.x = newPos.x;
-         bounds.y = newPos.y;
+         bounds.y = newPos.y; 
    }
 
    /**

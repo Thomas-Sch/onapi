@@ -92,7 +92,7 @@ public class Map extends Entity implements ContactListener{
                fix.density = 0.4f;
                fix.friction = 0.5f;
                fix.restitution = 0.8f;
-               body.createFixture(fix);
+               body.createFixture(fix); 
                wallBodies[i][j] = body;
             }
          }
