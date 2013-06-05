@@ -197,6 +197,7 @@ public class Lobby implements Observer {
          if(isFree()) {
             this.user = user;
             status.setName(user.account.getLogin());
+            status.setReady(false);
             success = true;
             setChanged();
             notifyObservers();

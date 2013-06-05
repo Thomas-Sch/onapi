@@ -17,6 +17,8 @@ import game.models.Team;
 
 import java.util.LinkedList;
 
+import org.omg.CORBA.Bounds;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
@@ -55,6 +57,7 @@ public class Map extends Entity implements ContactListener{
    private Texture textureSol;
    private LinkedList<Spawner> spawners = new LinkedList<Spawner>();
    private Body[][] wallBodies;
+   private Rectangle[][] bounds;
 
    public void loadResources() {
       textureSol = new Texture(Gdx.files.internal("data/sol.png"));
@@ -68,27 +71,28 @@ public class Map extends Entity implements ContactListener{
       MazeGenerator generator = new MazeGenerator();
       setGrid(generator.generateMaze(teams.length * 3));
       spawners = generator.generateSpawners(teams);
-
       // Définit la consistance physique des murs
       wallBodies = new Body[grid.length][grid.length];
+      bounds = new Rectangle[grid.length][grid.length];
+            
       for (int i = 0; i < grid.length; i++) {
          for (int j = 0; j < grid[i].length; j++) {
             Tile t = grid[i][j];
             if (t == Tile.WALL) {
-               Rectangle bounds = new Rectangle(i * Tile.WIDTH,
-                     j * Tile.HEIGHT, Tile.WIDTH, Tile.HEIGHT);
+               bounds[i][j] = new Rectangle(i * Tile.WIDTH,
+                     j * Tile.HEIGHT, Tile.WIDTH/2, Tile.HEIGHT/2);
                BodyDef bodyDef = new BodyDef();
                bodyDef.type = BodyType.StaticBody;
-               bodyDef.position.set(bounds.x, bounds.y);
+               bodyDef.position.set(bounds[i][j].x, bounds[i][j].y);
                Body body = world.createBody(bodyDef);
                PolygonShape shape = new PolygonShape();
-               shape.setAsBox(bounds.height / 2, bounds.width / 2);
+               shape.setAsBox(bounds[i][j].height, bounds[i][j].width);
                FixtureDef fix = new FixtureDef();
                fix.shape = shape;
                fix.density = 0.4f;
                fix.friction = 0.5f;
                fix.restitution = 0.8f;
-               body.createFixture(fix);
+               body.createFixture(fix); 
                wallBodies[i][j] = body;
             }
          }
@@ -108,6 +112,10 @@ public class Map extends Entity implements ContactListener{
 
    public LinkedList<Spawner> getSpawners() {
       return spawners;
+   }
+   
+   public Rectangle getRectangle(int i, int j){
+      return bounds[i][j];
    }
 
    /**

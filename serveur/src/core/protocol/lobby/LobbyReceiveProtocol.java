@@ -50,8 +50,6 @@ public class LobbyReceiveProtocol extends ServerStandardReceiveProtocol {
    
    public void setReady() {
       boolean ready = user.connectionsToClient.receiveChannel.receiveBoolean();
-      status.setName("Toto " + status.getTeamNumber());
-      status.setTeamNumber(status.getTeamNumber()+1); // TODO a supprimer
       status.setReady(ready);
    }
 
