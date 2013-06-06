@@ -180,21 +180,21 @@ public class GameController {
       boolean collision = false;
       Map map = game.getMap();
       Player player = game.getPlayer();
-      for (int i = playerCaseX - 1; i <= playerCaseX + 1; ++i) {
-         for (int j = playerCaseY - 1; j <= playerCaseY + 1; ++j) {
+      for (int i = playerCaseX + 1; i >= playerCaseX - 1; i--) {
+         for (int j = playerCaseY + 1; j >= playerCaseY - 1; j--) {
             if (i != playerCaseX || j != playerCaseY) {
                //map.getGrid()[n-j][i] = Tile.EXIT;
                player.getBounds().x += moveSpeed;
                player.getBounds().y += moveSpeed;
-               if (map.getGrid()[n-j][i] == Tile.WALL) {
-                  System.out.println("TEST COLLISION");
-                  System.out.println(player.getBounds().x + " =?= " + map.getBounds(n-j, i).x);
+               if (map.getGrid()[i][j] == Tile.WALL) {
+//                  System.out.println("TEST COLLISION");
+//                  System.out.println(player.getBounds().x + " =?= " + map.getBounds(i, j).x);
                   collision = Intersector.overlapRectangles(player.getBounds(),
-                              map.getBounds(n-j, i));
+                              map.getBounds(i, j));
                }
                player.getBounds().x -= moveSpeed;
                player.getBounds().y -= moveSpeed;
-               if (collision) return false;
+               if (collision) return false; ////////////////////////////////////////////////////////////
             }
          }
       }

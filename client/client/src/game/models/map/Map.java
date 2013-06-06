@@ -59,6 +59,15 @@ public class Map extends Entity implements ContactListener{
    private LinkedList<Spawner> spawners = new LinkedList<Spawner>();
    private Body[][] wallBodies;
    private Rectangle[][] bounds;
+   
+   public Color[][] debugColors;
+   {
+      for (int i = 0; i < debugColors.length; i++) {
+         for (int j = 0; j < debugColors.length; j++) {
+            debugColors[i][j].set(Color.WHITE);
+         }
+      }
+   }
 
    public void loadResources() {
       textureSol = new Texture(Gdx.files.internal("data/sol.png"));
@@ -130,6 +139,14 @@ public class Map extends Entity implements ContactListener{
       return new Vector2((0.5f + i) * Tile.WIDTH, (0.5f + j) * Tile.HEIGHT);
    }
    
+   public static int getGridCoordX(float x) {
+      return (int) Math.floor(x / Tile.WIDTH);
+   }
+   
+   public static int getGridCoordY(float y) {
+      return (int) Math.floor(y / Tile.HEIGHT);
+   }
+   
    @Override
    public void debugRender(ShapeRenderer renderer) {
       /*
@@ -155,11 +172,14 @@ public class Map extends Entity implements ContactListener{
             int y = grid.length-i;//grid[i].length - i;
             if (grid[i][j] == Tile.WALL) {
                // Dessine un mur
-               batch.draw(textureMur, (x - 0.5f) * Tile.WIDTH, (y - 0.5f)
-                     * Tile.HEIGHT, (float) Tile.WIDTH, (float) Tile.HEIGHT,
+//               batch.draw(textureMur, (x - 0.5f) * Tile.WIDTH, (y - 0.5f)
+//                     * Tile.HEIGHT, (float) Tile.WIDTH, (float) Tile.HEIGHT,
+//                     0f, 0f, 1f, 1f);
+               batch.draw(textureMur, bounds[i][j].x, bounds[i][j].y, 
+                     bounds[i][j].width, bounds[i][j].height,
                      0f, 0f, 1f, 1f);
             }
-            else if (grid[i][j] == Tile.EXIT) {
+            /*else if (grid[i][j] == Tile.EXIT) {
                // Dessine un sol coloré
                Color previousTint = batch.getColor();
                batch.setColor(Color.GREEN);
@@ -174,7 +194,7 @@ public class Map extends Entity implements ContactListener{
                      * Tile.HEIGHT, (float) Tile.WIDTH, (float) Tile.HEIGHT,
                      0f, 0f, 8f, 8f);
 
-            }
+            }/*/
          }
       }
 
