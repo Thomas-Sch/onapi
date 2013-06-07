@@ -116,6 +116,9 @@ public class AccountReceiveProtocol extends ServerStandardReceiveProtocol {
                
                // Confirmation d'avoir rejoint TODO (temp)
                user.connectionsToClient.receiveChannel.sendBoolean(true);
+               
+               // Envoi du nombre de places dans le salon
+               user.connectionsToClient.receiveChannel.sendInt(freeLobby.getMaxNumberOfPlayers());
             }
             else {
                user.log.push("Error, there was a free lobby, but error while joining it.");

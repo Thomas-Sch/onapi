@@ -17,6 +17,9 @@ import gui.view.JInventory;
 
 import java.awt.event.ActionEvent;
 
+import core.ConnectionsManager;
+
+
 import settings.Language.Text;
 import utils.Logs;
 
@@ -29,9 +32,13 @@ import utils.Logs;
  *
  */
 public class AcViewInventory extends UserAction {
+   
+   public AcViewInventory(ConnectionsManager connections) {
+      super(connections);
+   }
 
    @Override
-   protected void execute(ActionEvent event, Object[] dependencies) {
+   protected void execute(ConnectionsManager connections, ActionEvent event, Object[] dependencies) {
       Logs.messages.push("Ouverture de la fenêtre pour voir son inventaire");
       JInventory view = new JInventory();
       view.setTitle(Text.APP_TITLE.toString() + " - " + Text.INVENTORY_TITLE.toString());

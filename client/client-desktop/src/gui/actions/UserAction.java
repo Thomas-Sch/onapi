@@ -14,8 +14,12 @@ package gui.actions;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import core.ConnectionsManager;
+
+import client.ClientRequestProtocol;
+
 /**
- * Decrit une action réalisable par l'utilisateur à l'aide de l'interface
+ * Décrit une action réalisable par l'utilisateur à l'aide de l'interface
  * graphique.
  * 
  * @author Crescenzio Fabio
@@ -25,10 +29,16 @@ import java.awt.event.ActionListener;
  */
 abstract public class UserAction implements ActionListener {
 
+   private ConnectionsManager connections;
+   
+   protected ClientRequestProtocol protocolRequest;
+   
    private Object[] dependencies = null;
 
-   public UserAction(Object... dependencies) {
+   public UserAction(ConnectionsManager connections, Object... dependencies) {
       this.dependencies = dependencies;
+      this.connections = connections;
+      protocolRequest = new ClientRequestProtocol(connections.getChannelRequest());
    }
 
    /**
@@ -38,19 +48,19 @@ abstract public class UserAction implements ActionListener {
     *           - l'événement survenu.
     */
    public void actionPerformed(ActionEvent e) {
-      execute(e, dependencies);
+      execute(connections, e, dependencies);
    }
 
    /**
     * Réalise les opérations à effectuer lors du déclenchement de l'action.
     * 
-    * @param core
-    *           - le coeur à disposition de l'action.
+    * @param connections
+    *           - les canaux de communications.
     * @param event
     *           - l'événément survenu.
     * @param dependencies
     *           - le tableau des dépendances éventuelles.
     */
-   abstract protected void execute(ActionEvent event, Object[] dependencies);
+   abstract protected void execute(ConnectionsManager connections, ActionEvent event, Object[] dependencies);
 
 }

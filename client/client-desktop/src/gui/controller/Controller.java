@@ -13,6 +13,10 @@ package gui.controller;
 
 import java.awt.Component;
 
+import core.ConnectionsManager;
+
+import client.ClientRequestProtocol;
+
 
 /**
  * 
@@ -25,17 +29,23 @@ import java.awt.Component;
  */
 public abstract class Controller {
    
+   protected ConnectionsManager connections;
+   
+   protected ClientRequestProtocol protocolRequest;
+   
    /**
     * Crée un contrôleur.
     * @param objects - Paramètres à initialiser en premier par un enfant.
     */
-   protected Controller(Object ... objects) {      
+   protected Controller(ConnectionsManager connections, Object ... objects) { 
+      this.connections = connections;
+      this.protocolRequest = new ClientRequestProtocol(connections.getChannelRequest());
       initComponents(objects);
       initListeners();
    }
    
-   protected Controller() {      
-      this((Object[])null);
+   protected Controller(ConnectionsManager connections) {      
+      this(connections, (Object[])null);
    }
    
    /**

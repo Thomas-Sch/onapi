@@ -18,6 +18,8 @@ import gui.view.LogsFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import core.ConnectionsManager;
+
 import settings.Settings;
 import utils.Logs;
 
@@ -38,10 +40,11 @@ public class Launcher {
     * @param args
     */
    public static void main(String[] args) {
+      ConnectionsManager connections = new ConnectionsManager();
 
       // Lance le jeu directement si mode debug
       if (args.length > 0 && args[0].equals("--debug")) {
-         new GameLauncher(true).run();
+         new GameLauncher(connections, true).run();
       }
       else {
 
@@ -73,7 +76,7 @@ public class Launcher {
          sets = new Settings();
          sets.loadSettings();
 
-         new Login();
+         new Login(connections);
 
          // Temporaire en attendant de merge.
          (new Logs()).addLogsToFrame(new LogsFrame("Logs", 0, 0, 500, 400));

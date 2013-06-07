@@ -173,7 +173,7 @@ public class Lobby implements Observer {
       
       private PlayerSlot(int slotNumber) {
          this.slotNumber = slotNumber;
-         status = new PlayerStatus("No player");
+         status = new PlayerStatus("No player", slotNumber);
          status.addObserver(this);
       }
 

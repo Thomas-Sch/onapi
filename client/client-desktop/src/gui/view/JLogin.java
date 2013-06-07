@@ -66,6 +66,12 @@ public class JLogin extends JFrame{
       ltpServerPort = new JLabelTextPanel(Text.SERVER_PORT_LABEL.toString());
       lblConnectionInfo = new JLabel("");
       lblConnectionInfo.setForeground(Color.RED);
+      
+      // TODO pour tests :
+      ltpLogin.setText("GregoireDec");
+      lppPassword.setText("1234");
+      ltpServerAdress.setText("127.0.0.1");
+      ltpServerPort.setText("1234");
    }
    
    public JPanel buildContent() {

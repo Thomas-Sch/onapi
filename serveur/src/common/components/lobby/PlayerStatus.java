@@ -26,14 +26,21 @@ public class PlayerStatus extends Observable implements Serializable {
    
    private static final long serialVersionUID = 4610616944538954831L;
 
+   private int slotNumber;
+   
    private String name;
    
    private int teamNumber = 0;
    
    private boolean isReady = false;
    
-   public PlayerStatus(String name) {
+   public PlayerStatus(String name, int slotNumber) {
       this.name = name;
+      this.slotNumber = slotNumber;
+   }
+   
+   public int getSlotNumber() {
+      return slotNumber;
    }
    
    public boolean isReady() {
@@ -70,6 +77,19 @@ public class PlayerStatus extends Observable implements Serializable {
          setChanged();
          notifyObservers();
       }
+   }
+   
+   public void updateFrom(PlayerStatus status) {
+      this.name = status.name;
+      this.teamNumber = status.teamNumber;
+      this.isReady = status.isReady;
+      setChanged();
+      notifyObservers();
+   }
+   
+   @Override
+   public String toString() {
+      return (isReady ? " + " : " - ") + "[" + teamNumber + "] - " + name;
    }
    
 }

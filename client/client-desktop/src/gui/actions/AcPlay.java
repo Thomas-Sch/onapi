@@ -11,13 +11,16 @@
  */
 package gui.actions;
 
+import gui.controller.Lobby;
 import gui.utils.Positions;
 import gui.utils.Positions.ScreenPosition;
 import gui.view.JLobby;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 
 import common.connections.Channel;
+import core.ConnectionsManager;
 
 import settings.Language.Text;
 import utils.Logs;
@@ -34,25 +37,34 @@ import client.GameLauncher;
  */
 public class AcPlay extends UserAction {
    
-   private ClientRequestProtocol protocol;
-   
-   public AcPlay(Object ... dependencies) {
-      super(dependencies);
+   public AcPlay(ConnectionsManager connections, Frame parent) {
+      super(connections, parent);
    }
 
    @Override
-   protected void execute(ActionEvent event, Object[] dependencies) {
-      protocol = (ClientRequestProtocol) dependencies[0];
-      
-      boolean success = protocol.joinLobby();
-      
+   protected void execute(ConnectionsManager connections, ActionEvent event, Object[] dependencies) {
       Logs.messages.push("Recherche d'une partie initiée !");
-      JLobby view = new JLobby();
-      view.setTitle(Text.APP_TITLE.toString() + " - " + Text.LOBBY_TITLE.toString());
-      Positions.setPositionOnScreen(view, ScreenPosition.CENTER);
-      view.setVisible(true);
       
-      new GameLauncher(true); // TODO true = temporaire
+      int lobbySize = protocolRequest.joinLobby();
+      
+      if (lobbySize < 0) {
+         Logs.messages.push("Aucun lobby de disponible");
+      }
+      else {
+         // Mise en place des infos de joueurs
+         connections.setupPlayers(lobbySize);
+         
+         Lobby lobby = new Lobby(connections, (Frame)dependencies[0]);
+         
+//       JLobby view = new JLobby((Frame)dependencies[0]);
+//       view.setTitle(Text.APP_TITLE.toString() + " - " + Text.LOBBY_TITLE.toString());
+//       Positions.setPositionOnScreen(view, ScreenPosition.CENTER);
+//       view.setVisible(true);
+       
+         new GameLauncher(connections, true); // TODO true = temporaire
+      }
+      
+      
    }
 
 }

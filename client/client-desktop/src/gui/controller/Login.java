@@ -20,6 +20,9 @@ import java.awt.Component;
 
 import javax.swing.JFrame;
 
+import core.ConnectionsManager;
+
+
 import settings.Settings;
 import settings.Language.Text;
 
@@ -33,6 +36,10 @@ import settings.Language.Text;
 public class Login extends Controller {
    
    JLogin view;
+   
+   public Login(ConnectionsManager connections) {
+      super(connections);
+   }
 
    @Override
    protected void initComponents(Object ... object) {
@@ -44,8 +51,8 @@ public class Login extends Controller {
 
    @Override
    protected void initListeners() {
-      view.addValidateListener(new AcConnect(view));
-      view.addCancelListener(new AcCancel(view));
+      view.addValidateListener(new AcConnect(connections, view));
+      view.addCancelListener(new AcCancel(connections, view));
    }
 
    @Override

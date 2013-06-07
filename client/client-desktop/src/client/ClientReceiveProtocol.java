@@ -11,10 +11,13 @@
  */
 package client;
 
+import gui.component.JPlayerList;
 import common.components.lobby.PlayerStatus;
 import common.connections.Channel;
 import common.connections.exceptions.ProtocolException;
 import common.connections.protocol.ProtocolType;
+import core.PlayerInfo;
+import core.PlayersInformations;
 
 /**
  * Classe permettant de rassembler les protocoles utilisés par le client pour
@@ -66,12 +69,24 @@ public class ClientReceiveProtocol {
     * TODO
     * @param toDefine - TODO
     */
-   public void lobbyUpdateSlotStatus(int toDefine) {
+   public void lobbyUpdateSlotStatus(PlayersInformations players) {
       PlayerStatus status;
       
       synchronized (channel) {
          status = (PlayerStatus)channel.receiveObject();
       }
+      
+      System.out.println("DEBUG : status - " + status.toString());
+      
+      PlayerInfo player = players.getPlayerAt(status.getSlotNumber());
+      
+      player.startMultipleChanges();
+      player.setIsUsed(true);
+      player.setName(status.getName());
+      player.setTeamNumber(status.getTeamNumber());
+      player.setStateReady(status.isReady());
+      player.endMultipleChanges();
+      
    }
    
    /**

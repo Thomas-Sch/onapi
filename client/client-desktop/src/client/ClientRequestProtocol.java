@@ -16,6 +16,7 @@ import common.connections.Channel;
 import common.connections.exceptions.ProtocolException;
 import common.connections.exceptions.TimeOutException;
 import common.connections.protocol.ProtocolType;
+import core.ConnectionsManager;
 
 /**
  * Classe permettant de rassembler les protocoles utilisés par le client pour
@@ -272,14 +273,14 @@ public class ClientRequestProtocol {
     * 
     * @return Le résultat de la tentative de.
     */
-   public boolean joinLobby() {
+   public int joinLobby() {
 
       if (!initDone) {
          throw new ProtocolException(
                "Error, connection to server has not been initialized");
       }
 
-      boolean success = false;
+      int success = -1;
 
       synchronized (requestChannel) {
 
@@ -290,8 +291,14 @@ public class ClientRequestProtocol {
             boolean isLobbyFree = requestChannel.receiveBoolean();
 
             if (isLobbyFree) {
+               
                // Réception de la confirmation
-               success = requestChannel.receiveBoolean();
+               if (requestChannel.receiveBoolean()) {
+                  
+                  // Réception de la taille du lobby
+                  success = requestChannel.receiveInt();
+               }
+               
             }
             else {
                System.out.println("No free lobbby for the moment.");

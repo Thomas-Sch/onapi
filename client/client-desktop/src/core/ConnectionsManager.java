@@ -1,5 +1,17 @@
-package gui;
+/* ============================================================================
+ * Nom du fichier   : ConnectionsManager.java
+ * ============================================================================
+ * Date de création : 5 juin 2013
+ * ============================================================================
+ * Auteurs          : Crescenzio Fabio
+ *                    Decorvet Grégoire
+ *                    Jaquier Kevin
+ *                    Schweizer Thomas
+ * ============================================================================
+ */
+package core;
 
+import gui.component.JPlayerList;
 import common.connections.Channel;
 import common.connections.exceptions.ChannelClosedException;
 import common.connections.exceptions.ChannelException;
@@ -10,15 +22,30 @@ import client.ClientReceiveProtocol;
 import client.ClientRequestProtocol;
 import client.ClientRequestProtocol.ConnectionChannels;
 
-public class TESTConnectionController {
+/**
+ * 
+ * TODO
+ * @author Crescenzio Fabio
+ * @author Decorvet Grégoire
+ * @author Jaquier Kevin
+ * @author Schweizer Thomas
+ *
+ */
+public class ConnectionsManager {
    
-   public static ConnectionChannels connections;
+   private ConnectionChannels connections;
    
    private Updater updateActivity;
    private KeepAlive keepAliveActivity;
    
-   public TESTConnectionController (ConnectionChannels connections) {
-      this.connections = connections; // SUPER MOCHE, sert pour les test uniquement !
+   private PlayersInformations players;
+   
+   public ConnectionsManager () {
+      
+   }
+   
+   public void setup(ConnectionChannels connections) {
+      this.connections = connections;
       
       updateActivity = new Updater(connections.updateChannel);
       updateActivity.start();
@@ -27,9 +54,31 @@ public class TESTConnectionController {
       keepAliveActivity.start();
    }
    
+   public void setupPlayers(int number) {
+      players = new PlayersInformations(number);
+   }
    
+   public Channel getChannelUpdate() {
+      if(connections != null) {
+         return connections.updateChannel;
+      }
+      else {
+         return null;
+      }
+   }
    
+   public Channel getChannelRequest() {
+      if(connections != null) {
+         return connections.requestChannel;
+      }
+      else {
+         return null;
+      }
+   }
    
+   public PlayersInformations getPlayers() {
+      return players;
+   }
    
    public class KeepAlive extends Thread {
       private Channel requestChannel;
@@ -44,18 +93,15 @@ public class TESTConnectionController {
       
       @Override
       public void run() {
-         
          while(!exit) {
             protocol.keepAlive();
             
             try {
                Thread.sleep(2500);
             }
-            catch (Exception e) {}
+            catch (Exception e) { }
          }
-         
       }
-      
    }
    
    public class Updater extends Thread {
@@ -78,11 +124,9 @@ public class TESTConnectionController {
          while (!exit) {
 
             try {
-
                proType = updateChannel.receiveProtocolType();
 
                switch (proType) {
-
                   case PING:
                      protocol.ping();
                      break;
@@ -92,7 +136,7 @@ public class TESTConnectionController {
                      break;
                      
                   case LOBBY_UPDATED_SLOT_STATUS:
-                     protocol.lobbyUpdateSlotStatus(42);
+                     protocol.lobbyUpdateSlotStatus(players);
                      break;
                      
                   case LOBBY_GAME_READY :
@@ -114,7 +158,6 @@ public class TESTConnectionController {
             catch (ChannelException e) {
                System.out.println("Server lost");
             }
-
          }
 
       }

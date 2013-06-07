@@ -11,7 +11,6 @@
  */
 package gui.actions;
 
-import gui.TESTConnectionController;
 import gui.controller.MainFrame;
 import gui.view.JLogin;
 
@@ -23,8 +22,8 @@ import client.ClientRequestProtocol;
 import client.ClientRequestProtocol.ConnectionChannels;
 
 import common.components.UserAccount;
-import common.connections.Channel;
 import common.connections.exceptions.ChannelException;
+import core.ConnectionsManager;
 
 /**
  * Contrôleur et action de connection.
@@ -36,19 +35,14 @@ import common.connections.exceptions.ChannelException;
  */
 public class AcConnect extends UserAction {
    
-   // TODO - A changer, c'est pour les test
-   public static TESTConnectionController connectionsControl;
+   private ConnectionChannels connectionsChannels;
    
-   private static ConnectionChannels connections;
-   
-   private ClientRequestProtocol protocol;
-   
-   public AcConnect(Object ... dependencies) {
-      super(dependencies);
+   public AcConnect(ConnectionsManager connections, Object ... dependencies) {
+      super(connections, dependencies);
    }
 
    @Override
-   protected void execute(ActionEvent event, Object[] dependencies) {
+   protected void execute(ConnectionsManager connections, ActionEvent event, Object[] dependencies) {
       JLogin view = (JLogin)dependencies[0];
       Logs.messages.push("Requête de connexion au serveur.");
       Logs.messages.push("Login: " + view.getLogin());
@@ -57,22 +51,22 @@ public class AcConnect extends UserAction {
       Logs.messages.push("Port: " + view.getServerPort());
       
       try {
-         protocol = new ClientRequestProtocol();
-         connections = protocol.connectToServer(
+         protocolRequest = new ClientRequestProtocol();
+         connectionsChannels = protocolRequest.connectToServer(
                view.getServerAdress(), Integer.valueOf(view.getServerPort()),
                15000);
          
-         connectionsControl = new TESTConnectionController(connections);
+         connections.setup(connectionsChannels);
          
          view.setMessage("Connection au serveur effectuée.", Color.GREEN);
          
-         UserAccount account = protocol.login(view.getLogin(), view.getPassword());
+         UserAccount account = protocolRequest.login(view.getLogin(), view.getPassword());
          
          if(account != null) {
             System.out.println("Connexion au compte client : " + account);
             view.setMessage("Identification réussie.");
             view.dispose();
-            new MainFrame(account, view.getServerAdress(),  view.getServerPort(), protocol);
+            new MainFrame(connections, account, view.getServerAdress(),  view.getServerPort());
          } else {
             view.setMessage("Identifiant/Mot de passe inconnus", Color.RED);
          }

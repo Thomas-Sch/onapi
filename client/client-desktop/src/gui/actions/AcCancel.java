@@ -1,7 +1,7 @@
 /* ============================================================================
  * Nom du fichier   : AcCancel.java
  * ============================================================================
- * Date de cr�ation : 11 mai 2013
+ * Date de création : 11 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -15,6 +15,9 @@ import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
 
+import core.ConnectionsManager;
+
+
 /**
  * Action de fermeture de connexion.
  * @author Crescenzio Fabio
@@ -25,12 +28,12 @@ import javax.swing.JFrame;
  */
 public class AcCancel extends UserAction {
    
-   public AcCancel(Object ... dependencies) {
-      super(dependencies);
+   public AcCancel(ConnectionsManager connections, Object ... dependencies) {
+      super(connections, dependencies);
    }
 
    @Override
-   protected void execute(ActionEvent event, Object[] dependencies) {
+   protected void execute(ConnectionsManager connections, ActionEvent event, Object[] dependencies) {
       JFrame view = (JFrame)dependencies[0];
       view.dispose();
    }
