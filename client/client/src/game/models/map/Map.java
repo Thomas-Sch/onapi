@@ -94,6 +94,7 @@ public class Map extends Entity implements ContactListener{
                fix.restitution = 0.8f;
                body.createFixture(fix); 
                wallBodies[i][j] = body;
+               body.setUserData(Tile.WALL);
             }
          }
       }

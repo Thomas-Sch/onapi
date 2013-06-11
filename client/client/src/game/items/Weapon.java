@@ -13,8 +13,12 @@ package game.items;
 
 import game.models.Player;
 
+import box2dLight.RayHandler;
+
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Group;
 
 /**
  * TODO
@@ -34,6 +38,8 @@ public abstract class Weapon extends Item {
    
    private boolean shot = false;
    
+   protected Bullet bullet;
+   
    public abstract void onHit(Player target);
 
    public abstract void drawProjectile(SpriteBatch batch, float parentAlpha);
@@ -44,20 +50,22 @@ public abstract class Weapon extends Item {
 
    public void shoot(float delta) {
       currentTime += delta;
-      if (currentTime > previousShootTime + getCooldown()) {
-         onShoot();
-         previousShootTime = currentTime;
-         shot = true;
-      }
+      if(!this.bullet.isActive())
+         if (currentTime > previousShootTime + getCooldown()) {
+            onShoot();
+            previousShootTime = currentTime;
+            shot = true;
+         }
    }
    
    @Override
    public void update(float deltaTime) {
-//      if (shot && currentTime + deltaTime - previousShootTime > AFTER_SHOT_DELAY) {
-//         currentTime += deltaTime;
-//         afterShot();
-//         shot = false;
-//      }
    }
+
+   /**
+    * @param world
+    * @param rayHandler
+    */
+   public abstract void createBullet(World world, Group group,RayHandler rayHandler);
 
 }

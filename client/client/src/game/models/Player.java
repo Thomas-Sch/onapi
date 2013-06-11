@@ -15,6 +15,7 @@ import game.controllers.GameController.Action;
 import game.items.Bonus;
 import game.items.Skill;
 import game.items.Weapon;
+import game.items.weapons.DefaultWeapon;
 import game.models.map.Tile;
 import box2dLight.ConeLight;
 import box2dLight.PointLight;
@@ -49,7 +50,7 @@ import com.badlogic.gdx.physics.box2d.World;
  * @author Schweizer Thomas
  * 
  */
-public class Player extends Entity implements ContactListener {
+public class Player extends Entity {
 
    private static int lastId = 1;
    private final int id = lastId++;
@@ -57,9 +58,9 @@ public class Player extends Entity implements ContactListener {
    private static final int WIDTH = 50;
    private static final int HEIGHT = WIDTH;
 
-   private static final Color TORCH_COLOR = new Color(237f / 255f, 240f / 255f,
+   public final Color TORCH_COLOR = new Color(237f / 255f, 240f / 255f,
          168f / 255f, 0.6f);
-   private static final Color HALO_COLOR = new Color(1, 1, 1, 0.3f);
+   public final Color HALO_COLOR = new Color(1, 1, 1, 0.3f);
    private static int HP_START = 100;
 
    private static final Vector2 GRAVEYARD_POS = new Vector2(-500, -500);
@@ -111,7 +112,6 @@ public class Player extends Entity implements ContactListener {
       return bonus;
    }
 
-   
    /**
     * Texture du joueur à son affichage
     */
@@ -140,7 +140,6 @@ public class Player extends Entity implements ContactListener {
       this.bonus = bonus;
       this.bonus.setOwner(this);
 
-
       loadResources();
 
       // Définit la consistance physique du joueur
@@ -156,6 +155,7 @@ public class Player extends Entity implements ContactListener {
       fix.friction = 0.5f;
       fix.restitution = 0.8f;
       body.createFixture(fix);
+      body.setUserData(this);
 
       // Initialise les lumières diffusées par le joueur
       new PointLight(handler, 50, HALO_COLOR, Tile.WIDTH - 50, getX(), getY())
@@ -172,8 +172,8 @@ public class Player extends Entity implements ContactListener {
    public void loadResources() {
       texture = new Texture(Gdx.files.internal("data/sprite1_perso.png"));
    }
-   
-   public Rectangle getRectangle(){
+
+   public Rectangle getRectangle() {
       return bounds;
    }
 
@@ -191,9 +191,9 @@ public class Player extends Entity implements ContactListener {
     *           Nouvelle position
     */
    public void moveTo(Vector2 newPos) {
-         setPosition(newPos.x - bounds.width / 2f, newPos.y - bounds.height / 2f);
-         bounds.x = newPos.x;
-         bounds.y = newPos.y; 
+      setPosition(newPos.x - bounds.width / 2f, newPos.y - bounds.height / 2f);
+      bounds.x = newPos.x;
+      bounds.y = newPos.y;
    }
 
    /**
@@ -236,7 +236,6 @@ public class Player extends Entity implements ContactListener {
    public void update(float deltaTime) {
       body.setTransform(getPos(), getRotation() * ((float) Math.PI) / 180f);
    }
-   
 
    public void shoot(float delta) {
       weapon.shoot(delta);
@@ -255,7 +254,7 @@ public class Player extends Entity implements ContactListener {
       weapon.draw(batch, parentAlpha);
       skill.draw(batch, parentAlpha);
       bonus.draw(batch, parentAlpha);
-      
+
       Color previousTint = batch.getColor();
       batch.setColor(team.getColor());
 
@@ -272,13 +271,11 @@ public class Player extends Entity implements ContactListener {
    public void debugRender(ShapeRenderer renderer) {
 
    }
-   
 
    /**
     * Orientation du personnage
     */
    private Vector2 dir;
-   private Action lastAction;
 
    /**
     * @return Orientation du joueur
@@ -328,7 +325,6 @@ public class Player extends Entity implements ContactListener {
       moveTo(deadPos);
       System.out.println(this + "\t DEAD");
    }
-   
 
    /**
     * 
@@ -350,44 +346,11 @@ public class Player extends Entity implements ContactListener {
       return id;
    }
 
-   @Override
-   public void beginContact(Contact contact) {
-//      //Si collision, repositionne le joueur pour supprimer la collision
-//      //TODO : Caster pour savoir si joueur / mur / munition
-//      if (lastAction == Action.RIGHT)
-//         setX((float) (Math.floor(getX() / Tile.WIDTH) * Tile.WIDTH
-//               + Tile.WIDTH / 2 - (float) ((getWidth() / 2) * Math.sqrt(2))) - 1);
-//      if (lastAction == Action.DOWN)
-//         setY((float) (Math.floor(getY() / Tile.WIDTH) * Tile.WIDTH
-//               + Tile.WIDTH / 2 + (float) ((getWidth() / 2) * Math.sqrt(2))) + 1);
-//      
-//      if (lastAction == Action.LEFT)
-//         setX((float) (Math.floor(getX() / Tile.WIDTH) * Tile.WIDTH
-//               + Tile.WIDTH / 2 + (float) ((getWidth() / 2) * Math.sqrt(2))) + 1);
-//      if (lastAction == Action.UP)
-//         setY((float) (Math.floor(getY() / Tile.WIDTH) * Tile.WIDTH
-//               + Tile.WIDTH / 2 - (float) ((getWidth() / 2) * Math.sqrt(2))) - 1);
-   }
-
-   @Override
-   public void endContact(Contact contact) {
-   }
-
-   @Override
-   public void preSolve(Contact contact, Manifold oldManifold) {
-   }
-
-   @Override
-   public void postSolve(Contact contact, ContactImpulse impulse) {
-      // TODO Auto-generated method stub
-      
-   }
-
    /**
-    * @param right
+    * @param defaultWeapon
     */
-   public void setLastAction(Action action) {
-      this.lastAction = action;      
+   public void setWeapon(Weapon weapon) {
+      this.weapon = weapon;
    }
 
 }

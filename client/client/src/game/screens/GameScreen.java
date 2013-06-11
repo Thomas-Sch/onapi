@@ -37,7 +37,7 @@ public class GameScreen extends ScreenAdapter {
 
    private static final int MOUSE_LEFT_BUTTON = 0;
    private static final int MOUSE_RIGHT_BUTTON = 1;
-   
+
    private boolean debug;
 
    /**
@@ -128,8 +128,7 @@ public class GameScreen extends ScreenAdapter {
 
    @Override
    public boolean keyTyped(char character) {
-      if (character == 'X' || character == 'x')
-         game.executeDevCheat();
+      if (character == 'X' || character == 'x') game.executeDevCheat();
       return true;
    }
 
@@ -151,14 +150,13 @@ public class GameScreen extends ScreenAdapter {
       }
       return true;
    }
-   
+
    @Override
    public boolean touchDragged(int screenX, int screenY, int pointer) {
       touchDown(screenX, screenY, pointer, MOUSE_LEFT_BUTTON);
       mouseMoved(screenX, screenY);
       return true;
    }
-   
 
    @Override
    public boolean mouseMoved(int screenX, int screenY) {
@@ -185,9 +183,11 @@ public class GameScreen extends ScreenAdapter {
          mouseY = playerY - screenY;
       }
 
-      // Affecte le nouvel angle
-      Vector2.tmp.set(mouseX, mouseY);
-      game.getPlayer().setDir(Vector2.tmp);
+      // Affecte le nouvel angle NOTE : ne pas utiliser vector2.tmp, autrement
+      // modifier dans autre processus
+      Vector2.tmp2.x = mouseX;
+      Vector2.tmp2.y = mouseY;
+      game.getPlayer().setDir(Vector2.tmp2);
 
       return true;
    }

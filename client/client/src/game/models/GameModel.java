@@ -14,13 +14,14 @@ package game.models;
 import java.util.LinkedList;
 import java.util.Random;
 
+import game.items.Bullet;
 import game.items.bonus.DefaultBonus;
 import game.items.skills.DefaultSkill;
 import game.items.weapons.DefaultWeapon;
 import game.models.map.Map;
+import game.models.map.Tile;
 import box2dLight.RayHandler;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -89,18 +90,24 @@ public class GameModel {
       player = new Player(Map.getRealPos(0, 0), new Vector2(0f, 1f), teams[0],
             new DefaultWeapon(), new DefaultSkill(), new DefaultBonus(), world,
             rayHandler);
+      player.getWeapon().createBullet(world, entities, rayHandler);
       entities.addActor(player);
 
       // Ajoute d'autres joueurs
       for (int i = 0; i < 14; i++) {
-         entities.addActor(new Player(Map.getRealPos(0, 0), new Vector2(-1f,
-               -1f), teams[0], new DefaultWeapon(), new DefaultSkill(),
-               new DefaultBonus(), world, rayHandler));
+         Player other = new Player(Map.getRealPos(0, 0), new Vector2(-1f, -1f),
+               teams[0], new DefaultWeapon(), new DefaultSkill(),
+               new DefaultBonus(), world, rayHandler);
+         other.getWeapon().createBullet(world, entities, rayHandler);
+
+         entities.addActor(other);
       }
       for (int i = 0; i < 15; i++) {
-         entities.addActor(new Player(Map.getRealPos(0, 0), new Vector2(-1f,
-               -1f), teams[1], new DefaultWeapon(), new DefaultSkill(),
-               new DefaultBonus(), world, rayHandler));
+         Player other = new Player(Map.getRealPos(0, 0), new Vector2(-1f, -1f),
+               teams[1], new DefaultWeapon(), new DefaultSkill(),
+               new DefaultBonus(), world, rayHandler);
+         entities.addActor(other);
+         other.getWeapon().createBullet(world, entities, rayHandler);
       }
 
       // Fait "spawner" (apparaitre) les joueurs sur la carte, autrement dit,
@@ -115,10 +122,53 @@ public class GameModel {
    }
 
    private void createCollisionListener() {
-      world.setContactListener(player);
-  }
+      world.setContactListener(new ContactListener() {
 
+         @Override
+         public void preSolve(Contact contact, Manifold oldManifold) {
+            // TODO Auto-generated method stub
+            Fixture a = contact.getFixtureA();
+            Fixture b = contact.getFixtureB();
+            if(a.getUserData()!=null && b.getUserData()!= null){
+               System.out.println("Objet de type " + a.getUserData() + " avec " + b.getUserData());
+               if (a.getUserData() != null && b.getUserData() != null
+                     && a.getUserData() instanceof Bullet
+                     && b.getUserData() instanceof Player)
+                  ((Bullet) a.getUserData()).onHit((Player) b.getUserData());
    
+               else if (a.getUserData() != null && b.getUserData() != null
+                     && b.getUserData() instanceof Bullet
+                     && a.getUserData() instanceof Player)
+                  ((Bullet) b.getUserData()).onHit((Player) a.getUserData());
+               else if (a.getUserData() != null && b.getUserData() != null
+                     && a.getUserData() instanceof Bullet
+                     && b.getUserData() instanceof Tile)
+                  ((Bullet) a.getUserData()).deactivate();
+               else if (a.getUserData() != null && b.getUserData() != null
+                     && b.getUserData() instanceof Bullet
+                     && a.getUserData() instanceof Tile)
+                  ((Bullet) b.getUserData()).deactivate();
+            }
+         }
+         @Override
+         public void postSolve(Contact contact, ContactImpulse impulse) {
+            // TODO Auto-generated method stub
+
+         }
+
+         @Override
+         public void endContact(Contact contact) {
+            // TODO Auto-generated method stub
+
+         }
+
+         @Override
+         public void beginContact(Contact contact) {
+
+         }
+      });
+   }
+
    /**
     * @return Liste des équipes en jeu
     */
@@ -197,5 +247,5 @@ public class GameModel {
       Player target = ennemies.get(new Random().nextInt(ennemies.size()));
       player.getWeapon().onHit(target);
    }
-   
+
 }
