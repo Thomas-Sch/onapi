@@ -144,7 +144,7 @@ public class Player extends Entity {
 
       // Définit la consistance physique du joueur
       BodyDef bodyDef = new BodyDef();
-      bodyDef.type = BodyType.DynamicBody;
+      bodyDef.type = BodyType.KinematicBody;
       bodyDef.position.set(getPos());
       body = world.createBody(bodyDef);
       PolygonShape shape = new PolygonShape();

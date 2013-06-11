@@ -126,29 +126,7 @@ public class GameModel {
 
          @Override
          public void preSolve(Contact contact, Manifold oldManifold) {
-            // TODO Auto-generated method stub
-            Fixture a = contact.getFixtureA();
-            Fixture b = contact.getFixtureB();
-            if(a.getUserData()!=null && b.getUserData()!= null){
-               System.out.println("Objet de type " + a.getUserData() + " avec " + b.getUserData());
-               if (a.getUserData() != null && b.getUserData() != null
-                     && a.getUserData() instanceof Bullet
-                     && b.getUserData() instanceof Player)
-                  ((Bullet) a.getUserData()).onHit((Player) b.getUserData());
-   
-               else if (a.getUserData() != null && b.getUserData() != null
-                     && b.getUserData() instanceof Bullet
-                     && a.getUserData() instanceof Player)
-                  ((Bullet) b.getUserData()).onHit((Player) a.getUserData());
-               else if (a.getUserData() != null && b.getUserData() != null
-                     && a.getUserData() instanceof Bullet
-                     && b.getUserData() instanceof Tile)
-                  ((Bullet) a.getUserData()).deactivate();
-               else if (a.getUserData() != null && b.getUserData() != null
-                     && b.getUserData() instanceof Bullet
-                     && a.getUserData() instanceof Tile)
-                  ((Bullet) b.getUserData()).deactivate();
-            }
+           
          }
          @Override
          public void postSolve(Contact contact, ContactImpulse impulse) {
@@ -164,7 +142,35 @@ public class GameModel {
 
          @Override
          public void beginContact(Contact contact) {
+            // TODO Auto-generated method stub
+            Fixture a = contact.getFixtureA();
+            Fixture b = contact.getFixtureB();
+            
+            if(a.getBody()!=null && b.getBody()!= null){
+   
+               if(a.getBody().getUserData()!=null && b.getBody().getUserData()!= null){
+                  Object userdataA = a.getBody().getUserData();
+                  Object userdataB = b.getBody().getUserData();
+                  if (userdataA != null && userdataB != null
+                        && userdataA instanceof Bullet
+                        && userdataB instanceof Player)
+                        ((Bullet) userdataA).onHit((Player) userdataB);
 
+                  else  if (a.getBody().getUserData() != null && b.getBody().getUserData() != null
+                        && userdataB instanceof Bullet
+                        && userdataA instanceof Player)
+                        ((Bullet) userdataB).onHit((Player) userdataA);
+
+                  else if (a.getBody().getUserData() != null && b.getBody().getUserData() != null
+                        && a.getBody().getUserData() instanceof Bullet
+                        && b.getBody().getUserData() instanceof Tile)
+                     ((Bullet) a.getBody().getUserData()).deactivate();
+                  else if (a.getBody().getUserData() != null && b.getBody().getUserData() != null
+                        && b.getBody().getUserData() instanceof Bullet
+                        && a.getBody().getUserData() instanceof Tile)
+                     ((Bullet) b.getBody().getUserData()).deactivate();
+               }
+            }
          }
       });
    }

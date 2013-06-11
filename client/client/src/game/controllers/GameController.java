@@ -133,7 +133,7 @@ public class GameController {
    }
 
    public boolean isCollidingWithWall(float moveSpeedX, float moveSpeedY) {
-
+if(true) return false;
       int playerCaseX = (int) Math.floor((game.getPlayer().getX() / Tile.WIDTH));
       int playerCaseY = (int) Math.floor(game.getMap().getGrid().length
             - (int) (game.getPlayer().getY() / Tile.WIDTH));
