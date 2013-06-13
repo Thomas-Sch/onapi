@@ -11,7 +11,7 @@
  */
 package core;
 
-import gui.component.JPlayerList;
+import game.models.GameModel;
 import common.connections.Channel;
 import common.connections.exceptions.ChannelClosedException;
 import common.connections.exceptions.ChannelException;
@@ -40,6 +40,8 @@ public class ConnectionsManager {
    
    private PlayersInformations players;
    
+   private GameModel gameModel;
+   
    public ConnectionsManager () {
       
    }
@@ -55,7 +57,13 @@ public class ConnectionsManager {
    }
    
    public void setupPlayers(int number) {
-      players = new PlayersInformations(number);
+      if (players == null) {
+         players = new PlayersInformations(number);
+      }
+   }
+   
+   public void setupGameModel(GameModel gameModel) {
+      this.gameModel = gameModel;
    }
    
    public Channel getChannelUpdate() {

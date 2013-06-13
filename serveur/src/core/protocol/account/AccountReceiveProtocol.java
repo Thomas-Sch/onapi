@@ -130,11 +130,7 @@ public class AccountReceiveProtocol extends ServerStandardReceiveProtocol {
          }
       }
       
-      
-      
-      
    }
-   
    
    private void updateLogName() {
       if (user.account != null) {

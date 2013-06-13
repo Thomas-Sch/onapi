@@ -11,16 +11,23 @@
  */
 package gui.actions;
 
+import gui.controller.AdminFrame;
 import gui.controller.MainFrame;
+import gui.utils.Positions;
 import gui.view.JLogin;
 
 import java.awt.Color;
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 
+import javax.swing.JFrame;
+
+import settings.Settings;
 import utils.Logs;
 import client.ClientRequestProtocol;
 import client.ClientRequestProtocol.ConnectionChannels;
 
+import common.components.AccountType;
 import common.components.UserAccount;
 import common.connections.exceptions.ChannelException;
 import core.ConnectionsManager;
@@ -63,10 +70,20 @@ public class AcConnect extends UserAction {
          UserAccount account = protocolRequest.login(view.getLogin(), view.getPassword());
          
          if(account != null) {
-            System.out.println("Connexion au compte client : " + account);
+            Logs.messages.push("Connexion au compte client : " + account);
             view.setMessage("Identification réussie.");
             view.dispose();
-            new MainFrame(connections, account, view.getServerAdress(),  view.getServerPort());
+            MainFrame mainFrame = new MainFrame(connections, account, view.getServerAdress(),  view.getServerPort());
+            
+            // Ouverture de la console d'administration
+            if(account.getType() == AccountType.ADMINISTRATOR) {
+               // S'enregistrer comme admin et initialisation de la liste de joueurs.
+               int nbSlots = protocolRequest.adminSelfRegister();
+               connections.setupPlayers(nbSlots);
+               
+               AdminFrame adminFrame = new AdminFrame(connections, (Frame)mainFrame.getGraphicalComponent());
+               
+            }
          } else {
             view.setMessage("Identifiant/Mot de passe inconnus", Color.RED);
          }

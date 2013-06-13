@@ -11,11 +11,13 @@
  */
 package core.protocol;
 
+import gui.LogsFrame;
 import common.components.AccountType;
 import common.components.UserAccount;
 import common.connections.protocol.ProtocolType;
 import core.Core;
 import core.UserInformations;
+import core.updates.components.admin.Kicked;
 
 /**
  * Classe permettant de rassembler les protocoles concernant les requêtes
@@ -51,6 +53,26 @@ public class ServerStandardReceiveProtocol {
       message = user.connectionsToClient.receiveChannel.receiveString();
       
       user.log.push(message);
+   }
+   
+   public void adminRegister() {
+      user.connectionsToClient.receiveChannel.sendInt(core.getNumberOfSlots());
+      core.adminRegister(user);
+   }
+   
+   public void adminKick() {
+      int slot = user.connectionsToClient.receiveChannel.receiveInt();
+      String message = user.connectionsToClient.receiveChannel.receiveString();
+      
+      UserInformations user = core.adminKick(slot);
+      
+      if (user != null) {
+         user.serverUpdate.pushUpdate(new Kicked(message));
+      }
+      else {
+         // Print error
+      }
+      
    }
    
    public void acceptRequest(ProtocolType type) {

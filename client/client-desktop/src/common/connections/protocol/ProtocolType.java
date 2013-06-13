@@ -20,12 +20,28 @@ package common.connections.protocol;
  *
  */
 public enum ProtocolType {
-   ACCEPT, REFUSE,
-   ACCOUNT_CREATE,
-   JOIN_GAME, LEAVE_GAME,
-   LOGIN, LOGOUT,
-   TEXT_MESSAGE,
-   PING,
+   REFUSE,
    
-   LOBBY_SET_READY, LOBBY_UPDATED_SLOT_STATUS, LOBBY_GAME_READY;
+   PING,
+   ACCOUNT_CREATE,
+   LOGIN,
+   LOGOUT,
+   
+   TEXT_MESSAGE,
+   
+   JOIN_GAME,
+   LEAVE_GAME,
+   
+   // Game
+   
+   
+   // Lobby
+   LOBBY_SET_READY,
+   LOBBY_UPDATED_SLOT_STATUS,
+   LOBBY_GAME_READY,
+   
+   // Admin
+   ADMIN_REGISTER,
+   ADMIN_KICK;
+   
 }

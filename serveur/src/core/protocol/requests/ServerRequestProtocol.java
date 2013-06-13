@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : Visitor.java
+ * Nom du fichier   : ServerRequestProtocol.java
  * ============================================================================
- * Date de création : 31 mai 2013
+ * Date de création : 12 juin 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,13 +9,7 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core.updates;
-
-import core.updates.components.LobbyGameReady;
-import core.updates.components.LobbyUpdateSlot;
-import core.updates.components.StandardPing;
-import core.updates.components.admin.Kicked;
-
+package core.protocol.requests;
 
 /**
  * TODO
@@ -25,16 +19,6 @@ import core.updates.components.admin.Kicked;
  * @author Schweizer Thomas
  *
  */
-public interface UpdateVisitor {
-   
-   // Général
-   void casePing(StandardPing update);
-   
-   // Salon d'attente
-   void caseLobbyGameReady(LobbyGameReady update);
-   void caseLobbyUpdateSlot(LobbyUpdateSlot update);
-   
-   // Administration
-   void caseKicked(Kicked update);
+public class ServerRequestProtocol {
 
 }

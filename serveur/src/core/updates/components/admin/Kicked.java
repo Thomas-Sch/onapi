@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : Visitor.java
+ * Nom du fichier   : Kicked.java
  * ============================================================================
- * Date de création : 31 mai 2013
+ * Date de création : 11 juin 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,13 +9,10 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core.updates;
+package core.updates.components.admin;
 
-import core.updates.components.LobbyGameReady;
-import core.updates.components.LobbyUpdateSlot;
-import core.updates.components.StandardPing;
-import core.updates.components.admin.Kicked;
-
+import core.updates.Update;
+import core.updates.UpdateVisitor;
 
 /**
  * TODO
@@ -25,16 +22,18 @@ import core.updates.components.admin.Kicked;
  * @author Schweizer Thomas
  *
  */
-public interface UpdateVisitor {
+public class Kicked extends Update {
    
-   // Général
-   void casePing(StandardPing update);
+   public String message;
    
-   // Salon d'attente
-   void caseLobbyGameReady(LobbyGameReady update);
-   void caseLobbyUpdateSlot(LobbyUpdateSlot update);
+   public Kicked(String kickMessage) {
+      super();
+      message = kickMessage;
+   }
    
-   // Administration
-   void caseKicked(Kicked update);
+   @Override
+   public void apply(UpdateVisitor v) {
+      v.caseKicked(this);
+   }
 
 }

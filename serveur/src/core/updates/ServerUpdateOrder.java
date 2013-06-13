@@ -19,6 +19,7 @@ import core.protocol.updates.ServerUpdateProtocol;
 import core.updates.components.LobbyGameReady;
 import core.updates.components.LobbyUpdateSlot;
 import core.updates.components.StandardPing;
+import core.updates.components.admin.Kicked;
 
 /**
  * TODO
@@ -77,6 +78,12 @@ public class ServerUpdateOrder implements UpdateVisitor {
    public void caseLobbyUpdateSlot(LobbyUpdateSlot update) {
       protocol.lobbyUpdateSlot(update.slotNumber, update.status);
       user.log.push("Update lobby : a player slot has changed");
+   }
+
+   @Override
+   public void caseKicked(Kicked update) {
+      protocol.adminKick(update.message);
+      user.log.push("Kicked by an admin.");
    }
    
 }

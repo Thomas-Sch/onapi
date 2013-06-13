@@ -11,6 +11,7 @@
  */
 package client;
 
+import game.models.GameModel;
 import gui.component.JPlayerList;
 import common.components.lobby.PlayerStatus;
 import common.connections.Channel;
@@ -76,17 +77,19 @@ public class ClientReceiveProtocol {
          status = (PlayerStatus)channel.receiveObject();
       }
       
-      System.out.println("DEBUG : status - " + status.toString());
-      
       PlayerInfo player = players.getPlayerAt(status.getSlotNumber());
       
-      player.startMultipleChanges();
-      player.setIsUsed(true);
-      player.setName(status.getName());
-      player.setTeamNumber(status.getTeamNumber());
-      player.setStateReady(status.isReady());
-      player.endMultipleChanges();
-      
+      if(status.isFree()) {
+         player.setIsUsed(false);
+      }
+      else {
+         player.startMultipleChanges();
+         player.setIsUsed(true);
+         player.setName(status.getName());
+         player.setTeamNumber(status.getTeamNumber());
+         player.setStateReady(status.isReady());
+         player.endMultipleChanges();
+      }
    }
    
    /**

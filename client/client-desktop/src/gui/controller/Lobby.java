@@ -7,11 +7,17 @@ import gui.actions.AcLobbyReady;
 import gui.component.JPlayerList;
 import gui.utils.Positions;
 import gui.utils.Positions.ScreenPosition;
+import gui.utils.WindowCloseListener;
 import gui.view.JLobby;
 import gui.view.JLogin;
 
 import java.awt.Component;
 import java.awt.Dialog.ModalityType;
+import java.awt.event.ContainerEvent;
+import java.awt.event.ContainerListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
 import java.awt.Frame;
 
 import javax.swing.JFrame;
@@ -56,6 +62,13 @@ public class Lobby extends Controller {
       model = connections.getPlayers();
       view = new JLobby(model, (Frame)objects[0]);
       view.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+      view.addWindowListener(new WindowCloseListener() {
+         @Override
+         public void windowClosing(WindowEvent arg0) {
+            protocolRequest.leaveGame();
+            view.dispose();
+         }
+      });
       view.setTitle(Text.APP_TITLE.toString() + " - " + Text.LOBBY_TITLE.toString());
       
       // Ajout de l'observateur
@@ -74,7 +87,5 @@ public class Lobby extends Controller {
    public Component getGraphicalComponent() {
       return view;
    }
-   
-   
 
 }

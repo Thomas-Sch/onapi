@@ -67,6 +67,13 @@ public class ServerUpdateProtocol {
       }
    }
    
+   public void adminKick(String kickMessage) {
+      synchronized (user.connectionsToClient.updateChannel) {
+         user.connectionsToClient.updateChannel.sendProtocolType(ProtocolType.ADMIN_KICK);
+         user.connectionsToClient.updateChannel.sendString(kickMessage);
+      }
+   }
+   
    public void lobbyUpdateSlot(int slotNumber, PlayerStatus status) {
       // Partie debug TODO
       

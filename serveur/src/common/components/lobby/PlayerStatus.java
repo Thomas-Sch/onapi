@@ -66,9 +66,24 @@ public class PlayerStatus extends Observable implements Serializable {
     * @param number - le numéro d'équipe, un 0 indique qu'il n'en a pas.
     */
    public void setTeamNumber(int number) {
-      this.teamNumber = number;
+      if (teamNumber != number && number >= 0) {
+         teamNumber = number;
+         setChanged();
+         notifyObservers();
+      }
+   }
+   
+   /**
+    * Définit le status d'emplacement libre (le joueur a quitté).
+    */
+   public void setLeft() {
+      name = "";
       setChanged();
       notifyObservers();
+   }
+   
+   public boolean isFree() {
+      return name == null || name.isEmpty();
    }
    
    public void setReady(boolean ready) {

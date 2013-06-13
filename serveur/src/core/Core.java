@@ -24,6 +24,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import settings.Settings;
 import utils.RandomGenerator;
 
 import common.components.AccountType;
@@ -32,6 +33,7 @@ import common.connections.Channel;
 
 import core.exceptions.PortException;
 import core.lobby.Lobby;
+import core.updates.Update;
 import database.DBController;
 
 /**
@@ -44,11 +46,6 @@ import database.DBController;
  */
 public class Core {
    
-   private static final int CLIENT_TIMEOUT = 15000;
-   private static final int DEFAULT_PORT = 1234;
-   
-   private static final String DATABASE_DIRECTORY = "database";
-   private static final String DATABASE_NAME = "onapi.db";
    private static String databasePath;
    
    // Logs
@@ -72,6 +69,7 @@ public class Core {
    
    private LinkedList<ExpectedConnection> expectedConnections = new LinkedList<>();
    private LinkedList<EstablishedNewConnection> establishedNewConnections = new LinkedList<>();
+   private LinkedList<UserInformations> admins = new LinkedList<>();
    
    private Lobby lobby;
    
@@ -133,7 +131,7 @@ public class Core {
             
             // Démarre le processus de gestion d'un nouveau client
             UserConnectionManager userConnection =
-                  new UserConnectionManager(this, socket, CLIENT_TIMEOUT);
+                  new UserConnectionManager(this, socket, Settings.TIMEOUT_CLIENT);
             
             // Enregistre le nouveau client
             synchronized(connections) {
@@ -206,6 +204,28 @@ public class Core {
       }
       else {
          return null;
+      }
+   }
+   
+   public int getNumberOfSlots() {
+      return lobby.getMaxNumberOfPlayers();
+   }
+   
+   public void adminRegister(UserInformations user) {
+      synchronized(admins)  {
+         admins.add(user);
+      }
+   }
+   
+   public UserInformations adminKick(int slot) {
+      return lobby.adminKick(slot);
+   }
+   
+   public void pushToAdmins(Update update) {
+      synchronized (admins) {
+         for(UserInformations admin : admins) {
+            admin.serverUpdate.pushUpdate(update);
+         }
       }
    }
    
@@ -293,12 +313,12 @@ public class Core {
    
    private void init(boolean enableLogFrame) {
       
-      System.out.print("DEBUG - init server port on "+ DEFAULT_PORT + " ...");
-      serverPort = new Port(DEFAULT_PORT);
+      System.out.print("Init server on port "+ Settings.PORT_NUMBER + " ...");
+      serverPort = new Port(Settings.PORT_NUMBER);
       serverPort.activateFreePort();
       System.out.println("done.");
       
-      System.out.print("DEBUG - init update port on " + (serverPort.getPortNumber() + 1) + " ...");
+      System.out.print("Init update port on " + (serverPort.getPortNumber() + 1) + " ...");
       updatePort = new Port(serverPort.getPortNumber() + 1);
       updatePort.activateFreePort();
       updatePortActivity = new AcceptUpdateConnections(updatePort);
@@ -314,7 +334,7 @@ public class Core {
       System.out.println("done.");
       
       System.out.print("Creating log...");
-      log = new Log("main");
+      log = new Log("Authentification");
       if (enableLogFrame) {
          System.out.println("done.");
          System.out.print("Creating log frame...");
@@ -335,7 +355,8 @@ public class Core {
       }
       
       databasePath = file.getAbsolutePath() + File.separator
-            + DATABASE_DIRECTORY + File.separator + DATABASE_NAME;
+            + Settings.DATABASE_DIRECTORY + File.separator
+            + Settings.DATABASE_NAME;
       log.push("Done.");
       
       log.push("Database used : " + databasePath);
@@ -345,7 +366,7 @@ public class Core {
       log.push("Done.");
       
       log.push("Create lobby...");
-      lobby = new Lobby(10, logsFrame);
+      lobby = new Lobby(Settings.GAMESERVER_PLAYER_NUMBER, logsFrame);
       log.push("Done.");
       
    }
@@ -417,11 +438,7 @@ public class Core {
                
                System.out.println("DEBUG - wait for new client on update port.");
                
-               socket = updatePort.accept();
-               
-//               synchronized(expectedConnections) {
-//                  nbExpected = expectedConnections.size();
-//               }
+               socket = port.accept();
                
                if (nbExpected > 0) {
                   System.out.println("DEBUG - new client on update port !");
@@ -430,7 +447,7 @@ public class Core {
                      private Socket socket = AcceptUpdateConnections.this.socket;
                      @Override
                      public void run() {
-                        Channel channel = new Channel(socket, CLIENT_TIMEOUT);
+                        Channel channel = new Channel(socket, Settings.TIMEOUT_CLIENT);
                         int code = channel.receiveInt();
                         
                         // Cherche le bon client en attente

@@ -1,5 +1,5 @@
 /* ============================================================================
- * Nom du fichier   : Visitor.java
+ * Nom du fichier   : LobbyVisitor.java
  * ============================================================================
  * Date de création : 31 mai 2013
  * ============================================================================
@@ -9,13 +9,9 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core.updates;
+package core.gameserver;
 
-import core.updates.components.LobbyGameReady;
-import core.updates.components.LobbyUpdateSlot;
-import core.updates.components.StandardPing;
-import core.updates.components.admin.Kicked;
-
+import core.updates.UpdateVisitor;
 
 /**
  * TODO
@@ -25,16 +21,6 @@ import core.updates.components.admin.Kicked;
  * @author Schweizer Thomas
  *
  */
-public interface UpdateVisitor {
-   
-   // Général
-   void casePing(StandardPing update);
-   
-   // Salon d'attente
-   void caseLobbyGameReady(LobbyGameReady update);
-   void caseLobbyUpdateSlot(LobbyUpdateSlot update);
-   
-   // Administration
-   void caseKicked(Kicked update);
+public interface GameServerVisitor extends UpdateVisitor {
 
 }
