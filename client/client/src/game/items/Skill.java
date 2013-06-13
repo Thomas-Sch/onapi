@@ -20,5 +20,20 @@ package game.items;
  *
  */
 public abstract  class Skill extends Item {
+   private boolean active;
+   
+   abstract public void deactivate();
+
+   abstract public void activate();
+
+   public void setActive(boolean active){
+      this.active = active;
+   }
+   /**
+    * @return
+    */
+   public boolean isActive() {
+      return active;
+   }
 
 }

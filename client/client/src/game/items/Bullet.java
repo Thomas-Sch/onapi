@@ -15,7 +15,6 @@ import box2dLight.PointLight;
 import box2dLight.RayHandler;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -47,7 +46,6 @@ public class Bullet extends Entity {
    private float startY;
    private float speed;
    protected Body body;
-   private int pos;
    private Texture texture;
    private float lastUpdate;
    private float length;
@@ -68,7 +66,6 @@ public class Bullet extends Entity {
       this.posY = 0;
       this.length = lenght;
       this.speed = speed;
-      this.pos = 0;
       this.startX = startX;
       this.startY = startY;
       this.lastUpdate = 0;
@@ -122,7 +119,6 @@ public class Bullet extends Entity {
                if (Math.sqrt(posX * posX + posY * posY) > length)
                   deactivate();
                else {
-                  ++pos;
                   body.setTransform(getX(), getY(), getRotation()
                         * ((float) Math.PI) / 180f);
                   posX += speed / 10 * (dir.x + 5);
@@ -157,8 +153,10 @@ public class Bullet extends Entity {
    }
 
    public void deactivate() {
-      this.active = false;
+      setX(0);
+      setY(0);
       this.pl.setActive(false);
+      this.active = false;
    }
 
    public void activate(float startX, float startY, float posX, float posY) {
@@ -171,7 +169,6 @@ public class Bullet extends Entity {
       this.startY = startY;
       setX(startX + this.dir.x * 10);
       setY(startY + this.dir.y * 10);
-      this.pos = 0;
       this.lastUpdate = 0;
       this.active = true;
    }

@@ -109,6 +109,8 @@ public class GameScreen extends ScreenAdapter {
          controller.setActionState(GameController.Action.LEFT, true);
       if (keycode == Keys.D)
          controller.setActionState(GameController.Action.RIGHT, true);
+      if (keycode == Keys.SPACE)
+         controller.setActionState(GameController.Action.SKILL, true);
       return true;
    }
 
@@ -122,6 +124,8 @@ public class GameScreen extends ScreenAdapter {
          controller.setActionState(GameController.Action.LEFT, false);
       if (keycode == Keys.D)
          controller.setActionState(GameController.Action.RIGHT, false);
+      if (keycode == Keys.SPACE)
+         controller.setActionState(GameController.Action.SKILL, false);
 
       return true;
    }

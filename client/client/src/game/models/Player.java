@@ -11,11 +11,9 @@
  */
 package game.models;
 
-import game.controllers.GameController.Action;
 import game.items.Bonus;
 import game.items.Skill;
 import game.items.Weapon;
-import game.items.weapons.DefaultWeapon;
 import game.models.map.Tile;
 import box2dLight.ConeLight;
 import box2dLight.PointLight;
@@ -32,12 +30,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
@@ -60,7 +53,7 @@ public class Player extends Entity {
 
    public final Color TORCH_COLOR = new Color(237f / 255f, 240f / 255f,
          168f / 255f, 0.6f);
-   public final Color HALO_COLOR = new Color(1, 1, 1, 0.3f);
+   public final static Color HALO_COLOR = new Color(1, 1, 1, 0.3f);
    private static int HP_START = 100;
 
    private static final Vector2 GRAVEYARD_POS = new Vector2(-500, -500);
@@ -122,6 +115,8 @@ public class Player extends Entity {
    private Body body;
 
    private Rectangle bounds;
+   private PointLight pl;
+   public final static int PL_DISTANCE_DEFAULT = Tile.WIDTH - 50;
 
    public Player(Vector2 pos, Vector2 dir, Team team, Weapon weapon,
          Skill skill, Bonus bonus, World world, RayHandler handler) {
@@ -158,8 +153,10 @@ public class Player extends Entity {
       body.setUserData(this);
 
       // Initialise les lumières diffusées par le joueur
-      new PointLight(handler, 50, HALO_COLOR, Tile.WIDTH - 50, getX(), getY())
-            .attachToBody(body, 0, 0);
+      pl = new PointLight(handler, 50, HALO_COLOR, PL_DISTANCE_DEFAULT, getX(), getY());
+      
+      pl.attachToBody(body, 0, 0);
+            
       torchLight = new ConeLight(handler, 50, TORCH_COLOR, 750, 1, 1, 270, 30);
       torchLight.attachToBody(body, 1, 1);
       this.torchLight.setActive(true);
@@ -171,6 +168,10 @@ public class Player extends Entity {
 
    public void loadResources() {
       texture = new Texture(Gdx.files.internal("data/sprite1_perso.png"));
+   }
+   
+   public PointLight getPointLight(){
+      return pl;
    }
 
    public Rectangle getRectangle() {
@@ -223,7 +224,7 @@ public class Player extends Entity {
    public Team getTeam() {
       return team;
    }
-
+   
    /**
     * @param team
     *           Equipe du joueur
@@ -235,6 +236,7 @@ public class Player extends Entity {
    @Override
    public void update(float deltaTime) {
       body.setTransform(getPos(), getRotation() * ((float) Math.PI) / 180f);
+      getSkill().update(deltaTime);
    }
 
    public void shoot(float delta) {
