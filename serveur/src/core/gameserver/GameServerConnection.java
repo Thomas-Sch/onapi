@@ -11,14 +11,13 @@
  */
 package core.gameserver;
 
-import common.components.lobby.PlayerStatus;
+import common.components.gameserver.PlayerStatus;
 import common.connections.protocol.ProtocolType;
 
 import core.Core;
 import core.ServerRequestAnswers;
 import core.UserInformations;
 import core.protocol.gameserver.GameServerReceiveProtocol;
-import core.protocol.lobby.LobbyReceiveProtocol;
 
 /**
  * TODO

@@ -11,7 +11,7 @@
  */
 package core.protocol.updates;
 
-import common.components.lobby.PlayerStatus;
+import common.components.gameserver.PlayerStatus;
 import common.connections.exceptions.ProtocolException;
 import common.connections.protocol.ProtocolType;
 import core.Core;

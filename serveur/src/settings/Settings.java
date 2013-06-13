@@ -26,6 +26,7 @@ public class Settings {
    public static final boolean DEBUG_MODE_ON = true;
    
    // Options du serveur
+   public static final String GAMESERVER_NAME = "GameServer";
    public static final int GAMESERVER_PLAYER_NUMBER = 4;
    public static final int GAMESERVER_TEAM_NUMBER = 2;
    

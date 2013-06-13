@@ -17,9 +17,9 @@ import gui.logs.Log;
 import java.util.Observable;
 import java.util.Observer;
 
-import settings.Settings;
+import common.components.gameserver.PlayerStatus;
 
-import common.components.lobby.PlayerStatus;
+import settings.Settings;
 
 import core.UserInformations;
 import core.gameserver.exceptions.GameServerException;
@@ -164,7 +164,7 @@ public class GameServer implements Observer {
       return false;
    }
    
-   public UserInformations adminKick(int slot, String kickMessage) {
+   public UserInformations adminKick(int slot) {
       UserInformations user = null;
       
       if (slot >= 0 && slot < players.length) {
@@ -172,7 +172,6 @@ public class GameServer implements Observer {
             
             if (!players[slot].isFree()) {
                user = players[slot].removeUser();
-               user.serverUpdate.pushUpdate(new Kicked(kickMessage));
                printStatus();
             }
             

@@ -9,10 +9,11 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package common.components.lobby;
+package common.components.gameserver;
 
 import java.io.Serializable;
-import java.util.Observable;
+
+import common.components.ObservableComponent;
 
 /**
  * TODO
@@ -22,9 +23,12 @@ import java.util.Observable;
  * @author Schweizer Thomas
  *
  */
-public class PlayerStatus extends Observable implements Serializable {
-   
-   private static final long serialVersionUID = 4610616944538954831L;
+public class PlayerStatus extends ObservableComponent implements Serializable {
+
+   /**
+    * ID de sérialisation
+    */
+   private static final long serialVersionUID = -9212231828720224663L;
 
    private int slotNumber;
    
@@ -57,8 +61,7 @@ public class PlayerStatus extends Observable implements Serializable {
    
    public void setName(String name) {
       this.name = name;
-      setChanged();
-      notifyObservers();
+      setChangedAndNotifyObservers();
    }
    
    /**
@@ -68,8 +71,7 @@ public class PlayerStatus extends Observable implements Serializable {
    public void setTeamNumber(int number) {
       if (teamNumber != number && number >= 0) {
          teamNumber = number;
-         setChanged();
-         notifyObservers();
+         setChangedAndNotifyObservers();
       }
    }
    
@@ -78,8 +80,7 @@ public class PlayerStatus extends Observable implements Serializable {
     */
    public void setLeft() {
       name = "";
-      setChanged();
-      notifyObservers();
+      setChangedAndNotifyObservers();
    }
    
    public boolean isFree() {
@@ -89,8 +90,7 @@ public class PlayerStatus extends Observable implements Serializable {
    public void setReady(boolean ready) {
       if (isReady != ready) {
          isReady = ready;
-         setChanged();
-         notifyObservers();
+         setChangedAndNotifyObservers();
       }
    }
    
@@ -98,8 +98,7 @@ public class PlayerStatus extends Observable implements Serializable {
       this.name = status.name;
       this.teamNumber = status.teamNumber;
       this.isReady = status.isReady;
-      setChanged();
-      notifyObservers();
+      setChangedAndNotifyObservers();
    }
    
    @Override

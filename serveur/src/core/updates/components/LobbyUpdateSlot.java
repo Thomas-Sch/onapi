@@ -11,7 +11,7 @@
  */
 package core.updates.components;
 
-import common.components.lobby.PlayerStatus;
+import common.components.gameserver.PlayerStatus;
 
 import core.updates.Update;
 import core.updates.UpdateVisitor;

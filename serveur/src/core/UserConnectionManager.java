@@ -174,8 +174,8 @@ public class UserConnectionManager {
          }
          
          // Utilisateur perdu
-         if (user.lobby != null) {
-            user.lobby.removePlayer(user);
+         if (user.gameServer != null) {
+            user.gameServer.removePlayer(user);
          }
          
       }
