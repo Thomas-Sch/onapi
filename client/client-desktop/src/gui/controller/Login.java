@@ -47,6 +47,7 @@ public class Login extends Controller {
       Positions.setPositionOnScreen(view,  Settings.mainFrame.anchor);
       view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       view.setVisible(true);
+      view.setResizable(false);
    }
 
    @Override
