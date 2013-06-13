@@ -16,6 +16,8 @@ import game.screens.GameScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 
+import core.GameInitData;
+
 /**
  * Classe d'initialisation du jeu. Gère la transition entre les différents
  * screens.
@@ -30,8 +32,8 @@ public class Onapi extends Game {
 
    private GameScreen gameScreen;
 
-   public Onapi(boolean debug) {
-      this.gameScreen = new GameScreen(debug);
+   public Onapi(boolean debug, GameInitData initData) {
+      this.gameScreen = new GameScreen(debug, initData);
    }
    
    @Override

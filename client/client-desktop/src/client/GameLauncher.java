@@ -4,9 +4,10 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 import core.ConnectionsManager;
+import core.GameInitData;
 
 public class GameLauncher {
-
+   GameInitData initData;
    private boolean debug;
    
    private ConnectionsManager connections;
@@ -23,7 +24,7 @@ public class GameLauncher {
       cfg.width = 1280;
       cfg.height = 720;
 
-      new LwjglApplication(new Onapi(this.debug), cfg);
+      new LwjglApplication(new Onapi(this.debug, initData), cfg);
    }
    
 }

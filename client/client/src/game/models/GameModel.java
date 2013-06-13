@@ -33,6 +33,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
+import core.GameInitData;
+
 /**
  * Modèle du jeu. Gère les différentes entités au sein du jeu.
  * 
@@ -51,6 +53,7 @@ public class GameModel {
 
    private World world;
 
+   private GameInitData initData;
    /**
     * Stocke les entités de la scène. Attention, l'ordre d'insertion correspond
     * à l'ordre d'affichage : le premier élément inséré sera en arrière-plan, le
@@ -77,7 +80,8 @@ public class GameModel {
 
    private RayHandler rayHandler;
 
-   public GameModel() {
+   public GameModel(GameInitData initData) {
+      this.initData = initData;
       world = new World(GRAVITY, false);
       rayHandler = new RayHandler(world);
 
@@ -196,7 +200,14 @@ public class GameModel {
    public Player getPlayer() {
       return player;
    }
-
+   
+   public void getPlayerById(int playerId){};
+   
+   public void firePlayer(int player_id, float posXShoot, float posYShoot, Vector2 dir){};
+   
+   public void AddKillMessage(String message){}
+   
+   
    /**
     * @param player
     *           Personnage du joueur principal
