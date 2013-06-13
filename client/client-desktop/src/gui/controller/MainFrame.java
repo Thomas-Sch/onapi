@@ -20,13 +20,12 @@ import java.awt.Component;
 
 import javax.swing.JFrame;
 
-import client.ClientRequestProtocol;
-
-import common.components.UserAccount;
-import core.ConnectionsManager;
-
 import settings.Language.Text;
 import settings.Settings;
+
+import common.components.UserAccount;
+
+import core.ConnectionsManager;
 
 /**
  * Contr�leur de la fen�tre principale.

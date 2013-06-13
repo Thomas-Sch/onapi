@@ -21,7 +21,7 @@ import settings.Language.Text;
 
 /**
  * 
- * TODO
+ * Composant comportant un bouton de validation et d'annulation.
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
@@ -38,7 +38,7 @@ public class JValidateCancel extends JPanel {
    private JButton btnValidate = new JButton(Text.VALIDATE_BUTTON.toString());
    private JButton btnCancel = new JButton(Text.CANCEL_BUTTON.toString());
    
-   private FlowLayout fltLayout = new FlowLayout();
+   private FlowLayout fltLayout = new FlowLayout(FlowLayout.LEFT, 0, 0);
    
    public JValidateCancel() {
       setLayout(fltLayout);

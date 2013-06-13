@@ -12,27 +12,20 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 
+import settings.Language.Text;
 import core.PlayerInfo;
 import core.PlayersInformations;
 
-import settings.Language.Text;
-
 /**
  * 
- * TODO
+ * Fenêtre de salle d'attente d'une partie pour les joueurs.
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
