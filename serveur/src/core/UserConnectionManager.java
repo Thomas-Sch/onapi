@@ -12,6 +12,7 @@
 package core;
 
 import gui.logs.Log;
+import common.components.AccountType;
 import common.components.UserAccount;
 import common.connections.Channel;
 import common.connections.exceptions.ChannelClosedException;
@@ -118,8 +119,8 @@ public class UserConnectionManager {
                
          }
          
-         core.removeLogPanel(user.log.getLogPanel());
-         core.removeConnection(UserConnectionManager.this);
+         // Client perdu
+         removeUser(user);
          
       }
       
@@ -172,11 +173,8 @@ public class UserConnectionManager {
             }
             
          }
-         
          // Utilisateur perdu
-         if (user.gameServer != null) {
-            user.gameServer.removePlayer(user);
-         }
+         removeUser(user);
          
       }
       
@@ -185,6 +183,25 @@ public class UserConnectionManager {
       
    }
    
+   
+   private void removeUser(UserInformations user) {
+      
+      // Éjection du serveur de jeu
+      if (user.gameServer != null) {
+         user.gameServer.removePlayer(user);
+      }
+      
+      // Suppression de la liste des administrateurs
+      if (user.account.getType() == AccountType.ADMINISTRATOR) {
+         core.adminLeave(user);
+      }
+      
+      // Suppression des logs
+      core.removeLogPanel(user.log.getLogPanel());
+      core.removeConnection(UserConnectionManager.this);
+      
+      
+   }
    
 
 }

@@ -250,6 +250,22 @@ public class Core {
       }
    }
    
+   /**
+    * Envoi une information de mise à jour à tous les administrateurs.
+    * 
+    * @param update
+    *           - la mise à jour.
+    */
+   public void adminUpdate(Update update) {
+
+      synchronized (admins) {
+         for (UserInformations admin : admins) {
+            admin.serverUpdate.pushUpdate(update);
+         }
+      }
+
+   }
+   
    public UserInformations adminKick(int slot) {
       return gameServer.adminKick(slot);
    }
@@ -399,7 +415,7 @@ public class Core {
       log.push("Done.");
       
       log.push("Create lobby...");
-      gameServer = new GameServer(Settings.GAMESERVER_PLAYER_NUMBER,
+      gameServer = new GameServer(this, Settings.GAMESERVER_PLAYER_NUMBER,
             Settings.GAMESERVER_NAME, logsFrame);
       log.push("Done.");
       

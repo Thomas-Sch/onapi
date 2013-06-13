@@ -17,14 +17,15 @@ import gui.logs.Log;
 import java.util.Observable;
 import java.util.Observer;
 
+import common.components.AccountType;
 import common.components.gameserver.PlayerStatus;
 
 import settings.Settings;
 
+import core.Core;
 import core.UserInformations;
 import core.gameserver.exceptions.GameServerException;
 import core.updates.components.LobbyUpdateSlot;
-import core.updates.components.admin.Kicked;
 
 /**
  * TODO
@@ -35,6 +36,8 @@ import core.updates.components.admin.Kicked;
  *
  */
 public class GameServer implements Observer {
+   
+   private Core core;
    
    private PlayerSlot[] players;
    
@@ -53,13 +56,15 @@ public class GameServer implements Observer {
     * @param logsFrame
     *           - la fenêtre de logs dans laquelle afficher le log du serveur.
     */
-   public GameServer(int nbPlayers, String name, LogsFrame logsFrame) {
-      init(nbPlayers, name, logsFrame);
+   public GameServer(Core core, int nbPlayers, String name, LogsFrame logsFrame) {
+      init(core, nbPlayers, name, logsFrame);
    }
    
    /**
     * Initialise le serveur de jeu.
     * 
+    * @param core
+    *           - le coeur logique du serveur.
     * @param nbPlayers
     *           - le nombre de joueurs que pourra accueillir le salon.
     * @param name
@@ -69,7 +74,9 @@ public class GameServer implements Observer {
     * @throws LobbyException
     *            si le nombre de places est négatif ou nul.
     */
-   private void init(int nbPlayers, String name, LogsFrame logsFrame) {
+   private void init(Core core, int nbPlayers, String name, LogsFrame logsFrame) {
+      this.core = core;
+      
       log = new Log(name);
       logsFrame.addLogPanel(log.createLogPanel());
       
@@ -124,9 +131,10 @@ public class GameServer implements Observer {
          }
          
          if (players[index].setUser(user)) {
+            
             printStatus();
             
-            // Transmet alors les données actuelles
+            // Transmet alors les données actuelles au nouveau venu
             for(PlayerSlot slot : players) {
                if(!slot.isFree()) {
                   user.serverUpdate.pushUpdate(new LobbyUpdateSlot(slot.slotNumber, slot.getStatus()));
@@ -273,19 +281,21 @@ public class GameServer implements Observer {
          PlayerSlot updatedSlot = (PlayerSlot)o;
          PlayerStatus status = updatedSlot.getStatus();
          int slotNumber = updatedSlot.getSlotNumber();
-         
+
+         // Envoi de l'information mise à jour aux joueurs présents qui ne sont
+         // pas administrateurs
          synchronized(players) {
-            
             for (PlayerSlot slot : players) {
-               
-               if (! slot.isFree()) {
+               if ( ! slot.isFree()
+                   && slot.user.account.getType() != AccountType.ADMINISTRATOR) {
                   slot.user.serverUpdate.pushUpdate(
                                        new LobbyUpdateSlot(slotNumber, status));
                }
             }
-            
-            
          }
+         
+         // Envoi de l'information aux administrateurs
+         core.adminUpdate(new LobbyUpdateSlot(slotNumber, status));
       }
       
    }

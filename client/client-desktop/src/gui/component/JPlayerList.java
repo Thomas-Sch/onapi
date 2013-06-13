@@ -3,7 +3,6 @@ package gui.component;
 import gui.models.LobbyPlayerStatus;
 import javax.swing.JList;
 
-import common.components.lobby.PlayerStatus;
 import core.PlayerInfo;
 
 public class JPlayerList extends JList<String> {

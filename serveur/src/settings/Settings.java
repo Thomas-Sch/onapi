@@ -32,7 +32,7 @@ public class Settings {
    
    // Options concernant le réseau
    public static final int PORT_NUMBER = 1234;
-   public static final int TIMEOUT_CLIENT = 30000;
+   public static final int TIMEOUT_CLIENT = 15000;
    
    // Options de gestion interne
    public static final String DATABASE_DIRECTORY = "database";

@@ -14,7 +14,7 @@ public class AcKick extends UserAction {
    @Override
    protected void execute(ConnectionsManager connections, ActionEvent event,
          Object[] dependencies) {
-      protocolRequest.adminKickPlayer((Integer)dependencies[0]);
+      protocolRequest.adminKickPlayer((Integer)dependencies[0], "Pas de chance, vous avez été éjecté !");
    }
 
 }

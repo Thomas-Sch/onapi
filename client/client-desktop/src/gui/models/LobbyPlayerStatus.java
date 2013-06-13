@@ -2,8 +2,6 @@ package gui.models;
 
 import javax.swing.DefaultListModel;
 
-import common.components.lobby.PlayerStatus;
-
 public class LobbyPlayerStatus extends DefaultListModel<String> {
    
    public static final String TEXT_FREE = " > libre < ";

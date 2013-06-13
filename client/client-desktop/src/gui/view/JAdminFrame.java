@@ -69,6 +69,7 @@ public class JAdminFrame extends JDialog implements Observer {
          @Override
          public void valueChanged(ListSelectionEvent e) {
             selectedPlayer = pltPlayers.getSelectedIndex();
+            System.out.println("DEBUG - new selected slot : " + selectedPlayer);
          }
       });
       // Initialiser la valeur actuelle

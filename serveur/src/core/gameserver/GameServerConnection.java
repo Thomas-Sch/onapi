@@ -11,6 +11,7 @@
  */
 package core.gameserver;
 
+import common.components.AccountType;
 import common.components.gameserver.PlayerStatus;
 import common.connections.protocol.ProtocolType;
 
@@ -62,6 +63,16 @@ public class GameServerConnection implements ServerRequestAnswers {
          case LOBBY_SET_READY :
             receiveProtocol.acceptRequest(type);
             receiveProtocol.lobbySetReady();
+            break;
+            
+         case ADMIN_KICK :
+            if (user.account.getType() == AccountType.ADMINISTRATOR) {
+               receiveProtocol.acceptRequest(type);
+               receiveProtocol.adminKick();
+            }
+            else {
+               receiveProtocol.refuseRequest(type);
+            }
             break;
             
          default :
