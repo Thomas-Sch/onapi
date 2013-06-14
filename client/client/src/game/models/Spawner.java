@@ -28,16 +28,19 @@ import game.models.map.Tile;
 public class Spawner {
 
    private Team team;
+   
+   private Map map;
 
    /**
     * Coordonnées du spawner dans la grille
     */
    private int x, y;
 
-   public Spawner(int x, int y, Team team) {
+   public Spawner(int x, int y, Team team, Map map) {
       this.x = x;
       this.y = y;
       this.team = team;
+      this.map = map;
       team.getSpawners().add(this);
    }
 
@@ -57,8 +60,8 @@ public class Spawner {
    }
    
    public void spawn(Player p) {
-      Vector2.tmp.set(Map.getRealPos(x, y));
-      Vector2.tmp.sub(Tile.WIDTH / 2, Tile.HEIGHT / 2);
+      Vector2.tmp.set(map.getRealPos(x, y));
+      //Vector2.tmp.add(Tile.WIDTH / 2, Tile.HEIGHT / 2);
       p.moveTo(Vector2.tmp);
    }
 }

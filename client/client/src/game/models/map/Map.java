@@ -66,7 +66,7 @@ public class Map extends Entity {
       // Crée la map et ajoute les spawners
       MazeGenerator generator = new MazeGenerator();
       setGrid(generator.generateMaze(teams.length * 3));
-      spawners = generator.generateSpawners(teams);
+      spawners = generator.generateSpawners(teams, this);
 
       // Définit la consistance physique des murs
       wallBodies = new Body[grid.length][grid.length];
@@ -139,8 +139,8 @@ public class Map extends Entity {
     * @param j
     * @return
     */
-   public static Vector2 getRealPos(int i, int j) {
-      return new Vector2((0.5f + j) * Tile.WIDTH, (0.5f + i) * Tile.HEIGHT);
+   public Vector2 getRealPos(int i, int j) {
+      return new Vector2((0.5f + j) * Tile.WIDTH, (grid.length - 0.5f - i) * Tile.HEIGHT);
    }
 
    @Override

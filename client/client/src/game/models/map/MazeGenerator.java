@@ -131,16 +131,19 @@ public class MazeGenerator {
    /**
     * 
     */
-   public LinkedList<Spawner> generateSpawners(Team[] teams) {
+   public LinkedList<Spawner> generateSpawners(Team[] teams, Map map) {
       LinkedList<Spawner> spawners = new LinkedList<Spawner>();
-      int x, y;
+      int x, y, idTeam;
       for (int i = 0; i < mazeSize; i++) {
          for (int j = 0; j < mazeSize; j++) {
             x = gridCoord(i);
             y = gridCoord(j);
             if (grid[x][y] != Tile.EXIT) {
-               grid[x][y] = Tile.SPAWNER;
-               spawners.add(new Spawner(x, y, teams[(i + j) % teams.length]));
+               idTeam = (i + j) % (teams.length + 1);
+               if (idTeam < teams.length) {
+                  grid[x][y] = Tile.SPAWNER;
+                  spawners.add(new Spawner(x, y, teams[idTeam], map));
+               }
             }
          }
       }
