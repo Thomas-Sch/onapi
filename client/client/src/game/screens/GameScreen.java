@@ -21,6 +21,7 @@ import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.math.Vector2;
 
 import client.GameInitData;
+
 /**
  * Un des différents écrans (screens) de l'application.
  * 
@@ -45,7 +46,7 @@ public class GameScreen extends ScreenAdapter {
     * Contrôleur du jeu
     */
    private InputController controller;
-   
+
    /**
     * Modèle du jeu
     */
@@ -56,7 +57,6 @@ public class GameScreen extends ScreenAdapter {
     */
    private GameRenderer renderer;
 
-   
    /**
     * @param debug
     */
@@ -150,9 +150,12 @@ public class GameScreen extends ScreenAdapter {
       }
       return true;
    }
-
+   
    @Override
    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+      if (button == MOUSE_RIGHT_BUTTON) {
+          controller.setActionState(InputController.Action.TORCH, false);
+      }
       if (button == MOUSE_LEFT_BUTTON) {
          controller.setActionState(InputController.Action.FIRE, false);
       }
@@ -161,7 +164,9 @@ public class GameScreen extends ScreenAdapter {
 
    @Override
    public boolean touchDragged(int screenX, int screenY, int pointer) {
-      touchDown(screenX, screenY, pointer, MOUSE_LEFT_BUTTON);
+      if (Gdx.input.isButtonPressed(MOUSE_LEFT_BUTTON)) {
+         controller.setActionState(InputController.Action.FIRE, true);
+      }
       mouseMoved(screenX, screenY);
       return true;
    }

@@ -36,8 +36,6 @@ public abstract class Weapon extends Item {
    private float previousShootTime = 0;
    private float currentTime = getCooldown() + 1.0f;
    
-   private boolean shot = false;
-   
    protected Bullet bullet;
    
    public abstract void onHit(Player target);
@@ -50,12 +48,12 @@ public abstract class Weapon extends Item {
 
    public void shoot(float delta) {
       currentTime += delta;
-      if(!this.bullet.isActive())
+      if(!this.bullet.isActive()) {
          if (currentTime > previousShootTime + getCooldown()) {
             onShoot();
             previousShootTime = currentTime;
-            shot = true;
          }
+      }
    }
    
    @Override
