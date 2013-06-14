@@ -45,7 +45,7 @@ public class GameScreen extends ScreenAdapter {
     * Contrôleur du jeu
     */
    private InputController controller;
-
+   
    /**
     * Modèle du jeu
     */
