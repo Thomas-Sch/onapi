@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : LobbyPlayerStatus.java
+ * Nom du fichier   : UserInfo.java
  * ============================================================================
- * Date de création : 1 juin 2013
+ * Date de création : 14 juin 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,9 +9,10 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package gui.models;
+package core;
 
-import javax.swing.DefaultListModel;
+import common.components.ActivityType;
+import common.components.ConnectedUser;
 
 /**
  * 
@@ -22,16 +23,20 @@ import javax.swing.DefaultListModel;
  * @author Schweizer Thomas
  *
  */
-public class LobbyPlayerStatus extends DefaultListModel<String> {
+public class UserInfo extends CoreComponent {
    
-   public static final String TEXT_FREE = " > libre < ";
+   private ConnectedUser user;
    
-   private static final long serialVersionUID = 1169360848263712382L;
-
-   public LobbyPlayerStatus(int nbSlots)
-   {
-      for (int i = 0 ; i < nbSlots ; i++) {
-         addElement(TEXT_FREE);
-      }
+   public UserInfo(ConnectedUser user) {
+      this.user = user;
    }
+   
+   public int getServerSlotNumber() {
+      return user.getServerSlot();
+   }
+   
+   public ActivityType getActivity() {
+      return user.getActivity();
+   }
+   
 }

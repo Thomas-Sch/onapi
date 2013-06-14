@@ -1,3 +1,14 @@
+/* ============================================================================
+ * Nom du fichier   : AdminFrame.java
+ * ============================================================================
+ * Date de création : 10 juin 2013
+ * ============================================================================
+ * Auteurs          : Crescenzio Fabio
+ *                    Decorvet Grégoire
+ *                    Jaquier Kevin
+ *                    Schweizer Thomas
+ * ============================================================================
+ */
 package gui.controller;
 
 import gui.actions.admin.AcKick;
@@ -14,8 +25,8 @@ import core.PlayersInformations;
 
 public class AdminFrame extends Controller {
    
-   JAdminFrame view;
-   PlayersInformations model;
+   private JAdminFrame view;
+   private PlayersInformations model;
    
    private Integer selectedPlayer;
    

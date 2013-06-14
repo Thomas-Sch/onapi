@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : LobbyPlayerStatus.java
+ * Nom du fichier   : PlayersStatus.java
  * ============================================================================
- * Date de création : 1 juin 2013
+ * Date de création : 14 juin 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,9 +9,7 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package gui.models;
-
-import javax.swing.DefaultListModel;
+package gui.utils;
 
 /**
  * 
@@ -22,16 +20,6 @@ import javax.swing.DefaultListModel;
  * @author Schweizer Thomas
  *
  */
-public class LobbyPlayerStatus extends DefaultListModel<String> {
-   
-   public static final String TEXT_FREE = " > libre < ";
-   
-   private static final long serialVersionUID = 1169360848263712382L;
+public class SelectedPlayer {
 
-   public LobbyPlayerStatus(int nbSlots)
-   {
-      for (int i = 0 ; i < nbSlots ; i++) {
-         addElement(TEXT_FREE);
-      }
-   }
 }

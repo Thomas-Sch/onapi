@@ -1,5 +1,5 @@
 /* ============================================================================
- * Nom du fichier   : CoreComponent.java
+ * Nom du fichier   : UsersInformations.java
  * ============================================================================
  * Date de création : 7 juin 2013
  * ============================================================================
@@ -11,7 +11,9 @@
  */
 package core;
 
-import common.components.ObservableComponent;
+import java.util.LinkedList;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * 
@@ -22,11 +24,26 @@ import common.components.ObservableComponent;
  * @author Schweizer Thomas
  *
  */
-public class CoreComponent extends ObservableComponent {
+public class UsersInformations extends CoreComponent implements Observer {
    
-   public CoreComponent() {
-      super();
+   private LinkedList<UserInfo> users;
+   
+   public UsersInformations() {
+      users = new LinkedList<UserInfo>();
    }
    
+   public int size() {
+      return users.size();
+   }
+   
+   public synchronized UserInfo getPlayerAt(int slotNumber) {
+      return users.get(slotNumber);
+   }
 
+   @Override
+   public void update(Observable arg0, Object arg1) {
+      setChangedAndNotifyObservers(arg1);
+   }
+   
 }
+
