@@ -1,10 +1,11 @@
 package client;
 
+import game.models.GameModel;
+
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 import core.ConnectionsManager;
-import core.GameInitData;
 
 public class GameLauncher {
    GameInitData initData;
@@ -15,6 +16,7 @@ public class GameLauncher {
    public GameLauncher(ConnectionsManager connections, boolean debug) {
       this.connections = connections;
       this.debug = debug;
+      this.initData = new GameInitData();
    }
    
    public void run() {

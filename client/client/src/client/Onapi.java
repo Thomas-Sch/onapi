@@ -16,7 +16,7 @@ import game.screens.GameScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 
-import core.GameInitData;
+import client.GameInitData;
 
 /**
  * Classe d'initialisation du jeu. Gère la transition entre les différents

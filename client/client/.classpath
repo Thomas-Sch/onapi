@@ -6,8 +6,5 @@
 	<classpathentry kind="lib" path="libs/box2dlights-sources.jar" sourcepath="libs/box2dlights-sources.jar"/>
 	<classpathentry kind="lib" path="libs/box2dlights.jar" sourcepath="libs/box2dlights.jar"/>
 	<classpathentry kind="lib" path="libs/gdx-sources.jar" sourcepath="libs/gdx-sources.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/client-android"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/client-desktop"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/serveur"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

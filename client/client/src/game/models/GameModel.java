@@ -33,7 +33,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
-import core.GameInitData;
+import client.GameInitData;
 
 /**
  * Modèle du jeu. Gère les différentes entités au sein du jeu.
@@ -82,49 +82,52 @@ public class GameModel {
 
    public GameModel(GameInitData initData) {
       this.initData = initData;
-      world = new World(GRAVITY, false);
-      rayHandler = new RayHandler(world);
-
-      teams = new Team[] { new Team(Color.BLUE), new Team(Color.RED) };
-      map = new Map(world, teams);
-
-      entities.addActor(map);
-
-      // Fait commencer le joueur au milieu de la map
-      player = new Player(Map.getRealPos(0, 0), new Vector2(0f, 1f), teams[0],
-            new DefaultWeapon(), new DefaultSkill(), new DefaultBonus(), world,
-            rayHandler);
-      player.getWeapon().createBullet(world, entities, rayHandler);
-      entities.addActor(player);
-
-      // Ajoute d'autres joueurs
-      for (int i = 0; i < 14; i++) {
-         Player other = new Player(Map.getRealPos(0, 0), new Vector2(-1f, -1f),
-               teams[0], new DefaultWeapon(), new DefaultSkill(),
-               new DefaultBonus(), world, rayHandler);
-         other.getWeapon().createBullet(world, entities, rayHandler);
-
-         entities.addActor(other);
-      }
-      for (int i = 0; i < 15; i++) {
-         Player other = new Player(Map.getRealPos(0, 0), new Vector2(-1f, -1f),
-               teams[1], new DefaultWeapon(), new DefaultSkill(),
-               new DefaultBonus(), world, rayHandler);
-         entities.addActor(other);
-         other.getWeapon().createBullet(world, entities, rayHandler);
-      }
-
-      // Fait "spawner" (apparaitre) les joueurs sur la carte, autrement dit,
-      // leur donne à chaque une position initiale
-      for (Team t : teams) {
-         t.spawnPlayers();
-      }
-
-      // Créer les contact listener
-      createCollisionListener();
-
    }
 
+   public void init() { 
+    world = new World(GRAVITY, false);
+    rayHandler = new RayHandler(world);
+
+    teams = new Team[] { new Team(Color.BLUE), new Team(Color.RED) };
+    map = new Map(world, teams);
+
+    entities.addActor(map);
+
+    // Fait commencer le joueur au milieu de la map
+    player = new Player(Map.getRealPos(0, 0), new Vector2(0f, 1f), teams[0],
+          new DefaultWeapon(), new DefaultSkill(), new DefaultBonus(), world,
+          rayHandler);
+    player.getWeapon().createBullet(world, entities, rayHandler);
+    entities.addActor(player);
+
+    // Ajoute d'autres joueurs
+    for (int i = 0; i < 14; i++) {
+       Player other = new Player(Map.getRealPos(0, 0), new Vector2(-1f, -1f),
+             teams[0], new DefaultWeapon(), new DefaultSkill(),
+             new DefaultBonus(), world, rayHandler);
+       other.getWeapon().createBullet(world, entities, rayHandler);
+
+       entities.addActor(other);
+    }
+    for (int i = 0; i < 15; i++) {
+       Player other = new Player(Map.getRealPos(0, 0), new Vector2(-1f, -1f),
+             teams[1], new DefaultWeapon(), new DefaultSkill(),
+             new DefaultBonus(), world, rayHandler);
+       entities.addActor(other);
+       other.getWeapon().createBullet(world, entities, rayHandler);
+    }
+
+    // Fait "spawner" (apparaitre) les joueurs sur la carte, autrement dit,
+    // leur donne à chaque une position initiale
+    for (Team t : teams) {
+       t.spawnPlayers();
+    }
+
+    // Créer les contact listener
+    createCollisionListener();
+   }
+   
+   
    private void createCollisionListener() {
       world.setContactListener(new ContactListener() {
 

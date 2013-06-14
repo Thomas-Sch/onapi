@@ -20,8 +20,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.math.Vector2;
 
-import core.GameInitData;
-
+import client.GameInitData;
 /**
  * Un des différents écrans (screens) de l'application.
  * 
@@ -57,17 +56,19 @@ public class GameScreen extends ScreenAdapter {
     */
    private GameRenderer renderer;
 
+   
    /**
     * @param debug
     */
    public GameScreen(boolean debug, GameInitData initData) {
       this.debug = debug;
-      game = new GameModel(initData);
-
+      game = initData.getGame();
    }
 
    @Override
    public void show() {
+      System.out.println("Initialization...");
+      game.init();
       System.out.println("Resources loading...");
       game.loadResources();
       System.out.println("Resources loaded.");
