@@ -122,7 +122,7 @@ public class Map extends Entity {
       return spawners;
    }
 
-   public Rectangle getRectangle(int i, int j) {
+   public Rectangle getWallBounds(int i, int j) {
       return bounds[i][j];
    }
    /**

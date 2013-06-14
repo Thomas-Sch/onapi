@@ -18,8 +18,11 @@ import game.models.map.Map;
 import game.models.map.Tile;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
@@ -131,41 +134,93 @@ public class InputController {
    public boolean getActionState(Action action) {
       return keys.get(action).booleanValue();
    }
-   
-   @SuppressWarnings("unused")
-   public boolean isCollidingWithWall(float moveSpeedX, float moveSpeedY) {
-      int n = game.getMap().getGrid().length;
-      int playerCaseX = 1 + (int) Math
-            .floor((game.getPlayer().getX() - 0.5f * Tile.WIDTH) / Tile.WIDTH);
-      int playerCaseY = 1 + (int) Math
-            .floor((game.getPlayer().getY() - 0.5f * Tile.HEIGHT) / Tile.HEIGHT);
 
-      System.out.println("CASE : " + playerCaseY + " " + playerCaseX);
-      for (int i = playerCaseY - 1; i <= playerCaseY + 1; i++) {
-         for (int j = playerCaseX - 1; j <= playerCaseX + 1; j++) {
-            System.out.println(i + " " + j);
-            if (i > 0 && i < game.getMap().getGrid().length && j > 0
-                  && j < game.getMap().getGrid().length
-                  && !(i == playerCaseY && playerCaseX == j)) {
-               game.getPlayer().getRectangle().x += moveSpeedX;
-               game.getPlayer().getRectangle().x += moveSpeedY;
-//               System.out.println("Test du rectangle "
-//                     + game.getPlayer().getRectangle().getX() + " "
-//                     + game.getPlayer().getRectangle().getY() + " avec "
-//                     + game.getMap().getRectangle(i, j).getX() + " "
-//                     + game.getMap().getRectangle(i, j).getY());
-//               System.out.println("Fin rectangle:"
-//                     + game.getMap().getRectangle(i, j).width);
-               if (Intersector.overlapRectangles(game.getMap().getRectangle(i, j), game.getPlayer()
-                     .getRectangle())) {
-                  return true;
-               }
-               game.getPlayer().getRectangle().x -= moveSpeedX;
-               game.getPlayer().getRectangle().x -= moveSpeedY;
-            }
-         }
+   public boolean isCollidingWithWall(Action direction, float moveSpeedX,
+         float moveSpeedY) {
+      Map map = game.getMap();
+      Tile[][] grid = map.getGrid();
+      int n = grid.length;
+
+      // Position du joueur dans la grille
+      int pX = (int) Math.floor(game.getPlayer().getX() / Tile.WIDTH);
+      int pY = n - 1 - (int) Math.floor(game.getPlayer().getY() / Tile.HEIGHT);
+      int wallX = -1, wallY = -1;
+
+      System.out.println("CASE : " + pX + " " + pY);
+
+      // Récupère les coordonnées du mur à tester selon le déplacement
+      switch (direction) {
+         case UP:
+            wallX = pX;
+            wallY = pY - 1;
+            break;
+         case DOWN:
+            wallX = pX;
+            wallY = pY + 1;
+            break;
+         case LEFT:
+            wallX = pX - 1;
+            wallY = pY;
+            break;
+         case RIGHT:
+            wallX = pX + 1;
+            wallY = pY;
+            break;
+         default:
+            throw new RuntimeException(
+                  "direction must be UP, DOWN, LEFT or RIGHT");
+      }
+
+      // Teste les collisions entre le joueur et les murs à tester
+      System.out.printf("TEST WALL : x0 = %s y0 = %s x1 = %s y1 = %s \n",
+            map.getWallBounds(wallX, wallY).x,
+            map.getWallBounds(wallX, wallY).y,
+            map.getWallBounds(wallX, wallY).width + map.getWallBounds(wallX, wallY).x,
+            map.getWallBounds(wallX, wallY).height + map.getWallBounds(wallX, wallY).y);
+      System.out.printf("TEST PLAY : x0 = %s y0 = %s x1 = %s y1 = %s \n",
+            game.getPlayer().getBounds().x,
+            game.getPlayer().getBounds().y,
+            game.getPlayer().getBounds().width +game.getPlayer().getBounds().x,
+            game.getPlayer().getBounds().height + game.getPlayer().getBounds().y);
+      if (map.getGrid()[wallY][wallX] == Tile.WALL) {
+         return map.getWallBounds(wallX, wallY).overlaps(
+               game.getPlayer().getBounds());
       }
       return false;
+
+      // int playerCaseX = (int) Math
+      // .floor(game.getPlayer().getX() / Tile.WIDTH);
+      // int playerCaseY = n - 1 - (int) Math
+      // .floor(game.getPlayer().getY() / Tile.HEIGHT);
+      //
+      // System.out.println("CASE : " + playerCaseY + " " + playerCaseX);
+      // for (int i = playerCaseY - 1; i <= playerCaseY + 1; i++) {
+      // for (int j = playerCaseX - 1; j <= playerCaseX + 1; j++) {
+      // //System.out.println(i + " " + j);
+      // if (i > 0 && i < game.getMap().getGrid().length && j > 0
+      // && j < game.getMap().getGrid().length
+      // && !(i == playerCaseY && playerCaseX == j)) {
+      // game.getPlayer().getRectangle().x += moveSpeedX;
+      // game.getPlayer().getRectangle().x += moveSpeedY;
+      // // System.out.println("Test du rectangle "
+      // // + game.getPlayer().getRectangle().getX() + " "
+      // // + game.getPlayer().getRectangle().getY() + " avec "
+      // // + game.getMap().getRectangle(i, j).getX() + " "
+      // // + game.getMap().getRectangle(i, j).getY());
+      // // System.out.println("Fin rectangle:"
+      // // + game.getMap().getRectangle(i, j).width);
+      // if (Intersector.overlapRectangles(game.getMap().getRectangle(i, j),
+      // game.getPlayer()
+      // .getRectangle())) {
+      // return true;
+      // }
+      // game.getPlayer().getRectangle().x -= moveSpeedX;
+      // game.getPlayer().getRectangle().x -= moveSpeedY;
+      // }
+      // }
+      // }
+      // return false;
+
    }
 
    /**
@@ -178,36 +233,42 @@ public class InputController {
       float moveSpeed = 10.0f;
 
       Vector2.tmp.set(0, 0);
-      
+
       synchronized (game.getPlayer()) {
-         
-      if (getActionState(Action.UP)) {
-         if (!isCollidingWithWall(0, +moveSpeed)) Vector2.tmp.y += moveSpeed;
-      }
-      if (getActionState(Action.DOWN)) {
-         if (!isCollidingWithWall(0, -moveSpeed)) Vector2.tmp.y -= moveSpeed;
-      }
-      if (getActionState(Action.RIGHT)) {
-         if (!isCollidingWithWall(+moveSpeed, 0)) Vector2.tmp.x += moveSpeed;
-      }
-      if (getActionState(Action.LEFT)) {
-         if (!isCollidingWithWall(-moveSpeed, 0)) Vector2.tmp.x -= moveSpeed;
+
+         if (getActionState(Action.UP)) {
+            if (!isCollidingWithWall(Action.UP, 0, +moveSpeed))
+               Vector2.tmp.y += moveSpeed;
+         }
+         if (getActionState(Action.DOWN)) {
+            if (!isCollidingWithWall(Action.DOWN, 0, -moveSpeed))
+               Vector2.tmp.y -= moveSpeed;
+         }
+         if (getActionState(Action.RIGHT)) {
+            if (!isCollidingWithWall(Action.RIGHT, +moveSpeed, 0))
+               Vector2.tmp.x += moveSpeed;
+         }
+         if (getActionState(Action.LEFT)) {
+            if (!isCollidingWithWall(Action.LEFT, -moveSpeed, 0))
+               Vector2.tmp.x -= moveSpeed;
+         }
+
+         if (Vector2.tmp.x != 0 || Vector2.tmp.y != 0) {
+            // game.getPlayer().incrementState();
+            game.getPlayer().move(Vector2.tmp);
+         }
       }
 
-      if (Vector2.tmp.x != 0 || Vector2.tmp.y != 0)
-         game.getPlayer().move(Vector2.tmp);
-      }
-      
-//      {
-//         int x = 1 + (int) Math
-//            .floor((game.getPlayer().getX() - 0.5f * Tile.WIDTH) / Tile.WIDTH);
-//         int y = (int) Math
-//            .floor((game.getPlayer().getY() - 0.5f * Tile.HEIGHT) / Tile.HEIGHT);
-//         if(game.getMap().getGrid()[y][x] == Tile.EXIT){
-//            System.out.println("Le player vient de sortir !!");
-//         }
-//
-//      }
+      // {
+      // int x = 1 + (int) Math
+      // .floor((game.getPlayer().getX() - 0.5f * Tile.WIDTH) / Tile.WIDTH);
+      // int y = (int) Math
+      // .floor((game.getPlayer().getY() - 0.5f * Tile.HEIGHT) / Tile.HEIGHT);
+      // if(game.getMap().getGrid()[y][x] == Tile.EXIT){
+      // System.out.println("Le player vient de sortir !!");
+      // }
+      //
+      // }
       if (getActionState(Action.TORCH)) {
          game.getPlayer().toggleTorch();
          setActionState(InputController.Action.TORCH, false);
@@ -215,7 +276,7 @@ public class InputController {
       if (getActionState(Action.FIRE)) {
          game.getPlayer().shoot(delta);
       }
-      
+
       if (getActionState(Action.SKILL)) {
          game.getPlayer().getSkill().activate();
       }

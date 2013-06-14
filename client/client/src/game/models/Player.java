@@ -174,7 +174,7 @@ public class Player extends Entity {
       return pl;
    }
 
-   public Rectangle getRectangle() {
+   public Rectangle getBounds() {
       return bounds;
    }
 
