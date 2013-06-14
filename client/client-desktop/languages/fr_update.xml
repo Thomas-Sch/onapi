@@ -3,6 +3,7 @@
   <app_title>Onapi</app_title>
   <lobby_title>Salle d'attente</lobby_title>
   <inventory_title>Inventaire du joueur</inventory_title>
+  <admin_title>Missing String</admin_title>
   <validate_button>Valider</validate_button>
   <cancel_button>Annuler</cancel_button>
   <play_button>Jouer</play_button>

@@ -1,35 +1,25 @@
 package gui.view;
 
 import gui.actions.UserAction;
-import gui.component.JAbilityComboBox;
 import gui.component.JPlayerList;
-import gui.component.JUpgradeComboBox;
-import gui.component.JWeaponComboBox;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import core.PlayerInfo;
 import core.PlayersInformations;
-
-import settings.Language.Text;
 
 /**
  * 
@@ -52,38 +42,46 @@ public class JAdminFrame extends JDialog implements Observer {
    private JPlayerList pltPlayers;
    private Integer selectedPlayer;
    
+   private JTabbedPane tpePlayerLists;
+   
    private AdminActions adminActions;
    
    public JAdminFrame(PlayersInformations model, Frame parent) {
       super(parent);
       this.model = model;
       initContent();
+      initListeners();
       setContentPane(buildContent());
       pack();
    }
    
-   public void initContent() {
-      pltPlayers = new JPlayerList(model.size());
-      pltPlayers.setPreferredSize(new Dimension(200, 200));
+   private void initListeners() {
       pltPlayers.addListSelectionListener(new ListSelectionListener() {
          @Override
          public void valueChanged(ListSelectionEvent e) {
             selectedPlayer = pltPlayers.getSelectedIndex();
          }
       });
+   }
+   
+   private void initContent() {
+      pltPlayers = new JPlayerList(model.size());
+      pltPlayers.setPreferredSize(new Dimension(200, 200));
+
       // Initialiser la valeur actuelle
       selectedPlayer = pltPlayers.getSelectedIndex();
       
       adminActions = new AdminActions();
+      tpePlayerLists = new JTabbedPane();
+      tpePlayerLists.insertTab("All", null, new JScrollPane(pltPlayers), null, tpePlayerLists.getTabCount() + 1);
    }
    
-   public JPanel buildContent() {
+   private JPanel buildContent() {
       JPanel pnlContent = new JPanel();
       pnlContent.setLayout(new BorderLayout(5,5));
       
-      pnlContent.add(pltPlayers, BorderLayout.WEST);
-      pnlContent.add(adminActions, BorderLayout.CENTER);
-      
+      pnlContent.add(tpePlayerLists, BorderLayout.WEST);
+      pnlContent.add(adminActions, BorderLayout.CENTER);      
       return pnlContent;
    }
    

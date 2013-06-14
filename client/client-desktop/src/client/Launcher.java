@@ -13,7 +13,7 @@
 package client;
 
 import gui.controller.Login;
-import gui.view.LogsFrame;
+import gui.view.JLog;
 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -79,7 +79,7 @@ public class Launcher {
          new Login(connections);
 
          // Temporaire en attendant de merge.
-         (new Logs()).addLogsToFrame(new LogsFrame("Logs", 0, 0, 500, 400));
+         (new Logs()).addLogsToFrame(new JLog("Logs", 0, 0, 500, 400));
 
          Settings.createTemplateForLanguage("fr");
          Settings.createUpdateForLanguage("fr");

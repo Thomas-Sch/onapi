@@ -12,20 +12,13 @@
 package gui.actions;
 
 import gui.controller.Lobby;
-import gui.utils.Positions;
-import gui.utils.Positions.ScreenPosition;
-import gui.view.JLobby;
 
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 
-import common.connections.Channel;
-import core.ConnectionsManager;
-
-import settings.Language.Text;
 import utils.Logs;
-import client.ClientRequestProtocol;
 import client.GameLauncher;
+import core.ConnectionsManager;
 
 /**
  * Contrôleur et action du jeu.
