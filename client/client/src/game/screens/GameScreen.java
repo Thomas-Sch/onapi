@@ -11,7 +11,7 @@
  */
 package game.screens;
 
-import game.controllers.GameController;
+import game.controllers.InputController;
 import game.models.GameModel;
 import game.views.GameRenderer;
 
@@ -44,7 +44,7 @@ public class GameScreen extends ScreenAdapter {
    /**
     * Contrôleur du jeu
     */
-   private GameController controller;
+   private InputController controller;
 
    /**
     * Modèle du jeu
@@ -73,7 +73,7 @@ public class GameScreen extends ScreenAdapter {
       game.loadResources();
       System.out.println("Resources loaded.");
       renderer = new GameRenderer(game, debug);
-      controller = new GameController(game);
+      controller = new InputController(game);
       Gdx.input.setInputProcessor(this);
       System.out.println("Game ready.");
    }
@@ -106,30 +106,30 @@ public class GameScreen extends ScreenAdapter {
    @Override
    public boolean keyDown(int keycode) {
       if (keycode == Keys.W)
-         controller.setActionState(GameController.Action.UP, true);
+         controller.setActionState(InputController.Action.UP, true);
       if (keycode == Keys.S)
-         controller.setActionState(GameController.Action.DOWN, true);
+         controller.setActionState(InputController.Action.DOWN, true);
       if (keycode == Keys.A)
-         controller.setActionState(GameController.Action.LEFT, true);
+         controller.setActionState(InputController.Action.LEFT, true);
       if (keycode == Keys.D)
-         controller.setActionState(GameController.Action.RIGHT, true);
+         controller.setActionState(InputController.Action.RIGHT, true);
       if (keycode == Keys.SPACE)
-         controller.setActionState(GameController.Action.SKILL, true);
+         controller.setActionState(InputController.Action.SKILL, true);
       return true;
    }
 
    @Override
    public boolean keyUp(int keycode) {
       if (keycode == Keys.W)
-         controller.setActionState(GameController.Action.UP, false);
+         controller.setActionState(InputController.Action.UP, false);
       if (keycode == Keys.S)
-         controller.setActionState(GameController.Action.DOWN, false);
+         controller.setActionState(InputController.Action.DOWN, false);
       if (keycode == Keys.A)
-         controller.setActionState(GameController.Action.LEFT, false);
+         controller.setActionState(InputController.Action.LEFT, false);
       if (keycode == Keys.D)
-         controller.setActionState(GameController.Action.RIGHT, false);
+         controller.setActionState(InputController.Action.RIGHT, false);
       if (keycode == Keys.SPACE)
-         controller.setActionState(GameController.Action.SKILL, false);
+         controller.setActionState(InputController.Action.SKILL, false);
 
       return true;
    }
@@ -143,10 +143,10 @@ public class GameScreen extends ScreenAdapter {
    @Override
    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
       if (button == MOUSE_RIGHT_BUTTON) {
-         controller.setActionState(GameController.Action.TORCH, true);
+         controller.setActionState(InputController.Action.TORCH, true);
       }
       if (button == MOUSE_LEFT_BUTTON) {
-         controller.setActionState(GameController.Action.FIRE, true);
+         controller.setActionState(InputController.Action.FIRE, true);
       }
       return true;
    }
@@ -154,7 +154,7 @@ public class GameScreen extends ScreenAdapter {
    @Override
    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
       if (button == MOUSE_LEFT_BUTTON) {
-         controller.setActionState(GameController.Action.FIRE, false);
+         controller.setActionState(InputController.Action.FIRE, false);
       }
       return true;
    }
