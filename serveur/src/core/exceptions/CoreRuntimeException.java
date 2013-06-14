@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : PortException.java
+ * Nom du fichier   : CoreRuntimeException.java
  * ============================================================================
- * Date de création : 6 mai 2013
+ * Date de création : 19 mai 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -11,10 +11,8 @@
  */
 package core.exceptions;
 
-import java.io.IOException;
-
 /**
- * Exception indiquant une erreur liée au port d'écoute.
+ * Exception générale liée au coeur du serveur.
  * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
@@ -22,49 +20,49 @@ import java.io.IOException;
  * @author Schweizer Thomas
  * 
  */
-public class PortException extends IOException {
+public class CoreRuntimeException extends RuntimeException {
 
    /**
     * ID de sérialisation.
     */
-   private static final long serialVersionUID = -5855790231160541860L;
+   private static final long serialVersionUID = 356320132101265386L;
 
    /**
-    * Crée une exception indiquant une erreur quelconque du port d'écoute.
+    * Crée une exception indiquant une erreur quelconque du coeur du serveur.
     */
-   public PortException() {
+   public CoreRuntimeException() {
       super();
    }
 
    /**
-    * Crée une exception indiquant une erreur quelconque du port d'écoute.
+    * Crée une exception indiquant une erreur quelconque du coeur du serveur.
     * 
     * @param message
     *           - le message à joindre à l'exception.
     */
-   public PortException(String message) {
+   public CoreRuntimeException(String message) {
       super(message);
    }
 
    /**
-    * Crée une exception indiquant une erreur quelconque du port d'écoute.
+    * Crée une exception indiquant une erreur quelconque du coeur du serveur.
     * 
     * @param cause
     *           - la cause de l'exception.
     */
-   public PortException(Throwable cause) {
+   public CoreRuntimeException(Throwable cause) {
       super(cause);
    }
 
    /**
-    * Crée une exception indiquant une erreur quelconque du port d'écoute.
+    * Crée une exception indiquant une erreur quelconque du coeur du serveur.
     * 
     * @param message
     *           - le message à joindre à l'exception.
     * @param cause
     *           - la cause de l'exception.
     */
-   public PortException(String message, Throwable cause) {
+   public CoreRuntimeException(String message, Throwable cause) {
       super(message, cause);
    }
 

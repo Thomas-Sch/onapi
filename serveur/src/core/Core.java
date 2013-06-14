@@ -31,8 +31,9 @@ import common.components.AccountType;
 import common.components.UserAccount;
 import common.connections.Channel;
 
+import core.exceptions.CoreRuntimeException;
 import core.exceptions.PortException;
-import core.lobby.Lobby;
+import core.gameserver.GameServer;
 import core.updates.Update;
 import database.DBController;
 
@@ -71,7 +72,7 @@ public class Core {
    private LinkedList<EstablishedNewConnection> establishedNewConnections = new LinkedList<>();
    private LinkedList<UserInformations> admins = new LinkedList<>();
    
-   private Lobby lobby;
+   private GameServer gameServer;
    
    public Core(boolean enableLogFrame) {
       init(enableLogFrame);
@@ -198,9 +199,9 @@ public class Core {
       return account;
    }
    
-   public Lobby getFreeLoby() {
-      if (lobby.getNumberOfFreeSlots() > 0) {
-         return lobby;
+   public GameServer getFreeGameServer() {
+      if (gameServer.getNumberOfFreeSlots() > 0) {
+         return gameServer;
       }
       else {
          return null;
@@ -208,17 +209,65 @@ public class Core {
    }
    
    public int getNumberOfSlots() {
-      return lobby.getMaxNumberOfPlayers();
+      return gameServer.getMaxNumberOfPlayers();
    }
    
+   /**
+    * Enregistre un administrateur pour recevoir les mises à jours (Updates)
+    * concernant les administrateurs.
+    * @param user - l'utilisateur ayant des droits administrateurs.
+    */
    public void adminRegister(UserInformations user) {
-      synchronized(admins)  {
-         admins.add(user);
+      if (user.account.getType() == AccountType.ADMINISTRATOR) {
+         synchronized(admins)  {
+            admins.add(user);
+         }
+      }
+      else {
+         throw new CoreRuntimeException("User without admin rights tried to register as admin");
       }
    }
    
+   public void adminLeave(UserInformations user) {
+      if (user.account.getType() == AccountType.ADMINISTRATOR) {
+         synchronized (admins) {
+            int index = admins.indexOf(user);
+            
+            if (index < 0 && Settings.DEBUG_MODE_ON) {
+               log.push("Leaving admin was not in the admin list.");
+            }
+            else {
+               if (Settings.DEBUG_MODE_ON) {
+                  log.push("Admin leave the admin list.");
+               }
+               
+               admins.remove(index);
+            }
+         }
+      }
+      else {
+         throw new CoreRuntimeException("User without admin rights tried to leave the admin list");
+      }
+   }
+   
+   /**
+    * Envoi une information de mise à jour à tous les administrateurs.
+    * 
+    * @param update
+    *           - la mise à jour.
+    */
+   public void adminUpdate(Update update) {
+
+      synchronized (admins) {
+         for (UserInformations admin : admins) {
+            admin.serverUpdate.pushUpdate(update);
+         }
+      }
+
+   }
+   
    public UserInformations adminKick(int slot) {
-      return lobby.adminKick(slot);
+      return gameServer.adminKick(slot);
    }
    
    public void pushToAdmins(Update update) {
@@ -366,7 +415,8 @@ public class Core {
       log.push("Done.");
       
       log.push("Create lobby...");
-      lobby = new Lobby(Settings.GAMESERVER_PLAYER_NUMBER, logsFrame);
+      gameServer = new GameServer(this, Settings.GAMESERVER_PLAYER_NUMBER,
+            Settings.GAMESERVER_NAME, logsFrame);
       log.push("Done.");
       
    }

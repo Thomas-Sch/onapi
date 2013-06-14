@@ -151,6 +151,10 @@ public class ConnectionsManager {
                      protocol.lobbyUpdateGameReady(42);
                      System.out.println("DEBUG - game ready !");
                      break;
+                     
+                  case ADMIN_KICK :
+                     protocol.adminKicked(gameModel);
+                     break;
 
                   default:
                      System.out.println("Bad request protocol");

@@ -11,6 +11,8 @@
  */
 package core.protocol;
 
+import settings.Settings;
+import sun.util.logging.resources.logging;
 import gui.LogsFrame;
 import common.components.AccountType;
 import common.components.UserAccount;
@@ -64,23 +66,41 @@ public class ServerStandardReceiveProtocol {
       int slot = user.connectionsToClient.receiveChannel.receiveInt();
       String message = user.connectionsToClient.receiveChannel.receiveString();
       
-      UserInformations user = core.adminKick(slot);
+      if (Settings.DEBUG_MODE_ON) {
+         user.log.push("Trying to kick playser at slot " + slot + ".");
+      }
       
-      if (user != null) {
-         user.serverUpdate.pushUpdate(new Kicked(message));
+      UserInformations kickedUser = core.adminKick(slot);
+      
+      if (kickedUser != null) {
+         kickedUser.serverUpdate.pushUpdate(new Kicked(message));
+         
+         if (Settings.DEBUG_MODE_ON) {
+            user.log.push("Matching player kicked.");
+         }
       }
       else {
-         // Print error
+         if (Settings.DEBUG_MODE_ON) {
+            user.log.push("Kick request fail, no matching player.");
+         }
       }
       
    }
    
    public void acceptRequest(ProtocolType type) {
       user.connectionsToClient.receiveChannel.sendProtocolType(type);
+      
+      if (Settings.DEBUG_MODE_ON) {
+         user.log.push("Accept protocol type : " + type);
+      }
    }
    
    public void refuseRequest(ProtocolType type) {
       user.connectionsToClient.receiveChannel.sendProtocolType(ProtocolType.REFUSE);
+      
+      if (Settings.DEBUG_MODE_ON) {
+         user.log.push("Refuse protocol type : " + type);
+      }
    }
 
 }

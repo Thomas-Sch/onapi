@@ -11,7 +11,8 @@
  */
 package client;
 
-import common.components.lobby.PlayerStatus;
+import game.models.GameModel;
+import common.components.gameserver.PlayerStatus;
 import common.connections.Channel;
 import common.connections.protocol.ProtocolType;
 
@@ -96,6 +97,13 @@ public class ClientReceiveProtocol {
     */
    public void lobbyUpdateGameReady(int toDefine) {
       // TODO something ?
+   }
+   
+   public void adminKicked(GameModel model) {
+      String message = channel.receiveString();
+      
+      // TODO - temp en attendant la fonction fournie
+      System.out.println("You have been kicked : " + message);
    }
    
 }

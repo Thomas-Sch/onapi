@@ -11,12 +11,12 @@
  */
 package core.protocol.gameserver;
 
-import common.components.lobby.PlayerStatus;
+import common.components.gameserver.PlayerStatus;
+
 import core.Core;
 import core.UserInformations;
 import core.accountManagement.AccountConnection;
 import core.gameserver.GameServer;
-import core.lobby.Lobby;
 import core.protocol.ServerStandardReceiveProtocol;
 
 /**
@@ -42,7 +42,7 @@ public class GameServerReceiveProtocol extends ServerStandardReceiveProtocol {
    
    public void leave() {
       if (gameServer.removePlayer(user)) {
-         user.lobby = null;
+         user.gameServer = null;
             
          // On retourne au protocol de connexion.
          user.serverReceive = new AccountConnection(core, user);

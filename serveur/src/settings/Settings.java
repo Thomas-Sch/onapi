@@ -26,12 +26,13 @@ public class Settings {
    public static final boolean DEBUG_MODE_ON = true;
    
    // Options du serveur
+   public static final String GAMESERVER_NAME = "GameServer";
    public static final int GAMESERVER_PLAYER_NUMBER = 4;
    public static final int GAMESERVER_TEAM_NUMBER = 2;
    
    // Options concernant le réseau
    public static final int PORT_NUMBER = 1234;
-   public static final int TIMEOUT_CLIENT = 30000;
+   public static final int TIMEOUT_CLIENT = 15000;
    
    // Options de gestion interne
    public static final String DATABASE_DIRECTORY = "database";

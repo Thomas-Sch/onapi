@@ -17,6 +17,8 @@ public class AdminFrame extends Controller {
    JAdminFrame view;
    PlayersInformations model;
    
+   private Integer selectedPlayer;
+   
    public AdminFrame(ConnectionsManager connections, Frame frame) {
       super(connections, frame);
    }
@@ -36,7 +38,8 @@ public class AdminFrame extends Controller {
 
    @Override
    protected void initListeners() {
-      view.addAction(new AcKick(connections, view.getSelectedPlayer()), "Ejecter");
+      selectedPlayer = view.getSelectedPlayer();
+      view.addAction(new AcKick(connections, selectedPlayer), "Ejecter");
    }
 
    @Override

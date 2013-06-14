@@ -1,7 +1,6 @@
 package gui.component;
 
 import gui.models.LobbyPlayerStatus;
-
 import javax.swing.JList;
 
 import core.PlayerInfo;

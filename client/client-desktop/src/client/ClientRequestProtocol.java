@@ -424,8 +424,10 @@ public class ClientRequestProtocol {
     * 
     * @param slot
     *           - le numéro d'emplacement du joueur.
+    * @param kickMessage
+    *           - le message à communiqué au joueur exclus.
     */
-   public void adminKickPlayer(int slot) {
+   public void adminKickPlayer(int slot, String kickMessage) {
 
       if (!initDone) {
          throw new ProtocolException(
@@ -437,7 +439,9 @@ public class ClientRequestProtocol {
 
          if (isRequestAccepted(ProtocolType.ADMIN_KICK)) {
             requestChannel.sendInt(slot);
+            requestChannel.sendString(kickMessage);
             Logs.messages.push("Kick player at slot number : " + slot);
+            Logs.messages.push("With message : " + kickMessage);
          }
          else {
             Logs.messages.push("Server refuse the kick request.");

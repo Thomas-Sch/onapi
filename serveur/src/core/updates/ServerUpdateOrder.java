@@ -52,7 +52,7 @@ public class ServerUpdateOrder implements UpdateVisitor {
    public boolean sendUpdate() {
       boolean updateSent = false;
       synchronized(waitingUpdates) {
-         if(!waitingUpdates.isEmpty()) {
+         for(int i = 0 ; i < waitingUpdates.size() ; i++) {
             Update update = waitingUpdates.remove();
             update.apply(this);
             updateSent = true;
