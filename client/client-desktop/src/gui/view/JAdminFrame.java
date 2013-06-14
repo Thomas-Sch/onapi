@@ -74,7 +74,7 @@ public class JAdminFrame extends JDialog implements Observer {
       
       adminActions = new AdminActions();
       tpePlayerLists = new JTabbedPane();
-      tpePlayerLists.insertTab("All", null, new JScrollPane(pltPlayers), null, tpePlayerLists.getTabCount() + 1);
+      tpePlayerLists.insertTab("All", null, new JScrollPane(pltPlayers), null, tpePlayerLists.getTabCount());
    }
    
    private JPanel buildContent() {
@@ -82,7 +82,7 @@ public class JAdminFrame extends JDialog implements Observer {
       pnlContent.setLayout(new BorderLayout(5,5));
       
       pnlContent.add(tpePlayerLists, BorderLayout.WEST);
-      pnlContent.add(adminActions, BorderLayout.CENTER);      
+      pnlContent.add(adminActions, BorderLayout.CENTER);   
       return pnlContent;
    }
    
@@ -102,6 +102,7 @@ public class JAdminFrame extends JDialog implements Observer {
          
          pnlTop.setLayout(new FlowLayout(FlowLayout.CENTER));
          add(pnlTop, BorderLayout.CENTER);
+         
       }
       
       public void addAction(UserAction action, String name) {
