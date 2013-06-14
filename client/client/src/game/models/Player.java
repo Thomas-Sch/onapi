@@ -46,9 +46,6 @@ import com.badlogic.gdx.physics.box2d.World;
  * 
  */
 public class Player extends Entity {
-   public enum State {
-      IDLE, WALKING
-   }
    
    private static final float RUNNING_FRAME_DURATION = 1.5f;
 
@@ -289,7 +286,6 @@ public class Player extends Entity {
       
 
       playerFrame = walkLeftAnimation.getKeyFrame(state % 5, true);
-//      spriteBatch.draw(bobFrame, bob.getPosition().x * ppuX, bob.getPosition().y * ppuY, Bob.SIZE * ppuX, Bob.SIZE * ppuY);
    
       
       // Dessiner à l'écran le joueur
