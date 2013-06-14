@@ -271,7 +271,6 @@ public class InputController {
       // }
       if (getActionState(Action.TORCH)) {
          game.getPlayer().toggleTorch();
-         setActionState(InputController.Action.TORCH, false);
       }
       if (getActionState(Action.FIRE)) {
          game.getPlayer().shoot(delta);

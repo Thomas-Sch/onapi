@@ -46,7 +46,7 @@ import com.badlogic.gdx.physics.box2d.World;
  * 
  */
 public class Player extends Entity {
-   
+
    private static final float RUNNING_FRAME_DURATION = 1.5f;
 
    private static int lastId = 1;
@@ -64,10 +64,10 @@ public class Player extends Entity {
    private final Vector2 deadPos;
 
    private TextureRegion playerFrame;
-   
+
    /** Animations **/
    private Animation walkLeftAnimation;
-   
+
    /**
     * Référence de l'équipe à laquelle appartient le personnage
     */
@@ -125,12 +125,15 @@ public class Player extends Entity {
 
    private Rectangle bounds;
    private PointLight pl;
+
+   private Vector2 lastPos;
    public final static int PL_DISTANCE_DEFAULT = Tile.WIDTH - 50;
 
    public Player(Vector2 pos, Vector2 dir, Team team, Weapon weapon,
          Skill skill, Bonus bonus, World world, RayHandler handler) {
       super();
 
+      lastPos = new Vector2();
       setWidth(WIDTH);
       setHeight(HEIGHT);
       bounds = new Rectangle(pos.x, pos.y, getWidth() / 2, getHeight() / 2);
@@ -162,10 +165,11 @@ public class Player extends Entity {
       body.setUserData(this);
 
       // Initialise les lumières diffusées par le joueur
-      pl = new PointLight(handler, 100, HALO_COLOR, PL_DISTANCE_DEFAULT, getX(), getY());
-      
+      pl = new PointLight(handler, 100, HALO_COLOR, PL_DISTANCE_DEFAULT,
+            getX(), getY());
+
       pl.attachToBody(body, 0, 0);
-            
+
       torchLight = new ConeLight(handler, 50, TORCH_COLOR, 750, 1, 1, 270, 30);
       torchLight.attachToBody(body, 1, 1);
       this.torchLight.setActive(true);
@@ -177,17 +181,18 @@ public class Player extends Entity {
 
    public void loadResources() {
       texture = new Texture(Gdx.files.internal("data/sprite1_perso.png"));
-      TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/player.atlas"));
+      TextureAtlas atlas = new TextureAtlas(
+            Gdx.files.internal("data/player.atlas"));
 
       TextureRegion[] playerWalk = new TextureRegion[5];
       for (int i = 0; i < 5; i++) {
-         playerWalk[i] = atlas.findRegion("player" + (i+1));
+         playerWalk[i] = atlas.findRegion("player" + (i + 1));
       }
       walkLeftAnimation = new Animation(RUNNING_FRAME_DURATION, playerWalk);
 
    }
-   
-   public PointLight getPointLight(){
+
+   public PointLight getPointLight() {
       return pl;
    }
 
@@ -210,6 +215,8 @@ public class Player extends Entity {
     */
    public void moveTo(Vector2 newPos) {
       setPosition(newPos.x - bounds.width / 2f, newPos.y - bounds.height / 2f);
+      lastPos.x = getX();
+      lastPos.y = getY();
       bounds.x = newPos.x;
       bounds.y = newPos.y;
    }
@@ -241,7 +248,7 @@ public class Player extends Entity {
    public Team getTeam() {
       return team;
    }
-   
+
    /**
     * @param team
     *           Equipe du joueur
@@ -252,7 +259,7 @@ public class Player extends Entity {
 
    @Override
    public void update(float deltaTime) {
-
+      if (lastPos.x != getX() || lastPos.y != getY()) state++;
       body.setTransform(getPos(), getRotation() * ((float) Math.PI) / 180f);
       getSkill().update(deltaTime);
    }
@@ -262,17 +269,17 @@ public class Player extends Entity {
    }
 
    private int state = 0;
-   
-   public void incrementState(){
+
+   public void incrementState() {
       state++;
    }
-   
+
    @Override
    public void draw(SpriteBatch batch, float parentAlpha) {
       super.draw(batch, parentAlpha);
 
       // Affecte le sprite pour l'utilisateur
-//      TextureRegion region = new TextureRegion(texture, 0, 0, 256, 256);
+      // TextureRegion region = new TextureRegion(texture, 0, 0, 256, 256);
 
       int textureWidth = texture.getWidth();
       int textureHeight = texture.getHeight();
@@ -283,20 +290,20 @@ public class Player extends Entity {
 
       Color previousTint = batch.getColor();
       batch.setColor(team.getColor());
-      
 
       playerFrame = walkLeftAnimation.getKeyFrame(state % 5, true);
-   
-      
+
       // Dessiner à l'écran le joueur
       batch.draw(playerFrame, getPos().x - texture.getWidth() / 2, getPos().y
             - texture.getHeight() / 2, textureWidth / 2f, textureHeight / 2f,
             textureWidth, textureHeight, getWidth() / textureWidth, getHeight()
-                  / textureHeight, getRotation()+180, false);
+                  / textureHeight, getRotation() + 180, false);
 
       batch.setColor(previousTint);
+      lastPos.x = getX();
+      lastPos.y = getY();
    }
-   
+
    @Override
    public void debugRender(ShapeRenderer renderer) {
 
