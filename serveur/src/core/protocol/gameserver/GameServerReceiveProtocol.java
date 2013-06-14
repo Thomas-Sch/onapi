@@ -1,5 +1,5 @@
 /* ============================================================================
- * Nom du fichier   : LobbyReceiveProtocol.java
+ * Nom du fichier   : GameServerReceiveProtocol.java
  * ============================================================================
  * Date de création : 19 mai 2013
  * ============================================================================
@@ -9,13 +9,14 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core.protocol.lobby;
+package core.protocol.gameserver;
 
-import common.components.lobby.PlayerStatus;
+import common.components.gameserver.PlayerStatus;
+
 import core.Core;
 import core.UserInformations;
 import core.accountManagement.AccountConnection;
-import core.lobby.Lobby;
+import core.gameserver.GameServer;
 import core.protocol.ServerStandardReceiveProtocol;
 
 /**
@@ -26,29 +27,29 @@ import core.protocol.ServerStandardReceiveProtocol;
  * @author Schweizer Thomas
  *
  */
-public class LobbyReceiveProtocol extends ServerStandardReceiveProtocol {
+public class GameServerReceiveProtocol extends ServerStandardReceiveProtocol {
    
-   private Lobby lobby;
+   private GameServer gameServer;
    
    private PlayerStatus status;
    
-   public LobbyReceiveProtocol(Core core, Lobby lobby, UserInformations user,
+   public GameServerReceiveProtocol(Core core, GameServer gameServer, UserInformations user,
                                PlayerStatus status) {
       super(core, user);
-      this.lobby = lobby;
+      this.gameServer = gameServer;
       this.status = status;
    }
    
    public void leave() {
-      if (lobby.removePlayer(user)) {
-         user.lobby = null;
+      if (gameServer.removePlayer(user)) {
+         user.gameServer = null;
             
          // On retourne au protocol de connexion.
          user.serverReceive = new AccountConnection(core, user);
       }
    }
    
-   public void setReady() {
+   public void lobbySetReady() {
       boolean ready = user.connectionsToClient.receiveChannel.receiveBoolean();
       status.setReady(ready);
    }

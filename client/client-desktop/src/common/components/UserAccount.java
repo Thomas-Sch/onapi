@@ -24,6 +24,11 @@ import java.io.Serializable;
  */
 public class UserAccount implements Serializable {
    
+   /**
+    * ID de sérialisation.
+    */
+   private static final long serialVersionUID = 3154100529354245563L;
+
    private AccountType type;
    
    private int id;

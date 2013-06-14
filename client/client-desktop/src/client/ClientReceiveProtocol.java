@@ -11,11 +11,11 @@
  */
 package client;
 
-import gui.component.JPlayerList;
-import common.components.lobby.PlayerStatus;
+import game.models.GameModel;
+import common.components.gameserver.PlayerStatus;
 import common.connections.Channel;
-import common.connections.exceptions.ProtocolException;
 import common.connections.protocol.ProtocolType;
+
 import core.PlayerInfo;
 import core.PlayersInformations;
 
@@ -76,17 +76,19 @@ public class ClientReceiveProtocol {
          status = (PlayerStatus)channel.receiveObject();
       }
       
-      System.out.println("DEBUG : status - " + status.toString());
-      
       PlayerInfo player = players.getPlayerAt(status.getSlotNumber());
       
-      player.startMultipleChanges();
-      player.setIsUsed(true);
-      player.setName(status.getName());
-      player.setTeamNumber(status.getTeamNumber());
-      player.setStateReady(status.isReady());
-      player.endMultipleChanges();
-      
+      if(status.isFree()) {
+         player.setIsUsed(false);
+      }
+      else {
+         player.startMultipleChanges();
+         player.setIsUsed(true);
+         player.setName(status.getName());
+         player.setTeamNumber(status.getTeamNumber());
+         player.setStateReady(status.isReady());
+         player.endMultipleChanges();
+      }
    }
    
    /**
@@ -95,6 +97,13 @@ public class ClientReceiveProtocol {
     */
    public void lobbyUpdateGameReady(int toDefine) {
       // TODO something ?
+   }
+   
+   public void adminKicked(GameModel model) {
+      String message = channel.receiveString();
+      
+      // TODO - temp en attendant la fonction fournie
+      System.out.println("You have been kicked : " + message);
    }
    
 }

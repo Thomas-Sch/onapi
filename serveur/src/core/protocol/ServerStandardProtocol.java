@@ -11,9 +11,8 @@
  */
 package core.protocol;
 
-import common.components.AccountType;
-import common.components.UserAccount;
 import common.connections.protocol.ProtocolType;
+
 import core.Core;
 import core.UserInformations;
 

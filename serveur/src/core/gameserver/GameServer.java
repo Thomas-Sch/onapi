@@ -1,5 +1,5 @@
 /* ============================================================================
- * Nom du fichier   : MyLobby.java
+ * Nom du fichier   : GameServer.java
  * ============================================================================
  * Date de création : 29 mai 2013
  * ============================================================================
@@ -9,19 +9,22 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core.lobby;
+package core.gameserver;
 
 import gui.LogsFrame;
 import gui.logs.Log;
 
-import java.io.Serializable;
 import java.util.Observable;
 import java.util.Observer;
 
-import common.components.lobby.PlayerStatus;
+import common.components.AccountType;
+import common.components.gameserver.PlayerStatus;
 
+import settings.Settings;
+
+import core.Core;
 import core.UserInformations;
-import core.lobby.exceptions.LobbyException;
+import core.gameserver.exceptions.GameServerException;
 import core.updates.components.LobbyUpdateSlot;
 
 /**
@@ -32,30 +35,55 @@ import core.updates.components.LobbyUpdateSlot;
  * @author Schweizer Thomas
  *
  */
-public class Lobby implements Observer {
+public class GameServer implements Observer {
+   
+   private Core core;
    
    private PlayerSlot[] players;
    
+   // Partie jeu
+   private boolean gameIsRunning = false; 
+   
    private Log log;
    
-   public Lobby(int nbPlayers, LogsFrame logsFrame) {
-      init(nbPlayers, logsFrame);
+   /**
+    * Crée un serveur de jeu.
+    * 
+    * @param nbPlayers
+    *           - le nombre de joueurs accepté par le serveur.
+    * @param name
+    *           - le nom du serveur.
+    * @param logsFrame
+    *           - la fenêtre de logs dans laquelle afficher le log du serveur.
+    */
+   public GameServer(Core core, int nbPlayers, String name, LogsFrame logsFrame) {
+      init(core, nbPlayers, name, logsFrame);
    }
    
    /**
-    * Initialise le salon d'attente.
-    * @param nbPlayers - le nombre de joueurs que pourra accueillir le salon.
-    * @param logsFrame - la fenêtre de logs pour y ajouter celui du lobby.
-    * @throws LobbyException si le nombre de places est négatif ou nul.
+    * Initialise le serveur de jeu.
+    * 
+    * @param core
+    *           - le coeur logique du serveur.
+    * @param nbPlayers
+    *           - le nombre de joueurs que pourra accueillir le salon.
+    * @param name
+    *           - le nom du serveur de jeu.
+    * @param logsFrame
+    *           - la fenêtre de logs pour y ajouter celui du lobby.
+    * @throws LobbyException
+    *            si le nombre de places est négatif ou nul.
     */
-   private void init(int nbPlayers, LogsFrame logsFrame) {
-      log = new Log("Lobby");
+   private void init(Core core, int nbPlayers, String name, LogsFrame logsFrame) {
+      this.core = core;
+      
+      log = new Log(name);
       logsFrame.addLogPanel(log.createLogPanel());
       
-      log.push("Starting the lobby...");
+      log.push("Starting the server " + name + " ...");
       
       if (nbPlayers <= 0) {
-         throw new LobbyException("Number of players has to be greater than 0.");
+         throw new GameServerException("Number of players has to be greater than 0.");
       }
       
       // Initialisation des emplacements
@@ -64,7 +92,6 @@ public class Lobby implements Observer {
          players[i] = new PlayerSlot(i);
          players[i].addObserver(this);
       }
-      
       log.push("Lobby is ready for " + nbPlayers + " players.");
    }
    
@@ -104,11 +131,10 @@ public class Lobby implements Observer {
          }
          
          if (players[index].setUser(user)) {
-            log.push("DEBUG - Added a new player successfully !");
             
             printStatus();
             
-            // Transmet alors les données actuelles
+            // Transmet alors les données actuelles au nouveau venu
             for(PlayerSlot slot : players) {
                if(!slot.isFree()) {
                   user.serverUpdate.pushUpdate(new LobbyUpdateSlot(slot.slotNumber, slot.getStatus()));
@@ -117,7 +143,9 @@ public class Lobby implements Observer {
             
          }
          else {
-            log.push("DEBUG - Error while adding player !");
+            if (Settings.DEBUG_MODE_ON) {
+               log.push("Error while adding a player");
+            }
          }
          
          return players[index].status;
@@ -126,12 +154,15 @@ public class Lobby implements Observer {
    
    public boolean removePlayer(UserInformations user) {
       synchronized (players) {
-         // Recherche du bon joueur
+         // Recherche du bon joueur pour suppression
          for (PlayerSlot slot : players) {
+            
             if (slot.user == user) {
                slot.removeUser();
-               log.push("DEBUG - Player " + user.account.getLogin() + " removed");
-               user.serverUpdate.pushUpdate(new LobbyUpdateSlot(slot.slotNumber, slot.getStatus()));
+               
+               if (Settings.DEBUG_MODE_ON) {
+                  log.push("Player " + user.account.getLogin() + " removed");
+               }
                
                printStatus();
                return true;
@@ -139,6 +170,23 @@ public class Lobby implements Observer {
          }
       }
       return false;
+   }
+   
+   public UserInformations adminKick(int slot) {
+      UserInformations user = null;
+      
+      if (slot >= 0 && slot < players.length) {
+         synchronized (players) {
+            
+            if (!players[slot].isFree()) {
+               user = players[slot].removeUser();
+               printStatus();
+            }
+            
+         }
+      }
+      
+      return user;
    }
    
    private int getFirstFreeIndex() {
@@ -211,6 +259,7 @@ public class Lobby implements Observer {
          
          if(!isFree()) {
             user = null;
+            status.setLeft();
             setChanged();
             notifyObservers();
          }
@@ -230,21 +279,23 @@ public class Lobby implements Observer {
       // Ne s'occupe que de la mise à jour d'un slot
       if (o instanceof PlayerSlot) {
          PlayerSlot updatedSlot = (PlayerSlot)o;
-         
+         PlayerStatus status = updatedSlot.getStatus();
+         int slotNumber = updatedSlot.getSlotNumber();
+
+         // Envoi de l'information mise à jour aux joueurs présents qui ne sont
+         // pas administrateurs
          synchronized(players) {
-            
             for (PlayerSlot slot : players) {
-               
-               if (! slot.isFree()) {
+               if ( ! slot.isFree()
+                   && slot.user.account.getType() != AccountType.ADMINISTRATOR) {
                   slot.user.serverUpdate.pushUpdate(
-                        new LobbyUpdateSlot(updatedSlot.getSlotNumber(),
-                                            updatedSlot.getStatus()));
-                  
+                                       new LobbyUpdateSlot(slotNumber, status));
                }
             }
-            
-            
          }
+         
+         // Envoi de l'information aux administrateurs
+         core.adminUpdate(new LobbyUpdateSlot(slotNumber, status));
       }
       
    }

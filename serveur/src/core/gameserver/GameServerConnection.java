@@ -9,15 +9,16 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core.lobby;
+package core.gameserver;
 
-import common.components.lobby.PlayerStatus;
+import common.components.AccountType;
+import common.components.gameserver.PlayerStatus;
 import common.connections.protocol.ProtocolType;
 
 import core.Core;
 import core.ServerRequestAnswers;
 import core.UserInformations;
-import core.protocol.lobby.LobbyReceiveProtocol;
+import core.protocol.gameserver.GameServerReceiveProtocol;
 
 /**
  * TODO
@@ -27,16 +28,16 @@ import core.protocol.lobby.LobbyReceiveProtocol;
  * @author Schweizer Thomas
  *
  */
-public class LobbyConnection implements ServerRequestAnswers {
+public class GameServerConnection implements ServerRequestAnswers {
    
-   private LobbyReceiveProtocol receiveProtocol;
+   private GameServerReceiveProtocol receiveProtocol;
    
    private UserInformations user;
    
-   public LobbyConnection(Core core, Lobby lobby, UserInformations user,
+   public GameServerConnection(Core core, GameServer gameServer, UserInformations user,
                           PlayerStatus status) {
       this.user = user;
-      receiveProtocol = new LobbyReceiveProtocol(core, lobby, user, status);
+      receiveProtocol = new GameServerReceiveProtocol(core, gameServer, user, status);
    }
 
    @Override
@@ -45,7 +46,7 @@ public class LobbyConnection implements ServerRequestAnswers {
       switch(type) {
          
          case PING :
-            receiveProtocol.acceptRequest(ProtocolType.PING);
+            receiveProtocol.acceptRequest(type);
             receiveProtocol.ping();
             break;
             
@@ -61,7 +62,17 @@ public class LobbyConnection implements ServerRequestAnswers {
             
          case LOBBY_SET_READY :
             receiveProtocol.acceptRequest(type);
-            receiveProtocol.setReady();
+            receiveProtocol.lobbySetReady();
+            break;
+            
+         case ADMIN_KICK :
+            if (user.account.getType() == AccountType.ADMINISTRATOR) {
+               receiveProtocol.acceptRequest(type);
+               receiveProtocol.adminKick();
+            }
+            else {
+               receiveProtocol.refuseRequest(type);
+            }
             break;
             
          default :

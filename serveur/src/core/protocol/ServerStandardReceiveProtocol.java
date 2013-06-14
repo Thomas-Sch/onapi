@@ -11,11 +11,15 @@
  */
 package core.protocol;
 
+import settings.Settings;
+import sun.util.logging.resources.logging;
+import gui.LogsFrame;
 import common.components.AccountType;
 import common.components.UserAccount;
 import common.connections.protocol.ProtocolType;
 import core.Core;
 import core.UserInformations;
+import core.updates.components.admin.Kicked;
 
 /**
  * Classe permettant de rassembler les protocoles concernant les requêtes
@@ -53,12 +57,50 @@ public class ServerStandardReceiveProtocol {
       user.log.push(message);
    }
    
+   public void adminRegister() {
+      user.connectionsToClient.receiveChannel.sendInt(core.getNumberOfSlots());
+      core.adminRegister(user);
+   }
+   
+   public void adminKick() {
+      int slot = user.connectionsToClient.receiveChannel.receiveInt();
+      String message = user.connectionsToClient.receiveChannel.receiveString();
+      
+      if (Settings.DEBUG_MODE_ON) {
+         user.log.push("Trying to kick playser at slot " + slot + ".");
+      }
+      
+      UserInformations kickedUser = core.adminKick(slot);
+      
+      if (kickedUser != null) {
+         kickedUser.serverUpdate.pushUpdate(new Kicked(message));
+         
+         if (Settings.DEBUG_MODE_ON) {
+            user.log.push("Matching player kicked.");
+         }
+      }
+      else {
+         if (Settings.DEBUG_MODE_ON) {
+            user.log.push("Kick request fail, no matching player.");
+         }
+      }
+      
+   }
+   
    public void acceptRequest(ProtocolType type) {
       user.connectionsToClient.receiveChannel.sendProtocolType(type);
+      
+      if (Settings.DEBUG_MODE_ON) {
+         user.log.push("Accept protocol type : " + type);
+      }
    }
    
    public void refuseRequest(ProtocolType type) {
       user.connectionsToClient.receiveChannel.sendProtocolType(ProtocolType.REFUSE);
+      
+      if (Settings.DEBUG_MODE_ON) {
+         user.log.push("Refuse protocol type : " + type);
+      }
    }
 
 }

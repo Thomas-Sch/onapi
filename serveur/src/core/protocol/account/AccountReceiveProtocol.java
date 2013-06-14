@@ -13,14 +13,12 @@ package core.protocol.account;
 
 import common.components.AccountType;
 import common.components.UserAccount;
-import common.components.lobby.PlayerStatus;
 import core.Core;
 import core.UserInformations;
-import core.lobby.Lobby;
-import core.lobby.LobbyConnection;
-import core.lobby.exceptions.LobbyException;
+import core.gameserver.GameServer;
+import core.gameserver.GameServerConnection;
+import core.gameserver.exceptions.GameServerException;
 import core.protocol.ServerStandardReceiveProtocol;
-import core.protocol.lobby.LobbyReceiveProtocol;
 
 /**
  * TODO
@@ -97,44 +95,40 @@ public class AccountReceiveProtocol extends ServerStandardReceiveProtocol {
    
    public void joinLobby() {
       
-      Lobby freeLobby = core.getFreeLoby();
+      GameServer freeServer = core.getFreeGameServer();
       
-      boolean isFreeLobby = freeLobby != null;
+      boolean isFreeServer = freeServer != null;
       
-      user.connectionsToClient.receiveChannel.sendBoolean(isFreeLobby);
+      user.connectionsToClient.receiveChannel.sendBoolean(isFreeServer);
       
-      if (isFreeLobby) {
+      if (isFreeServer) {
          try {
             user.log.push("Try to connect to Lobby...");
             
-            PlayerStatus status = freeLobby.addPlayer(user);
+            common.components.gameserver.PlayerStatus status = freeServer.addPlayer(user);
             
             if (status != null) {
-               user.lobby = freeLobby;
-               LobbyConnection connection = new LobbyConnection(core, freeLobby, user, status);
+               user.gameServer = freeServer;
+               GameServerConnection connection = new GameServerConnection(core, freeServer, user, status);
                user.serverReceive = connection;
                
                // Confirmation d'avoir rejoint TODO (temp)
                user.connectionsToClient.receiveChannel.sendBoolean(true);
                
                // Envoi du nombre de places dans le salon
-               user.connectionsToClient.receiveChannel.sendInt(freeLobby.getMaxNumberOfPlayers());
+               user.connectionsToClient.receiveChannel.sendInt(freeServer.getMaxNumberOfPlayers());
             }
             else {
                user.log.push("Error, there was a free lobby, but error while joining it.");
             }
             
          }
-         catch (LobbyException e) {
+         catch (GameServerException e) {
             user.log.push("Unable to join the lobby");
          }
       }
       
-      
-      
-      
    }
-   
    
    private void updateLogName() {
       if (user.account != null) {

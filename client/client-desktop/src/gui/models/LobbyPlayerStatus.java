@@ -1,9 +1,27 @@
+/* ============================================================================
+ * Nom du fichier   : LobbyPlayerStatus.java
+ * ============================================================================
+ * Date de création : 1 juin 2013
+ * ============================================================================
+ * Auteurs          : Crescenzio Fabio
+ *                    Decorvet Grégoire
+ *                    Jaquier Kevin
+ *                    Schweizer Thomas
+ * ============================================================================
+ */
 package gui.models;
 
 import javax.swing.DefaultListModel;
 
-import common.components.lobby.PlayerStatus;
-
+/**
+ * 
+ * TODO
+ * @author Crescenzio Fabio
+ * @author Decorvet Grégoire
+ * @author Jaquier Kevin
+ * @author Schweizer Thomas
+ *
+ */
 public class LobbyPlayerStatus extends DefaultListModel<String> {
    
    public static final String TEXT_FREE = " > libre < ";

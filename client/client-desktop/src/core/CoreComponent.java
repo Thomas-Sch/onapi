@@ -11,7 +11,7 @@
  */
 package core;
 
-import java.util.Observable;
+import common.components.ObservableComponent;
 
 /**
  * 
@@ -22,42 +22,10 @@ import java.util.Observable;
  * @author Schweizer Thomas
  *
  */
-public class CoreComponent extends Observable {
-   
-   private boolean multiChangeEnable = false;
+public class CoreComponent extends ObservableComponent {
    
    public CoreComponent() {
-      
-   }
-   
-   /**
-    * A appeler avant d'effectuer plusieurs changements rapides de l'objet.
-    */
-   public void startMultipleChanges() {
-      multiChangeEnable = true;
-   }
-   
-   /**
-    * A appeler après avoir effectué plusieurs changements rapides de l'objet
-    * pour notifier alors les observateurs.
-    */
-   public void endMultipleChanges() {
-      multiChangeEnable = false;
-      notifyObservers(this);
-   }
-   
-   @Override
-   public void notifyObservers() {
-      if (!multiChangeEnable) {
-         super.notifyObservers();
-      }
-   }
-   
-   @Override
-   public void notifyObservers(Object arg) {
-      if (!multiChangeEnable) {
-         super.notifyObservers(arg);
-      }
+      super();
    }
    
 

@@ -9,7 +9,7 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core.lobby;
+package core.gameserver;
 
 import core.UserInformations;
 

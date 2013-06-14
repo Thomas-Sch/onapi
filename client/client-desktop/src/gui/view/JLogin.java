@@ -18,6 +18,7 @@ import gui.component.JValidateCancel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
@@ -47,7 +48,7 @@ public class JLogin extends JFrame{
    private JLabelTextPanel ltpServerAdress;
    private JLabelTextPanel ltpServerPort;
    private JLabelPasswordPanel lppPassword;
-   private JLabel lblConnectionInfo;
+   private JLabel lblMessage;
    
    public JLogin (String title) {
       super(title);
@@ -64,8 +65,8 @@ public class JLogin extends JFrame{
       lppPassword = new JLabelPasswordPanel(Text.PASSWORD_LABEL.toString());
       ltpServerAdress = new JLabelTextPanel(Text.SERVER_ADRESS_LABEL.toString());
       ltpServerPort = new JLabelTextPanel(Text.SERVER_PORT_LABEL.toString());
-      lblConnectionInfo = new JLabel("");
-      lblConnectionInfo.setForeground(Color.RED);
+      lblMessage = new JLabel("");
+      lblMessage.setForeground(Color.RED);
       
       // TODO pour tests :
       ltpLogin.setText("GregoireDec");
@@ -77,17 +78,26 @@ public class JLogin extends JFrame{
    public JPanel buildContent() {
       JPanel pnlMargin = new JPanel();
       JPanel pnlContent = new JPanel();
-      pnlMargin.setLayout(new FlowLayout(FlowLayout.CENTER, 10,10));
-      pnlContent.setLayout(new BoxLayout(pnlContent, BoxLayout.PAGE_AXIS));
+      JPanel pnlLogin = new JPanel();
+      JPanel pnlFooter = new JPanel();
       
-      pnlContent.add(ltpLogin);
-      pnlContent.add(lppPassword);
-      pnlContent.add(ltpServerAdress);
-      pnlContent.add(ltpServerPort);
-      pnlContent.add(lblConnectionInfo);
-      pnlContent.add(vclActions);
+      pnlMargin.setLayout(new FlowLayout(FlowLayout.CENTER, 10,10));
+      pnlContent.setLayout(new BorderLayout(5,5));
+      pnlLogin.setLayout(new BoxLayout(pnlLogin, BoxLayout.PAGE_AXIS));
+      pnlFooter.setLayout(new GridLayout(2, 1));
       
       pnlMargin.add(pnlContent,BorderLayout.CENTER);
+      pnlContent.add(pnlLogin,BorderLayout.CENTER);
+      pnlContent.add(pnlFooter, BorderLayout.SOUTH);
+      
+      pnlLogin.add(ltpLogin);
+      pnlLogin.add(lppPassword);
+      pnlLogin.add(ltpServerAdress);
+      pnlLogin.add(ltpServerPort);
+      
+      pnlFooter.add(lblMessage);
+      pnlFooter.add(vclActions);
+      
       return pnlMargin;
    }
    
@@ -116,11 +126,11 @@ public class JLogin extends JFrame{
    }
    
    public void setMessage(String message) {
-      lblConnectionInfo.setText(message);
+      lblMessage.setText(message);
    }
    
    public void setMessage(String message, Color color) {
-      lblConnectionInfo.setForeground(color);
-      lblConnectionInfo.setText(message);
+      lblMessage.setForeground(color);
+      lblMessage.setText(message);
    }
 }

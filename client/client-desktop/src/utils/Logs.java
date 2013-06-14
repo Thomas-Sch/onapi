@@ -11,7 +11,7 @@
  */
 
 package utils;
-import gui.view.LogsFrame;
+import gui.view.JLog;
 
 import java.io.File;
 
@@ -35,7 +35,7 @@ public class Logs {
    public static Log sqlErrors = new Log("sqlErrors", new File("sqlErrors.log"), 1);
    
    
-   public static void addLogsToFrame(LogsFrame frame) {
+   public static void addLogsToFrame(JLog frame) {
       frame.addLogPanel(messages.createLogPanel());
       frame.addLogPanel(errors.createLogPanel());
       frame.addLogPanel(sqlErrors.createLogPanel());

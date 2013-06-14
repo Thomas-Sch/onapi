@@ -11,6 +11,7 @@
  */
 package core.accountManagement;
 
+import common.components.AccountType;
 import common.connections.protocol.ProtocolType;
 
 import core.Core;
@@ -82,7 +83,7 @@ public class AccountConnection implements ServerRequestAnswers {
             break;
             
          case JOIN_GAME :
-            if (user.account != null && user.lobby == null) {
+            if (user.account != null && user.gameServer == null) {
                receiveProtocol.acceptRequest(type);
                receiveProtocol.joinLobby();
             }
@@ -95,6 +96,26 @@ public class AccountConnection implements ServerRequestAnswers {
          case TEXT_MESSAGE :
             receiveProtocol.acceptRequest(type);
             receiveProtocol.textMessage();
+            break;
+            
+         case ADMIN_REGISTER :
+            if (user.account.getType() == AccountType.ADMINISTRATOR) {
+               receiveProtocol.acceptRequest(type);
+               receiveProtocol.adminRegister();
+            }
+            else {
+               receiveProtocol.refuseRequest(type);
+            }
+            break;
+            
+         case ADMIN_KICK :
+            if (user.account.getType() == AccountType.ADMINISTRATOR) {
+               receiveProtocol.acceptRequest(type);
+               receiveProtocol.adminKick();
+            }
+            else {
+               receiveProtocol.refuseRequest(type);
+            }
             break;
             
          default :

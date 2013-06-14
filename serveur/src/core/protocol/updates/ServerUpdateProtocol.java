@@ -11,7 +11,7 @@
  */
 package core.protocol.updates;
 
-import common.components.lobby.PlayerStatus;
+import common.components.gameserver.PlayerStatus;
 import common.connections.exceptions.ProtocolException;
 import common.connections.protocol.ProtocolType;
 import core.Core;
@@ -64,6 +64,13 @@ public class ServerUpdateProtocol {
       synchronized(user.connectionsToClient.updateChannel) {
          user.connectionsToClient.updateChannel.sendProtocolType(ProtocolType.TEXT_MESSAGE);
          user.connectionsToClient.updateChannel.sendString(message);
+      }
+   }
+   
+   public void adminKick(String kickMessage) {
+      synchronized (user.connectionsToClient.updateChannel) {
+         user.connectionsToClient.updateChannel.sendProtocolType(ProtocolType.ADMIN_KICK);
+         user.connectionsToClient.updateChannel.sendString(kickMessage);
       }
    }
    

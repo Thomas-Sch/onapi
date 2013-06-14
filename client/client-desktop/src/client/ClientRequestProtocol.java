@@ -11,6 +11,8 @@
  */
 package client;
 
+import utils.Logs;
+import log.Log;
 import common.components.UserAccount;
 import common.connections.Channel;
 import common.connections.exceptions.ProtocolException;
@@ -271,7 +273,7 @@ public class ClientRequestProtocol {
     * alors créé, servant de canal d'écoute pour recevoir les mises à jour du
     * serveur.
     * 
-    * @return Le résultat de la tentative de.
+    * @return Le nombre d'emplacement du salon d'attente.
     */
    public int joinLobby() {
 
@@ -340,6 +342,26 @@ public class ClientRequestProtocol {
 
       }
    }
+   
+   public void leaveGame() {
+      if (!initDone) {
+         throw new ProtocolException(
+               "Error, connection to server has not been initialized");
+      }
+
+      synchronized (requestChannel) {
+
+         requestChannel.sendProtocolType(ProtocolType.LEAVE_GAME);
+
+         if (isRequestAccepted(ProtocolType.LEAVE_GAME)) {
+            Logs.messages.push("You have left the game.");
+         }
+         else {
+            System.out.println("Leave game request was refused.");
+         }
+
+      }
+   }
 
    /**
     * Protocole bidon pour test.
@@ -365,6 +387,68 @@ public class ClientRequestProtocol {
          }
 
       }
+   }
+   
+   /**
+    * S'enregistre pour recevoir les mises à jour d'administration.
+    * 
+    * @return Le nombre d'emplacements de la partie.
+    */
+   public int adminSelfRegister() {
+      if (!initDone) {
+         throw new ProtocolException(
+               "Error, connection to server has not been initialized");
+      }
+
+      int numberOfPlayers = -1;
+
+      synchronized (requestChannel) {
+         requestChannel.sendProtocolType(ProtocolType.ADMIN_REGISTER);
+
+         if (isRequestAccepted(ProtocolType.ADMIN_REGISTER)) {
+            numberOfPlayers = requestChannel.receiveInt();
+
+            Logs.messages.push("Successfully registered as admin.");
+         }
+         else {
+            Logs.messages.push("Server refuse the admin register request.");
+         }
+
+      }
+
+      return numberOfPlayers;
+   }
+   
+   /**
+    * Demande au serveur d'éjecter le joueur de l'emplacement donné.
+    * 
+    * @param slot
+    *           - le numéro d'emplacement du joueur.
+    * @param kickMessage
+    *           - le message à communiqué au joueur exclus.
+    */
+   public void adminKickPlayer(int slot, String kickMessage) {
+
+      if (!initDone) {
+         throw new ProtocolException(
+               "Error, connection to server has not been initialized");
+      }
+
+      synchronized (requestChannel) {
+         requestChannel.sendProtocolType(ProtocolType.ADMIN_KICK);
+
+         if (isRequestAccepted(ProtocolType.ADMIN_KICK)) {
+            requestChannel.sendInt(slot);
+            requestChannel.sendString(kickMessage);
+            Logs.messages.push("Kick player at slot number : " + slot);
+            Logs.messages.push("With message : " + kickMessage);
+         }
+         else {
+            Logs.messages.push("Server refuse the kick request.");
+         }
+
+      }
+
    }
 
    private boolean isRequestAccepted(ProtocolType typeWanted) {

@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : LobbyVisitor.java
+ * Nom du fichier   : PlayersStatus.java
  * ============================================================================
- * Date de création : 31 mai 2013
+ * Date de création : 14 juin 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,11 +9,10 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core.lobby;
-
-import core.updates.UpdateVisitor;
+package gui.utils;
 
 /**
+ * 
  * TODO
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
@@ -21,6 +20,6 @@ import core.updates.UpdateVisitor;
  * @author Schweizer Thomas
  *
  */
-public interface LobbyVisitor extends UpdateVisitor {
+public class SelectedPlayer {
 
 }

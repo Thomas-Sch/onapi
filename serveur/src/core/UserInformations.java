@@ -14,7 +14,7 @@ package core;
 import gui.logs.Log;
 import common.components.UserAccount;
 import common.connections.Channel;
-import core.lobby.Lobby;
+import core.gameserver.GameServer;
 import core.updates.ServerUpdateOrder;
 
 /**
@@ -43,7 +43,7 @@ public class UserInformations {
    
    public UserUpdateConnection updateActivity;
    
-   public Lobby lobby;
+   public GameServer gameServer;
    
    public UserInformations() {
       

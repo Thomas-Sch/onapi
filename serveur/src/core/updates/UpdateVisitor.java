@@ -14,6 +14,7 @@ package core.updates;
 import core.updates.components.LobbyGameReady;
 import core.updates.components.LobbyUpdateSlot;
 import core.updates.components.StandardPing;
+import core.updates.components.admin.Kicked;
 
 
 /**
@@ -32,5 +33,8 @@ public interface UpdateVisitor {
    // Salon d'attente
    void caseLobbyGameReady(LobbyGameReady update);
    void caseLobbyUpdateSlot(LobbyUpdateSlot update);
+   
+   // Administration
+   void caseKicked(Kicked update);
 
 }
