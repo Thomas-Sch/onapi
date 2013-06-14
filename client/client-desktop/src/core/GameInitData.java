@@ -19,4 +19,29 @@ public class GameInitData {
       this.players = players;
       this.game = game;
    }
+
+   public GameModel getGame() {
+      return game;
+   }
+
+   public PlayersInformations getPlayers() {
+      return players;
+   }
+
+   public Collection<String> getMessages() {
+      return messages;
+   }
+
+   public void setGame(GameModel game) {
+      this.game = game;
+   }
+
+   public void setPlayers(PlayersInformations players) {
+      this.players = players;
+   }
+
+   public void setMessages(Collection<String> messages) {
+      this.messages = messages;
+   }
+   
 }
