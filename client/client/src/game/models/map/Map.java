@@ -76,16 +76,16 @@ public class Map extends Entity {
       for (int i = 0; i < grid.length; i++) {
          for (int j = 0; j < grid[i].length; j++) {
             Tile t = grid[i][j];
-            bounds[i][j] = new Rectangle(j * Tile.WIDTH, (grid.length - i)
-                  * Tile.HEIGHT, Tile.WIDTH / 2, Tile.HEIGHT / 2);
+            bounds[i][j] = new Rectangle(j * Tile.WIDTH, (grid.length - i - 1)
+                  * Tile.HEIGHT, Tile.WIDTH, Tile.HEIGHT);
             switch (t) {
                case WALL:
                   BodyDef bodyDef = new BodyDef();
                   bodyDef.type = BodyType.StaticBody;
-                  bodyDef.position.set(bounds[i][j].x, bounds[i][j].y);
+                  bodyDef.position.set(bounds[i][j].x + bounds[i][j].width / 2, bounds[i][j].y + bounds[i][j].height / 2);
                   Body body = world.createBody(bodyDef);
                   PolygonShape shape = new PolygonShape();
-                  shape.setAsBox(bounds[i][j].width, bounds[i][j].height);
+                  shape.setAsBox(bounds[i][j].width / 2, bounds[i][j].height / 2);
                   FixtureDef fix = new FixtureDef();
                   fix.shape = shape;
                   fix.density = 0.4f;
@@ -140,7 +140,7 @@ public class Map extends Entity {
     * @return
     */
    public static Vector2 getRealPos(int i, int j) {
-      return new Vector2((0.5f + j - 1) * Tile.WIDTH, (0.5f + i) * Tile.HEIGHT);
+      return new Vector2((0.5f + j) * Tile.WIDTH, (0.5f + i) * Tile.HEIGHT);
    }
 
    @Override
@@ -165,25 +165,25 @@ public class Map extends Entity {
          for (int j = 0; j < grid[i].length; j++) {
             if (grid[i][j] == Tile.WALL) {
                // Dessine un mur
-               batch.draw(textureMur, bounds[i][j].x - Tile.WIDTH * 0.5f,
-                     bounds[i][j].y - Tile.HEIGHT * 0.5f, (float) Tile.WIDTH,
-                     (float) Tile.HEIGHT, 0f, 0f, 1f, 1f);
+               batch.draw(textureMur, bounds[i][j].x,
+                     bounds[i][j].y, bounds[i][j].width,
+                     bounds[i][j].height, 0f, 0f, 1f, 1f);
             }
             else if (grid[i][j] == Tile.EXIT) {
                // Dessine une porte
                Color previousTint = batch.getColor();
                batch.setColor(Color.GREEN);
-               batch.draw(textureSol, bounds[i][j].x - Tile.WIDTH * 0.5f,
-                     bounds[i][j].y - Tile.HEIGHT * 0.5f, (float) Tile.WIDTH,
-                     (float) Tile.HEIGHT, 0f, 0f, 8f, 8f);
+               batch.draw(textureSol, bounds[i][j].x,
+                     bounds[i][j].y, bounds[i][j].width,
+                     bounds[i][j].height, 0f, 0f, 8f, 8f);
                batch.setColor(previousTint);
 
             }
             else {
                // Dessine un sol
-               batch.draw(textureSol, bounds[i][j].x - Tile.WIDTH * 0.5f,
-                     bounds[i][j].y - Tile.HEIGHT * 0.5f, (float) Tile.WIDTH,
-                     (float) Tile.HEIGHT, 0f, 0f, 8f, 8f);
+               batch.draw(textureSol, bounds[i][j].x,
+                     bounds[i][j].y, bounds[i][j].width,
+                     bounds[i][j].height, 0f, 0f, 8f, 8f);
 
             }
          }
