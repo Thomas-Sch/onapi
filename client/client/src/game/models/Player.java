@@ -22,7 +22,9 @@ import box2dLight.RayHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
@@ -44,11 +46,16 @@ import com.badlogic.gdx.physics.box2d.World;
  * 
  */
 public class Player extends Entity {
+   public enum State {
+      IDLE, WALKING
+   }
+   
+   private static final float RUNNING_FRAME_DURATION = 1.5f;
 
    private static int lastId = 1;
    private final int id = lastId++;
 
-   private static final int WIDTH = 50;
+   private static final int WIDTH = 100;
    private static final int HEIGHT = WIDTH;
 
    public final Color TORCH_COLOR = new Color(237f / 255f, 240f / 255f,
@@ -59,6 +66,11 @@ public class Player extends Entity {
    private static final Vector2 GRAVEYARD_POS = new Vector2(-500, -500);
    private final Vector2 deadPos;
 
+   private TextureRegion playerFrame;
+   
+   /** Animations **/
+   private Animation walkLeftAnimation;
+   
    /**
     * Référence de l'équipe à laquelle appartient le personnage
     */
@@ -146,14 +158,14 @@ public class Player extends Entity {
       shape.setAsBox(bounds.height, bounds.width);
       FixtureDef fix = new FixtureDef();
       fix.shape = shape;
-      fix.density = 0.4f;
-      fix.friction = 0.5f;
-      fix.restitution = 0.8f;
+      fix.density = 0.01f;
+      fix.friction = 0.01f;
+      fix.restitution = 0.01f;
       body.createFixture(fix);
       body.setUserData(this);
 
       // Initialise les lumières diffusées par le joueur
-      pl = new PointLight(handler, 50, HALO_COLOR, PL_DISTANCE_DEFAULT, getX(), getY());
+      pl = new PointLight(handler, 100, HALO_COLOR, PL_DISTANCE_DEFAULT, getX(), getY());
       
       pl.attachToBody(body, 0, 0);
             
@@ -168,6 +180,14 @@ public class Player extends Entity {
 
    public void loadResources() {
       texture = new Texture(Gdx.files.internal("data/sprite1_perso.png"));
+      TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("data/player.atlas"));
+
+      TextureRegion[] playerWalk = new TextureRegion[5];
+      for (int i = 0; i < 5; i++) {
+         playerWalk[i] = atlas.findRegion("player" + (i+1));
+      }
+      walkLeftAnimation = new Animation(RUNNING_FRAME_DURATION, playerWalk);
+
    }
    
    public PointLight getPointLight(){
@@ -235,6 +255,7 @@ public class Player extends Entity {
 
    @Override
    public void update(float deltaTime) {
+
       body.setTransform(getPos(), getRotation() * ((float) Math.PI) / 180f);
       getSkill().update(deltaTime);
    }
@@ -243,12 +264,18 @@ public class Player extends Entity {
       weapon.shoot(delta);
    }
 
+   private int state = 0;
+   
+   public void incrementState(){
+      state++;
+   }
+   
    @Override
    public void draw(SpriteBatch batch, float parentAlpha) {
       super.draw(batch, parentAlpha);
 
       // Affecte le sprite pour l'utilisateur
-      TextureRegion region = new TextureRegion(texture, 0, 0, 256, 256);
+//      TextureRegion region = new TextureRegion(texture, 0, 0, 256, 256);
 
       int textureWidth = texture.getWidth();
       int textureHeight = texture.getHeight();
@@ -259,16 +286,21 @@ public class Player extends Entity {
 
       Color previousTint = batch.getColor();
       batch.setColor(team.getColor());
+      
 
+      playerFrame = walkLeftAnimation.getKeyFrame(state % 5, true);
+//      spriteBatch.draw(bobFrame, bob.getPosition().x * ppuX, bob.getPosition().y * ppuY, Bob.SIZE * ppuX, Bob.SIZE * ppuY);
+   
+      
       // Dessiner à l'écran le joueur
-      batch.draw(region, getPos().x - texture.getWidth() / 2, getPos().y
+      batch.draw(playerFrame, getPos().x - texture.getWidth() / 2, getPos().y
             - texture.getHeight() / 2, textureWidth / 2f, textureHeight / 2f,
             textureWidth, textureHeight, getWidth() / textureWidth, getHeight()
-                  / textureHeight, getRotation(), false);
+                  / textureHeight, getRotation()+180, false);
 
       batch.setColor(previousTint);
    }
-
+   
    @Override
    public void debugRender(ShapeRenderer renderer) {
 
