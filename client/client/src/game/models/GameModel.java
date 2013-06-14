@@ -100,7 +100,7 @@ public class GameModel {
             map.getExitPos().x, map.getExitPos().y));
 
       // Fait commencer le joueur au milieu de la map
-      player = new Player(Map.getRealPos(0, 0), new Vector2(0f, 1f), teams[0],
+      player = new Player(map.getRealPos(0, 0), new Vector2(0f, 1f), teams[0],
             new DefaultWeapon(), new DefaultSkill(), new DefaultBonus(), world,
             rayHandler);
       player.getWeapon().createBullet(world, entities, rayHandler);
@@ -108,7 +108,7 @@ public class GameModel {
 
       // Ajoute d'autres joueurs
       for (int i = 0; i < 14; i++) {
-         Player other = new Player(Map.getRealPos(0, 0), new Vector2(-1f, -1f),
+         Player other = new Player(map.getRealPos(0, 0), new Vector2(-1f, -1f),
                teams[0], new DefaultWeapon(), new DefaultSkill(),
                new DefaultBonus(), world, rayHandler);
          other.getWeapon().createBullet(world, entities, rayHandler);
@@ -116,7 +116,7 @@ public class GameModel {
          entities.addActor(other);
       }
       for (int i = 0; i < 15; i++) {
-         Player other = new Player(Map.getRealPos(0, 0), new Vector2(-1f, -1f),
+         Player other = new Player(map.getRealPos(0, 0), new Vector2(-1f, -1f),
                teams[1], new DefaultWeapon(), new DefaultSkill(),
                new DefaultBonus(), world, rayHandler);
          entities.addActor(other);
