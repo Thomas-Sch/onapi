@@ -149,13 +149,13 @@ public class InputController {
                   && !(i == playerCaseY && playerCaseX == j)) {
                game.getPlayer().getRectangle().x += moveSpeedX;
                game.getPlayer().getRectangle().x += moveSpeedY;
-               System.out.println("Test du rectangle "
-                     + game.getPlayer().getRectangle().getX() + " "
-                     + game.getPlayer().getRectangle().getY() + " avec "
-                     + game.getMap().getRectangle(i, j).getX() + " "
-                     + game.getMap().getRectangle(i, j).getY());
-               System.out.println("Fin rectangle:"
-                     + game.getMap().getRectangle(i, j).width);
+//               System.out.println("Test du rectangle "
+//                     + game.getPlayer().getRectangle().getX() + " "
+//                     + game.getPlayer().getRectangle().getY() + " avec "
+//                     + game.getMap().getRectangle(i, j).getX() + " "
+//                     + game.getMap().getRectangle(i, j).getY());
+//               System.out.println("Fin rectangle:"
+//                     + game.getMap().getRectangle(i, j).width);
                if (Intersector.overlapRectangles(game.getMap().getRectangle(i, j), game.getPlayer()
                      .getRectangle())) {
                   return true;
@@ -197,7 +197,17 @@ public class InputController {
       if (Vector2.tmp.x != 0 || Vector2.tmp.y != 0)
          game.getPlayer().move(Vector2.tmp);
       }
-
+      
+//      {
+//         int x = 1 + (int) Math
+//            .floor((game.getPlayer().getX() - 0.5f * Tile.WIDTH) / Tile.WIDTH);
+//         int y = (int) Math
+//            .floor((game.getPlayer().getY() - 0.5f * Tile.HEIGHT) / Tile.HEIGHT);
+//         if(game.getMap().getGrid()[y][x] == Tile.EXIT){
+//            System.out.println("Le player vient de sortir !!");
+//         }
+//
+//      }
       if (getActionState(Action.TORCH)) {
          game.getPlayer().toggleTorch();
          setActionState(InputController.Action.TORCH, false);
