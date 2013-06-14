@@ -66,7 +66,12 @@ public class Player extends Entity {
    private TextureRegion playerFrame;
 
    /** Animations **/
-   private Animation walkLeftAnimation;
+   private Animation walkAnimation;
+   private boolean isMoving = false;
+   private float lastFrameUpdate = 0.0f;
+   private float currentTime = 0.0f;
+   private static final int NB_FRAMES_ANIMATION = 5;
+   private static final float ANIMATION_DURATION = 0.3f; // en [s]
 
    /**
     * Référence de l'équipe à laquelle appartient le personnage
@@ -126,14 +131,12 @@ public class Player extends Entity {
    private Rectangle bounds;
    private PointLight pl;
 
-   private Vector2 lastPos;
    public final static int PL_DISTANCE_DEFAULT = Tile.WIDTH - 50;
 
    public Player(Vector2 pos, Vector2 dir, Team team, Weapon weapon,
          Skill skill, Bonus bonus, World world, RayHandler handler) {
       super();
 
-      lastPos = new Vector2();
       setWidth(WIDTH);
       setHeight(HEIGHT);
       bounds = new Rectangle(pos.x, pos.y, getWidth() / 2, getHeight() / 2);
@@ -188,7 +191,7 @@ public class Player extends Entity {
       for (int i = 0; i < 5; i++) {
          playerWalk[i] = atlas.findRegion("player" + (i + 1));
       }
-      walkLeftAnimation = new Animation(RUNNING_FRAME_DURATION, playerWalk);
+      walkAnimation = new Animation(RUNNING_FRAME_DURATION, playerWalk);
 
    }
 
@@ -215,10 +218,9 @@ public class Player extends Entity {
     */
    public void moveTo(Vector2 newPos) {
       setPosition(newPos.x - bounds.width / 2f, newPos.y - bounds.height / 2f);
-      lastPos.x = getX();
-      lastPos.y = getY();
       bounds.x = newPos.x;
       bounds.y = newPos.y;
+      isMoving = true;
    }
 
    /**
@@ -231,6 +233,7 @@ public class Player extends Entity {
       setPosition(getX() + dir.x, getY() + dir.y);
       bounds.x += dir.x;
       bounds.y += dir.y;
+      isMoving = true;
    }
 
    /**
@@ -259,20 +262,31 @@ public class Player extends Entity {
 
    @Override
    public void update(float deltaTime) {
-      if (lastPos.x != getX() || lastPos.y != getY()) state++;
+      updateAnimation(deltaTime);
       body.setTransform(getPos(), getRotation() * ((float) Math.PI) / 180f);
       getSkill().update(deltaTime);
+   }
+
+   private void updateAnimation(float deltaTime) {
+      currentTime += deltaTime;
+      if (currentTime - lastFrameUpdate > ANIMATION_DURATION
+            / NB_FRAMES_ANIMATION) {
+         if (isMoving) {
+            animationFrameIndex = (animationFrameIndex + 1) % NB_FRAMES_ANIMATION;
+            isMoving = false;
+         }
+         else {
+            animationFrameIndex = 0;
+         }
+         lastFrameUpdate = currentTime;
+      }
    }
 
    public void shoot(float delta) {
       weapon.shoot(delta);
    }
 
-   private int state = 0;
-
-   public void incrementState() {
-      state++;
-   }
+   private int animationFrameIndex = 0;
 
    @Override
    public void draw(SpriteBatch batch, float parentAlpha) {
@@ -291,7 +305,7 @@ public class Player extends Entity {
       Color previousTint = batch.getColor();
       batch.setColor(team.getColor());
 
-      playerFrame = walkLeftAnimation.getKeyFrame(state % 5, true);
+      playerFrame = walkAnimation.getKeyFrame(animationFrameIndex, true);
 
       // Dessiner à l'écran le joueur
       batch.draw(playerFrame, getPos().x - texture.getWidth() / 2, getPos().y
@@ -300,8 +314,6 @@ public class Player extends Entity {
                   / textureHeight, getRotation() + 180, false);
 
       batch.setColor(previousTint);
-      lastPos.x = getX();
-      lastPos.y = getY();
    }
 
    @Override
