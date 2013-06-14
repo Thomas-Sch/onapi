@@ -22,7 +22,7 @@ import core.PlayerInfo;
 import core.PlayersInformations;
 
 /**
- * 
+ *  
  * TODO
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire

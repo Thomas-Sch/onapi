@@ -11,12 +11,10 @@
  */
 package client;
 
-import game.models.GameModel;
-import gui.component.JPlayerList;
 import common.components.lobby.PlayerStatus;
 import common.connections.Channel;
-import common.connections.exceptions.ProtocolException;
 import common.connections.protocol.ProtocolType;
+
 import core.PlayerInfo;
 import core.PlayersInformations;
 
