@@ -1,5 +1,5 @@
 /* ============================================================================
- * Nom du fichier   : GameController.java
+ * Nom du fichier   : InputController.java
  * ============================================================================
  * Date de création : 1 mai 2013
  * ============================================================================
@@ -33,7 +33,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  * @author Schweizer Thomas
  * 
  */
-public class GameController {
+public class InputController {
 
    /**
     * Modèle du jeu à contrôler
@@ -105,7 +105,7 @@ public class GameController {
     * @param game
     *           Modèle du jeu en lui-même
     */
-   public GameController(GameModel game) {
+   public InputController(GameModel game) {
       this.game = game;
    }
 
@@ -200,7 +200,7 @@ public class GameController {
 
       if (getActionState(Action.TORCH)) {
          game.getPlayer().toggleTorch();
-         setActionState(GameController.Action.TORCH, false);
+         setActionState(InputController.Action.TORCH, false);
       }
       if (getActionState(Action.FIRE)) {
          game.getPlayer().shoot(delta);
