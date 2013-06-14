@@ -17,7 +17,6 @@ import game.models.Team;
 
 import java.util.LinkedList;
 
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -54,6 +53,7 @@ public class Map extends Entity {
    private LinkedList<Spawner> spawners = new LinkedList<Spawner>();
    private Body[][] wallBodies;
    private Rectangle[][] bounds;
+   private Vector2 exitPos;
 
    public void loadResources() {
       textureSol = new Texture(Gdx.files.internal("data/sol.png"));
@@ -67,33 +67,42 @@ public class Map extends Entity {
       MazeGenerator generator = new MazeGenerator();
       setGrid(generator.generateMaze(teams.length * 3));
       spawners = generator.generateSpawners(teams);
+
       // Définit la consistance physique des murs
       wallBodies = new Body[grid.length][grid.length];
       bounds = new Rectangle[grid.length][grid.length];
 
+      // Initialise les murs et la sortie
       for (int i = 0; i < grid.length; i++) {
          for (int j = 0; j < grid[i].length; j++) {
             Tile t = grid[i][j];
             bounds[i][j] = new Rectangle(j * Tile.WIDTH, (grid.length - i)
                   * Tile.HEIGHT, Tile.WIDTH / 2, Tile.HEIGHT / 2);
-            if (t == Tile.WALL) {
-               BodyDef bodyDef = new BodyDef();
-               bodyDef.type = BodyType.StaticBody;
-               bodyDef.position.set(bounds[i][j].x, bounds[i][j].y);
-               Body body = world.createBody(bodyDef);
-               PolygonShape shape = new PolygonShape();
-               shape.setAsBox(bounds[i][j].width, bounds[i][j].height);
-               FixtureDef fix = new FixtureDef();
-               fix.shape = shape;
-               fix.density = 0.4f;
-               fix.friction = 0.5f;
-               fix.restitution = 0.8f;
-               body.createFixture(fix);
-               wallBodies[i][j] = body;
-               // body.setTransform(0, bounds[i][j].y,0);
-
-               body.setUserData(Tile.WALL);
+            switch (t) {
+               case WALL:
+                  BodyDef bodyDef = new BodyDef();
+                  bodyDef.type = BodyType.StaticBody;
+                  bodyDef.position.set(bounds[i][j].x, bounds[i][j].y);
+                  Body body = world.createBody(bodyDef);
+                  PolygonShape shape = new PolygonShape();
+                  shape.setAsBox(bounds[i][j].width, bounds[i][j].height);
+                  FixtureDef fix = new FixtureDef();
+                  fix.shape = shape;
+                  fix.density = 0.4f;
+                  fix.friction = 0.5f;
+                  fix.restitution = 0.8f;
+                  body.createFixture(fix);
+                  wallBodies[i][j] = body;
+                  // body.setTransform(0, bounds[i][j].y,0);
+                  body.setUserData(Tile.WALL);
+                  break;
+               case EXIT:
+                  exitPos = getRealPos(i, j);
+                  break;
+               default:
+                  break;
             }
+
          }
       }
 
@@ -116,6 +125,12 @@ public class Map extends Entity {
    public Rectangle getRectangle(int i, int j) {
       return bounds[i][j];
    }
+   /**
+    * @return Position réelle de la porte de sortie
+    */
+   public Vector2 getExitPos() {
+      return exitPos;
+   }
 
    /**
     * Retourne les coordonnées du centre de la case voulue sur la map
@@ -125,7 +140,7 @@ public class Map extends Entity {
     * @return
     */
    public static Vector2 getRealPos(int i, int j) {
-      return new Vector2((0.5f + i) * Tile.WIDTH, (0.5f + j) * Tile.HEIGHT);
+      return new Vector2((0.5f + j - 1) * Tile.WIDTH, (0.5f + i) * Tile.HEIGHT);
    }
 
    @Override
