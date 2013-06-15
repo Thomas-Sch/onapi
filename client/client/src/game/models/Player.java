@@ -19,6 +19,8 @@ import box2dLight.ConeLight;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 
+import client.GameInitData;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -177,6 +179,11 @@ public class Player extends Entity {
       deadPos = new Vector2(GRAVEYARD_POS.x + pos.x, GRAVEYARD_POS.y + pos.y);
    }
 
+   @Override
+   public void init(GameInitData initData) {
+      // TODO Auto-generated method stub
+   }
+   
    public void loadResources() {
       texture = new Texture(Gdx.files.internal("data/sprite1_perso.png"));
       TextureAtlas atlas = new TextureAtlas(

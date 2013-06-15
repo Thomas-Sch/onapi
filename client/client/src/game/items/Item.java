@@ -11,6 +11,7 @@
  */
 package game.items;
 
+import client.GameInitData;
 import game.models.Entity;
 import game.models.Player;
 
@@ -55,5 +56,8 @@ public abstract class Item extends Entity {
    protected float getCooldown() {
       return cooldown;
    }
+   
+   @Override
+   public void init(GameInitData initData) { }
    
 }

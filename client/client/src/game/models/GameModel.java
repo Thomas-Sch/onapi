@@ -127,27 +127,23 @@ public class GameModel {
 
       // Créer les contact listener
       createCollisionListener();
+      
+      for (Actor e : entities.getChildren()) {
+         ((Entity) e).init(initData);
+      }
    }
 
    private void createCollisionListener() {
       world.setContactListener(new ContactListener() {
 
          @Override
-         public void preSolve(Contact contact, Manifold oldManifold) {
-
-         }
+         public void preSolve(Contact contact, Manifold oldManifold) { }
 
          @Override
-         public void postSolve(Contact contact, ContactImpulse impulse) {
-            // TODO Auto-generated method stub
-
-         }
+         public void postSolve(Contact contact, ContactImpulse impulse) { }
 
          @Override
-         public void endContact(Contact contact) {
-            // TODO Auto-generated method stub
-
-         }
+         public void endContact(Contact contact) { }
 
          @Override
          public void beginContact(Contact contact) {

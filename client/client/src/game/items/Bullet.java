@@ -14,6 +14,8 @@ package game.items;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 
+import client.GameInitData;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -100,6 +102,11 @@ public class Bullet extends Entity {
       setY(startY);
    }
 
+   @Override
+   public void init(GameInitData initData) {
+      // TODO Auto-generated method stub
+   }
+   
    @Override
    public void debugRender(ShapeRenderer renderer) {
       // TODO Auto-generated method stub

@@ -17,6 +17,8 @@ import game.models.Team;
 
 import java.util.LinkedList;
 
+import client.GameInitData;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -112,6 +114,11 @@ public class Map extends Entity {
       System.out.println("Generated map :\n" + this);
    }
 
+   @Override
+   public void init(GameInitData initData) {
+      // TODO Auto-generated method stub
+   }
+   
    public Tile[][] getGrid() {
       return grid;
    }

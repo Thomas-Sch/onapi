@@ -15,6 +15,8 @@ import game.models.map.Tile;
 import box2dLight.PointLight;
 import box2dLight.RayHandler;
 
+import client.GameInitData;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -71,6 +73,11 @@ public class Exit extends Entity {
 
    public void loadResources() {
       texture = new Texture(Gdx.files.internal("data/exit.png"));
+   }
+
+   @Override
+   public void init(GameInitData initData) {
+      // TODO Auto-generated method stub
    }
 
    @Override
