@@ -136,8 +136,8 @@ public class InputController {
       Map map = game.getMap();
       Tile[][] grid = map.getGrid();
       int n = grid.length;
-      moveSpeedX = moveSpeedX * 3 + 3;
-      moveSpeedY = moveSpeedY * 3 + 3;
+      moveSpeedX = moveSpeedX * 4 + 1;
+      moveSpeedY = moveSpeedY * 4 + 1;
 
       // Position du joueur dans la grille
       int pX = (int) Math.floor(game.getPlayer().getX() / Tile.WIDTH);
@@ -149,16 +149,23 @@ public class InputController {
             + moveSpeedY
             - (game.getPlayer().getWidth() + 10) / 2, 50, 50);
 
+
+      if(nextRectPlayer.x < Tile.WIDTH || nextRectPlayer.x+nextRectPlayer.width> (n-1)*Tile.WIDTH ||
+            nextRectPlayer.y < Tile.HEIGHT || nextRectPlayer.y + nextRectPlayer.height > Tile.HEIGHT*(n-1))
+         return true;
       for (int i = pY - 1; i <= pY + 1; i++) {
          for (int j = pX - 1; j <= pX + 1; j++) {
             if (i > 0 && i < game.getMap().getGrid().length && j > 0
                   && j < game.getMap().getGrid().length
                   && !(i == pY && pX == j)) {
                if (map.getGrid()[i][j] == Tile.WALL) {
+                  
+                  //applique une correction si x et y % tile.width/height
+                  if(direction == Action.RIGHT && nextRectPlayer.x + nextRectPlayer.width % Tile.WIDTH == 0) {
+                    return true;
+                  }
                   // Teste les collisions entre le joueur et les murs à tester
-                  if (nextRectPlayer.x == map.getWallBounds(i, j).x
-                        || nextRectPlayer.y == map.getWallBounds(i, j).y
-                        || nextRectPlayer.overlaps(map.getWallBounds(i, j))) {
+                  if (nextRectPlayer.overlaps(map.getWallBounds(i, j))) {
                      return true;
                   }
                }
