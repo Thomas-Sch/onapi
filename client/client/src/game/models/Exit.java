@@ -88,21 +88,8 @@ public class Exit extends Entity {
 
    public void draw(SpriteBatch batch, float parentAlpha) {
       // Dessine une porte
-      /*
-       * TextureRegion region = new TextureRegion(texture, 0, 0, 284, 426);
-       * 
-       * // Dessiner à l'écran le joueur batch.draw(region, getX() -
-       * texture.getWidth() / 2, getY() - texture.getHeight() / 2,
-       * texture.getWidth() / 2f, texture.getHeight() / 2f, texture.getWidth(),
-       * texture.getHeight(), getWidth() / texture.getWidth(), getHeight() /
-       * texture.getHeight(), getRotation(), false);
-       */
       batch.draw(texture, getX() - getWidth() / 2, getY() - getHeight() / 2,
             getWidth(), getHeight(), 0, 0, 1, 1);
-
-      // Dessiner à l'écran le joueur
-      // batch.draw(texture, getX(), getY(), getWidth(), getHeight(),
-      // getWidth(), getHeight(), 1f, 1f);
    }
 
 }

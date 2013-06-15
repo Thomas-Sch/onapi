@@ -54,7 +54,6 @@ public class Bullet extends Entity {
 
    private float speed;
    private float distance;
-   private Vector2 dir = new Vector2();
    private Vector2 increment = new Vector2();
 
    public Bullet(World world, Weapon weapon, float startX, float startY,
@@ -66,18 +65,17 @@ public class Bullet extends Entity {
       this.weapon = weapon;
       this.active = false;
       this.speed = speed;
-      setWidth(15f);
-      setHeight(10f);
+      setWidth(30f);
+      setHeight(20f);
       setPosition(startX, startY);
 
       // Définit la consistance physique de la balle
       BodyDef bodyDef = new BodyDef();
       bodyDef.type = BodyType.KinematicBody;
       bodyDef.position.set(getX(), getY());
-
       body = world.createBody(bodyDef);
       PolygonShape shape = new PolygonShape();
-      shape.setAsBox(getHeight(), getWidth());
+      shape.setAsBox(getHeight() / 2, getWidth() / 2);
       FixtureDef fix = new FixtureDef();
       fix.shape = shape;
       fix.density = 0.4f;
@@ -137,9 +135,10 @@ public class Bullet extends Entity {
          TextureRegion textureBullet = new TextureRegion(texture, 0, 0, 162,
                256);
          // Dessiner à l'écran la balle
-         batch.draw(textureBullet, getX(), getY(), 0, 0, texture.getWidth(),
-               texture.getHeight(), getWidth() / texture.getWidth(),
-               getHeight() / texture.getHeight(), getRotation() - 90, false);
+         batch.draw(textureBullet, getX() - getWidth() / 2, getY() - getWidth()
+               / 2, 0, 0, texture.getWidth(), texture.getHeight(), getWidth()
+               / texture.getWidth(), getHeight() / texture.getHeight(),
+               getRotation() - 90, false);
 
       }
    }
@@ -163,8 +162,8 @@ public class Bullet extends Entity {
       setPosition(startX, startY);
       this.increment.set(dirX, dirY).nor().mul(speed * UPDATE_RATE);
       setRotation(increment.angle() + 90);
-//      setX(startX + this.dir.x * 10);
-//      setY(startY + this.dir.y * 10);
+      // setX(startX + this.dir.x * 10);
+      // setY(startY + this.dir.y * 10);
       this.distance = 0.0f;
       this.lastUpdate = 0;
       this.active = true;

@@ -32,7 +32,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 public class DefaultWeapon extends Weapon {
 
    public DefaultWeapon() {
-      setCooldown(0.2f);
+      setCooldown(0.02f);
    }
 
    public void createBullet(World world, Group group, RayHandler handler) {
