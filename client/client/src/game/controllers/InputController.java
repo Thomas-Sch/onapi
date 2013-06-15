@@ -141,7 +141,7 @@ public class InputController {
       Tile[][] grid = map.getGrid();
       int n = grid.length;
       moveSpeedX *=3;
-      moveSpeedY *=3;
+      moveSpeedY = moveSpeedY*3+2;
 
       // Position du joueur dans la grille
       int pX = (int) Math.floor(game.getPlayer().getX() / Tile.WIDTH);
