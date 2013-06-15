@@ -14,6 +14,7 @@ package gui.view;
 import gui.component.JLabelPasswordPanel;
 import gui.component.JLabelTextPanel;
 import gui.component.JValidateCancel;
+import gui.utils.LoginInfo;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -109,19 +110,19 @@ public class JLogin extends JFrame{
       vclActions.addCancelListener(listener);
    }
    
-   public String getLogin() {
+   private String getLogin() {
       return ltpLogin.getText();
    }
    
-   public String getPassword() {
+   private String getPassword() {
       return lppPassword.getText();
    }
    
-   public String getServerAdress() {
+   private String getServerAdress() {
       return ltpServerAdress.getText();
    }
    
-   public String getServerPort() {
+   private String getServerPort() {
       return ltpServerPort.getText();
    }
    
@@ -132,5 +133,9 @@ public class JLogin extends JFrame{
    public void setMessage(String message, Color color) {
       lblMessage.setForeground(color);
       lblMessage.setText(message);
+   }
+   
+   public LoginInfo getLoginInfo() {
+      return new LoginInfo(getServerAdress(), getServerPort(), getLogin(), getPassword());
    }
 }

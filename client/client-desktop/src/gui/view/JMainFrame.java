@@ -56,7 +56,7 @@ public class JMainFrame extends JFrame {
    }
    
    public void initContent() {
-      lbiUserGreeting = new JLabelInfo("Bienvenue !" + controller.getUserName());
+      lbiUserGreeting = new JLabelInfo("Bienvenue ! " + controller.getUserName());
       btnPlay = new JButton(Text.PLAY_BUTTON.toString());
       btnInventory = new JButton(Text.INVENTORY_BUTTON.toString());
    }
