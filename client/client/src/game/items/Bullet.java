@@ -42,46 +42,38 @@ import game.models.Player;
  */
 public class Bullet extends Entity {
 
-   private static final float UPDATE_RATE = 1 / 60f;
+   private static final float UPDATE_RATE = 1 / 120f;
 
-   private float posX;
-   private float posY;
-   private float startX;
-   private float startY;
-   private float speed;
    protected Body body;
    private Texture texture;
    private float lastUpdate;
    private float length;
    private boolean active;
    private PointLight pl;
-   private Vector2 dir;
    private Weapon weapon;
 
-   public Vector2 getPos() {
-      return dir;
-   }
+   private float speed;
+   private float distance;
+   private Vector2 dir = new Vector2();
+   private Vector2 increment = new Vector2();
 
    public Bullet(World world, Weapon weapon, float startX, float startY,
          float x, float y, float lenght, float speed, RayHandler handler,
          Player player) {
-      this.dir = new Vector2(posX / speed, posY / speed);
-      this.posX = 0;
-      this.posY = 0;
+      this.increment.set(x - startX, y - startY).nor().mul(speed * UPDATE_RATE);
       this.length = lenght;
-      this.speed = speed;
-      this.startX = startX;
-      this.startY = startY;
       this.lastUpdate = 0;
       this.weapon = weapon;
       this.active = false;
+      this.speed = speed;
       setWidth(15f);
       setHeight(10f);
+      setPosition(startX, startY);
 
       // Définit la consistance physique de la balle
       BodyDef bodyDef = new BodyDef();
       bodyDef.type = BodyType.KinematicBody;
-      bodyDef.position.set(getPos());
+      bodyDef.position.set(getX(), getY());
 
       body = world.createBody(bodyDef);
       PolygonShape shape = new PolygonShape();
@@ -106,7 +98,7 @@ public class Bullet extends Entity {
    public void init(GameInitData initData) {
       // TODO Auto-generated method stub
    }
-   
+
    @Override
    public void debugRender(ShapeRenderer renderer) {
       // TODO Auto-generated method stub
@@ -125,15 +117,14 @@ public class Bullet extends Entity {
          for (int i = 0; i < Math.floor(current / UPDATE_RATE); ++i)
             if (active) {
                this.pl.setActive(true);
-               if (Math.sqrt(posX * posX + posY * posY) > length)
+               if (distance > length)
                   deactivate();
                else {
+                  setX(getX() + increment.x);
+                  setY(getY() + increment.y);
                   body.setTransform(getX(), getY(), getRotation()
                         * ((float) Math.PI) / 180f);
-                  posX += speed / 10 * (dir.x + 5);
-                  posY += speed / 10 * (dir.y + 5);
-                  setX(startX + posX);
-                  setY(startY + posY);
+                  distance += increment.len();
                }
             }
          lastUpdate = current;
@@ -168,16 +159,13 @@ public class Bullet extends Entity {
       this.active = false;
    }
 
-   public void activate(float startX, float startY, float posX, float posY) {
-      this.posX = 0;
-      this.posY = 0;
-      this.dir.x = posX / speed;
-      this.dir.y = posY / speed;
-      setRotation(dir.angle() + 90);
-      this.startX = startX;
-      this.startY = startY;
-      setX(startX + this.dir.x * 10);
-      setY(startY + this.dir.y * 10);
+   public void activate(float startX, float startY, float dirX, float dirY) {
+      setPosition(startX, startY);
+      this.increment.set(dirX, dirY).nor().mul(speed * UPDATE_RATE);
+      setRotation(increment.angle() + 90);
+//      setX(startX + this.dir.x * 10);
+//      setY(startY + this.dir.y * 10);
+      this.distance = 0.0f;
       this.lastUpdate = 0;
       this.active = true;
    }

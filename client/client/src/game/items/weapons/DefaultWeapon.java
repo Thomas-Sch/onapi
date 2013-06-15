@@ -36,7 +36,7 @@ public class DefaultWeapon extends Weapon {
    }
 
    public void createBullet(World world, Group group, RayHandler handler) {
-      this.bullet = new Bullet(world, this, 0f, 0f, 0f, 0f, 600f, 0.8f,
+      this.bullet = new Bullet(world, this, 0f, 0f, 0f, 0f, 750f, 200f,
             handler, getOwner());
       group.addActor(bullet);
    }
@@ -44,7 +44,7 @@ public class DefaultWeapon extends Weapon {
    @Override
    public void onHit(Player target) {
       if (bullet.isActive()) {
-         target.damage(10);
+         target.damage(25);
          System.out.println("target hit");
          bullet.deactivate();
       }

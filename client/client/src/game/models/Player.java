@@ -368,7 +368,7 @@ public class Player extends Entity {
    public void damage(int damagePoints) {
       hp -= damagePoints;
       System.out.println(this + "\t : HP = " + hp);
-      if (hp < 0) die();
+      if (hp <= 0) die();
    }
 
    public void die() {

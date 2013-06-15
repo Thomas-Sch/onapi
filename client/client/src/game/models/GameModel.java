@@ -79,6 +79,8 @@ public class GameModel {
    private Team[] teams;
 
    private RayHandler rayHandler;
+   
+   private boolean isLightingActive = true;
 
    public GameModel(GameInitData initData) {
       this.initData = initData;
@@ -279,6 +281,20 @@ public class GameModel {
    public void executeDevCheat() {
       System.out.println("CHEAT");
       player.moveTo(map.getExitPos());
+   }
+
+   /**
+    * @return the isLightingActive
+    */
+   public boolean isLightingActive() {
+      return isLightingActive;
+   }
+
+   /**
+    * @param isLightingActive the isLightingActive to set
+    */
+   public void setLightingActive(boolean isLightingActive) {
+      this.isLightingActive = isLightingActive;
    }
 
 }
