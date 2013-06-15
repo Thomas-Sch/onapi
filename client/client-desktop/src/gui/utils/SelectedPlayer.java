@@ -34,6 +34,8 @@ public class SelectedPlayer {
    
    public void setPlayerServerId(int playerServerId) {
       this.playerServerId = playerServerId;
+      
+      System.out.println("DEBUG - selected id : " + playerServerId);
    }
 
 }

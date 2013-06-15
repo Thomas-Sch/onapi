@@ -422,12 +422,12 @@ public class ClientRequestProtocol {
    /**
     * Demande au serveur d'éjecter le joueur de l'emplacement donné.
     * 
-    * @param slot
-    *           - le numéro d'emplacement du joueur.
+    * @param userId
+    *           - l'identifiant de l'utilisateur.
     * @param kickMessage
     *           - le message à communiqué au joueur exclus.
     */
-   public void adminKickPlayer(int slot, String kickMessage) {
+   public void adminKickPlayer(int userId, String kickMessage) {
 
       if (!initDone) {
          throw new ProtocolException(
@@ -438,9 +438,9 @@ public class ClientRequestProtocol {
          requestChannel.sendProtocolType(ProtocolType.ADMIN_KICK);
 
          if (isRequestAccepted(ProtocolType.ADMIN_KICK)) {
-            requestChannel.sendInt(slot);
+            requestChannel.sendInt(userId);
             requestChannel.sendString(kickMessage);
-            Logs.messages.push("Kick player at slot number : " + slot);
+            Logs.messages.push("Kick player with id : " + userId);
             Logs.messages.push("With message : " + kickMessage);
          }
          else {

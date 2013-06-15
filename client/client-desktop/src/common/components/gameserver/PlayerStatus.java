@@ -97,6 +97,7 @@ public class PlayerStatus extends ObservableComponent implements Serializable {
     */
    public void setLeft() {
       if (!isFree()) {
+         playerId = -1;
          name = "";
          setChangedAndNotifyObservers(this);
       }

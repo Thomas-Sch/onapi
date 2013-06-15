@@ -28,6 +28,8 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -78,8 +80,7 @@ public class JAdminFrame extends JDialog implements Observer {
       pltUsersAll.addListSelectionListener(new ListSelectionListener() {
          @Override
          public void valueChanged(ListSelectionEvent e) {
-            selectedPlayer.setPlayerServerId(pltPlayersServer.getSelectedValue().getPlayerId());
-            System.out.println("DEBUG - new selected id (all) : " + selectedPlayer.getPlayerServerId());
+            selectedPlayer.setPlayerServerId(pltUsersAll.getSelectedValue().getUserId());
          }
       });
       
@@ -87,7 +88,35 @@ public class JAdminFrame extends JDialog implements Observer {
          @Override
          public void valueChanged(ListSelectionEvent e) {
             selectedPlayer.setPlayerServerId(pltPlayersServer.getSelectedValue().getPlayerId());
-            System.out.println("DEBUG - new selected slot (server) : " + selectedPlayer.getPlayerServerId());
+         }
+      });
+      
+      tpePlayerLists.addChangeListener(new ChangeListener() {
+         @Override
+         public void stateChanged(ChangeEvent arg0) {
+            switch( tpePlayerLists.getSelectedIndex()) {
+               case 0 :
+                  UserInfo userInfo = pltUsersAll.getSelectedValue();
+                  
+                  if (userInfo == null) {
+                     selectedPlayer.setPlayerServerId(-1);
+                  }
+                  else {
+                     selectedPlayer.setPlayerServerId(userInfo.getUserId());
+                  }
+                  break;
+                  
+               case 1 :
+                  PlayerInfo playerInfo = pltPlayersServer.getSelectedValue();
+                  
+                  if (playerInfo == null) {
+                     selectedPlayer.setPlayerServerId(-1);
+                  }
+                  else {
+                     selectedPlayer.setPlayerServerId(playerInfo.getPlayerId());
+                  }
+                  break;
+            }
          }
       });
    }

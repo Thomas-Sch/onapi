@@ -70,19 +70,25 @@ public class ServerStandardReceiveProtocol {
          user.log.push("Trying to kick playser with " + id + ".");
       }
       
-      UserInformations kickedUser = core.adminKick(id);
-      
-      if (kickedUser != null) {
-         kickedUser.serverUpdate.pushUpdate(new Kicked(message));
+      // Vérification, on ne peut s'éjecter soi-même
+      if (id != user.account.getId()) {
+         UserInformations kickedUser = core.adminKick(id);
          
-         if (Settings.DEBUG_MODE_ON) {
-            user.log.push("Matching player kicked.");
+         if (kickedUser != null) {
+            kickedUser.serverUpdate.pushUpdate(new Kicked(message));
+            
+            if (Settings.DEBUG_MODE_ON) {
+               user.log.push("Matching player kicked.");
+            }
+         }
+         else {
+            if (Settings.DEBUG_MODE_ON) {
+               user.log.push("Kick request fail, no matching player.");
+            }
          }
       }
       else {
-         if (Settings.DEBUG_MODE_ON) {
-            user.log.push("Kick request fail, no matching player.");
-         }
+         user.log.push("Tried to kick itself...");
       }
       
    }

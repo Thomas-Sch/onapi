@@ -12,5 +12,6 @@
   <password_label>Mot de passe</password_label>
   <server_adress_label>Adresse ip du serveur</server_adress_label>
   <server_port_label>Port du serveur</server_port_label>
+  <slot_free>libre</slot_free>
   <ready_label>Prêt ?</ready_label>
 </language>

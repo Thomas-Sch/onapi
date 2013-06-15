@@ -12,5 +12,6 @@
   <password_label>TODO</password_label>
   <server_adress_label>TODO</server_adress_label>
   <server_port_label>TODO</server_port_label>
+  <slot_free>TODO</slot_free>
   <ready_label>TODO</ready_label>
 </language>
