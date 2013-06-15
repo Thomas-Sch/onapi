@@ -11,8 +11,6 @@
  */
 package game.items.skills;
 
-import com.badlogic.gdx.graphics.Color;
-
 import game.items.Skill;
 import game.models.Player;
 

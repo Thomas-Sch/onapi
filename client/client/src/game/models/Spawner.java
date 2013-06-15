@@ -11,10 +11,9 @@
  */
 package game.models;
 
-import com.badlogic.gdx.math.Vector2;
-
 import game.models.map.Map;
-import game.models.map.Tile;
+
+import com.badlogic.gdx.math.Vector2;
 
 /**
  * TODO
@@ -28,7 +27,7 @@ import game.models.map.Tile;
 public class Spawner {
 
    private Team team;
-   
+
    private Map map;
 
    /**
@@ -58,10 +57,10 @@ public class Spawner {
    public int getY() {
       return y;
    }
-   
+
    public void spawn(Player p) {
       Vector2.tmp.set(map.getRealPos(x, y));
-      //Vector2.tmp.add(Tile.WIDTH / 2, Tile.HEIGHT / 2);
+      // Vector2.tmp.add(Tile.WIDTH / 2, Tile.HEIGHT / 2);
       p.moveTo(Vector2.tmp);
    }
 }
