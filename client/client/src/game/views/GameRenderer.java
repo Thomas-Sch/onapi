@@ -126,7 +126,7 @@ public class GameRenderer {
       table.top().left();
       ui.addActor(table);
 
-      lblDebug = new Label("[DEBUG]", skin);
+      lblDebug = new Label("", skin);
       table.add(lblDebug);
       table.row();
       lblHP = new Label("[HP]", skin);

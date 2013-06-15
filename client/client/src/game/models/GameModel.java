@@ -57,6 +57,7 @@ public class GameModel {
    private World world;
 
    private GameInitData initData;
+   
    /**
     * Stocke les entités de la scène. Attention, l'ordre d'insertion correspond
     * à l'ordre d'affichage : le premier élément inséré sera en arrière-plan, le
@@ -74,7 +75,7 @@ public class GameModel {
    /**
     * Personnage contrôlé par le joueur
     */
-   private Player player;
+   private MainPlayer player;
 
    /**
     * Equipes en jeu
@@ -100,7 +101,7 @@ public class GameModel {
             map.getExitPos().x, map.getExitPos().y));
 
       // Fait commencer le joueur au milieu de la map
-      player = new Player(map.getRealPos(0, 0), new Vector2(0f, 1f), teams[0],
+      player = new MainPlayer(map.getRealPos(0, 0), new Vector2(0f, 1f), teams[0],
             new DefaultWeapon(), new DefaultSkill(), new DefaultBonus(), world,
             rayHandler);
       player.getWeapon().createBullet(world, entities, rayHandler);
@@ -239,7 +240,7 @@ public class GameModel {
     *           Personnage du joueur principal
     */
    public void setPlayer(Player player) {
-      this.player = player;
+      this.player = new MainPlayer(player);
    }
 
    /**

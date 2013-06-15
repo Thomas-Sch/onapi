@@ -167,12 +167,7 @@ public class Player extends Entity {
       body.createFixture(fix);
       body.setUserData(this);
 
-      // Initialise les lumières diffusées par le joueur
-      pl = new PointLight(handler, 100, HALO_COLOR, PL_DISTANCE_DEFAULT,
-            getX(), getY());
-
-      pl.attachToBody(body, 0, 0);
-
+      // Lampe torche
       torchLight = new ConeLight(handler, 50, TORCH_COLOR, 750, 1, 1, 270, 30);
       torchLight.attachToBody(body, 1, 1);
       this.torchLight.setActive(true);
@@ -402,4 +397,9 @@ public class Player extends Entity {
       this.weapon = weapon;
    }
 
+   
+   @Override
+   public boolean equals(Object obj) {
+      return obj instanceof Player && ((Player) obj).id == id;
+   }
 }
