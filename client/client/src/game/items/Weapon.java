@@ -12,10 +12,8 @@
 package game.items;
 
 import game.models.Player;
-
 import box2dLight.RayHandler;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -31,31 +29,27 @@ import com.badlogic.gdx.scenes.scene2d.Group;
  */
 public abstract class Weapon extends Item {
 
-   private static final float AFTER_SHOT_DELAY = 0.2f;
-   
    private float previousShootTime = 0;
    private float currentTime = getCooldown() + 1.0f;
-   
+
    protected Bullet bullet;
-   
+
    public abstract void onHit(Player target);
 
    public abstract void drawProjectile(SpriteBatch batch, float parentAlpha);
 
    protected abstract void onShoot();
 
-   protected abstract void afterShot();
-
    public void shoot(float delta) {
       currentTime += delta;
-      if(!this.bullet.isActive()) {
+      if (!this.bullet.isActive()) {
          if (currentTime > previousShootTime + getCooldown()) {
             onShoot();
             previousShootTime = currentTime;
          }
       }
    }
-   
+
    @Override
    public void update(float deltaTime) {
    }
@@ -64,6 +58,7 @@ public abstract class Weapon extends Item {
     * @param world
     * @param rayHandler
     */
-   public abstract void createBullet(World world, Group group,RayHandler rayHandler);
+   public abstract void createBullet(World world, Group group,
+         RayHandler rayHandler);
 
 }

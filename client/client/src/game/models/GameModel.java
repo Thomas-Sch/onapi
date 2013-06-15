@@ -11,9 +11,6 @@
  */
 package game.models;
 
-import java.util.LinkedList;
-import java.util.Random;
-
 import game.items.Bullet;
 import game.items.bonus.DefaultBonus;
 import game.items.skills.DefaultSkill;
@@ -21,6 +18,7 @@ import game.items.weapons.DefaultWeapon;
 import game.models.map.Map;
 import game.models.map.Tile;
 import box2dLight.RayHandler;
+import client.GameInitData;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
@@ -32,8 +30,6 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-
-import client.GameInitData;
 
 /**
  * Modèle du jeu. Gère les différentes entités au sein du jeu.
@@ -57,7 +53,7 @@ public class GameModel {
    private World world;
 
    private GameInitData initData;
-   
+
    /**
     * Stocke les entités de la scène. Attention, l'ordre d'insertion correspond
     * à l'ordre d'affichage : le premier élément inséré sera en arrière-plan, le
@@ -95,15 +91,14 @@ public class GameModel {
       teams = new Team[] { new Team(Color.BLUE), new Team(Color.RED) };
       map = new Map(world, teams);
 
-      
       entities.addActor(map);
       entities.addActor(new Exit(world, rayHandler, EXIT_HEIGHT, EXIT_WIDTH,
             map.getExitPos().x, map.getExitPos().y));
 
       // Fait commencer le joueur au milieu de la map
-      player = new MainPlayer(map.getRealPos(0, 0), new Vector2(0f, 1f), teams[0],
-            new DefaultWeapon(), new DefaultSkill(), new DefaultBonus(), world,
-            rayHandler);
+      player = new MainPlayer(map.getRealPos(0, 0), new Vector2(0f, 1f),
+            teams[0], new DefaultWeapon(), new DefaultSkill(),
+            new DefaultBonus(), world, rayHandler);
       player.getWeapon().createBullet(world, entities, rayHandler);
       entities.addActor(player);
 

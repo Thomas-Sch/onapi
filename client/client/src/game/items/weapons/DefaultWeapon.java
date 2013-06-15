@@ -14,10 +14,8 @@ package game.items.weapons;
 import game.items.Bullet;
 import game.items.Weapon;
 import game.models.Player;
-
 import box2dLight.RayHandler;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -33,18 +31,16 @@ import com.badlogic.gdx.scenes.scene2d.Group;
  */
 public class DefaultWeapon extends Weapon {
 
-   private Color originalTorchColor;
-   private boolean gotColor = false;
-
    public DefaultWeapon() {
       setCooldown(0.2f);
    }
 
-   public void createBullet(World world, Group group, RayHandler handler){
-      this.bullet = new Bullet(world, this, 0f, 0f, 0f, 0f, 300f, 1f, handler, getOwner());
+   public void createBullet(World world, Group group, RayHandler handler) {
+      this.bullet = new Bullet(world, this, 0f, 0f, 0f, 0f, 600f, 0.8f,
+            handler, getOwner());
       group.addActor(bullet);
    }
-   
+
    @Override
    public void onHit(Player target) {
       if (bullet.isActive()) {
@@ -52,13 +48,11 @@ public class DefaultWeapon extends Weapon {
          System.out.println("target hit");
          bullet.deactivate();
       }
-    }
-   
+   }
+
    @Override
    public void drawProjectile(SpriteBatch batch, float parentAlpha) {
-      // TODO Auto-generated method stub
-      if(bullet.isActive())
-         bullet.draw(batch, parentAlpha);
+      if (bullet.isActive()) bullet.draw(batch, parentAlpha);
    }
 
    @Override
@@ -67,18 +61,6 @@ public class DefaultWeapon extends Weapon {
             getOwner().getPos(), getOwner().getDir());
       bullet.activate(getOwner().getX(), getOwner().getY(),
             getOwner().getDir().x, getOwner().getDir().y);
-      // if (!gotColor) {
-      // originalTorchColor = getOwner().getTorchColor().cpy();
-      // System.out.println(originalTorchColor);
-      // gotColor = true;
-      // }
-      // getOwner().setTorchColor(Color.YELLOW);
-   }
-
-   @Override
-   protected void afterShot() {
-      // System.out.println("After shot");
-      // getOwner().setTorchColor(originalTorchColor);
    }
 
 }

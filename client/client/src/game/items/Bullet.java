@@ -40,6 +40,8 @@ import game.models.Player;
  */
 public class Bullet extends Entity {
 
+   private static final float UPDATE_RATE = 1 / 60f;
+
    private float posX;
    private float posY;
    private float startX;
@@ -112,8 +114,8 @@ public class Bullet extends Entity {
    @Override
    public void update(float deltaTime) {
       float current = lastUpdate + deltaTime;
-      if (lastUpdate == 0 || current > 0.03) {
-         for (int i = 0; i < Math.floor(current / 0.03); ++i)
+      if (current > UPDATE_RATE) {
+         for (int i = 0; i < Math.floor(current / UPDATE_RATE); ++i)
             if (active) {
                this.pl.setActive(true);
                if (Math.sqrt(posX * posX + posY * posY) > length)
