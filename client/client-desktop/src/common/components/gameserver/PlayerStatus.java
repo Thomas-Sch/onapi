@@ -13,6 +13,9 @@ package common.components.gameserver;
 
 import java.io.Serializable;
 
+import settings.Language.Text;
+import settings.ShortTexts;
+
 import common.components.ObservableComponent;
 
 /**
@@ -29,6 +32,8 @@ public class PlayerStatus extends ObservableComponent implements Serializable {
     * ID de sérialisation
     */
    private static final long serialVersionUID = -9212231828720224663L;
+   
+   private int playerId;
 
    private int slotNumber;
    
@@ -38,9 +43,21 @@ public class PlayerStatus extends ObservableComponent implements Serializable {
    
    private boolean isReady = false;
    
-   public PlayerStatus(String name, int slotNumber) {
+   public PlayerStatus(int playerId, String name, int slotNumber) {
+      this.playerId = playerId;
       this.name = name;
       this.slotNumber = slotNumber;
+   }
+   
+   public int getPlayerId() {
+      return playerId;
+   }
+   
+   public void setPlayerId(int playerId) {
+      if (this.playerId != playerId) {
+         this.playerId = playerId;
+         setChangedAndNotifyObservers(this);
+      }
    }
    
    public int getSlotNumber() {
@@ -71,7 +88,7 @@ public class PlayerStatus extends ObservableComponent implements Serializable {
    public void setTeamNumber(int number) {
       if (teamNumber != number && number >= 0) {
          teamNumber = number;
-         setChangedAndNotifyObservers();
+         setChangedAndNotifyObservers(this);
       }
    }
    
@@ -79,8 +96,10 @@ public class PlayerStatus extends ObservableComponent implements Serializable {
     * Définit le status d'emplacement libre (le joueur a quitté).
     */
    public void setLeft() {
-      name = "";
-      setChangedAndNotifyObservers();
+      if (!isFree()) {
+         name = "";
+         setChangedAndNotifyObservers(this);
+      }
    }
    
    public boolean isFree() {
@@ -90,7 +109,7 @@ public class PlayerStatus extends ObservableComponent implements Serializable {
    public void setReady(boolean ready) {
       if (isReady != ready) {
          isReady = ready;
-         setChangedAndNotifyObservers();
+         setChangedAndNotifyObservers(this);
       }
    }
    
@@ -98,12 +117,17 @@ public class PlayerStatus extends ObservableComponent implements Serializable {
       this.name = status.name;
       this.teamNumber = status.teamNumber;
       this.isReady = status.isReady;
-      setChangedAndNotifyObservers();
+      setChangedAndNotifyObservers(this);
    }
    
    @Override
    public String toString() {
-      return (isReady ? " + " : " - ") + "[" + teamNumber + "] - " + name;
+      if (isFree()) {
+         return Text.SLOT_FREE.toString();
+      }
+      else {
+         return (isReady ? " + " : " - ") + "[" + teamNumber + "] - " + name;
+      }
    }
    
 }

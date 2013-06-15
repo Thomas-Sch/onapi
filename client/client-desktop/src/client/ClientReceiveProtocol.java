@@ -12,12 +12,14 @@
 package client;
 
 import game.models.GameModel;
+import common.components.ConnectedUser;
 import common.components.gameserver.PlayerStatus;
 import common.connections.Channel;
 import common.connections.protocol.ProtocolType;
 
 import core.PlayerInfo;
 import core.PlayersInformations;
+import core.UsersInformations;
 
 /**
  * Classe permettant de rassembler les protocoles utilisés par le client pour
@@ -76,19 +78,19 @@ public class ClientReceiveProtocol {
          status = (PlayerStatus)channel.receiveObject();
       }
       
-      PlayerInfo player = players.getPlayerAt(status.getSlotNumber());
+      if (players != null) {
       
-      if(status.isFree()) {
-         player.setIsUsed(false);
+         if (status.isFree()) {
+            players.remove(status);
+         }
+         else {
+            players.addOrUpdate(status);
+         }
       }
       else {
-         player.startMultipleChanges();
-         player.setIsUsed(true);
-         player.setName(status.getName());
-         player.setTeamNumber(status.getTeamNumber());
-         player.setStateReady(status.isReady());
-         player.endMultipleChanges();
+         System.out.println("DEBUG et merde");
       }
+      
    }
    
    /**
@@ -97,6 +99,21 @@ public class ClientReceiveProtocol {
     */
    public void lobbyUpdateGameReady(int toDefine) {
       // TODO something ?
+   }
+   
+   public void adminUpdateServerSlotStatus(UsersInformations users) {
+      ConnectedUser connectedUser;
+      
+      synchronized (channel) {
+         connectedUser = (ConnectedUser)channel.receiveObject();
+      }
+      
+      if(connectedUser.isConnected()) {
+         users.addOrUpdate(connectedUser);
+      }
+      else {
+         users.remove(connectedUser);
+      }
    }
    
    public void adminKicked(GameModel model) {

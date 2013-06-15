@@ -29,7 +29,9 @@ public class ConnectedUser extends ObservableComponent implements Serializable {
     */
    private static final long serialVersionUID = -2074702964251368698L;
    
-   private int serverSlot;
+   private boolean isConnected;
+   
+   private int userId;
    
    private ActivityType activity;
    
@@ -37,24 +39,37 @@ public class ConnectedUser extends ObservableComponent implements Serializable {
    
    /**
     * Crée le conteneur des informations de base d'un utilisateur.
-    * @param serverSlot - son emplacement sur le serveur.
+    * @param userId - son identifiant pour le serveur.
     * @param activity - son activité au sein du serveur.
     * @param accountName - son nom de compte.
     */
-   public ConnectedUser(int serverSlot, ActivityType activity, String accountName) {
-      this.serverSlot = serverSlot;
+   public ConnectedUser(int userId, ActivityType activity, String accountName) {
+      this.userId = userId;
       this.activity = activity;
       this.accountName = accountName;
+      
+      isConnected = true;
    }
    
-   public int getServerSlot() {
-      return serverSlot;
+   public boolean isConnected() {
+      return isConnected;
    }
    
-   public void setServerSlot(int serverSlot) {
-      if (serverSlot >= 0 && this.serverSlot != serverSlot) {
-         this.serverSlot = serverSlot;
-         setChangedAndNotifyObservers();
+   public void setConnected(boolean isConnected) {
+      if (this.isConnected != isConnected) {
+         this.isConnected = isConnected;
+         setChangedAndNotifyObservers(this);
+      }
+   }
+   
+   public int getUserId() {
+      return userId;
+   }
+   
+   public void setUserId(int userId) {
+      if (userId >= 0 && this.userId != userId) {
+         this.userId = userId;
+         setChangedAndNotifyObservers(this);
       }
    }
    
@@ -65,7 +80,7 @@ public class ConnectedUser extends ObservableComponent implements Serializable {
    public void setServerActivity(ActivityType activity) {
       if (this.activity != activity) {
          this.activity = activity;
-         setChangedAndNotifyObservers();
+         setChangedAndNotifyObservers(this);
       }
    }
    
@@ -76,7 +91,17 @@ public class ConnectedUser extends ObservableComponent implements Serializable {
    public void setAccountName(String accountName) {
       if (this.accountName.equals(accountName)) {
          this.accountName = accountName;
-         setChangedAndNotifyObservers();
+         setChangedAndNotifyObservers(this);
+      }
+   }
+   
+   @Override
+   public boolean equals(Object o) {
+      if (o instanceof ConnectedUser) {
+         return userId == ((ConnectedUser)o).userId;
+      }
+      else {
+         return false;
       }
    }
    

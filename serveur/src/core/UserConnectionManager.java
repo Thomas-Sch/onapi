@@ -13,6 +13,8 @@ package core;
 
 import gui.logs.Log;
 import common.components.AccountType;
+import common.components.ActivityType;
+import common.components.ConnectedUser;
 import common.components.UserAccount;
 import common.connections.Channel;
 import common.connections.exceptions.ChannelClosedException;
@@ -45,7 +47,7 @@ public class UserConnectionManager {
    
    private Core core;
    
-   private UserInformations user;
+   private UserInformations user; 
    
    private Thread threadReceive;
    private Thread threadUpdate;
@@ -56,33 +58,12 @@ public class UserConnectionManager {
       init(socket, timeout);
    }
    
-   private void init(Socket socket, int timeout) {
-      
-      // Création d'une entité propre au client
-      user = new UserInformations();
-      
-      // Création du log
-      user.log = new Log("Unknown");
-      core.addLogPanel(user.log.createLogPanel());
-      
-      // Création du canal de mises à jour du client
-      user.log.push("Create ConnectionsToClient...");
-      user.connectionsToClient = new ConnectionsToClient(core, this, socket, timeout);
-      user.log.push("done.");
-      
-      user.isConnected = true;
-      
-      user.serverReceive = new AccountConnection(core, user);
-      user.serverUpdate = new ServerUpdateOrder(core, user);
-      
-      // Création des threads de communications
-      threadReceive = new Thread(new ClientRequests());
-      threadUpdate = new Thread(new ClientUpdate());
-      
-      threadReceive.start();
-      threadUpdate.start();
-      
-      
+   public ConnectedUser getConnectedUser() {
+      return user.getConnectedUser();
+   }
+   
+   public UserInformations getUser() {
+      return user;
    }
    
    private class ClientRequests implements Runnable {
@@ -199,6 +180,35 @@ public class UserConnectionManager {
       // Suppression des logs
       core.removeLogPanel(user.log.getLogPanel());
       core.removeConnection(UserConnectionManager.this);
+      
+   }
+   
+   private void init(Socket socket, int timeout) {
+      
+      // Création d'une entité propre au client
+      user = new UserInformations();
+      
+      // Création du log
+      user.log = new Log("Unknown");
+      core.addLogPanel(user.log.createLogPanel());
+      
+      // Création du canal de mises à jour du client
+      user.log.push("Create ConnectionsToClient...");
+      user.connectionsToClient = new ConnectionsToClient(core, this, socket, timeout);
+      user.log.push("done.");
+      
+      user.activity = ActivityType.CONNECTED;
+      user.isConnected = true;
+      
+      user.serverReceive = new AccountConnection(core, user);
+      user.serverUpdate = new ServerUpdateOrder(core, user);
+      
+      // Création des threads de communications
+      threadReceive = new Thread(new ClientRequests());
+      threadUpdate = new Thread(new ClientUpdate());
+      
+      threadReceive.start();
+      threadUpdate.start();
       
       
    }

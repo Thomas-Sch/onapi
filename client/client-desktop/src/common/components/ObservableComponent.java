@@ -65,7 +65,10 @@ public class ObservableComponent extends Observable {
     */
    public void endMultipleChanges() {
       multiChangeEnable = false;
-      notifyObservers(this);
+      
+      if (hasChanged()) {
+         notifyObservers(this);
+      }
    }
 
    @Override

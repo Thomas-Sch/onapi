@@ -21,5 +21,19 @@ package gui.utils;
  *
  */
 public class SelectedPlayer {
+   
+   int playerServerId;
+   
+   public SelectedPlayer() {
+      
+   }
+   
+   public int getPlayerServerId() {
+      return playerServerId;
+   }
+   
+   public void setPlayerServerId(int playerServerId) {
+      this.playerServerId = playerServerId;
+   }
 
 }

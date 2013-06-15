@@ -1,5 +1,5 @@
 /* ============================================================================
- * Nom du fichier   : Visitor.java
+ * Nom du fichier   : UpdateVisitor.java
  * ============================================================================
  * Date de création : 31 mai 2013
  * ============================================================================
@@ -15,6 +15,7 @@ import core.updates.components.LobbyGameReady;
 import core.updates.components.LobbyUpdateSlot;
 import core.updates.components.StandardPing;
 import core.updates.components.admin.Kicked;
+import core.updates.components.admin.UpdatedServerUser;
 
 
 /**
@@ -35,6 +36,7 @@ public interface UpdateVisitor {
    void caseLobbyUpdateSlot(LobbyUpdateSlot update);
    
    // Administration
+   void caseUpdateServerUser(UpdatedServerUser udpate);
    void caseKicked(Kicked update);
 
 }

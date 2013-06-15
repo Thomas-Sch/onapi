@@ -42,6 +42,7 @@ public enum ProtocolType {
    
    // Admin
    ADMIN_REGISTER,
+   ADMIN_UPDATED_SLOT,
    ADMIN_KICK;
    
 }

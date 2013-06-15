@@ -12,6 +12,8 @@
 package core;
 
 import gui.logs.Log;
+import common.components.ActivityType;
+import common.components.ConnectedUser;
 import common.components.UserAccount;
 import common.connections.Channel;
 import core.gameserver.GameServer;
@@ -36,7 +38,7 @@ public class UserInformations {
    
    public UserAccount account;
    
-   public UserState state;
+   public ActivityType activity;
    
    public ServerRequestAnswers serverReceive;
    public ServerUpdateOrder serverUpdate;
@@ -49,8 +51,15 @@ public class UserInformations {
       
    }
    
-   public enum UserState {
-      AUTHENTIFICATION, LOBBY, GAME;
+   public ConnectedUser getConnectedUser() {
+      ConnectedUser connectedUser = new ConnectedUser(account.getId(),
+            activity, account.getLogin());
+      
+      if (! isConnected) {
+         connectedUser.setConnected(false);
+      }
+      
+      return connectedUser;
    }
 
 }

@@ -172,17 +172,19 @@ public class GameServer implements Observer {
       return false;
    }
    
-   public UserInformations adminKick(int slot) {
+   public UserInformations adminKick(int id) {
       UserInformations user = null;
+      int i = 0;
       
-      if (slot >= 0 && slot < players.length) {
-         synchronized (players) {
-            
-            if (!players[slot].isFree()) {
-               user = players[slot].removeUser();
+      synchronized (players) {
+         while (i < players.length) {
+            if ( ! players[i].isFree()
+                && players[i].status.getPlayerId() == id) {
+               
+               user = players[i].removeUser();
                printStatus();
             }
-            
+            i++;
          }
       }
       
@@ -221,14 +223,14 @@ public class GameServer implements Observer {
       
       private PlayerSlot(int slotNumber) {
          this.slotNumber = slotNumber;
-         status = new PlayerStatus("No player", slotNumber);
+         status = new PlayerStatus(-1, "No player", slotNumber);
          status.addObserver(this);
       }
 
       @Override
       public void update(Observable arg0, Object arg1) {
          setChanged();
-         notifyObservers();
+         notifyObservers(this);
       }
       
       public boolean isFree() {
@@ -244,11 +246,12 @@ public class GameServer implements Observer {
          
          if(isFree()) {
             this.user = user;
+            status.setPlayerId(user.account.getId());
             status.setName(user.account.getLogin());
             status.setReady(false);
             success = true;
             setChanged();
-            notifyObservers();
+            notifyObservers(this);
          }
          
          return success;
@@ -261,7 +264,7 @@ public class GameServer implements Observer {
             user = null;
             status.setLeft();
             setChanged();
-            notifyObservers();
+            notifyObservers(this);
          }
          
          return result;

@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : PlayerInfo.java
+ * Nom du fichier   : UserInfo.java
  * ============================================================================
- * Date de création : 7 juin 2013
+ * Date de création : 14 juin 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -10,6 +10,13 @@
  * ============================================================================
  */
 package core;
+
+import java.util.Observable;
+import java.util.Observer;
+
+import common.components.ActivityType;
+import common.components.ConnectedUser;
+import common.components.gameserver.PlayerStatus;
 
 /**
  * 
@@ -20,64 +27,87 @@ package core;
  * @author Schweizer Thomas
  *
  */
-public class PlayerInfo extends CoreComponent {
+public class PlayerInfo extends CoreComponent implements Observer {
    
-   private int slotNumber;
-   private boolean isUsed = false;
+   private PlayerStatus player;
    
-   private String name;
-   
-   private int teamNumber;
-   private boolean isReady;
-   
-   public PlayerInfo(int slotNumber) {
-      this.slotNumber = slotNumber;
+   public PlayerInfo(PlayerStatus player) {
+      this.player = player;
+      this.player.addObserver(this);
    }
    
-   public boolean isUsed() {
-      return isUsed;
+   public void update(PlayerStatus status) {
+      
+      // Libération de l'emplacement
+      if (status.isFree()) {
+         player.setLeft();
+      }
+      // Mise à jour
+      else {
+         player.startMultipleChanges();
+         
+         player.setPlayerId(status.getPlayerId());
+         player.setName(status.getName());
+         player.setTeamNumber(status.getTeamNumber());
+         player.setReady(status.isReady());
+         
+         player.endMultipleChanges();
+      }
+      
+      
    }
    
-   public void setIsUsed(boolean isUsed) {
-      if (this.isUsed != isUsed) {
-         this.isUsed = isUsed;
-         setChanged();
-         notifyObservers(this);
+   public void update(PlayerInfo playerInfo) {
+      
+      // Libération de l'emplacement
+      if (playerInfo.isFree()) {
+         player.setLeft();
+      }
+      // Mise à jour
+      else {
+         player.startMultipleChanges();
+         
+         player.setPlayerId(playerInfo.getPlayerId());
+         player.setName(playerInfo.getName());
+         player.setTeamNumber(playerInfo.getTeamNumber());
+         player.setReady(playerInfo.isReady());
+         
+         player.endMultipleChanges();
       }
    }
    
+   public int getPlayerId() {
+      return player.getPlayerId();
+   }
+   
    public int getSlotNumber() {
-      return slotNumber;
+      return player.getSlotNumber();
+   }
+   
+   public boolean isReady() {
+      return player.isReady();
    }
    
    public String getName() {
-      return name;
-   }
-   
-   public void setName(String name) {
-      this.name = name;
-      setChanged();
-      notifyObservers(this);
+      return player.getName();
    }
    
    public int getTeamNumber() {
-      return teamNumber;
+      return player.getTeamNumber();
    }
    
-   public void setTeamNumber(int teamNumber) {
-      this.teamNumber = teamNumber;
-      setChanged();
-      notifyObservers(this);
+   public boolean isFree() {
+      return player.isFree();
    }
    
-   public boolean getStateReady() {
-      return isReady;
+   @Override
+   public String toString() {
+      return player.toString();
    }
-   
-   public void setStateReady(boolean isReady) {
-      this.isReady = isReady;
-      setChanged();
-      notifyObservers(this);
+
+   @Override
+   public void update(Observable arg0, Object arg1) {
+      setChangedAndNotifyObservers(arg1);
    }
    
 }

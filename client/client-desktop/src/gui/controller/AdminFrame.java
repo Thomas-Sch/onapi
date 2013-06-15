@@ -12,6 +12,7 @@
 package gui.controller;
 
 import gui.actions.admin.AcKick;
+import gui.utils.SelectedPlayer;
 import gui.view.JAdminFrame;
 
 import java.awt.Component;
@@ -22,13 +23,16 @@ import javax.swing.JFrame;
 import settings.Language.Text;
 import core.ConnectionsManager;
 import core.PlayersInformations;
+import core.UsersInformations;
 
 public class AdminFrame extends Controller {
    
    private JAdminFrame view;
-   private PlayersInformations model;
+   private UsersInformations modelAllUsers;
    
-   private Integer selectedPlayer;
+   private PlayersInformations modelServer;
+   
+   private SelectedPlayer selectedPlayer;
    
    public AdminFrame(ConnectionsManager connections, Frame frame) {
       super(connections, frame);
@@ -36,13 +40,16 @@ public class AdminFrame extends Controller {
 
    @Override
    protected void initComponents(Object... objects) {
-      model = connections.getPlayers();
-      view = new JAdminFrame(model, (Frame)objects[0]);
+      modelAllUsers = connections.getAllUsers();
+      modelServer = connections.getPlayers();
+      
+      view = new JAdminFrame(modelAllUsers, modelServer, (Frame)objects[0]);
       view.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
       view.setTitle(Text.APP_TITLE.toString() + " - " + Text.ADMIN_TITLE.toString());
       
       // Ajout de l'observateur
-      model.addObserver(view);
+      modelAllUsers.addObserver(view);
+      modelServer.addObserver(view);
       
       view.setVisible(true);
    }

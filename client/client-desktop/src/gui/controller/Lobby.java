@@ -4,7 +4,6 @@ import gui.actions.AcCancel;
 import gui.actions.AcConnect;
 import gui.actions.AcLobbyNotReady;
 import gui.actions.AcLobbyReady;
-import gui.component.JPlayerList;
 import gui.utils.Positions;
 import gui.utils.Positions.ScreenPosition;
 import gui.utils.WindowCloseListener;
@@ -34,8 +33,8 @@ import client.GameLauncher;
 
 public class Lobby extends Controller {
    
-   JLobby view;
-   PlayersInformations model;
+   private JLobby view;
+   private PlayersInformations model;
    
    /*
     * protocol = (ClientRequestProtocol) dependencies[0];

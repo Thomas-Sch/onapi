@@ -38,6 +38,7 @@ public class ConnectionsManager {
    private Updater updateActivity;
    private KeepAlive keepAliveActivity;
    
+   private UsersInformations users = new UsersInformations(); // Pour les administrateurs
    private PlayersInformations players;
    
    private GameModel gameModel;
@@ -62,6 +63,12 @@ public class ConnectionsManager {
       }
    }
    
+   public void setupAdminUserList() {
+      if (users == null) {
+         users = new UsersInformations();
+      }
+   }
+   
    public void setupGameModel(GameModel gameModel) {
       this.gameModel = gameModel;
    }
@@ -82,6 +89,10 @@ public class ConnectionsManager {
       else {
          return null;
       }
+   }
+   
+   public UsersInformations getAllUsers() {
+      return users;
    }
    
    public PlayersInformations getPlayers() {
@@ -150,6 +161,10 @@ public class ConnectionsManager {
                   case LOBBY_GAME_READY :
                      protocol.lobbyUpdateGameReady(42);
                      System.out.println("DEBUG - game ready !");
+                     break;
+                     
+                  case ADMIN_UPDATED_SLOT :
+                     protocol.adminUpdateServerSlotStatus(users);
                      break;
                      
                   case ADMIN_KICK :

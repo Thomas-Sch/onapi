@@ -12,6 +12,7 @@
 package core.protocol.account;
 
 import common.components.AccountType;
+import common.components.ActivityType;
 import common.components.UserAccount;
 import core.Core;
 import core.UserInformations;
@@ -19,6 +20,7 @@ import core.gameserver.GameServer;
 import core.gameserver.GameServerConnection;
 import core.gameserver.exceptions.GameServerException;
 import core.protocol.ServerStandardReceiveProtocol;
+import core.updates.components.admin.UpdatedServerUser;
 
 /**
  * TODO
@@ -108,7 +110,9 @@ public class AccountReceiveProtocol extends ServerStandardReceiveProtocol {
             common.components.gameserver.PlayerStatus status = freeServer.addPlayer(user);
             
             if (status != null) {
+               user.activity = ActivityType.LOBBY;
                user.gameServer = freeServer;
+               
                GameServerConnection connection = new GameServerConnection(core, freeServer, user, status);
                user.serverReceive = connection;
                
@@ -117,6 +121,9 @@ public class AccountReceiveProtocol extends ServerStandardReceiveProtocol {
                
                // Envoi du nombre de places dans le salon
                user.connectionsToClient.receiveChannel.sendInt(freeServer.getMaxNumberOfPlayers());
+               
+               // Mise à jour transmise aux administrateurs
+               core.adminUpdate(new UpdatedServerUser(user.getConnectedUser()));
             }
             else {
                user.log.push("Error, there was a free lobby, but error while joining it.");

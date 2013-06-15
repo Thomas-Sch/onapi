@@ -13,6 +13,8 @@ package gui.view;
 
 import gui.actions.UserAction;
 import gui.component.JPlayerList;
+import gui.component.JUserList;
+import gui.utils.SelectedPlayer;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -31,6 +33,8 @@ import javax.swing.event.ListSelectionListener;
 
 import core.PlayerInfo;
 import core.PlayersInformations;
+import core.UserInfo;
+import core.UsersInformations;
 
 /**
  *  
@@ -44,22 +48,26 @@ import core.PlayersInformations;
 public class JAdminFrame extends JDialog implements Observer {
 
    /**
-    * ID de sérialisation.
+    * ID de sérialisation.a
     */
    private static final long serialVersionUID = -1202660840303381066L;   
    
-   private PlayersInformations model;
+   private UsersInformations modelAllUsers;
+   private PlayersInformations modelServer;
    
-   private JPlayerList pltPlayers;
-   private Integer selectedPlayer;
+   private JUserList pltUsersAll;
+   private JPlayerList pltPlayersServer;
+   
+   private SelectedPlayer selectedPlayer;
    
    private JTabbedPane tpePlayerLists;
    
    private AdminActions adminActions;
    
-   public JAdminFrame(PlayersInformations model, Frame parent) {
+   public JAdminFrame(UsersInformations modelAllUsers, PlayersInformations modelServer, Frame parent) {
       super(parent);
-      this.model = model;
+      this.modelAllUsers = modelAllUsers;
+      this.modelServer = modelServer;
       initContent();
       initListeners();
       setContentPane(buildContent());
@@ -67,25 +75,38 @@ public class JAdminFrame extends JDialog implements Observer {
    }
    
    private void initListeners() {
-      pltPlayers.addListSelectionListener(new ListSelectionListener() {
+      pltUsersAll.addListSelectionListener(new ListSelectionListener() {
          @Override
          public void valueChanged(ListSelectionEvent e) {
-            selectedPlayer = pltPlayers.getSelectedIndex();
-            System.out.println("DEBUG - new selected slot : " + selectedPlayer);
+            selectedPlayer.setPlayerServerId(pltPlayersServer.getSelectedValue().getPlayerId());
+            System.out.println("DEBUG - new selected id (all) : " + selectedPlayer.getPlayerServerId());
+         }
+      });
+      
+      pltPlayersServer.addListSelectionListener(new ListSelectionListener() {
+         @Override
+         public void valueChanged(ListSelectionEvent e) {
+            selectedPlayer.setPlayerServerId(pltPlayersServer.getSelectedValue().getPlayerId());
+            System.out.println("DEBUG - new selected slot (server) : " + selectedPlayer.getPlayerServerId());
          }
       });
    }
    
    private void initContent() {
-      pltPlayers = new JPlayerList(model.size());
-      pltPlayers.setPreferredSize(new Dimension(200, 200));
+      pltUsersAll = new JUserList();
+      pltUsersAll.setPreferredSize(new Dimension(200, 200));
+      
+      pltPlayersServer = new JPlayerList(modelServer.size());
+      pltPlayersServer.setPreferredSize(new Dimension(200, 200));
 
       // Initialiser la valeur actuelle
-      selectedPlayer = pltPlayers.getSelectedIndex();
+      selectedPlayer = new SelectedPlayer();
+      selectedPlayer.setPlayerServerId(-1);
       
       adminActions = new AdminActions();
       tpePlayerLists = new JTabbedPane();
-      tpePlayerLists.insertTab("All", null, new JScrollPane(pltPlayers), null, tpePlayerLists.getTabCount());
+      tpePlayerLists.insertTab("All", null, new JScrollPane(pltUsersAll), null, tpePlayerLists.getTabCount());
+      tpePlayerLists.insertTab("Server", null, new JScrollPane(pltPlayersServer), null, tpePlayerLists.getTabCount());
    }
    
    private JPanel buildContent() {
@@ -128,7 +149,7 @@ public class JAdminFrame extends JDialog implements Observer {
       
    }
    
-   public Integer getSelectedPlayer() {
+   public SelectedPlayer getSelectedPlayer() {
       return selectedPlayer;
    }
    
@@ -138,11 +159,30 @@ public class JAdminFrame extends JDialog implements Observer {
 
    @Override
    public void update(Observable o, Object arg) {
-      if (arg != null) {
-         PlayerInfo updatedPlayer = (PlayerInfo)arg;
+      
+      if (o instanceof PlayersInformations) {
+         System.out.println("DEBUG - update player list");
          
-         pltPlayers.update(updatedPlayer);
+         if (arg != null) {
+            PlayerInfo updatedPlayer = (PlayerInfo)arg;
+            
+            pltPlayersServer.update(updatedPlayer);
+         }
       }
+      else if (o instanceof UsersInformations) {
+         System.out.println("DEBUG - update user list");
+         
+         if (arg != null) {
+            UserInfo updatedUser = (UserInfo)arg;
+            
+            pltUsersAll.update(updatedUser);
+         }
+         else {
+            System.out.println("DEBUG - oups arg null");
+         }
+      }
+      
+      
    }
 
 }

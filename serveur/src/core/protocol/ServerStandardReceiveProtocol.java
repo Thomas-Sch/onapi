@@ -63,14 +63,14 @@ public class ServerStandardReceiveProtocol {
    }
    
    public void adminKick() {
-      int slot = user.connectionsToClient.receiveChannel.receiveInt();
+      int id = user.connectionsToClient.receiveChannel.receiveInt();
       String message = user.connectionsToClient.receiveChannel.receiveString();
       
       if (Settings.DEBUG_MODE_ON) {
-         user.log.push("Trying to kick playser at slot " + slot + ".");
+         user.log.push("Trying to kick playser with " + id + ".");
       }
       
-      UserInformations kickedUser = core.adminKick(slot);
+      UserInformations kickedUser = core.adminKick(id);
       
       if (kickedUser != null) {
          kickedUser.serverUpdate.pushUpdate(new Kicked(message));

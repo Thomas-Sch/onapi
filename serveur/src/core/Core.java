@@ -35,6 +35,7 @@ import core.exceptions.CoreRuntimeException;
 import core.exceptions.PortException;
 import core.gameserver.GameServer;
 import core.updates.Update;
+import core.updates.components.admin.UpdatedServerUser;
 import database.DBController;
 
 /**
@@ -128,16 +129,12 @@ public class Core {
          try {
             Socket socket = serverPort.accept();
             
-            System.out.println("DEBUG - new client !");
-            
             // Démarre le processus de gestion d'un nouveau client
             UserConnectionManager userConnection =
                   new UserConnectionManager(this, socket, Settings.TIMEOUT_CLIENT);
             
             // Enregistre le nouveau client
-            synchronized(connections) {
-               connections.add(userConnection);
-            }
+//            addConnection(userConnection);
             
             
          }
@@ -150,10 +147,20 @@ public class Core {
       
    }
    
+   public void addConnection(UserConnectionManager userConnection) {
+      synchronized (connections) {
+         connections.add(userConnection);
+      }
+      
+      adminUpdate(new UpdatedServerUser(userConnection.getConnectedUser()));
+   }
+   
    public void removeConnection(UserConnectionManager userConnection) {
       synchronized(connections) {
          connections.remove(userConnection);
       }
+      
+      adminUpdate(new UpdatedServerUser(userConnection.getConnectedUser()));
    }
    
    public InetAddress getInetAdress() {
@@ -222,6 +229,9 @@ public class Core {
          synchronized(admins)  {
             admins.add(user);
          }
+         
+         // Nouvel administrateur => s'auto-ajouter à la liste de tous les utilisateurs
+         adminUpdate(new UpdatedServerUser(user.getConnectedUser()));
       }
       else {
          throw new CoreRuntimeException("User without admin rights tried to register as admin");
@@ -266,8 +276,46 @@ public class Core {
 
    }
    
-   public UserInformations adminKick(int slot) {
-      return gameServer.adminKick(slot);
+   public UserInformations adminKick(int id) {
+      UserInformations kickedUser = getUser(id);
+      
+      switch (kickedUser.activity) {
+         case LOBBY :
+         case PLAYING :
+            gameServer.adminKick(id);
+            break;
+            
+         case CONNECTED :
+         case INVENTORY_CONSULTING :
+            
+            break;
+            
+      }
+      
+      // TODO attention, potentiellement dangereux
+      kickedUser.isConnected = false;
+      
+      return kickedUser;
+   }
+   
+   public UserInformations getUser(int userId) {
+      
+      UserConnectionManager userManager;
+      Iterator<UserConnectionManager> it;
+      
+      synchronized (connections) {
+         it = connections.iterator();
+         
+         while (it.hasNext()) {
+            userManager = it.next();
+            
+            if (userManager.getUser().account.getId() == userId) {
+               return userManager.getUser();
+            }
+         }
+      }
+      
+      return null;
    }
    
    public void pushToAdmins(Update update) {
@@ -507,15 +555,15 @@ public class Core {
                            while(it.hasNext()) {
                               connection = it.next();
                               if (connection.updateChannelCode == code) {
-                                 synchronized (connections) {
-                                    connections.add(connection.userConnection);
-                                 }
                                  
                                  synchronized (establishedNewConnections) {
                                     establishedNewConnections.add(new EstablishedNewConnection(channel, code));
                                     
                                     establishedNewConnections.notifyAll();
                                  }
+                                 
+                                 // Enregistre le nouveau client définitivement TODO
+                                 addConnection(connection.userConnection);
                                  
                                  // Libération du code utilisé
                                  RandomGenerator.freeConnectionCode(connection.updateChannelCode);

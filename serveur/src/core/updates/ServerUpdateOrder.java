@@ -13,6 +13,8 @@ package core.updates;
 
 import java.util.LinkedList;
 
+import settings.Settings;
+
 import core.Core;
 import core.UserInformations;
 import core.protocol.updates.ServerUpdateProtocol;
@@ -20,6 +22,7 @@ import core.updates.components.LobbyGameReady;
 import core.updates.components.LobbyUpdateSlot;
 import core.updates.components.StandardPing;
 import core.updates.components.admin.Kicked;
+import core.updates.components.admin.UpdatedServerUser;
 
 /**
  * TODO
@@ -84,6 +87,14 @@ public class ServerUpdateOrder implements UpdateVisitor {
    public void caseKicked(Kicked update) {
       protocol.adminKick(update.message);
       user.log.push("Kicked by an admin.");
+   }
+
+   @Override
+   public void caseUpdateServerUser(UpdatedServerUser update) {
+      protocol.adminUpdateServerUser(update.user);
+      if (Settings.DEBUG_MODE_ON) {
+         user.log.push("Update a user from server");
+      }
    }
    
 }

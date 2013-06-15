@@ -11,6 +11,7 @@
  */
 package core.protocol.gameserver;
 
+import common.components.ActivityType;
 import common.components.gameserver.PlayerStatus;
 
 import core.Core;
@@ -18,6 +19,7 @@ import core.UserInformations;
 import core.accountManagement.AccountConnection;
 import core.gameserver.GameServer;
 import core.protocol.ServerStandardReceiveProtocol;
+import core.updates.components.admin.UpdatedServerUser;
 
 /**
  * TODO
@@ -45,7 +47,11 @@ public class GameServerReceiveProtocol extends ServerStandardReceiveProtocol {
          user.gameServer = null;
             
          // On retourne au protocol de connexion.
+         user.activity = ActivityType.CONNECTED;
          user.serverReceive = new AccountConnection(core, user);
+         
+         // Mise à jour transmise aux administrateurs
+         core.adminUpdate(new UpdatedServerUser(user.getConnectedUser()));
       }
    }
    

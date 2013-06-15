@@ -1,5 +1,5 @@
 /* ============================================================================
- * Nom du fichier   : JPlayerList.java
+ * Nom du fichier   : GameServerPlayerStatus.java
  * ============================================================================
  * Date de création : 14 juin 2013
  * ============================================================================
@@ -9,11 +9,11 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package gui.component;
+package gui.models;
 
-import gui.models.GameServerPlayerStatus;
+import javax.swing.DefaultListModel;
 
-import javax.swing.JList;
+import common.components.gameserver.PlayerStatus;
 
 import core.PlayerInfo;
 
@@ -26,21 +26,22 @@ import core.PlayerInfo;
  * @author Schweizer Thomas
  *
  */
-public class JPlayerList extends JList<PlayerInfo> {
+public class GameServerPlayerStatus extends DefaultListModel<PlayerInfo> {
 
-   private static final long serialVersionUID = -3753161992210297207L;
-   
-   private GameServerPlayerStatus model;
-      
-   public JPlayerList(int slotNumber) {
-      model = new GameServerPlayerStatus(slotNumber);
-      setModel(model);
+   /**
+    * ID de sérialisation
+    */
+   private static final long serialVersionUID = 7918887794494738333L;
+
+   public GameServerPlayerStatus(int slotNumber) {
+      for (int i = 0 ; i < slotNumber ; i++) {
+         // Création d'une emplacement vide
+         PlayerStatus playerStatus = new PlayerStatus(-1, "", i);
+         playerStatus.setLeft();
+         
+         addElement(new PlayerInfo(playerStatus));
+      }
    }
    
-   public void update(PlayerInfo updatedUser) {
-      model.get(updatedUser.getSlotNumber()).update(updatedUser);
-      
-      repaint();
-   }
    
 }

@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : LobbyPlayerStatus.java
+ * Nom du fichier   : UpdatedServerUser.java
  * ============================================================================
- * Date de création : 1 juin 2013
+ * Date de création : 14 juin 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,12 +9,14 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package gui.models;
+package core.updates.components.admin;
 
-import javax.swing.DefaultListModel;
+import common.components.ConnectedUser;
+
+import core.updates.Update;
+import core.updates.UpdateVisitor;
 
 /**
- * 
  * TODO
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
@@ -22,16 +24,18 @@ import javax.swing.DefaultListModel;
  * @author Schweizer Thomas
  *
  */
-public class LobbyPlayerStatus extends DefaultListModel<String> {
+public class UpdatedServerUser extends Update {
    
-   public static final String TEXT_FREE = " > libre < ";
+   public ConnectedUser user;
    
-   private static final long serialVersionUID = 1169360848263712382L;
-
-   public LobbyPlayerStatus(int nbSlots)
-   {
-      for (int i = 0 ; i < nbSlots ; i++) {
-         addElement(TEXT_FREE);
-      }
+   public UpdatedServerUser(ConnectedUser user) {
+      super();
+      this.user = user;
    }
+
+   @Override
+   public void apply(UpdateVisitor v) {
+      v.caseUpdateServerUser(this);
+   }
+
 }

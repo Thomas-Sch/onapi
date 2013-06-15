@@ -1,7 +1,7 @@
 /* ============================================================================
- * Nom du fichier   : LobbyException.java
+ * Nom du fichier   : AllUsersStatus.java
  * ============================================================================
- * Date de création : 19 mai 2013
+ * Date de création : 14 juin 2013
  * ============================================================================
  * Auteurs          : Crescenzio Fabio
  *                    Decorvet Grégoire
@@ -9,33 +9,26 @@
  *                    Schweizer Thomas
  * ============================================================================
  */
-package core.lobby.exceptions;
+package gui.models;
+
+import javax.swing.DefaultListModel;
+
+import core.UserInfo;
 
 /**
- * Exception générique liée au salon d'attente.
  * 
+ * TODO
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
  *
  */
-public class LobbyException extends RuntimeException {
+public class AllUsersStatus extends DefaultListModel<UserInfo> {
    
-   public LobbyException() {
-      super();
-   }
-   
-   public LobbyException(String message) {
-      super(message);
-   }
-   
-   public LobbyException(Throwable cause) {
-      super(cause);
-   }
-   
-   public LobbyException(String message, Throwable cause) {
-      super(message, cause);
-   }
+   private static final long serialVersionUID = 1169360848263712382L;
 
+   public AllUsersStatus() { }
+   
+   
 }

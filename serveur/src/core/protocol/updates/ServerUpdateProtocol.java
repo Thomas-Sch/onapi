@@ -11,11 +11,13 @@
  */
 package core.protocol.updates;
 
+import common.components.ConnectedUser;
 import common.components.gameserver.PlayerStatus;
 import common.connections.exceptions.ProtocolException;
 import common.connections.protocol.ProtocolType;
 import core.Core;
 import core.UserInformations;
+import core.updates.components.admin.UpdatedServerUser;
 
 /**
  * Classe permettant de rassembler les protocoles concernant les mises à jour.
@@ -67,19 +69,7 @@ public class ServerUpdateProtocol {
       }
    }
    
-   public void adminKick(String kickMessage) {
-      synchronized (user.connectionsToClient.updateChannel) {
-         user.connectionsToClient.updateChannel.sendProtocolType(ProtocolType.ADMIN_KICK);
-         user.connectionsToClient.updateChannel.sendString(kickMessage);
-      }
-   }
-   
    public void lobbyUpdateSlot(int slotNumber, PlayerStatus status) {
-      // Partie debug TODO
-      
-      user.log.push("DEBUG - update slot status : name :" + status.getName() +
-            ", team : " + status.getTeamNumber() + ", ready ? " + status.isReady());
-      
       synchronized(user.connectionsToClient.updateChannel) {
          user.connectionsToClient.updateChannel.sendProtocolType(ProtocolType.LOBBY_UPDATED_SLOT_STATUS);
          user.connectionsToClient.updateChannel.sendObject(status);
@@ -91,6 +81,20 @@ public class ServerUpdateProtocol {
          user.connectionsToClient.updateChannel.sendProtocolType(ProtocolType.LOBBY_GAME_READY);
       }
       // TODO more ?
+   }
+   
+   public void adminKick(String kickMessage) {
+      synchronized (user.connectionsToClient.updateChannel) {
+         user.connectionsToClient.updateChannel.sendProtocolType(ProtocolType.ADMIN_KICK);
+         user.connectionsToClient.updateChannel.sendString(kickMessage);
+      }
+   }
+   
+   public void adminUpdateServerUser(ConnectedUser connectedUser) {
+      synchronized(user.connectionsToClient.updateChannel) {
+         user.connectionsToClient.updateChannel.sendProtocolType(ProtocolType.ADMIN_UPDATED_SLOT);
+         user.connectionsToClient.updateChannel.sendObject(connectedUser);
+      }
    }
 
 }

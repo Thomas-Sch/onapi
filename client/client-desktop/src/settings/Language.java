@@ -57,6 +57,8 @@ public class Language {
       SERVER_ADRESS_LABEL,
       SERVER_PORT_LABEL,
       
+      SLOT_FREE,
+      
       READY_LABEL;
       
       
