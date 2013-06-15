@@ -49,8 +49,8 @@ public class GameModel {
    public static final float WORLD_TO_SCREEN = 100f;
    public static final float SCREEN_TO_WORLD = 1f / WORLD_TO_SCREEN;
 
-   private final int EXIT_HEIGHT = 63;
-   private final int EXIT_WIDTH = 42;
+   private final int EXIT_HEIGHT = 127;
+   private final int EXIT_WIDTH = 85;
 
    private static final Vector2 GRAVITY = new Vector2(0, 0);
 
@@ -287,9 +287,7 @@ public class GameModel {
 
    public void executeDevCheat() {
       System.out.println("CHEAT");
-      LinkedList<Player> ennemies = teams[1].getMembers();
-      Player target = ennemies.get(new Random().nextInt(ennemies.size()));
-      player.getWeapon().onHit(target);
+      player.moveTo(map.getExitPos());
    }
 
 }

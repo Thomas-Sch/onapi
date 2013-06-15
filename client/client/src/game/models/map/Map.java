@@ -177,15 +177,6 @@ public class Map extends Entity {
                batch.draw(textureMur, bounds[i][j].x, bounds[i][j].y,
                      bounds[i][j].width, bounds[i][j].height, 0f, 0f, 1f, 1f);
             }
-            else if (grid[i][j] == Tile.EXIT) {
-               // Dessine une porte
-               Color previousTint = batch.getColor();
-               batch.setColor(Color.GREEN);
-               batch.draw(textureSol, bounds[i][j].x, bounds[i][j].y,
-                     bounds[i][j].width, bounds[i][j].height, 0f, 0f, 8f, 8f);
-               batch.setColor(previousTint);
-
-            }
             else {
                // Dessine un sol
                batch.draw(textureSol, bounds[i][j].x, bounds[i][j].y,

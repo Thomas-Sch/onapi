@@ -21,6 +21,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -39,6 +40,8 @@ import com.badlogic.gdx.physics.box2d.World;
  */
 public class Exit extends Entity {
 
+   private static final Color EXIT_LIGHT_COLOR = new Color(90 / 255f,
+         237 / 255f, 178 / 255f, 0.8f);
    private Texture texture;
 
    /**
@@ -56,7 +59,7 @@ public class Exit extends Entity {
       Body body = world.createBody(bodyDef);
       body.setUserData(Tile.EXIT);
       PolygonShape shape = new PolygonShape();
-      shape.setAsBox(w, h);
+      shape.setAsBox(w / 2, h / 2);
       FixtureDef fix = new FixtureDef();
       fix.shape = shape;
       fix.density = 0.4f;
@@ -65,8 +68,8 @@ public class Exit extends Entity {
       body.createFixture(fix);
       body.setUserData(Tile.EXIT);
 
-      new PointLight(handler, 30, Color.GREEN, 100, 0, 0).attachToBody(body, 0,
-            0);
+      new PointLight(handler, 30, EXIT_LIGHT_COLOR, 150, 0, 0).attachToBody(
+            body, 0, -25);
    }
 
    public void loadResources() {
@@ -81,14 +84,18 @@ public class Exit extends Entity {
 
    public void draw(SpriteBatch batch, float parentAlpha) {
       // Dessine une porte
-      TextureRegion region = new TextureRegion(texture, 0, 0, 284, 426);
+      /*
+       * TextureRegion region = new TextureRegion(texture, 0, 0, 284, 426);
+       * 
+       * // Dessiner à l'écran le joueur batch.draw(region, getX() -
+       * texture.getWidth() / 2, getY() - texture.getHeight() / 2,
+       * texture.getWidth() / 2f, texture.getHeight() / 2f, texture.getWidth(),
+       * texture.getHeight(), getWidth() / texture.getWidth(), getHeight() /
+       * texture.getHeight(), getRotation(), false);
+       */
+      batch.draw(texture, getX() - getWidth() / 2, getY() - getHeight() / 2,
+            getWidth(), getHeight(), 0, 0, 1, 1);
 
-      // Dessiner à l'écran le joueur
-      batch.draw(region, getX() - texture.getWidth() / 2, getY()
-            - texture.getHeight() / 2, texture.getWidth() / 2f, texture.getHeight() / 2f,
-            texture.getWidth(), texture.getHeight(), getWidth() / texture.getWidth(), getHeight()
-                  / texture.getHeight(), getRotation(), false);
-      
       // Dessiner à l'écran le joueur
       // batch.draw(texture, getX(), getY(), getWidth(), getHeight(),
       // getWidth(), getHeight(), 1f, 1f);
