@@ -13,15 +13,11 @@ package game.controllers;
 
 import game.models.Entity;
 import game.models.GameModel;
-import game.models.Player;
 import game.models.map.Map;
 import game.models.map.Tile;
 
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -37,7 +33,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  * 
  */
 public class InputController {
-
+   
    /**
     * Modèle du jeu à contrôler
     */
@@ -195,26 +191,25 @@ public class InputController {
 
       Vector2.tmp.set(0, 0);
 
-      synchronized (game.getPlayer()) {
+      if (getActionState(Action.UP)) {
+         if (!isCollidingWithWall(Action.UP, 0, +moveSpeed))
+            Vector2.tmp.y += moveSpeed;
+      }
+      if (getActionState(Action.DOWN)) {
+         if (!isCollidingWithWall(Action.DOWN, 0, -moveSpeed))
+            Vector2.tmp.y -= moveSpeed;
+      }
+      if (getActionState(Action.RIGHT)) {
+         if (!isCollidingWithWall(Action.RIGHT, +moveSpeed, 0))
+            Vector2.tmp.x += moveSpeed;
+      }
+      if (getActionState(Action.LEFT)) {
+         if (!isCollidingWithWall(Action.LEFT, -moveSpeed, 0))
+            Vector2.tmp.x -= moveSpeed;
+      }
 
-         if (getActionState(Action.UP)) {
-            if (!isCollidingWithWall(Action.UP, 0, +moveSpeed))
-               Vector2.tmp.y += moveSpeed;
-         }
-         if (getActionState(Action.DOWN)) {
-            if (!isCollidingWithWall(Action.DOWN, 0, -moveSpeed))
-               Vector2.tmp.y -= moveSpeed;
-         }
-         if (getActionState(Action.RIGHT)) {
-            if (!isCollidingWithWall(Action.RIGHT, +moveSpeed, 0))
-               Vector2.tmp.x += moveSpeed;
-         }
-         if (getActionState(Action.LEFT)) {
-            if (!isCollidingWithWall(Action.LEFT, -moveSpeed, 0))
-               Vector2.tmp.x -= moveSpeed;
-         }
-
-         if (Vector2.tmp.x != 0 || Vector2.tmp.y != 0) {
+      if (Vector2.tmp.x != 0 || Vector2.tmp.y != 0) {
+         synchronized (game.getPlayer()) {
             game.getPlayer().move(Vector2.tmp);
          }
       }
@@ -245,5 +240,4 @@ public class InputController {
          ((Entity) e).update(delta);
       }
    }
-
 }
