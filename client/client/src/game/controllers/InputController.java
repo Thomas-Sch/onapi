@@ -140,20 +140,19 @@ public class InputController {
       Map map = game.getMap();
       Tile[][] grid = map.getGrid();
       int n = grid.length;
-      moveSpeedX *=3;
-      moveSpeedY = moveSpeedY*3+2;
+      moveSpeedX = moveSpeedX * 3 + 3;
+      moveSpeedY = moveSpeedY * 3 + 3;
 
       // Position du joueur dans la grille
       int pX = (int) Math.floor(game.getPlayer().getX() / Tile.WIDTH);
       int pY = n - 1 - (int) Math.floor(game.getPlayer().getY() / Tile.HEIGHT);
 
       Rectangle nextRectPlayer = new Rectangle(game.getPlayer().getX()
-            + moveSpeedX - game.getPlayer().getWidth() / 2, game.getPlayer()
-            .getY() + moveSpeedY - game.getPlayer().getWidth() / 2, 50, 50);
+            + moveSpeedX - (game.getPlayer().getWidth() + 10) / 2, game
+            .getPlayer().getY()
+            + moveSpeedY
+            - (game.getPlayer().getWidth() + 10) / 2, 50, 50);
 
-      System.out.printf("TEST PLAY : x0 = %s x1 = %s y0 = %s  y1 = %s \n",
-            nextRectPlayer.x, nextRectPlayer.width + nextRectPlayer.x,
-            nextRectPlayer.y, nextRectPlayer.height + nextRectPlayer.y);
       for (int i = pY - 1; i <= pY + 1; i++) {
          for (int j = pX - 1; j <= pX + 1; j++) {
             if (i > 0 && i < game.getMap().getGrid().length && j > 0
@@ -161,7 +160,9 @@ public class InputController {
                   && !(i == pY && pX == j)) {
                if (map.getGrid()[i][j] == Tile.WALL) {
                   // Teste les collisions entre le joueur et les murs à tester
-                  if (nextRectPlayer.overlaps(map.getWallBounds(i, j))) {
+                  if (nextRectPlayer.x == map.getWallBounds(i, j).x
+                        || nextRectPlayer.y == map.getWallBounds(i, j).y
+                        || nextRectPlayer.overlaps(map.getWallBounds(i, j))) {
                      return true;
                   }
                }
@@ -203,7 +204,6 @@ public class InputController {
          }
 
          if (Vector2.tmp.x != 0 || Vector2.tmp.y != 0) {
-            // game.getPlayer().incrementState();
             game.getPlayer().move(Vector2.tmp);
          }
       }
@@ -220,6 +220,7 @@ public class InputController {
       // }
       if (getActionState(Action.TORCH)) {
          game.getPlayer().toggleTorch();
+         setActionState(Action.TORCH, false);
       }
       if (getActionState(Action.FIRE)) {
          game.getPlayer().shoot(delta);
