@@ -18,6 +18,7 @@ import game.models.map.Tile;
 
 import java.util.HashMap;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
@@ -135,89 +136,36 @@ public class InputController {
       Map map = game.getMap();
       Tile[][] grid = map.getGrid();
       int n = grid.length;
+      moveSpeedX = moveSpeedX * 3 + 3;
+      moveSpeedY = moveSpeedY * 3 + 3;
 
       // Position du joueur dans la grille
       int pX = (int) Math.floor(game.getPlayer().getX() / Tile.WIDTH);
       int pY = n - 1 - (int) Math.floor(game.getPlayer().getY() / Tile.HEIGHT);
-      int wallX = -1, wallY = -1;
 
-      System.out.println("CASE : " + pX + " " + pY);
+      Rectangle nextRectPlayer = new Rectangle(game.getPlayer().getX()
+            + moveSpeedX - (game.getPlayer().getWidth() + 10) / 2, game
+            .getPlayer().getY()
+            + moveSpeedY
+            - (game.getPlayer().getWidth() + 10) / 2, 50, 50);
 
-      // Récupère les coordonnées du mur à tester selon le déplacement
-      switch (direction) {
-         case UP:
-            wallX = pX;
-            wallY = pY - 1;
-            break;
-         case DOWN:
-            wallX = pX;
-            wallY = pY + 1;
-            break;
-         case LEFT:
-            wallX = pX - 1;
-            wallY = pY;
-            break;
-         case RIGHT:
-            wallX = pX + 1;
-            wallY = pY;
-            break;
-         default:
-            throw new RuntimeException(
-                  "direction must be UP, DOWN, LEFT or RIGHT");
-      }
-
-      // Teste les collisions entre le joueur et les murs à tester
-      System.out.printf(
-            "TEST WALL : x0 = %s y0 = %s x1 = %s y1 = %s \n",
-            map.getWallBounds(wallX, wallY).x,
-            map.getWallBounds(wallX, wallY).y,
-            map.getWallBounds(wallX, wallY).width
-                  + map.getWallBounds(wallX, wallY).x,
-            map.getWallBounds(wallX, wallY).height
-                  + map.getWallBounds(wallX, wallY).y);
-      System.out.printf("TEST PLAY : x0 = %s y0 = %s x1 = %s y1 = %s \n", game
-            .getPlayer().getBounds().x, game.getPlayer().getBounds().y, game
-            .getPlayer().getBounds().width + game.getPlayer().getBounds().x,
-            game.getPlayer().getBounds().height
-                  + game.getPlayer().getBounds().y);
-      if (map.getGrid()[wallY][wallX] == Tile.WALL) {
-         return map.getWallBounds(wallX, wallY).overlaps(
-               game.getPlayer().getBounds());
+      for (int i = pY - 1; i <= pY + 1; i++) {
+         for (int j = pX - 1; j <= pX + 1; j++) {
+            if (i > 0 && i < game.getMap().getGrid().length && j > 0
+                  && j < game.getMap().getGrid().length
+                  && !(i == pY && pX == j)) {
+               if (map.getGrid()[i][j] == Tile.WALL) {
+                  // Teste les collisions entre le joueur et les murs à tester
+                  if (nextRectPlayer.x == map.getWallBounds(i, j).x
+                        || nextRectPlayer.y == map.getWallBounds(i, j).y
+                        || nextRectPlayer.overlaps(map.getWallBounds(i, j))) {
+                     return true;
+                  }
+               }
+            }
+         }
       }
       return false;
-
-      // int playerCaseX = (int) Math
-      // .floor(game.getPlayer().getX() / Tile.WIDTH);
-      // int playerCaseY = n - 1 - (int) Math
-      // .floor(game.getPlayer().getY() / Tile.HEIGHT);
-      //
-      // System.out.println("CASE : " + playerCaseY + " " + playerCaseX);
-      // for (int i = playerCaseY - 1; i <= playerCaseY + 1; i++) {
-      // for (int j = playerCaseX - 1; j <= playerCaseX + 1; j++) {
-      // //System.out.println(i + " " + j);
-      // if (i > 0 && i < game.getMap().getGrid().length && j > 0
-      // && j < game.getMap().getGrid().length
-      // && !(i == playerCaseY && playerCaseX == j)) {
-      // game.getPlayer().getRectangle().x += moveSpeedX;
-      // game.getPlayer().getRectangle().x += moveSpeedY;
-      // // System.out.println("Test du rectangle "
-      // // + game.getPlayer().getRectangle().getX() + " "
-      // // + game.getPlayer().getRectangle().getY() + " avec "
-      // // + game.getMap().getRectangle(i, j).getX() + " "
-      // // + game.getMap().getRectangle(i, j).getY());
-      // // System.out.println("Fin rectangle:"
-      // // + game.getMap().getRectangle(i, j).width);
-      // if (Intersector.overlapRectangles(game.getMap().getRectangle(i, j),
-      // game.getPlayer()
-      // .getRectangle())) {
-      // return true;
-      // }
-      // game.getPlayer().getRectangle().x -= moveSpeedX;
-      // game.getPlayer().getRectangle().x -= moveSpeedY;
-      // }
-      // }
-      // }
-      // return false;
 
    }
 
