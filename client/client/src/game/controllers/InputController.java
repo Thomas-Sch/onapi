@@ -149,8 +149,6 @@ public class InputController {
             + moveSpeedY
             - (game.getPlayer().getWidth() + 10) / 2, 50, 50);
 
-      boolean modifX = false;
-      boolean modifY = false;
 
       if(nextRectPlayer.x < Tile.WIDTH || nextRectPlayer.x+nextRectPlayer.width> (n-1)*Tile.WIDTH ||
             nextRectPlayer.y < Tile.HEIGHT || nextRectPlayer.y + nextRectPlayer.height > Tile.HEIGHT*(n-1))
@@ -170,8 +168,6 @@ public class InputController {
                   if (nextRectPlayer.overlaps(map.getWallBounds(i, j))) {
                      return true;
                   }
-                  if (modifX) nextRectPlayer.x -= moveSpeedX*3 / 10;
-                  if (modifY) nextRectPlayer.y -= moveSpeedY*3 / 10;
                }
             }
          }
