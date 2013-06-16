@@ -179,6 +179,7 @@ public class Player extends Entity {
       deadPos = new Vector2(GRAVEYARD_POS.x + pos.x, GRAVEYARD_POS.y + pos.y);
       pl = new PointLight(game.getRayHandler(), 30, this.TORCH_COLOR, 150, 0, 0);
       pl.attachToBody(body, 0, 0);
+      pl.setActive(false);
    }
 
    @Override
@@ -221,13 +222,11 @@ public class Player extends Entity {
     *           Nouvelle position
     */
    public void moveTo(Vector2 newPos) {
-      if (isInGame()) {
-         setPosition(newPos.x - bounds.width / 2f, newPos.y - bounds.height
-               / 2f);
-         bounds.x = newPos.x;
-         bounds.y = newPos.y;
-         isMoving = true;
-      }
+      setPosition(newPos.x - bounds.width / 2f, newPos.y - bounds.height
+            / 2f);
+      bounds.x = newPos.x;
+      bounds.y = newPos.y;
+      isMoving = true;
    }
 
    /**

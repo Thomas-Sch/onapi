@@ -60,12 +60,14 @@ public class DefaultSkill extends Skill {
       lastUpdate = 0;
       getOwner().getPointLight().setDistance(Player.PL_DISTANCE_DEFAULT);
       getOwner().getPointLight().setColor(Player.HALO_COLOR);
+      getOwner().getPointLight().setActive(false);
       setActive(false);
    }
 
    public void activate() {
       if (!isActive()) {
          setActive(true);
+         getOwner().getPointLight().setActive(true);
          getOwner().getPointLight().setColor(getOwner().getTeam().getColor());
       }
    }

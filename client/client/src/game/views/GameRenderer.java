@@ -133,10 +133,11 @@ public class GameRenderer {
       lblHP = new Label("[HP]", skin);
       lblHP.setColor(Color.RED);
       lblHP.setFontScale(2);
+      table.add(lblHP);
+      table.row();
       lblMessage = new Label("", skin);
       lblMessage.setColor(Color.YELLOW);
       lblMessage.setFontScale(2);
-      table.add(lblHP);
       table.add(lblMessage);
 
       table.pack();
@@ -184,7 +185,7 @@ public class GameRenderer {
 
       // Affichage de l'interface graphique
       lblHP.setText("HP : " + game.getPlayer().getHP());
-      if(game.getPlayer().isOut())
+      if (game.getPlayer().isOut())
          lblMessage.setText("Vous etes sorti du labyrinthe");
       else if (game.getPlayer().isDead())
          lblMessage.setText("Vous etes mort.");

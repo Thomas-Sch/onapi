@@ -61,7 +61,7 @@ public class GameScreen extends ScreenAdapter {
     * @param debug
     */
    public GameScreen(boolean debug, GameData initData) {
-      this.debug = false;
+      this.debug = debug;
       game = initData.getGame();
    }
 
