@@ -281,7 +281,7 @@ public class Player extends Entity {
             isMoving = false;
          }
          else {
-            animationFrameIndex = 0;
+            animationFrameIndex = 3;
          }
          lastFrameUpdate = currentTime;
       }
