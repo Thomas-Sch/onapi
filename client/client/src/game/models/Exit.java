@@ -12,7 +12,6 @@
  */
 package game.models;
 
-import game.models.map.Tile;
 import box2dLight.PointLight;
 import client.GameData;
 
