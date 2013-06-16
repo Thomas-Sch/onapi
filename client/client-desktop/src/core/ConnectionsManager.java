@@ -11,16 +11,22 @@
  */
 package core;
 
+import com.badlogic.gdx.math.Vector2;
+
+import game.models.GameListener;
 import game.models.GameModel;
+import game.models.Player;
+import client.ClientReceiveProtocol;
+import client.ClientRequestProtocol;
+import client.ClientRequestProtocol.ConnectionChannels;
+import client.GameData;
+import client.GameLauncher;
+
 import common.connections.Channel;
 import common.connections.exceptions.ChannelClosedException;
 import common.connections.exceptions.ChannelException;
 import common.connections.exceptions.TimeOutException;
 import common.connections.protocol.ProtocolType;
-
-import client.ClientReceiveProtocol;
-import client.ClientRequestProtocol;
-import client.ClientRequestProtocol.ConnectionChannels;
 
 /**
  * 
@@ -41,10 +47,13 @@ public class ConnectionsManager {
    private UsersInformations users = new UsersInformations(); // Pour les administrateurs
    private PlayersInformations players;
    
-   private GameModel gameModel;
+   private GameData gameData;
+
+   private GameLauncher launcher;
    
-   public ConnectionsManager () {
-      
+   public ConnectionsManager (GameModel gameModel) {
+      gameData = new GameData();
+      gameData.setGame(gameModel);
    }
    
    public void setup(ConnectionChannels connections) {
@@ -70,7 +79,12 @@ public class ConnectionsManager {
    }
    
    public void setupGameModel(GameModel gameModel) {
-      this.gameModel = gameModel;
+      gameData = new GameData();
+      gameData.setGame(gameModel);
+   }
+   
+   public void setupGameLauncher(GameLauncher launcher) {
+      this.launcher = launcher;
    }
    
    public Channel getChannelUpdate() {
@@ -123,6 +137,46 @@ public class ConnectionsManager {
       }
    }
    
+   public class Notifier implements GameListener {
+      private ClientRequestProtocol protocol;
+
+      public Notifier(GameData data, ClientRequestProtocol protocol) {
+         data.getGame().updates.addListener(this);
+         this.protocol = protocol;
+      }
+
+      @Override
+      public void onPlayerMove(GameModel gameModel, Player player) {
+      // TODO Auto-generated method stub
+         protocol.sendMessage(player.getId() + " moved.");
+      }
+
+      @Override
+      public void onFire(GameModel gameModel, Player sender, Vector2 from,
+            Vector2 dir) {
+         // TODO Auto-generated method stub
+         
+      }
+
+      @Override
+      public void onPlayerHit(GameModel gameModel, Player player) {
+         // TODO Auto-generated method stub
+         
+      }
+
+      @Override
+      public void onTorch(GameModel gameModel, Player player) {
+         // TODO Auto-generated method stub
+         
+      }
+
+      @Override
+      public void onPlayerOut(GameModel gameModel, Player player) {
+         // TODO Auto-generated method stub
+         
+      }
+   }
+   
    public class Updater extends Thread {
       
       private Channel updateChannel;
@@ -132,7 +186,7 @@ public class ConnectionsManager {
       
       public Updater(Channel updateChannel) {
          this.updateChannel = updateChannel;
-         protocol = new ClientReceiveProtocol(updateChannel);
+         protocol = new ClientReceiveProtocol(updateChannel, launcher);
       }
 
       @Override
@@ -159,7 +213,7 @@ public class ConnectionsManager {
                      break;
                      
                   case LOBBY_GAME_READY :
-                     protocol.lobbyUpdateGameReady(42);
+                     protocol.lobbyUpdateGameReady(gameData);
                      System.out.println("DEBUG - game ready !");
                      break;
                      
@@ -168,7 +222,7 @@ public class ConnectionsManager {
                      break;
                      
                   case ADMIN_KICK :
-                     protocol.adminKicked(gameModel);
+                     protocol.adminKicked(gameData);
                      break;
 
                   default:

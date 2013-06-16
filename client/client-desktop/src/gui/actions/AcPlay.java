@@ -47,6 +47,7 @@ public class AcPlay extends UserAction {
          // Mise en place des infos de joueurs
          connections.setupPlayers(lobbySize);
          
+         new GameLauncher(true); // TODO true = temporaire
          Lobby lobby = new Lobby(connections, (Frame)dependencies[0]);
          
 //       JLobby view = new JLobby((Frame)dependencies[0]);
@@ -54,7 +55,6 @@ public class AcPlay extends UserAction {
 //       Positions.setPositionOnScreen(view, ScreenPosition.CENTER);
 //       view.setVisible(true);
        
-         new GameLauncher(connections, true); // TODO true = temporaire
       }
       
       

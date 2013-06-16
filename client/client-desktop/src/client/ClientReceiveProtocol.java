@@ -11,13 +11,11 @@
  */
 package client;
 
-import game.models.GameModel;
 import common.components.ConnectedUser;
 import common.components.gameserver.PlayerStatus;
 import common.connections.Channel;
 import common.connections.protocol.ProtocolType;
 
-import core.PlayerInfo;
 import core.PlayersInformations;
 import core.UsersInformations;
 
@@ -40,8 +38,11 @@ public class ClientReceiveProtocol {
 
    private Channel channel;
    
-   public ClientReceiveProtocol(Channel channel) {
+   private GameLauncher launcher;
+   
+   public ClientReceiveProtocol(Channel channel, GameLauncher launcher) {
       this.channel = channel;
+      this.launcher = launcher;
    }
    
    /**
@@ -97,8 +98,8 @@ public class ClientReceiveProtocol {
     * TODO
     * @param toDefine - TODO
     */
-   public void lobbyUpdateGameReady(int toDefine) {
-      // TODO something ?
+   public void lobbyUpdateGameReady(GameData data) {
+      launcher.run(data);
    }
    
    public void adminUpdateServerSlotStatus(UsersInformations users) {
@@ -116,7 +117,7 @@ public class ClientReceiveProtocol {
       }
    }
    
-   public void adminKicked(GameModel model) {
+   public void adminKicked(GameData model) {
       String message = channel.receiveString();
       
       // TODO - temp en attendant la fonction fournie

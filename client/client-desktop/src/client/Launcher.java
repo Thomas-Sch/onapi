@@ -12,16 +12,16 @@
 
 package client;
 
+import game.models.GameModel;
 import gui.controller.Login;
 import gui.view.JLog;
 
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import core.ConnectionsManager;
-
 import settings.Settings;
 import utils.Logs;
+import core.ConnectionsManager;
 
 /**
  * Classe d'amorce pour lancer le programme.
@@ -40,11 +40,13 @@ public class Launcher {
     * @param args
     */
    public static void main(String[] args) {
-      ConnectionsManager connections = new ConnectionsManager();
+      GameData initData = new GameData();
+      GameModel game = new GameModel(initData);
+      ConnectionsManager connections = new ConnectionsManager(game);
 
       // Lance le jeu directement si mode debug
       if (args.length > 0 && args[0].equals("--debug")) {
-         new GameLauncher(connections, true).run();
+         new GameLauncher(true).run(initData);
       }
       else {
 

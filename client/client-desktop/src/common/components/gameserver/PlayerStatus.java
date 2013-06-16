@@ -14,7 +14,6 @@ package common.components.gameserver;
 import java.io.Serializable;
 
 import settings.Language.Text;
-import settings.ShortTexts;
 
 import common.components.ObservableComponent;
 
