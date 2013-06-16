@@ -177,6 +177,8 @@ public class Player extends Entity {
       setDir(dir);
       moveTo(pos);
       deadPos = new Vector2(GRAVEYARD_POS.x + pos.x, GRAVEYARD_POS.y + pos.y);
+      pl = new PointLight(game.getRayHandler(), 30, this.TORCH_COLOR, 150, 0, 0);
+      pl.attachToBody(body, 0, 0);
    }
 
    @Override
