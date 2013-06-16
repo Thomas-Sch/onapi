@@ -69,7 +69,7 @@ public class Player extends Entity {
    private boolean isMoving = false;
    private float lastFrameUpdate = 0.0f;
    private float currentTime = 0.0f;
-   private static final int NB_FRAMES_ANIMATION = 5;
+   private static final int NB_FRAMES_ANIMATION = 6;
    private static final float ANIMATION_DURATION = 0.3f; // en [s]
 
    /**
@@ -276,12 +276,12 @@ public class Player extends Entity {
       if (currentTime - lastFrameUpdate > ANIMATION_DURATION
             / NB_FRAMES_ANIMATION) {
          if (isMoving) {
-            animationFrameIndex = (animationFrameIndex + 1)
-                  % NB_FRAMES_ANIMATION;
+            animationFrameIndex = (animationFrameIndex+1)
+                  % (NB_FRAMES_ANIMATION + 1);
             isMoving = false;
          }
          else {
-            animationFrameIndex = 0;
+            animationFrameIndex = 3;
          }
          lastFrameUpdate = currentTime;
       }
