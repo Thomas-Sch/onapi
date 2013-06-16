@@ -23,8 +23,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
- * Traite les entrées de l'utilisateur, les fait valider auprès du serveur puis
- * les envoie au modèle pour que celui-ci les applique dans le jeu.
+ * Traite les entrées de l'utilisateur et les envoie au modèle pour que celui-ci
+ * les applique dans le jeu.
  * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
@@ -33,7 +33,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  * 
  */
 public class InputController {
-   
+
    /**
     * Modèle du jeu à contrôler
     */
@@ -131,6 +131,7 @@ public class InputController {
       return keys.get(action).booleanValue();
    }
 
+
    public boolean isCollidingWithWall(Action direction, float moveSpeedX,
          float moveSpeedY) {
       Map map = game.getMap();
@@ -149,9 +150,10 @@ public class InputController {
             + moveSpeedY
             - (game.getPlayer().getWidth() + 10) / 2, 50, 50);
 
-
-      if(nextRectPlayer.x < Tile.WIDTH || nextRectPlayer.x+nextRectPlayer.width> (n-1)*Tile.WIDTH ||
-            nextRectPlayer.y < Tile.HEIGHT || nextRectPlayer.y + nextRectPlayer.height > Tile.HEIGHT*(n-1))
+      if (nextRectPlayer.x < Tile.WIDTH
+            || nextRectPlayer.x + nextRectPlayer.width > (n - 1) * Tile.WIDTH
+            || nextRectPlayer.y < Tile.HEIGHT
+            || nextRectPlayer.y + nextRectPlayer.height > Tile.HEIGHT * (n - 1))
          return true;
       for (int i = pY - 1; i <= pY + 1; i++) {
          for (int j = pX - 1; j <= pX + 1; j++) {
@@ -159,10 +161,11 @@ public class InputController {
                   && j < game.getMap().getGrid().length
                   && !(i == pY && pX == j)) {
                if (map.getGrid()[i][j] == Tile.WALL) {
-                  
-                  //applique une correction si x et y % tile.width/height
-                  if(direction == Action.RIGHT && nextRectPlayer.x + nextRectPlayer.width % Tile.WIDTH == 0) {
-                    return true;
+
+                  // applique une correction si x et y % tile.width/height
+                  if (direction == Action.RIGHT
+                        && nextRectPlayer.x + nextRectPlayer.width % Tile.WIDTH == 0) {
+                     return true;
                   }
                   // Teste les collisions entre le joueur et les murs à tester
                   if (nextRectPlayer.overlaps(map.getWallBounds(i, j))) {

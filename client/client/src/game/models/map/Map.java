@@ -48,14 +48,30 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
  */
 public class Map extends Entity {
 
+   /**
+    * Grille de la map
+    */
    private Tile[][] grid;
-   private Texture textureMur;
-   private Texture textureSol;
+
+   /**
+    * Liste des spawners pour faire apparaître les joueurs
+    */
    private LinkedList<Spawner> spawners = new LinkedList<Spawner>();
-   private Body[][] wallBodies;
-   private Rectangle[][] bounds;
+
+   /**
+    * Position réelle de la porte de sortie
+    */
    private Vector2 exitPos;
 
+   // Représentations physiques des cases de la grille
+   private Body[][] wallBodies;
+   private Rectangle[][] bounds;
+
+   // Textures pour l'affichage
+   private Texture textureMur;
+   private Texture textureSol;
+
+   @Override
    public void loadResources() {
       textureSol = new Texture(Gdx.files.internal("data/sol.png"));
       textureMur = new Texture(Gdx.files.internal("data/mur.jpg"));
@@ -109,7 +125,6 @@ public class Map extends Entity {
          }
       }
 
-      loadResources();
       System.out.println("Generated map :\n" + this);
    }
 
@@ -118,20 +133,38 @@ public class Map extends Entity {
       // TODO Auto-generated method stub
    }
 
+   /**
+    * @return Grille représentant la map
+    */
    public Tile[][] getGrid() {
       return grid;
    }
 
+   /**
+    * @param grid
+    *           Grille représentant la map
+    */
    public void setGrid(Tile[][] grid) {
       this.grid = grid;
    }
 
+   /**
+    * @return Liste des spawners pour faire apparaître les joueurs
+    */
    public LinkedList<Spawner> getSpawners() {
       return spawners;
    }
 
-   public Rectangle getWallBounds(int i, int j) {
-      return bounds[i][j];
+   /**
+    * @param x
+    *           Position x dans la grille de la case voulue
+    * @param y
+    *           Position y dans la grille de la case voulue
+    * @return Rectangle représentant la position et la taille d'une case (tile)
+    *         de la grille.
+    */
+   public Rectangle getWallBounds(int x, int y) {
+      return bounds[x][y];
    }
 
    /**
@@ -142,17 +175,24 @@ public class Map extends Entity {
    }
 
    /**
-    * Retourne les coordonnées du centre de la case voulue sur la map
-    * 
-    * @param i
-    * @param j
-    * @return
+    * @param x
+    *           Position x dans la grille de la case voulue
+    * @param y
+    *           Position y dans la grille de la case voulue
+    * @return Coordonnées réelles du centre de la case voulue sur la map
     */
-   public Vector2 getRealPos(int i, int j) {
-      return new Vector2((0.5f + j) * Tile.WIDTH, (grid.length - 0.5f - i)
+   public Vector2 getRealPos(int x, int y) {
+      return new Vector2((0.5f + y) * Tile.WIDTH, (grid.length - 0.5f - x)
             * Tile.HEIGHT);
    }
 
+   /**
+    * @param x
+    *           Position réelle x sur la map
+    * @param y
+    *           Position réelle y sur la map
+    * @return Coordonnées de la case correspondante à la position données
+    */
    public Vector2 getGridCoord(float x, float y) {
       return new Vector2((float) Math.floor(y / Tile.WIDTH - 0.f),
             (int) Math.floor(grid.length - 0.5f - (x / Tile.HEIGHT)));
@@ -160,13 +200,6 @@ public class Map extends Entity {
 
    @Override
    public void debugRender(ShapeRenderer renderer) {
-      /*
-       * renderer.begin(ShapeType.FilledRectangle);
-       * renderer.setColor(Color.GRAY); for (int i = 0; i < grid.length; i++) {
-       * for (int j = 0; j < grid[i].length; j++) { if (grid[i][j] == Tile.WALL)
-       * { renderer.filledRect(i * Tile.WIDTH, j * Tile.HEIGHT, Tile.WIDTH,
-       * Tile.HEIGHT); } } } renderer.end();
-       */
    }
 
    @Override
@@ -237,17 +270,6 @@ public class Map extends Entity {
 
    @Override
    public void update(float deltaTime) {
-      for (int i = 0; i < wallBodies.length; i++) {
-         for (int j = 0; j < wallBodies.length; j++) {
-            if (wallBodies[i][j] != null) {
-               // body.setTransform(getPos(), getRotation() * ((float) Math.PI)
-               // / 180f);
-
-               // wallBodies[i][j].setTransform(bounds[i][j].x, bounds[i][j].y,
-               // 0);
-            }
-         }
-      }
    }
 
 }

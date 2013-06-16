@@ -11,7 +11,7 @@
  */
 package game.models;
 
-import game.items.Bullet;
+import game.items.Projectile;
 import game.items.bonus.DefaultBonus;
 import game.items.skills.DefaultSkill;
 import game.items.weapons.DefaultWeapon;
@@ -213,26 +213,26 @@ public class GameModel {
                   Object userdataA = a.getBody().getUserData();
                   Object userdataB = b.getBody().getUserData();
                   if (userdataA != null && userdataB != null
-                        && userdataA instanceof Bullet
+                        && userdataA instanceof Projectile
                         && userdataB instanceof Player)
-                     ((Bullet) userdataA).onHit((Player) userdataB);
+                     ((Projectile) userdataA).onHit((Player) userdataB);
 
                   else if (a.getBody().getUserData() != null
                         && b.getBody().getUserData() != null
-                        && userdataB instanceof Bullet
+                        && userdataB instanceof Projectile
                         && userdataA instanceof Player)
-                     ((Bullet) userdataB).onHit((Player) userdataA);
+                     ((Projectile) userdataB).onHit((Player) userdataA);
 
                   else if (a.getBody().getUserData() != null
                         && b.getBody().getUserData() != null
-                        && a.getBody().getUserData() instanceof Bullet
+                        && a.getBody().getUserData() instanceof Projectile
                         && b.getBody().getUserData() instanceof Tile)
-                     ((Bullet) a.getBody().getUserData()).deactivate();
+                     ((Projectile) a.getBody().getUserData()).deactivate();
                   else if (a.getBody().getUserData() != null
                         && b.getBody().getUserData() != null
-                        && b.getBody().getUserData() instanceof Bullet
+                        && b.getBody().getUserData() instanceof Projectile
                         && a.getBody().getUserData() instanceof Tile)
-                     ((Bullet) b.getBody().getUserData()).deactivate();
+                     ((Projectile) b.getBody().getUserData()).deactivate();
                   else if (a.getBody().getUserData() != null
                         && b.getBody().getUserData() != null
                         && b.getBody().getUserData() instanceof Player

@@ -14,13 +14,10 @@ package client;
 import game.screens.GameScreen;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-
-import client.GameData;
 
 /**
  * Classe d'initialisation du jeu. Gère la transition entre les différents
- * screens.
+ * screens éventuels.
  * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
@@ -35,7 +32,7 @@ public class Onapi extends Game {
    public Onapi(boolean debug, GameData initData) {
       this.gameScreen = new GameScreen(debug, initData);
    }
-   
+
    @Override
    public void create() {
       setScreen(gameScreen);

@@ -30,7 +30,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 
 /**
- * TODO
+ * Représente un projectile envoyé par une arme lors d'un tir.
  * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
@@ -38,14 +38,14 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
  * @author Schweizer Thomas
  * 
  */
-public class Bullet extends Entity {
+public class Projectile extends Entity {
 
    private static final float UPDATE_RATE = 1 / 120f;
 
    protected Body body;
    private Texture texture;
    private float lastUpdate;
-   private float length;
+   private float mayDistance;
    private boolean active;
    private PointLight pl;
    private Weapon weapon;
@@ -54,11 +54,26 @@ public class Bullet extends Entity {
    private float distance;
    private Vector2 increment = new Vector2();
 
-   public Bullet(Weapon weapon, float startX, float startY, float x, float y,
-         float lenght, float speed, Player player, GameModel game) {
+   /**
+    * Instancie un projectile.
+    * 
+    * @param weapon
+    *           Arme correspondante
+    * @param startX
+    *           Position initiale du projectile (x)
+    * @param startY
+    *           Position initiale du projectile (x)
+    * @param maxDistance
+    *           Distance maximale à parcourir avant la destruction du projectile
+    * @param speed
+    *           Vitesse du projectile
+    * @param game
+    *           Modèle du jeu
+    */
+   public Projectile(Weapon weapon, float startX, float startY,
+         float maxDistance, float speed, Player player, GameModel game) {
       super(game);
-      this.increment.set(x - startX, y - startY).nor().mul(speed * UPDATE_RATE);
-      this.length = lenght;
+      this.mayDistance = maxDistance;
       this.lastUpdate = 0;
       this.weapon = weapon;
       this.active = false;
@@ -113,7 +128,7 @@ public class Bullet extends Entity {
          for (int i = 0; i < Math.floor(currentTime / UPDATE_RATE); ++i) {
             if (active) {
                this.pl.setActive(true);
-               if (distance > length) { 
+               if (distance > mayDistance) {
                   deactivate();
                }
                else {
@@ -143,14 +158,26 @@ public class Bullet extends Entity {
       }
    }
 
+   /**
+    * Lorsque le projectile touche un joueur
+    * 
+    * @param target
+    */
    public void onHit(Player target) {
       if (target != weapon.getOwner()) weapon.onHit(target);
    }
 
+   /**
+    * @return L'arme correspondante
+    */
    public Weapon getWeapon() {
       return this.weapon;
    }
 
+   /**
+    * Détruit le projectile (peut être réutilisé ensuite avec
+    * {@link Projectile#activate(float, float, float, float)}.
+    */
    public void deactivate() {
       setX(0);
       setY(0);
@@ -158,22 +185,31 @@ public class Bullet extends Entity {
       this.active = false;
    }
 
+   /**
+    * Lance le projectile depuis une position données vers une direction donnée.
+    * 
+    * @param startX
+    *           Point de tir (x)
+    * @param startY
+    *           Point de tir (y)
+    * @param dirX
+    *           Point de direction (x)
+    * @param dirY
+    *           Point de direction (x)
+    */
    public void activate(float startX, float startY, float dirX, float dirY) {
       setPosition(startX, startY);
       this.increment.set(dirX, dirY).nor().mul(speed * UPDATE_RATE);
       setRotation(increment.angle() + 90);
-      // setX(startX + this.dir.x * 10);
-      // setY(startY + this.dir.y * 10);
       this.distance = 0.0f;
       this.lastUpdate = 0;
       this.active = true;
    }
 
    /**
-    * @return
+    * @return Si le projectile est actif (lancé).
     */
    public boolean isActive() {
-      // TODO Auto-generated method stub
       return active;
    }
 }

@@ -17,15 +17,16 @@ import game.models.GameModel;
 import game.models.Player;
 
 /**
- * TODO
+ * Définit un item équipable par un joueur.
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
 public abstract class Item extends Entity {
-   
+
    protected Item(GameModel game) {
       super(game);
    }
@@ -34,35 +35,44 @@ public abstract class Item extends Entity {
     * Temps de cooldown en chaque utilisation de l'item (en secondes)
     */
    private float cooldown = 0.5f;
-   
+
    /**
-    * Propriétaire de l'arme
+    * Propriétaire de l'item
     */
    private Player owner;
 
    /**
-    * @return Propriétaire de l'arme
+    * @return Propriétaire de l'item
     */
    public Player getOwner() {
       return owner;
    }
 
    /**
-    * @param owner Propriétaire de l'arme
+    * @param owner
+    *           Propriétaire de l'item
     */
    public void setOwner(Player owner) {
       this.owner = owner;
    }
-   
+
+   /**
+    * @param cooldown
+    *           Délai avant chaque utilisation de l'item
+    */
    protected void setCooldown(float cooldown) {
       this.cooldown = cooldown;
    }
-   
+
+   /**
+    * @return cooldown Délai avant chaque utilisation de l'item
+    */
    protected float getCooldown() {
       return cooldown;
    }
-   
+
    @Override
-   public void init(GameData initData) { }
-   
+   public void init(GameData initData) {
+   }
+
 }

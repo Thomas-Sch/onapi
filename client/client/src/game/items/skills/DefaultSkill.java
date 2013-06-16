@@ -18,7 +18,8 @@ import box2dLight.PointLight;
 import com.badlogic.gdx.graphics.Color;
 
 /**
- * TODO
+ * Compétence par défaut. Fait apparaître un puissant halo éblouissant autour du
+ * joueur.
  * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
@@ -67,6 +68,9 @@ public class DefaultSkill extends Skill {
       }
    }
 
+   /**
+    * Désactive la compétence
+    */
    public void deactivate() {
       currentDist = 0;
       lastUpdate = 0;
@@ -74,10 +78,13 @@ public class DefaultSkill extends Skill {
       setActive(false);
    }
 
+   /**
+    * Active la compétence
+    */
    public void activate() {
       if (!isActive()) {
          if (used < USE_LIMIT) {
-            used++;
+            // used++;
             setActive(true);
             pl = new PointLight(getGame().getRayHandler(), 50, EFFECT_COLOR, 0,
                   0, 0);

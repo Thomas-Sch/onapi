@@ -5,17 +5,24 @@ import game.models.GameModel;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Permet de faire transiter des données de client-desktop à client et
+ * vice-versa, pour l'initialisation du jeu lors du lancement de la partie.
+ * 
+ * @author Crescenzio Fabio
+ * @author Decorvet Grégoire
+ * @author Jaquier Kevin
+ * @author Schweizer Thomas
+ * 
+ */
 public class GameData {
    private GameModel game;
    private Collection<String> messages;
 
-   // TODO Ajouter un ConnectionsManager, nécessite de faire le lien avec client-desktop
-   // (Attention, impossible d'inclure client-desktop sinon cyclicité de build !)
-   
-   public GameData(){
+   public GameData() {
       messages = new ArrayList<String>();
       this.game = new GameModel(this);
-      
+
    }
 
    public GameModel getGame() {
@@ -33,5 +40,5 @@ public class GameData {
    public void setMessages(Collection<String> messages) {
       this.messages = messages;
    }
-   
+
 }

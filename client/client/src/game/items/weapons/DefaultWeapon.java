@@ -11,7 +11,7 @@
  */
 package game.items.weapons;
 
-import game.items.Bullet;
+import game.items.Projectile;
 import game.items.Weapon;
 import game.models.GameModel;
 import game.models.Player;
@@ -20,7 +20,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
 /**
- * TODO
+ * Arme par défaut du joueur. Ne peut tirer qu'une balle à la fois.
  * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
@@ -36,15 +36,14 @@ public class DefaultWeapon extends Weapon {
    }
 
    public void createBullet(Group group) {
-      this.bullet = new Bullet(this, 0f, 0f, 0f, 0f, 750f, 200f, getOwner(),
-            getGame());
+      this.bullet = new Projectile(this, 0, 0, 750f, 200f, getOwner(), getGame());
       group.addActor(bullet);
    }
 
    @Override
    public void onHit(Player target) {
       if (bullet.isActive()) {
-         target.damage(25);
+         target.damage(20);
          System.out.println("target hit");
          bullet.deactivate();
       }

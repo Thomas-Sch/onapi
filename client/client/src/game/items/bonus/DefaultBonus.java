@@ -15,12 +15,13 @@ import game.items.Bonus;
 import game.models.GameModel;
 
 /**
- * TODO
+ * Bonus par défaut. Ne fait rien.
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
 public class DefaultBonus extends Bonus {
 
@@ -30,8 +31,6 @@ public class DefaultBonus extends Bonus {
 
    @Override
    public void update(float deltaTime) {
-      // TODO Auto-generated method stub
-      
    }
 
 }

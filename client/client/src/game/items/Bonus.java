@@ -14,12 +14,14 @@ package game.items;
 import game.models.GameModel;
 
 /**
- * TODO
+ * Définit un bonus. Un bonus est un item ajoutant certains effets à l'arme du
+ * joueur pour toute la durée de la partie.
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
 public abstract class Bonus extends Item {
 
