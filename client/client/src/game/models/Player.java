@@ -133,6 +133,8 @@ public class Player extends Entity {
    private Rectangle bounds;
    private PointLight pl;
 
+   private boolean out;
+
    public final static int PL_DISTANCE_DEFAULT = Tile.WIDTH - 50;
 
    public Player(Vector2 pos, Vector2 dir, Team team, Weapon weapon,
@@ -151,7 +153,7 @@ public class Player extends Entity {
       this.skill.setOwner(this);
       this.bonus = bonus;
       this.bonus.setOwner(this);
-
+      this.out = false;
       loadResources();
 
       // Définit la consistance physique du joueur
@@ -408,5 +410,17 @@ public class Player extends Entity {
    @Override
    public boolean equals(Object obj) {
       return obj instanceof Player && ((Player) obj).id == id;
+   }
+
+   /**
+    * @return
+    */
+   public boolean isOut() {
+      // TODO Auto-generated method stub
+      return out;
+   }
+   
+   public void setOut(boolean out){
+      this.out = out;
    }
 }
