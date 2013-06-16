@@ -142,6 +142,12 @@ public class GameScreen extends ScreenAdapter {
    }
 
    @Override
+   public boolean keyTyped(char character) {
+      if ((character == 'X' || character == 'x')) game.debugMe();
+      return true;
+   }
+
+   @Override
    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
       if (button == MOUSE_RIGHT_BUTTON) {
          controller.setActionState(InputController.Action.TORCH, true);

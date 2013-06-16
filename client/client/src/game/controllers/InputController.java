@@ -83,11 +83,6 @@ public class InputController {
        * Activation/Désactivation de la lampe torche
        */
       TORCH,
-
-      /**
-       * Commande spéciale pour le debug
-       */
-      DEV_CHEAT;
    }
 
    /**
@@ -212,7 +207,6 @@ public class InputController {
             game.getPlayer().move(Vector2.tmp);
          }
       }
-      
 
       
       if (getActionState(Action.TORCH)) {

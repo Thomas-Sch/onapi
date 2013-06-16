@@ -100,7 +100,7 @@ public class GameRenderer {
     */
    public GameRenderer(GameModel game, boolean debug) {
       this.game = game;
-      this.debug = false;
+      this.debug = debug;
 
       // Résolution jeu
       this.height = 720;
