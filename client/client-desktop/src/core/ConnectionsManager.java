@@ -148,32 +148,33 @@ public class ConnectionsManager {
       @Override
       public void onPlayerMove(GameModel gameModel, Player player) {
       // TODO Auto-generated method stub
-         protocol.sendMessage(player.getId() + " moved.");
+         //protocol.sendMessage(player.getId() + " moved.");
+         System.out.println("MOVE #" + player.getId());
       }
 
       @Override
       public void onFire(GameModel gameModel, Player sender, Vector2 from,
-            Vector2 dir) {
+            float angle) {
          // TODO Auto-generated method stub
-         
+         System.out.println("FIRE #" + sender.getId());
       }
 
       @Override
       public void onPlayerHit(GameModel gameModel, Player player) {
          // TODO Auto-generated method stub
-         
+         System.out.println("HIT #" + player.getId());
       }
 
       @Override
       public void onTorch(GameModel gameModel, Player player) {
          // TODO Auto-generated method stub
-         
+         System.out.println("TORCH #" + player.getId());
       }
 
       @Override
       public void onPlayerOut(GameModel gameModel, Player player) {
          // TODO Auto-generated method stub
-         
+         System.out.println("OUT #" + player.getId());
       }
    }
    
