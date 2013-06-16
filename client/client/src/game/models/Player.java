@@ -82,7 +82,7 @@ public class Player extends Entity {
     */
    private int hp = HP_START;
 
-   private boolean isOut = false;
+   private boolean out = false;
    
    /**
     * Arme équipée par le joueur
@@ -411,17 +411,17 @@ public class Player extends Entity {
    }
 
    /**
-    * @return the isOut
+    * @return the out
     */
    public boolean isOut() {
-      return isOut;
+      return out;
    }
 
    /**
-    * @param isOut the isOut to set
+    * @param out the out to set
     */
-   public void setOut(boolean isOut) {
-      this.isOut = isOut;
+   public void setOut(boolean out) {
+      this.out = out;
    }
    
    

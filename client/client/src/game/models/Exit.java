@@ -54,7 +54,6 @@ public class Exit extends Entity {
       bodyDef.type = BodyType.StaticBody;
       bodyDef.position.set(x, y);
       Body body = game.getWorld().createBody(bodyDef);
-      body.setUserData(Tile.EXIT);
       PolygonShape shape = new PolygonShape();
       shape.setAsBox(w / 2, h / 2);
       FixtureDef fix = new FixtureDef();
@@ -63,7 +62,7 @@ public class Exit extends Entity {
       fix.friction = 0.5f;
       fix.restitution = 0.8f;
       body.createFixture(fix);
-      body.setUserData(Tile.EXIT);
+      body.setUserData(this);
 
       new PointLight(game.getRayHandler(), 30, EXIT_LIGHT_COLOR, 150, 0, 0)
             .attachToBody(body, 0, -25);

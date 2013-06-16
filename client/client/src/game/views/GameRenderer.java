@@ -79,6 +79,7 @@ public class GameRenderer {
    private FPSLogger fpsLog;
    private Label lblDebug;
    private Label lblHP;
+   private Label lblMessage;
 
    private RayHandler handler;
 
@@ -132,7 +133,11 @@ public class GameRenderer {
       lblHP = new Label("[HP]", skin);
       lblHP.setColor(Color.RED);
       lblHP.setFontScale(2);
+      lblMessage = new Label("", skin);
+      lblMessage.setColor(Color.GREEN);
+      lblMessage.setFontScale(2);
       table.add(lblHP);
+      table.add(lblMessage);
 
       table.pack();
    }
@@ -179,6 +184,10 @@ public class GameRenderer {
 
       // Affichage de l'interface graphique
       lblHP.setText("HP : " + game.getPlayer().getHP());
+      if(game.getPlayer().isOut())
+         lblMessage.setText("Vous etes sorti du labyrinthe");
+      else
+         lblMessage.setText("");
       ui.act(Gdx.graphics.getDeltaTime());
       ui.draw();
 
