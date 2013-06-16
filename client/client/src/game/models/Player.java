@@ -61,7 +61,7 @@ public class Player extends Entity {
 
    private static final Vector2 GRAVEYARD_POS = new Vector2(-500, -500);
    private final Vector2 deadPos;
-
+   
    private TextureRegion playerFrame;
 
    /** Animations **/
@@ -82,6 +82,8 @@ public class Player extends Entity {
     */
    private int hp = HP_START;
 
+   private boolean isOut = false;
+   
    /**
     * Arme équipée par le joueur
     */
@@ -407,4 +409,20 @@ public class Player extends Entity {
    public boolean equals(Object obj) {
       return obj instanceof Player && ((Player) obj).id == id;
    }
+
+   /**
+    * @return the isOut
+    */
+   public boolean isOut() {
+      return isOut;
+   }
+
+   /**
+    * @param isOut the isOut to set
+    */
+   public void setOut(boolean isOut) {
+      this.isOut = isOut;
+   }
+   
+   
 }

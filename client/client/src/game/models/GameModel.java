@@ -201,7 +201,6 @@ public class GameModel {
 
          @Override
          public void beginContact(Contact contact) {
-            // TODO Auto-generated method stub
             Fixture a = contact.getFixtureA();
             Fixture b = contact.getFixtureB();
 
@@ -236,12 +235,12 @@ public class GameModel {
                         && b.getBody().getUserData() != null
                         && b.getBody().getUserData() instanceof Player
                         && a.getBody().getUserData() instanceof Exit)
-                     System.out.println("Le joueur vient de sortir du lab");
+                     player.setOut(true);
                   else if (a.getBody().getUserData() != null
                         && b.getBody().getUserData() != null
                         && b.getBody().getUserData() instanceof Exit
                         && a.getBody().getUserData() instanceof Player)
-                     System.out.println("Le joueur vient de sortir du lab");
+                     player.setOut(true);
                }
             }
          }
