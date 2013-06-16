@@ -132,7 +132,7 @@ public class Player extends Entity {
    private Rectangle bounds;
    private PointLight pl;
 
-   public final static int PL_DISTANCE_DEFAULT = Tile.WIDTH - 50;
+   public final static int HALO_DISTANCE = Tile.WIDTH - 50;
 
    public Player(Vector2 pos, Vector2 dir, Team team, Weapon weapon,
          Skill skill, Bonus bonus, GameModel game) {
@@ -177,9 +177,7 @@ public class Player extends Entity {
       setDir(dir);
       moveTo(pos);
       deadPos = new Vector2(GRAVEYARD_POS.x + pos.x, GRAVEYARD_POS.y + pos.y);
-      pl = new PointLight(game.getRayHandler(), 30, this.TORCH_COLOR, 150, 0, 0);
-      pl.attachToBody(body, 0, 0);
-      pl.setActive(false);
+
    }
 
    @Override
@@ -198,10 +196,6 @@ public class Player extends Entity {
       }
       walkAnimation = new Animation(RUNNING_FRAME_DURATION, playerWalk);
 
-   }
-
-   public PointLight getPointLight() {
-      return pl;
    }
 
    public Rectangle getBounds() {

@@ -108,13 +108,14 @@ public class Bullet extends Entity {
 
    @Override
    public void update(float deltaTime) {
-      float current = lastUpdate + deltaTime;
-      if (current > UPDATE_RATE) {
-         for (int i = 0; i < Math.floor(current / UPDATE_RATE); ++i)
+      float currentTime = lastUpdate + deltaTime;
+      if (currentTime > lastUpdate + UPDATE_RATE) {
+         for (int i = 0; i < Math.floor(currentTime / UPDATE_RATE); ++i) {
             if (active) {
                this.pl.setActive(true);
-               if (distance > length)
+               if (distance > length) { 
                   deactivate();
+               }
                else {
                   setX(getX() + increment.x);
                   setY(getY() + increment.y);
@@ -123,7 +124,8 @@ public class Bullet extends Entity {
                   distance += increment.len();
                }
             }
-         lastUpdate = current;
+         }
+         lastUpdate = currentTime;
       }
    }
 

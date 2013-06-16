@@ -35,7 +35,7 @@ public class MainPlayer extends Player {
 
       // Halo de lumière diffusé autour du joueur
       (new PointLight(game.getRayHandler(), 100, HALO_COLOR,
-            PL_DISTANCE_DEFAULT, getX(), getY())).attachToBody(getBody(), 0, 0);
+            HALO_DISTANCE, getX(), getY())).attachToBody(getBody(), 0, 0);
    }
 
    public MainPlayer(Player p) {
