@@ -276,8 +276,8 @@ public class Player extends Entity {
       if (currentTime - lastFrameUpdate > ANIMATION_DURATION
             / NB_FRAMES_ANIMATION) {
          if (isMoving) {
-            animationFrameIndex = (animationFrameIndex+2)
-                  % (NB_FRAMES_ANIMATION + 1);
+            animationFrameIndex = (animationFrameIndex+1)
+                  % (NB_FRAMES_ANIMATION + 2);
             isMoving = false;
          }
          else {
