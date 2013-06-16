@@ -35,7 +35,7 @@ public interface GameListener {
     * @param from
     * @param dir
     */
-   void onFire(GameModel gameModel, Player sender, Vector2 from, Vector2 dir);
+   void onFire(GameModel gameModel, Player sender, Vector2 from, float angle);
 
    /**
     * @param gameModel

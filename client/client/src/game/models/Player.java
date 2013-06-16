@@ -61,7 +61,7 @@ public class Player extends Entity {
 
    private static final Vector2 GRAVEYARD_POS = new Vector2(-500, -500);
    private final Vector2 deadPos;
-   
+
    private TextureRegion playerFrame;
 
    /** Animations **/
@@ -83,7 +83,7 @@ public class Player extends Entity {
    private int hp = HP_START;
 
    private boolean out = false;
-   
+
    /**
     * Arme équipée par le joueur
     */
@@ -221,10 +221,13 @@ public class Player extends Entity {
     *           Nouvelle position
     */
    public void moveTo(Vector2 newPos) {
-      setPosition(newPos.x - bounds.width / 2f, newPos.y - bounds.height / 2f);
-      bounds.x = newPos.x;
-      bounds.y = newPos.y;
-      isMoving = true;
+      if (isInGame()) {
+         setPosition(newPos.x - bounds.width / 2f, newPos.y - bounds.height
+               / 2f);
+         bounds.x = newPos.x;
+         bounds.y = newPos.y;
+         isMoving = true;
+      }
    }
 
    /**
@@ -234,10 +237,12 @@ public class Player extends Entity {
     *           Vecteur de déplacement (additionné à sa position actuelle)
     */
    public void move(Vector2 dir) {
-      setPosition(getX() + dir.x, getY() + dir.y);
-      bounds.x += dir.x;
-      bounds.y += dir.y;
-      isMoving = true;
+      if (isInGame()) {
+         setPosition(getX() + dir.x, getY() + dir.y);
+         bounds.x += dir.x;
+         bounds.y += dir.y;
+         isMoving = true;
+      }
    }
 
    /**
@@ -245,8 +250,10 @@ public class Player extends Entity {
     *           Orientation du joueur
     */
    public void setDir(Vector2 dir) {
-      setRotation(dir.angle());
-      this.dir = dir;
+      if (isInGame()) {
+         setRotation(dir.angle());
+         this.dir = dir;
+      }
    }
 
    /**
@@ -288,7 +295,9 @@ public class Player extends Entity {
    }
 
    public void shoot(float delta) {
-      weapon.shoot(delta);
+      if (isInGame()) {
+         weapon.shoot(delta);
+      }
    }
 
    private int animationFrameIndex = 0;
@@ -297,28 +306,32 @@ public class Player extends Entity {
    public void draw(SpriteBatch batch, float parentAlpha) {
       super.draw(batch, parentAlpha);
 
-      // Affecte le sprite pour l'utilisateur
-      // TextureRegion region = new TextureRegion(texture, 0, 0, 256, 256);
+      if (isInGame()) {
 
-      int textureWidth = texture.getWidth();
-      int textureHeight = texture.getHeight();
+         // Affecte le sprite pour l'utilisateur
+         // TextureRegion region = new TextureRegion(texture, 0, 0, 256, 256);
 
-      weapon.draw(batch, parentAlpha);
-      skill.draw(batch, parentAlpha);
-      bonus.draw(batch, parentAlpha);
+         int textureWidth = texture.getWidth();
+         int textureHeight = texture.getHeight();
 
-      Color previousTint = batch.getColor();
-      batch.setColor(team.getColor());
+         weapon.draw(batch, parentAlpha);
+         skill.draw(batch, parentAlpha);
+         bonus.draw(batch, parentAlpha);
 
-      playerFrame = walkAnimation.getKeyFrame(animationFrameIndex, true);
+         Color previousTint = batch.getColor();
+         batch.setColor(team.getColor());
 
-      // Dessiner à l'écran le joueur
-      batch.draw(playerFrame, getPos().x - texture.getWidth() / 2, getPos().y
-            - texture.getHeight() / 2, textureWidth / 2f, textureHeight / 2f,
-            textureWidth, textureHeight, getWidth() / textureWidth, getHeight()
-                  / textureHeight, getRotation() + 180, false);
+         playerFrame = walkAnimation.getKeyFrame(animationFrameIndex, true);
 
-      batch.setColor(previousTint);
+         // Dessiner à l'écran le joueur
+         batch.draw(playerFrame, getPos().x - texture.getWidth() / 2,
+               getPos().y - texture.getHeight() / 2, textureWidth / 2f,
+               textureHeight / 2f, textureWidth, textureHeight, getWidth()
+                     / textureWidth, getHeight() / textureHeight,
+               getRotation() + 180, false);
+
+         batch.setColor(previousTint);
+      }
    }
 
    @Override
@@ -369,23 +382,27 @@ public class Player extends Entity {
     *           Points de dégats à infliger
     */
    public void damage(int damagePoints) {
-      hp -= damagePoints;
-      System.out.println(this + "\t : HP = " + hp);
-      if (hp <= 0) die();
+      if (isInGame()) {
+         hp -= damagePoints;
+         System.out.println(this + "\t : HP = " + hp);
+         if (hp <= 0) die();
+      }
    }
 
    public void die() {
       this.hp = 0;
       moveTo(deadPos);
       System.out.println(this + "\t DEAD");
+      torchLight.setActive(false);
    }
 
    /**
     * 
     */
    public void toggleTorch() {
-      // TODO Auto-generated method stub
-      this.torchLight.setActive(!torchLight.isActive());
+      if (isInGame()) {
+         this.torchLight.setActive(!torchLight.isActive());
+      }
    }
 
    public void setTorchColor(Color color) {
@@ -420,11 +437,26 @@ public class Player extends Entity {
    }
 
    /**
-    * @param out the out to set
+    * @param out
+    *           the out to set
     */
    public void setOut(boolean out) {
       this.out = out;
+      torchLight.setActive(isInGame());
    }
-   
-   
+
+   public boolean isDead() {
+      return hp <= 0;
+   }
+
+   public boolean isInGame() {
+      return !isOut() && !isDead();
+   }
+
+   public void toggleSkill() {
+      if (isInGame()) {
+         getSkill().activate();
+      }
+   }
+
 }

@@ -42,4 +42,10 @@ public class MainPlayer extends Player {
       super(p.getPos(), p.getDir(), p.getTeam(), p.getWeapon(), p.getSkill(), p
             .getBonus(), p.getGame());
    }
+   
+   @Override
+   public void shoot(float delta) {
+      super.shoot(delta);
+      getGame().updates.notifyShoot(this, this.getPos().cpy(), getDir().angle());
+   }
 }

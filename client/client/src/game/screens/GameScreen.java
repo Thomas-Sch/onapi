@@ -61,14 +61,14 @@ public class GameScreen extends ScreenAdapter {
     * @param debug
     */
    public GameScreen(boolean debug, GameData initData) {
-      this.debug = debug;
+      this.debug = false;
       game = initData.getGame();
    }
 
    @Override
    public void show() {
       System.out.println("Initialization...");
-      game.init();
+      game.init(debug);
       System.out.println("Resources loading...");
       game.loadResources();
       System.out.println("Resources loaded.");

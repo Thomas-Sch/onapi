@@ -210,16 +210,6 @@ public class InputController {
          }
       }
 
-      // {
-      // int x = 1 + (int) Math
-      // .floor((game.getPlayer().getX() - 0.5f * Tile.WIDTH) / Tile.WIDTH);
-      // int y = (int) Math
-      // .floor((game.getPlayer().getY() - 0.5f * Tile.HEIGHT) / Tile.HEIGHT);
-      // if(game.getMap().getGrid()[y][x] == Tile.EXIT){
-      // System.out.println("Le player vient de sortir !!");
-      // }
-      //
-      // }
       if (getActionState(Action.TORCH)) {
          game.getPlayer().toggleTorch();
          setActionState(Action.TORCH, false);
@@ -229,7 +219,7 @@ public class InputController {
       }
 
       if (getActionState(Action.SKILL)) {
-         game.getPlayer().getSkill().activate();
+         game.getPlayer().toggleSkill();
       }
 
       for (Actor e : game.getEntities().getChildren()) {

@@ -76,9 +76,9 @@ public class GameModel {
          }
       }
 
-      protected void notifyShoot(Player sender, Vector2 from, Vector2 dir) {
+      protected void notifyShoot(Player sender, Vector2 from, float angle) {
          for (GameListener gl : listeners) {
-            gl.onFire(GameModel.this, sender, from, dir);
+            gl.onFire(GameModel.this, sender, from, angle);
          }
       }
 
@@ -129,13 +129,15 @@ public class GameModel {
    private RayHandler rayHandler;
 
    private boolean isLightingActive = true;
+   private boolean debug;
 
    public GameModel(GameData initData) {
       this.initData = initData;
       initData.setGame(this);
    }
 
-   public void init() {
+   public void init(boolean debug) {
+      this.debug = debug;
       world = new World(GRAVITY, false);
       rayHandler = new RayHandler(world);
 
@@ -143,8 +145,8 @@ public class GameModel {
       map = new Map(this, teams);
 
       entities.addActor(map);
-      entities.addActor(new Exit(this, EXIT_HEIGHT, EXIT_WIDTH,
-            map.getExitPos().x, map.getExitPos().y));
+      entities.addActor(new Exit(this, EXIT_HEIGHT, EXIT_WIDTH, map
+            .getExitPos().x, map.getExitPos().y));
 
       // Fait commencer le joueur au milieu de la map
       player = new MainPlayer(map.getRealPos(0, 0), new Vector2(0f, 1f),
@@ -331,7 +333,19 @@ public class GameModel {
 
    public void executeDevCheat() {
       System.out.println("CHEAT");
-      player.moveTo(map.getExitPos());
+      if (debug) {
+         Vector2.tmp3.set(map.getExitPos());
+         if (player.isInGame()) {
+            Vector2.tmp3.add(200, 200);
+            player.damage(25);
+         }
+         else {
+            player.setHP(100);
+            player.setOut(false);
+            Vector2.tmp3.add(-200, 200);
+         }
+         player.moveTo(Vector2.tmp3);
+      }
    }
 
    /**
