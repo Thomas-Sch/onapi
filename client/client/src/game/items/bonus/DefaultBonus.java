@@ -12,6 +12,7 @@
 package game.items.bonus;
 
 import game.items.Bonus;
+import game.models.GameModel;
 
 /**
  * TODO
@@ -22,6 +23,10 @@ import game.items.Bonus;
  *
  */
 public class DefaultBonus extends Bonus {
+
+   public DefaultBonus(GameModel game) {
+      super(game);
+   }
 
    @Override
    public void update(float deltaTime) {

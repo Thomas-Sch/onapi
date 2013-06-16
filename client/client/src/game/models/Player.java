@@ -17,9 +17,7 @@ import game.items.Weapon;
 import game.models.map.Tile;
 import box2dLight.ConeLight;
 import box2dLight.PointLight;
-import box2dLight.RayHandler;
-
-import client.GameInitData;
+import client.GameData;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -36,7 +34,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
 
 /**
  * Représente le personnage principal du jeu.
@@ -136,8 +133,8 @@ public class Player extends Entity {
    public final static int PL_DISTANCE_DEFAULT = Tile.WIDTH - 50;
 
    public Player(Vector2 pos, Vector2 dir, Team team, Weapon weapon,
-         Skill skill, Bonus bonus, World world, RayHandler handler) {
-      super();
+         Skill skill, Bonus bonus, GameModel game) {
+      super(game);
 
       setWidth(WIDTH);
       setHeight(HEIGHT);
@@ -158,7 +155,7 @@ public class Player extends Entity {
       BodyDef bodyDef = new BodyDef();
       bodyDef.type = BodyType.DynamicBody;
       bodyDef.position.set(getPos());
-      body = world.createBody(bodyDef);
+      body = game.getWorld().createBody(bodyDef);
       PolygonShape shape = new PolygonShape();
       shape.setAsBox(bounds.height, bounds.width);
       FixtureDef fix = new FixtureDef();
@@ -170,7 +167,8 @@ public class Player extends Entity {
       body.setUserData(this);
 
       // Lampe torche
-      torchLight = new ConeLight(handler, 50, TORCH_COLOR, 750, 1, 1, 270, 30);
+      torchLight = new ConeLight(game.getRayHandler(), 50, TORCH_COLOR, 750, 1,
+            1, 270, 30);
       torchLight.attachToBody(body, 1, 1);
       this.torchLight.setActive(true);
 
@@ -180,10 +178,10 @@ public class Player extends Entity {
    }
 
    @Override
-   public void init(GameInitData initData) {
+   public void init(GameData initData) {
       // TODO Auto-generated method stub
    }
-   
+
    public void loadResources() {
       texture = new Texture(Gdx.files.internal("data/sprite1_perso.png"));
       TextureAtlas atlas = new TextureAtlas(
@@ -274,7 +272,8 @@ public class Player extends Entity {
       if (currentTime - lastFrameUpdate > ANIMATION_DURATION
             / NB_FRAMES_ANIMATION) {
          if (isMoving) {
-            animationFrameIndex = (animationFrameIndex + 1) % NB_FRAMES_ANIMATION;
+            animationFrameIndex = (animationFrameIndex + 1)
+                  % NB_FRAMES_ANIMATION;
             isMoving = false;
          }
          else {
@@ -404,7 +403,6 @@ public class Player extends Entity {
       this.weapon = weapon;
    }
 
-   
    @Override
    public boolean equals(Object obj) {
       return obj instanceof Player && ((Player) obj).id == id;

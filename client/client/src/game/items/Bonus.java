@@ -11,6 +11,8 @@
  */
 package game.items;
 
+import game.models.GameModel;
+
 /**
  * TODO
  * @author Crescenzio Fabio
@@ -20,5 +22,9 @@ package game.items;
  *
  */
 public abstract class Bonus extends Item {
+
+   protected Bonus(GameModel game) {
+      super(game);
+   }
 
 }

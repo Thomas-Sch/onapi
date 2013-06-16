@@ -11,8 +11,9 @@
  */
 package game.items;
 
-import client.GameInitData;
+import client.GameData;
 import game.models.Entity;
+import game.models.GameModel;
 import game.models.Player;
 
 /**
@@ -25,6 +26,10 @@ import game.models.Player;
  */
 public abstract class Item extends Entity {
    
+   protected Item(GameModel game) {
+      super(game);
+   }
+
    /**
     * Temps de cooldown en chaque utilisation de l'item (en secondes)
     */
@@ -58,6 +63,6 @@ public abstract class Item extends Entity {
    }
    
    @Override
-   public void init(GameInitData initData) { }
+   public void init(GameData initData) { }
    
 }

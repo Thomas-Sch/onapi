@@ -17,8 +17,12 @@ import game.items.skills.DefaultSkill;
 import game.items.weapons.DefaultWeapon;
 import game.models.map.Map;
 import game.models.map.Tile;
+
+import java.util.LinkedList;
+import java.util.List;
+
 import box2dLight.RayHandler;
-import client.GameInitData;
+import client.GameData;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
@@ -50,9 +54,53 @@ public class GameModel {
 
    private static final Vector2 GRAVITY = new Vector2(0, 0);
 
+   /**
+    * Observable pour les événements qui méritent d'être synchronisés
+    */
+   public class Updater {
+      List<GameListener> listeners = new LinkedList<GameListener>();
+
+      public void addListener(GameListener listener) {
+         listeners.add(listener);
+      }
+
+      protected void notifyPlayerMove(Player player) {
+         for (GameListener gl : listeners) {
+            gl.onPlayerMove(GameModel.this, player);
+         }
+      }
+
+      protected void notifyPlayerHit(Player player) {
+         for (GameListener gl : listeners) {
+            gl.onPlayerHit(GameModel.this, player);
+         }
+      }
+
+      protected void notifyShoot(Player sender, Vector2 from, Vector2 dir) {
+         for (GameListener gl : listeners) {
+            gl.onFire(GameModel.this, sender, from, dir);
+         }
+      }
+
+      protected void notifyTorch(Player player) {
+         for (GameListener gl : listeners) {
+            gl.onTorch(GameModel.this, player);
+         }
+      }
+
+      protected void notifyPlayerOut(Player player) {
+         for (GameListener gl : listeners) {
+            gl.onPlayerOut(GameModel.this, player);
+         }
+      }
+
+   }
+
+   public final Updater updates = new Updater();
+
    private World world;
 
-   private GameInitData initData;
+   private GameData initData;
 
    /**
     * Stocke les entités de la scène. Attention, l'ordre d'insertion correspond
@@ -79,11 +127,12 @@ public class GameModel {
    private Team[] teams;
 
    private RayHandler rayHandler;
-   
+
    private boolean isLightingActive = true;
 
-   public GameModel(GameInitData initData) {
+   public GameModel(GameData initData) {
       this.initData = initData;
+      initData.setGame(this);
    }
 
    public void init() {
@@ -91,34 +140,34 @@ public class GameModel {
       rayHandler = new RayHandler(world);
 
       teams = new Team[] { new Team(Color.BLUE), new Team(Color.RED) };
-      map = new Map(world, teams);
+      map = new Map(this, teams);
 
       entities.addActor(map);
-      entities.addActor(new Exit(world, rayHandler, EXIT_HEIGHT, EXIT_WIDTH,
+      entities.addActor(new Exit(this, EXIT_HEIGHT, EXIT_WIDTH,
             map.getExitPos().x, map.getExitPos().y));
 
       // Fait commencer le joueur au milieu de la map
       player = new MainPlayer(map.getRealPos(0, 0), new Vector2(0f, 1f),
-            teams[0], new DefaultWeapon(), new DefaultSkill(),
-            new DefaultBonus(), world, rayHandler);
-      player.getWeapon().createBullet(world, entities, rayHandler);
+            teams[0], new DefaultWeapon(this), new DefaultSkill(this),
+            new DefaultBonus(this), this);
+      player.getWeapon().createBullet(entities);
       entities.addActor(player);
 
       // Ajoute d'autres joueurs
       for (int i = 0; i < 14; i++) {
          Player other = new Player(map.getRealPos(0, 0), new Vector2(-1f, -1f),
-               teams[0], new DefaultWeapon(), new DefaultSkill(),
-               new DefaultBonus(), world, rayHandler);
-         other.getWeapon().createBullet(world, entities, rayHandler);
+               teams[0], new DefaultWeapon(this), new DefaultSkill(this),
+               new DefaultBonus(this), this);
+         other.getWeapon().createBullet(entities);
 
          entities.addActor(other);
       }
       for (int i = 0; i < 15; i++) {
          Player other = new Player(map.getRealPos(0, 0), new Vector2(-1f, -1f),
-               teams[1], new DefaultWeapon(), new DefaultSkill(),
-               new DefaultBonus(), world, rayHandler);
+               teams[1], new DefaultWeapon(this), new DefaultSkill(this),
+               new DefaultBonus(this), this);
          entities.addActor(other);
-         other.getWeapon().createBullet(world, entities, rayHandler);
+         other.getWeapon().createBullet(entities);
       }
 
       // Fait "spawner" (apparaitre) les joueurs sur la carte, autrement dit,
@@ -129,7 +178,7 @@ public class GameModel {
 
       // Créer les contact listener
       createCollisionListener();
-      
+
       for (Actor e : entities.getChildren()) {
          ((Entity) e).init(initData);
       }
@@ -139,13 +188,16 @@ public class GameModel {
       world.setContactListener(new ContactListener() {
 
          @Override
-         public void preSolve(Contact contact, Manifold oldManifold) { }
+         public void preSolve(Contact contact, Manifold oldManifold) {
+         }
 
          @Override
-         public void postSolve(Contact contact, ContactImpulse impulse) { }
+         public void postSolve(Contact contact, ContactImpulse impulse) {
+         }
 
          @Override
-         public void endContact(Contact contact) { }
+         public void endContact(Contact contact) {
+         }
 
          @Override
          public void beginContact(Contact contact) {
@@ -291,7 +343,8 @@ public class GameModel {
    }
 
    /**
-    * @param isLightingActive the isLightingActive to set
+    * @param isLightingActive
+    *           the isLightingActive to set
     */
    public void setLightingActive(boolean isLightingActive) {
       this.isLightingActive = isLightingActive;

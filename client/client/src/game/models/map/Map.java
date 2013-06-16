@@ -12,15 +12,15 @@
 package game.models.map;
 
 import game.models.Entity;
+import game.models.GameModel;
 import game.models.Spawner;
 import game.models.Team;
 
 import java.util.LinkedList;
 
-import client.GameInitData;
+import client.GameData;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureWrap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -32,7 +32,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
 
 /**
  * La map est une grille dans laquelle on place les murs et autres éléments de
@@ -62,8 +61,8 @@ public class Map extends Entity {
       textureMur = new Texture(Gdx.files.internal("data/mur.jpg"));
    }
 
-   public Map(World world, Team[] teams) {
-      super();
+   public Map(GameModel game, Team[] teams) {
+      super(game);
 
       // Crée la map et ajoute les spawners
       MazeGenerator generator = new MazeGenerator();
@@ -86,7 +85,7 @@ public class Map extends Entity {
                   bodyDef.type = BodyType.StaticBody;
                   bodyDef.position.set(bounds[i][j].x + bounds[i][j].width / 2,
                         bounds[i][j].y + bounds[i][j].height / 2);
-                  Body body = world.createBody(bodyDef);
+                  Body body = game.getWorld().createBody(bodyDef);
                   PolygonShape shape = new PolygonShape();
                   shape.setAsBox(bounds[i][j].width / 2,
                         bounds[i][j].height / 2);
@@ -115,10 +114,10 @@ public class Map extends Entity {
    }
 
    @Override
-   public void init(GameInitData initData) {
+   public void init(GameData initData) {
       // TODO Auto-generated method stub
    }
-   
+
    public Tile[][] getGrid() {
       return grid;
    }

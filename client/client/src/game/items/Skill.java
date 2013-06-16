@@ -11,6 +11,8 @@
  */
 package game.items;
 
+import game.models.GameModel;
+
 /**
  * TODO
  * @author Crescenzio Fabio
@@ -20,6 +22,11 @@ package game.items;
  *
  */
 public abstract  class Skill extends Item {
+   
+   protected Skill(GameModel game) {
+      super(game);
+   }
+   
    private boolean active;
    
    abstract public void deactivate();

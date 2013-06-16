@@ -11,11 +11,10 @@
  */
 package game.items;
 
+import game.models.GameModel;
 import game.models.Player;
-import box2dLight.RayHandler;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
 /**
@@ -28,6 +27,10 @@ import com.badlogic.gdx.scenes.scene2d.Group;
  * 
  */
 public abstract class Weapon extends Item {
+
+   protected Weapon(GameModel game) {
+      super(game);
+   }
 
    private float previousShootTime = 0;
    private float currentTime = getCooldown() + 1.0f;
@@ -58,7 +61,6 @@ public abstract class Weapon extends Item {
     * @param world
     * @param rayHandler
     */
-   public abstract void createBullet(World world, Group group,
-         RayHandler rayHandler);
+   public abstract void createBullet(Group group);
 
 }

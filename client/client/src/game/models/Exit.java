@@ -13,9 +13,7 @@ package game.models;
 
 import game.models.map.Tile;
 import box2dLight.PointLight;
-import box2dLight.RayHandler;
-
-import client.GameInitData;
+import client.GameData;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -26,7 +24,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
 
 /**
  * TODO
@@ -46,8 +43,8 @@ public class Exit extends Entity {
    /**
     * 
     */
-   public Exit(World world, RayHandler handler, int h, int w, float x, float y) {
-      // TODO Auto-generated constructor stub
+   public Exit(GameModel game, int h, int w, float x, float y) {
+      super(game);
       setX(x);
       setY(y);
       setHeight(h);
@@ -55,7 +52,7 @@ public class Exit extends Entity {
       BodyDef bodyDef = new BodyDef();
       bodyDef.type = BodyType.StaticBody;
       bodyDef.position.set(x, y);
-      Body body = world.createBody(bodyDef);
+      Body body = game.getWorld().createBody(bodyDef);
       body.setUserData(Tile.EXIT);
       PolygonShape shape = new PolygonShape();
       shape.setAsBox(w / 2, h / 2);
@@ -67,8 +64,8 @@ public class Exit extends Entity {
       body.createFixture(fix);
       body.setUserData(Tile.EXIT);
 
-      new PointLight(handler, 30, EXIT_LIGHT_COLOR, 150, 0, 0).attachToBody(
-            body, 0, -25);
+      new PointLight(game.getRayHandler(), 30, EXIT_LIGHT_COLOR, 150, 0, 0)
+            .attachToBody(body, 0, -25);
    }
 
    public void loadResources() {
@@ -76,7 +73,7 @@ public class Exit extends Entity {
    }
 
    @Override
-   public void init(GameInitData initData) {
+   public void init(GameData initData) {
       // TODO Auto-generated method stub
    }
 

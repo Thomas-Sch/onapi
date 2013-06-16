@@ -11,7 +11,7 @@
  */
 package game.models;
 
-import client.GameInitData;
+import client.GameData;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -29,6 +29,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  */
 public abstract class Entity extends Actor implements Debuggable {
 
+   private final GameModel game;
+
+   protected Entity(GameModel game) {
+      this.game = game;
+   }
+   
    @Override
    public void debugRender(ShapeRenderer renderer) {
    }
@@ -36,8 +42,15 @@ public abstract class Entity extends Actor implements Debuggable {
    public void loadResources() {
    }
    
-   abstract public void init(GameInitData initData);
+   abstract public void init(GameData initData);
    
    abstract public void update(float deltaTime);
+
+   /**
+    * @return the game
+    */
+   public GameModel getGame() {
+      return game;
+   }
 
 }

@@ -12,6 +12,7 @@
 package game.items.skills;
 
 import game.items.Skill;
+import game.models.GameModel;
 import game.models.Player;
 
 /**
@@ -29,7 +30,8 @@ public class DefaultSkill extends Skill {
    private int distanceMax = 600;
    private float distance = 0f;
 
-   public DefaultSkill() {
+   public DefaultSkill(GameModel game) {
+      super(game);
       setActive(false);
    }
 

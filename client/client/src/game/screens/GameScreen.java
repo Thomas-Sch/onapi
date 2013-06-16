@@ -20,7 +20,7 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.math.Vector2;
 
-import client.GameInitData;
+import client.GameData;
 
 /**
  * Un des différents écrans (screens) de l'application.
@@ -60,7 +60,7 @@ public class GameScreen extends ScreenAdapter {
    /**
     * @param debug
     */
-   public GameScreen(boolean debug, GameInitData initData) {
+   public GameScreen(boolean debug, GameData initData) {
       this.debug = debug;
       game = initData.getGame();
    }

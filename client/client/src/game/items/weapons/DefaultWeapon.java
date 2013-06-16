@@ -13,11 +13,10 @@ package game.items.weapons;
 
 import game.items.Bullet;
 import game.items.Weapon;
+import game.models.GameModel;
 import game.models.Player;
-import box2dLight.RayHandler;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Group;
 
 /**
@@ -31,13 +30,14 @@ import com.badlogic.gdx.scenes.scene2d.Group;
  */
 public class DefaultWeapon extends Weapon {
 
-   public DefaultWeapon() {
+   public DefaultWeapon(GameModel game) {
+      super(game);
       setCooldown(0.02f);
    }
 
-   public void createBullet(World world, Group group, RayHandler handler) {
-      this.bullet = new Bullet(world, this, 0f, 0f, 0f, 0f, 750f, 200f,
-            handler, getOwner());
+   public void createBullet(Group group) {
+      this.bullet = new Bullet(this, 0f, 0f, 0f, 0f, 750f, 200f, getOwner(),
+            getGame());
       group.addActor(bullet);
    }
 

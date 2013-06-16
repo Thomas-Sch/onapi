@@ -16,7 +16,7 @@ import game.screens.GameScreen;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 
-import client.GameInitData;
+import client.GameData;
 
 /**
  * Classe d'initialisation du jeu. Gère la transition entre les différents
@@ -32,7 +32,7 @@ public class Onapi extends Game {
 
    private GameScreen gameScreen;
 
-   public Onapi(boolean debug, GameInitData initData) {
+   public Onapi(boolean debug, GameData initData) {
       this.gameScreen = new GameScreen(debug, initData);
    }
    

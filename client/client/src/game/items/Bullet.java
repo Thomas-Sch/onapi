@@ -11,10 +11,11 @@
  */
 package game.items;
 
+import game.models.Entity;
+import game.models.GameModel;
+import game.models.Player;
 import box2dLight.PointLight;
-import box2dLight.RayHandler;
-
-import client.GameInitData;
+import client.GameData;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -24,12 +25,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.World;
-import game.models.Entity;
-import game.models.Player;
 
 /**
  * TODO
@@ -56,9 +54,9 @@ public class Bullet extends Entity {
    private float distance;
    private Vector2 increment = new Vector2();
 
-   public Bullet(World world, Weapon weapon, float startX, float startY,
-         float x, float y, float lenght, float speed, RayHandler handler,
-         Player player) {
+   public Bullet(Weapon weapon, float startX, float startY, float x, float y,
+         float lenght, float speed, Player player, GameModel game) {
+      super(game);
       this.increment.set(x - startX, y - startY).nor().mul(speed * UPDATE_RATE);
       this.length = lenght;
       this.lastUpdate = 0;
@@ -73,7 +71,7 @@ public class Bullet extends Entity {
       BodyDef bodyDef = new BodyDef();
       bodyDef.type = BodyType.KinematicBody;
       bodyDef.position.set(getX(), getY());
-      body = world.createBody(bodyDef);
+      body = game.getWorld().createBody(bodyDef);
       PolygonShape shape = new PolygonShape();
       shape.setAsBox(getHeight() / 2, getWidth() / 2);
       FixtureDef fix = new FixtureDef();
@@ -84,8 +82,8 @@ public class Bullet extends Entity {
       body.createFixture(fix);
       this.body.setUserData(this);
 
-      pl = new PointLight(handler, 50, weapon.getOwner().getTeam().getColor(),
-            100, getX(), getY());
+      pl = new PointLight(game.getRayHandler(), 50, weapon.getOwner().getTeam()
+            .getColor(), 100, getX(), getY());
       pl.attachToBody(body, 0, 0);
       pl.setActive(true);
       setX(startX);
@@ -93,7 +91,7 @@ public class Bullet extends Entity {
    }
 
    @Override
-   public void init(GameInitData initData) {
+   public void init(GameData initData) {
       // TODO Auto-generated method stub
    }
 
