@@ -34,10 +34,12 @@ public class DefaultSkill extends Skill {
    private static final float EFFECT_DURATION = 5.0f;
    private static final float INCREMENT = DISTANCE_MAX
          / (EFFECT_DURATION / UPDATE_RATE);
+   private static final int USE_LIMIT = 2;
 
    private float lastUpdate = 0f;
    private float currentDist = 0f;
    private PointLight pl;
+   private int used = 0;
 
    public DefaultSkill(GameModel game) {
       super(game);
@@ -74,11 +76,14 @@ public class DefaultSkill extends Skill {
 
    public void activate() {
       if (!isActive()) {
-         setActive(true);
-         pl = new PointLight(getGame().getRayHandler(), 50, EFFECT_COLOR, 0, 0,
-               0);
-         pl.attachToBody(getOwner().getBody(), 0, 0);
-         pl.setActive(true);
+         if (used < USE_LIMIT) {
+            used++;
+            setActive(true);
+            pl = new PointLight(getGame().getRayHandler(), 50, EFFECT_COLOR, 0,
+                  0, 0);
+            pl.attachToBody(getOwner().getBody(), 0, 0);
+            pl.setActive(true);
+         }
       }
    }
 
