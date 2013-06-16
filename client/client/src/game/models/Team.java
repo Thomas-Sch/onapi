@@ -19,7 +19,7 @@ import utils.ListUtils;
 import com.badlogic.gdx.graphics.Color;
 
 /**
- * TODO
+ * Représente une équipe de joueurs
  * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
@@ -29,14 +29,39 @@ import com.badlogic.gdx.graphics.Color;
  */
 public class Team {
 
+   /**
+    * Couleur de l'équipe
+    */
    private Color color;
+
+   /**
+    * Joueurs membres de l'équipe
+    */
    private LinkedList<Player> members;
+
+   /**
+    * Points d'apparition des joueurs
+    */
    private LinkedList<Spawner> spawners;
 
+   /**
+    * Crée une équipe d'une couleur donnée sans joueurs
+    * 
+    * @param color
+    *           Couleur de l'équipe
+    */
    public Team(Color color) {
       this(color, new LinkedList<Player>());
    }
 
+   /**
+    * Crée une équipe d'une couleur donnée sans joueurs
+    * 
+    * @param color
+    *           Couleur de l'équipe
+    * @param members
+    *           Joueurs membres de l'équipe
+    */
    public Team(Color color, LinkedList<Player> members) {
       super();
       this.color = color;
@@ -44,24 +69,38 @@ public class Team {
       this.spawners = new LinkedList<Spawner>();
    }
 
+   /**
+    * @return Couleur de l'équipe
+    */
    public Color getColor() {
       return color;
    }
 
+   /**
+    * @return Couleur de l'équipe
+    */
    public void setColor(Color color) {
       this.color = color;
    }
 
+   /**
+    * @return Liste des joueurs membres de l'équipe
+    */
    public LinkedList<Player> getMembers() {
       return members;
    }
 
+   /**
+    * @param members
+    *           Liste des joueurs membres de l'équipe
+    */
    public void setMembers(LinkedList<Player> members) {
       this.members = members;
    }
 
    /**
-    * @return La liste des spawners actuellement utilisés par l'équipe
+    * @return La liste des points d'apparition actuellement utilisables par
+    *         l'équipe
     */
    public LinkedList<Spawner> getSpawners() {
       return spawners;
@@ -69,8 +108,8 @@ public class Team {
 
    /**
     * Déplace les membres de l'équipe en les plaçant aléatoirement sur les
-    * spawners à disposition de l'équipe. Il peut ne pas y avoir de joueur à la
-    * fin sur un spawner, comme il peut y en avoir plusieurs.
+    * points d'apparition à disposition de l'équipe. Il peut ne pas y avoir de
+    * joueur à la fin sur une des positions, comme il peut y en avoir plusieurs.
     */
    public void spawnPlayers() {
       LinkedList<Spawner> spawns = ListUtils.shuffled(spawners);

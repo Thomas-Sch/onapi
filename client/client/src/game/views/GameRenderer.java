@@ -73,19 +73,34 @@ public class GameRenderer {
     */
    private Stage ui;
 
-   // Objets pour le rendu en mode debug
-   private ShapeRenderer debugRenderer = new ShapeRenderer();
-   private Box2DDebugRenderer physicsDebugRenderer = new Box2DDebugRenderer();
-   private FPSLogger fpsLog;
+   // Contrôles de l'interface
    private Label lblDebug;
    private Label lblHP;
    private Label lblMessage;
 
+   // Objets pour le rendu en mode debug
+   private ShapeRenderer debugRenderer = new ShapeRenderer();
+   private Box2DDebugRenderer physicsDebugRenderer = new Box2DDebugRenderer();
+   private FPSLogger fpsLog;
+
+   /**
+    * Modèle gérant l'éclairage. Se repose sur la représentation physique
+    * (bodies) des entités pour les ombres. Utilisé par le moteur d'éclairage
+    * (box2dlights).
+    */
    private RayHandler handler;
 
+   /**
+    * Instancie la vue.
+    * 
+    * @param game
+    *           Modèle du jeu à afficher
+    * @param debug
+    *           Activer le mode debug
+    */
    public GameRenderer(GameModel game, boolean debug) {
       this.game = game;
-      this.debug = debug;
+      this.debug = false;
 
       // Résolution jeu
       this.height = 720;

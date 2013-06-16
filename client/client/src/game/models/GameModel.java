@@ -20,6 +20,7 @@ import game.models.map.Tile;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import box2dLight.RayHandler;
 import client.GameData;
@@ -49,9 +50,6 @@ public class GameModel {
    public static final float WORLD_TO_SCREEN = 100f;
    public static final float SCREEN_TO_WORLD = 1f / WORLD_TO_SCREEN;
 
-   private final int EXIT_HEIGHT = 127;
-   private final int EXIT_WIDTH = 85;
-
    private static final Vector2 GRAVITY = new Vector2(0, 0);
 
    /**
@@ -60,34 +58,74 @@ public class GameModel {
    public class Updater {
       List<GameListener> listeners = new LinkedList<GameListener>();
 
+      /**
+       * Abonne un observeur aux événements
+       * 
+       * @param listener
+       *           Observeur à abonner
+       */
       public void addListener(GameListener listener) {
          listeners.add(listener);
       }
 
+      /**
+       * Lorsqu'un joueur change de position ou de direction.
+       * 
+       * @param player
+       *           Joueur modifié
+       */
       protected void notifyPlayerMove(Player player) {
          for (GameListener gl : listeners) {
             gl.onPlayerMove(GameModel.this, player);
          }
       }
 
+      /**
+       * Lorsqu'un joueur reçoit des dommages
+       * 
+       * @param player
+       *           Joueur concerné
+       */
       protected void notifyPlayerHit(Player player) {
          for (GameListener gl : listeners) {
             gl.onPlayerHit(GameModel.this, player);
          }
       }
 
+      /**
+       * Lorsqu'un joueur tire
+       * 
+       * @param sender
+       *           Joueur ayant tiré
+       * @param from
+       *           Origine du tir
+       * @param dir
+       *           Direction du tir
+       */
       protected void notifyShoot(Player sender, Vector2 from, float angle) {
          for (GameListener gl : listeners) {
             gl.onFire(GameModel.this, sender, from, angle);
          }
       }
 
+      /**
+       * Lorsqu'un joueuer éteint ou allume sa lampe torche
+       * 
+       * @param player
+       *           Joueur concerné
+       */
       protected void notifyTorch(Player player) {
          for (GameListener gl : listeners) {
             gl.onTorch(GameModel.this, player);
          }
       }
 
+      /**
+       * Lorsqu'un joueur sort du labyrinthe
+       * 
+       * @param player
+       *           Joueur concerné
+       */
       protected void notifyPlayerOut(Player player) {
          for (GameListener gl : listeners) {
             gl.onPlayerOut(GameModel.this, player);
@@ -98,26 +136,32 @@ public class GameModel {
 
    public final Updater updates = new Updater();
 
+   /**
+    * Modèle gérant les interactions physiques entre les entités ayant une
+    * représentation physique (body). Utilisé par le moteur physique (box2d).
+    */
    private World world;
 
+   /**
+    * Données d'initialisation du jeu
+    */
    private GameData initData;
 
    /**
     * Stocke les entités de la scène. Attention, l'ordre d'insertion correspond
     * à l'ordre d'affichage : le premier élément inséré sera en arrière-plan, le
     * dernier en avant-plan.
-    * 
     */
    private Group entities = new Group();
 
    /**
-    * Représentation de la carte sous forme de grille contenant des cases vides
-    * ou pleines.
+    * Représentation de la carte sous forme de grille de "tiles" (cases) de
+    * types différents (mur, sol, etc.)
     */
    private Map map;
 
    /**
-    * Personnage contrôlé par le joueur
+    * Personnage contrôlé par l'utilisateur
     */
    private MainPlayer player;
 
@@ -126,16 +170,36 @@ public class GameModel {
     */
    private Team[] teams;
 
+   /**
+    * Modèle gérant l'éclairage. Se repose sur la représentation physique
+    * (bodies) des entités pour les ombres. Utilisé par le moteur d'éclairage
+    * (box2dlights).
+    */
    private RayHandler rayHandler;
 
+   /**
+    * Permet d'activer ou non l'éclairage
+    */
    private boolean isLightingActive = true;
    private boolean debug;
 
+   /**
+    * Instancie le modèle de jeu
+    * 
+    * @param initData
+    *           Données d'initialiser à transmettre
+    */
    public GameModel(GameData initData) {
       this.initData = initData;
       initData.setGame(this);
    }
 
+   /**
+    * Initialise le jeu
+    * 
+    * @param debug
+    *           Activer le mode debug.
+    */
    public void init(boolean debug) {
       this.debug = debug;
       world = new World(GRAVITY, false);
@@ -145,8 +209,7 @@ public class GameModel {
       map = new Map(this, teams);
 
       entities.addActor(map);
-      entities.addActor(new Exit(this, EXIT_HEIGHT, EXIT_WIDTH, map
-            .getExitPos().x, map.getExitPos().y));
+      entities.addActor(new Exit(this, map.getExitPos().x, map.getExitPos().y));
 
       // Fait commencer le joueur au milieu de la map
       player = new MainPlayer(map.getRealPos(0, 0), new Vector2(0f, 1f),
@@ -181,11 +244,16 @@ public class GameModel {
       // Créer les contact listener
       createCollisionListener();
 
+      // Initialise toutes les entités
       for (Actor e : entities.getChildren()) {
          ((Entity) e).init(initData);
       }
    }
 
+   /**
+    * Crée un observateur sur les collisions entre les bodies et définit le
+    * comportement selon les cas.
+    */
    private void createCollisionListener() {
       world.setContactListener(new ContactListener() {
 
@@ -271,15 +339,23 @@ public class GameModel {
       return player;
    }
 
-   public void getPlayerById(int playerId) {
+   /**
+    * Récupère un joueur selon son identifiant unique
+    * 
+    * @param playerId
+    *           Identifiant du joueur
+    * @return Le joueur s'il existe
+    */
+   public Player getPlayerById(int playerId) {
+      for (Team team : teams) {
+         for (Player player : team.getMembers()) {
+            if (player.getId() == playerId) {
+               return player;
+            }
+         }
+      }
+      throw new NoSuchElementException();
    };
-
-   public void firePlayer(int player_id, float posXShoot, float posYShoot,
-         Vector2 dir) {
-   };
-
-   public void AddKillMessage(String message) {
-   }
 
    /**
     * @param player
@@ -290,7 +366,7 @@ public class GameModel {
    }
 
    /**
-    * @return Grille de la map
+    * @return Map de la partie
     */
    public Map getMap() {
       return map;
@@ -298,14 +374,14 @@ public class GameModel {
 
    /**
     * @param map
-    *           Grille de la map
+    *           Map de la partie
     */
    public void setMap(Map map) {
       this.map = map;
    }
 
    /**
-    * Charge les ressources du jeu (images, sons...)
+    * Charge les ressources du jeu (fichiers images, sons...)
     */
    public void loadResources() {
       for (Actor e : entities.getChildren()) {
@@ -314,42 +390,53 @@ public class GameModel {
    }
 
    /**
-    * @return Le "world" du moteur physique
+    * @return Modèle gérant les interactions physiques entre les entités ayant
+    *         une représentation physique (body). Utilisé par le moteur physique
+    *         box2d.
     */
    public World getWorld() {
       return world;
    }
 
    /**
-    * @return Gestionnaire de lancers de rayons
+    * @return Modèle gérant l'éclairage. Se repose sur la représentation
+    *         physique (bodies) des entités pour les ombres. Utilisé par le
+    *         moteur d'éclairage (box2dlights).
     */
    public RayHandler getRayHandler() {
       return rayHandler;
    }
 
+   /**
+    * @return Les entités du jeu.
+    */
    public Group getEntities() {
       return entities;
    }
 
-   public void executeDevCheat() {
+   /**
+    * Commande spéciale pour le debug
+    */
+   public void debugMe() {
       System.out.println("CHEAT");
       if (debug) {
          Vector2.tmp3.set(map.getExitPos());
          if (player.isInGame()) {
-            Vector2.tmp3.add(200, 200);
+            Vector2.tmp3.add(200, -200);
             player.damage(25);
          }
          else {
             player.setHP(100);
             player.setOut(false);
-            Vector2.tmp3.add(-200, 200);
+            Vector2.tmp3.add(100, -200);
          }
          player.moveTo(Vector2.tmp3);
       }
    }
 
+
    /**
-    * @return the isLightingActive
+    * @return true si l'éclairage est actif
     */
    public boolean isLightingActive() {
       return isLightingActive;
@@ -357,7 +444,7 @@ public class GameModel {
 
    /**
     * @param isLightingActive
-    *           the isLightingActive to set
+    *           Activer l'éclairage.
     */
    public void setLightingActive(boolean isLightingActive) {
       this.isLightingActive = isLightingActive;

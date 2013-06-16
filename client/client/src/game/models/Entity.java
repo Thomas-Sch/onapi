@@ -34,20 +34,37 @@ public abstract class Entity extends Actor implements Debuggable {
    protected Entity(GameModel game) {
       this.game = game;
    }
-   
+
    @Override
    public void debugRender(ShapeRenderer renderer) {
    }
 
+   /**
+    * Charge les ressources (fichiers images, sons, etc.) nécessaire à l'entité.
+    * 
+    * Appelé à l'initialisation du jeu
+    */
    public void loadResources() {
    }
-   
+
+   /**
+    * Initialise l'objet. Appelé au lancement de la fenêtre graphique.
+    * 
+    * @param initData
+    *           Données d'initialisation
+    */
    abstract public void init(GameData initData);
-   
+
+   /**
+    * Met à jour l'état de l'objet.
+    * 
+    * @param deltaTime
+    *           Temps écoulé depuis le dernier update-
+    */
    abstract public void update(float deltaTime);
 
    /**
-    * @return the game
+    * @return Modèle du jeu
     */
    public GameModel getGame() {
       return game;

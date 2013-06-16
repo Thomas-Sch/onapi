@@ -11,28 +11,25 @@
  */
 package game.models;
 
-
 /**
- * TODO
+ * Message affichable en jeu.
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
 public class Message {
 
    private String message;
-   /**
-    * 
-    */
-   public Message(String message) {
-       this.message = message;
-   }
    
-   public String getMessageText(){
+   public Message(String message) {
+      this.message = message;
+   }
+
+   public String getMessageText() {
       return message;
    }
-   
 
 }

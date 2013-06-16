@@ -61,7 +61,7 @@ public class Map extends Entity {
    /**
     * Position réelle de la porte de sortie
     */
-   private Vector2 exitPos;
+   private Vector2 exitPos = new Vector2();
 
    // Représentations physiques des cases de la grille
    private Body[][] wallBodies;
@@ -116,7 +116,9 @@ public class Map extends Entity {
                   body.setUserData(Tile.WALL);
                   break;
                case EXIT:
-                  exitPos = getRealPos(i, j);
+                  Vector2.tmp2.set(getRealPos(i, j));
+                  Vector2.tmp2.add(-Tile.WIDTH / 3, Tile.HEIGHT / 3);
+                  exitPos.set(Vector2.tmp2);
                   break;
                default:
                   break;

@@ -23,9 +23,9 @@ import com.badlogic.gdx.math.Vector2;
 import client.GameData;
 
 /**
- * Un des différents écrans (screens) de l'application.
+ * Ecran principal du jeu, correspondant à une partie en cours.
  * 
- * Celui-ci sert de point d'entrée au modèle, à la vue et au(x) contrôleur(s).
+ * L'écran sert de point d'entrée au modèle, à la vue et au(x) contrôleur(s).
  * Utilisé par le framework comme gestionnnaire des événements d'entrée
  * (clavier, souris, changement d'état de la fenêtre principale...).
  * 
@@ -59,6 +59,7 @@ public class GameScreen extends ScreenAdapter {
 
    /**
     * @param debug
+    *           Activer le mode debug.
     */
    public GameScreen(boolean debug, GameData initData) {
       this.debug = debug;
@@ -89,8 +90,14 @@ public class GameScreen extends ScreenAdapter {
       renderer.render();
    }
 
-   private void update(float delta) {
-      controller.update(delta);
+   /**
+    * Met à jour la logique de jeu
+    * 
+    * @param deltaTime
+    *           Temps écoulé depuis le dernier update
+    */
+   private void update(float deltaTime) {
+      controller.update(deltaTime);
    }
 
    @Override
@@ -135,12 +142,6 @@ public class GameScreen extends ScreenAdapter {
    }
 
    @Override
-   public boolean keyTyped(char character) {
-      if (character == 'X' || character == 'x') game.executeDevCheat();
-      return true;
-   }
-
-   @Override
    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
       if (button == MOUSE_RIGHT_BUTTON) {
          controller.setActionState(InputController.Action.TORCH, true);
@@ -150,11 +151,11 @@ public class GameScreen extends ScreenAdapter {
       }
       return true;
    }
-   
+
    @Override
    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
       if (button == MOUSE_RIGHT_BUTTON) {
-          controller.setActionState(InputController.Action.TORCH, false);
+         controller.setActionState(InputController.Action.TORCH, false);
       }
       if (button == MOUSE_LEFT_BUTTON) {
          controller.setActionState(InputController.Action.FIRE, false);
@@ -200,8 +201,9 @@ public class GameScreen extends ScreenAdapter {
       // modifier dans autre processus
       Vector2.tmp2.x = mouseX;
       Vector2.tmp2.y = mouseY;
-      game.getPlayer().setDir(Vector2.tmp2);
-
+      synchronized (game.getPlayer()) {
+         game.getPlayer().setDir(Vector2.tmp2);
+      }
       return true;
    }
 

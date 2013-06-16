@@ -12,7 +12,8 @@
 package game.models.map;
 
 /**
- * TODO
+ * Définit un sommet du labyrinthe, comprenant le type de tile et ses
+ * coordonnées dans la grille.
  * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
@@ -26,6 +27,11 @@ public class MazeTile {
 
    public final int x, y;
 
+   /**
+    * @param type Type de tile du sommet
+    * @param x Coordonnée x dans la grille
+    * @param y Coordonnée y dans la grille
+    */
    public MazeTile(Tile type, int x, int y) {
       setType(type);
       this.x = x;
@@ -33,7 +39,7 @@ public class MazeTile {
    }
 
    /**
-    * @return the type
+    * @return Type de tile du sommet
     */
    public Tile getType() {
       return type;
@@ -41,7 +47,7 @@ public class MazeTile {
 
    /**
     * @param type
-    *           the type to set
+    *          Type de tile du sommet
     */
    public void setType(Tile type) {
       this.type = type;

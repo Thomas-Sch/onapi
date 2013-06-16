@@ -19,7 +19,7 @@ import box2dLight.PointLight;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- * TODO
+ * Extension de la classe player pour les spécificités du joueur principal.
  * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
@@ -34,18 +34,19 @@ public class MainPlayer extends Player {
       super(pos, dir, team, weapon, skill, bonus, game);
 
       // Halo de lumière diffusé autour du joueur
-      (new PointLight(game.getRayHandler(), 100, HALO_COLOR,
-            HALO_DISTANCE, getX(), getY())).attachToBody(getBody(), 0, 0);
+      (new PointLight(game.getRayHandler(), 100, HALO_COLOR, HALO_DISTANCE,
+            getX(), getY())).attachToBody(getBody(), 0, 0);
    }
 
    public MainPlayer(Player p) {
       super(p.getPos(), p.getDir(), p.getTeam(), p.getWeapon(), p.getSkill(), p
             .getBonus(), p.getGame());
    }
-   
+
    @Override
    public void shoot(float delta) {
       super.shoot(delta);
-      getGame().updates.notifyShoot(this, this.getPos().cpy(), getDir().angle());
+      getGame().updates
+            .notifyShoot(this, this.getPos().cpy(), getDir().angle());
    }
 }

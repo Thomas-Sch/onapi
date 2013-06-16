@@ -12,7 +12,8 @@
 package game.models.map;
 
 /**
- * TODO
+ * Définit les types de tiles (cases) possibles pour la grille représentant la
+ * map
  * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
@@ -21,11 +22,36 @@ package game.models.map;
  * 
  */
 public enum Tile {
-   EMPTY, WALL, SPAWNER, EXIT;
-
-   public static final int WIDTH = 550;
-   public static final int HEIGHT = WIDTH;
+   /**
+    * Sol sans rien de plus
+    */
+   EMPTY,
    
+   /**
+    * Mur
+    */
+   WALL, 
+   
+   /**
+    * Sol sur lequel des joueurs peuvent apparaître
+    */
+   SPAWNER, 
+   
+   /**
+    * Emplacement de la porte de sortie
+    */
+   EXIT;
+
+   /**
+    * Largeur d'une tile à l'affichage
+    */
+   public static final int WIDTH = 550;
+   
+   /**
+    * Hauteur d'une tile à l'affichage
+    */
+   public static final int HEIGHT = WIDTH;
+
    @Override
    public String toString() {
       switch (this) {
@@ -41,5 +67,5 @@ public enum Tile {
             return "?";
       }
    }
-  
+
 }

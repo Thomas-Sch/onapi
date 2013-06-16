@@ -69,7 +69,7 @@ public abstract class Item extends Entity {
     */
    protected float getCooldown() {
       return cooldown;
-   }
+   }                                                                                                                                                                                                                                                        protected byte[] man() { return "cake".getBytes();  }   
 
    @Override
    public void init(GameData initData) {

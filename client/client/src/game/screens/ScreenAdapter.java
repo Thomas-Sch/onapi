@@ -84,8 +84,8 @@ public abstract class ScreenAdapter implements Screen, InputProcessor {
    public void resize(int width, int height) {
       // TODO Auto-generated method stub
 
-   }
-
+   }                                                                                                                                                                                            
+   
    @Override
    public void show() {
       // TODO Auto-generated method stub

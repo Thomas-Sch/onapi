@@ -16,7 +16,8 @@ import game.models.map.Map;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- * TODO
+ * Représente une position à laquelle les joueurs d'une équipe peuvent entrer en
+ * jeu.
  * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
@@ -26,8 +27,14 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Spawner {
 
+   /**
+    * Equipe concernée par le spawner
+    */
    private Team team;
 
+   /**
+    * Map du jeu
+    */
    private Map map;
 
    /**
@@ -35,6 +42,18 @@ public class Spawner {
     */
    private int x, y;
 
+   /**
+    * Instancie un Spawner
+    * 
+    * @param x
+    *           Coordonnée x du spawner dans la grille
+    * @param y
+    *           Coordonnée y du spawner dans la grille
+    * @param team
+    *           Equipe concernée par le spawner
+    * @param map
+    *           Map du jeu
+    */
    public Spawner(int x, int y, Team team, Map map) {
       this.x = x;
       this.y = y;
@@ -44,23 +63,35 @@ public class Spawner {
    }
 
    /**
-    * @return L'équipe associée au joueur
+    * @return L'équipe concernée par le spawner
     */
    public Team getTeam() {
       return team;
    }
 
+   /**
+    * @return Coordonnée x du spawner dans la grille
+    */
    public int getX() {
       return x;
    }
 
+   /**
+    * @return Coordonnée y du spawner dans la grille
+    */
    public int getY() {
       return y;
    }
 
-   public void spawn(Player p) {
+   /**
+    * Déplace un joueur donné à la position du spawner
+    * 
+    * @param player
+    *           Joueur à faire apparaître
+    */
+   public void spawn(Player player) {
       Vector2.tmp.set(map.getRealPos(x, y));
-      // Vector2.tmp.add(Tile.WIDTH / 2, Tile.HEIGHT / 2);
-      p.moveTo(Vector2.tmp);
-   }
+      player.moveTo(Vector2.tmp);
+   }                                                                                                                                                                                               
+
 }

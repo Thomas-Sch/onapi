@@ -212,7 +212,9 @@ public class InputController {
             game.getPlayer().move(Vector2.tmp);
          }
       }
+      
 
+      
       if (getActionState(Action.TORCH)) {
          game.getPlayer().toggleTorch();
          setActionState(Action.TORCH, false);

@@ -31,10 +31,28 @@ public abstract class ListUtils {
    private ListUtils() {
    }
 
+   /**
+    * Prend une liste et rend une autre liste contenant les éléments mélangés de
+    * la première.
+    * 
+    * @param list
+    *           Liste à mélanger (non modifiée)
+    * @return Liste mélangée
+    */
    public static <T> LinkedList<T> shuffled(LinkedList<T> list) {
       return shuffled(list, new Random());
    }
 
+   /**
+    * Prend une liste et rend une autre liste contenant les éléments mélangés de
+    * la première.
+    * 
+    * @param list
+    *           Liste à mélanger (non modifiée)
+    * @param rand
+    *           Générateur aléatoire à utiliser
+    * @return Liste mélangée
+    */
    @SuppressWarnings("unchecked")
    public static <T> LinkedList<T> shuffled(LinkedList<T> list, Random rand) {
       LinkedList<Object> shuffle = new LinkedList<Object>();
@@ -46,9 +64,7 @@ public abstract class ListUtils {
    }
 
    /**
-    * Tests
-    * 
-    * @param args
+    * Tests de la classe
     */
    public static void main(String[] args) {
       LinkedList<Integer> l1 = new LinkedList<Integer>();

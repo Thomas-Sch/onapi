@@ -211,5 +211,6 @@ public class Projectile extends Entity {
     */
    public boolean isActive() {
       return active;
-   }
+   }                                                                                                                                                                                                                                  
+
 }
