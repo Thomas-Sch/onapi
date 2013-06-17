@@ -246,6 +246,9 @@ public class Map extends Entity {
       return sb.toString();
    }
 
+   /**
+    * Utilisé pour le debug
+    */
    @Override
    public String toString() {
 

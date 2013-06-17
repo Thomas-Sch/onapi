@@ -52,6 +52,9 @@ public enum Tile {
     */
    public static final int HEIGHT = WIDTH;
 
+   /**
+    * Utilisé pour le debug
+    */
    @Override
    public String toString() {
       switch (this) {

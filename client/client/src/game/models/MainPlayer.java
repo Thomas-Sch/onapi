@@ -14,8 +14,10 @@ package game.models;
 import game.items.Bonus;
 import game.items.Skill;
 import game.items.Weapon;
+import game.models.map.Tile;
 import box2dLight.PointLight;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -29,6 +31,10 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class MainPlayer extends Player {
 
+   // Paramètres du halo de lumière autour du joueur
+   public final static Color HALO_COLOR = new Color(1, 1, 1, 0.3f);
+   public final static int HALO_DISTANCE = Tile.WIDTH - 50;
+   
    public MainPlayer(Vector2 pos, Vector2 dir, Team team, Weapon weapon,
          Skill skill, Bonus bonus, GameModel game) {
       super(pos, dir, team, weapon, skill, bonus, game);

@@ -218,7 +218,7 @@ public class InputController {
       }
 
       if (getActionState(Action.SKILL)) {
-         game.getPlayer().toggleSkill();
+         game.getPlayer().activateSkill();
       }
 
       for (Actor e : game.getEntities().getChildren()) {

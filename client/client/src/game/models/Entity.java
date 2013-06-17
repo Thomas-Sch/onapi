@@ -59,7 +59,7 @@ public abstract class Entity extends Actor implements Debuggable {
     * Met à jour l'état de l'objet.
     * 
     * @param deltaTime
-    *           Temps écoulé depuis le dernier update-
+    *           Temps écoulé depuis le dernier update.
     */
    abstract public void update(float deltaTime);
 
