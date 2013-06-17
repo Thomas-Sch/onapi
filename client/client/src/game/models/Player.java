@@ -16,7 +16,6 @@ import game.items.Skill;
 import game.items.Weapon;
 import game.models.map.Tile;
 import box2dLight.ConeLight;
-import box2dLight.PointLight;
 import client.GameData;
 
 import com.badlogic.gdx.Gdx;
@@ -130,7 +129,6 @@ public class Player extends Entity {
    private Body body;
 
    private Rectangle bounds;
-   private PointLight pl;
 
    public final static int HALO_DISTANCE = Tile.WIDTH - 50;
 
