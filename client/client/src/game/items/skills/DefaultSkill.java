@@ -58,7 +58,6 @@ public class DefaultSkill extends Skill {
          float currentTime = lastUpdate + deltaTime;
          if (currentTime > lastUpdate + UPDATE_RATE) {
             currentDist += INCREMENT;
-            System.out.println(currentDist);
             pl.setDistance(currentDist);
             if (currentDist >= DISTANCE_MAX) {
                deactivate();
@@ -84,7 +83,7 @@ public class DefaultSkill extends Skill {
    public void activate() {
       if (!isActive()) {
          if (used < USE_LIMIT) {
-            // used++;
+            used++;
             setActive(true);
             pl = new PointLight(getGame().getRayHandler(), 50, EFFECT_COLOR, 0,
                   0, 0);
