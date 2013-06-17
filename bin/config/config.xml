@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+  <properties>
+    <language_code>fr</language_code>
+  </properties>
+  <frames>
+    <mainFrame>
+      <width>200</width>
+      <height>400</height>
+      <position_x>0</position_x>
+      <position_y>0</position_y>
+      <anchor>CENTER</anchor>
+    </mainFrame>
+  </frames>
+</settings>

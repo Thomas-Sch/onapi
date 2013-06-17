@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language>
+  <app_title>Onapi</app_title>
+  <lobby_title>Salle d'attente</lobby_title>
+  <inventory_title>Inventaire du joueur</inventory_title>
+  <admin_title>Missing String</admin_title>
+  <validate_button>Valider</validate_button>
+  <cancel_button>Annuler</cancel_button>
+  <play_button>Jouer</play_button>
+  <inventory_button>Inventaire</inventory_button>
+  <login_label>Identifiant</login_label>
+  <password_label>Mot de passe</password_label>
+  <server_adress_label>Adresse ip du serveur</server_adress_label>
+  <server_port_label>Port du serveur</server_port_label>
+  <slot_free>libre</slot_free>
+  <ready_label>Prêt ?</ready_label>
+</language>
