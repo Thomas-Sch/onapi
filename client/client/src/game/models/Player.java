@@ -70,6 +70,7 @@ public class Player extends Entity {
    private float currentTime = 0.0f;
    private static final int NB_FRAMES_ANIMATION = 6;
    private static final float ANIMATION_DURATION = 0.3f; // en [s]
+   private int animationFrameIndex = 0;
 
    /**
     * Référence de l'équipe à laquelle appartient le personnage
@@ -126,8 +127,10 @@ public class Player extends Entity {
 
    private ConeLight torchLight;
 
+   // Représente l'entité physique du joueur
    private Body body;
 
+   // Le rectangle qui représente la hitbox du joueur
    private Rectangle bounds;
 
    public final static int HALO_DISTANCE = Tile.WIDTH - 50;
@@ -136,12 +139,18 @@ public class Player extends Entity {
          Skill skill, Bonus bonus, GameModel game) {
       super(game);
 
+      //Définit la hauteur et la largeur d'un joueur
       setWidth(WIDTH);
       setHeight(HEIGHT);
+      
+      //définit les bornes de la hitbox
       bounds = new Rectangle(pos.x, pos.y, getWidth() / 2, getHeight() / 2);
 
+      //ajoute le joueur dans l'équipe
       setTeam(team);
       team.getMembers().add(this);
+      
+      //Set les informations relatives au joueurs : Arme skill et bonus
       this.weapon = weapon;
       this.weapon.setOwner(this);
       this.skill = skill;
@@ -149,6 +158,7 @@ public class Player extends Entity {
       this.bonus = bonus;
       this.bonus.setOwner(this);
 
+      //Charge les ressources
       loadResources();
 
       // Définit la consistance physique du joueur
@@ -172,19 +182,28 @@ public class Player extends Entity {
       torchLight.attachToBody(body, 1, 1);
       this.torchLight.setActive(true);
 
+      //définit l'orientation du joueur et le place sur la map
       setDir(dir);
       moveTo(pos);
+      
+      //Définit la position lorsqu'un joueur meurt 
       deadPos = new Vector2(GRAVEYARD_POS.x + pos.x, GRAVEYARD_POS.y + pos.y);
 
    }
 
-   @Override
+   /**
+    * init : instruction à executer au lancement du jeu
+    */
    public void init(GameData initData) {
       // TODO Auto-generated method stub
    }
 
+   /**
+    * Charge les ressource pour le joueur
+    */
    public void loadResources() {
       texture = new Texture(Gdx.files.internal("data/sprite1_perso.png"));
+      
       TextureAtlas atlas = new TextureAtlas(
             Gdx.files.internal("data/player.atlas"));
 
@@ -196,6 +215,10 @@ public class Player extends Entity {
 
    }
 
+   /**
+    * Retourne la hitbox du joueur
+    * @return le rectangle
+    */
    public Rectangle getBounds() {
       return bounds;
    }
@@ -214,8 +237,7 @@ public class Player extends Entity {
     *           Nouvelle position
     */
    public void moveTo(Vector2 newPos) {
-      setPosition(newPos.x - bounds.width / 2f, newPos.y - bounds.height
-            / 2f);
+      setPosition(newPos.x - bounds.width / 2f, newPos.y - bounds.height / 2f);
       bounds.x = newPos.x;
       bounds.y = newPos.y;
       isMoving = true;
@@ -269,12 +291,16 @@ public class Player extends Entity {
       getSkill().update(deltaTime);
    }
 
+   /**
+    * Met à jour l'image représentant le joueur
+    * @param deltaTime
+    */
    private void updateAnimation(float deltaTime) {
       currentTime += deltaTime;
       if (currentTime - lastFrameUpdate > ANIMATION_DURATION
             / NB_FRAMES_ANIMATION) {
          if (isMoving) {
-            animationFrameIndex = (animationFrameIndex+1)
+            animationFrameIndex = (animationFrameIndex + 1)
                   % (NB_FRAMES_ANIMATION + 2);
             isMoving = false;
          }
@@ -285,13 +311,15 @@ public class Player extends Entity {
       }
    }
 
+   /**
+    * Fait tirer un joueur
+    * @param delta
+    */
    public void shoot(float delta) {
       if (isInGame()) {
          weapon.shoot(delta);
       }
    }
-
-   private int animationFrameIndex = 0;
 
    @Override
    public void draw(SpriteBatch batch, float parentAlpha) {
@@ -396,14 +424,26 @@ public class Player extends Entity {
       }
    }
 
+   /**
+    * Modifie la couleur de la lampe du joueur
+    * @param color
+    */
    public void setTorchColor(Color color) {
       torchLight.setColor(color);
    }
 
+   /**
+    * Retourne la couleur du joueur
+    * @return
+    */
    public Color getTorchColor() {
       return torchLight.getColor();
    }
-
+   
+   /**
+    * Retourne l'id du joueur
+    * @return
+    */
    public int getId() {
       return id;
    }
@@ -415,7 +455,10 @@ public class Player extends Entity {
       this.weapon = weapon;
    }
 
-   @Override
+
+   /**
+    * Test si un joueur est égal à un autre
+    */
    public boolean equals(Object obj) {
       return obj instanceof Player && ((Player) obj).id == id;
    }
@@ -428,22 +471,32 @@ public class Player extends Entity {
    }
 
    /**
-    * @param out
-    *           the out to set
+    * @param out : dehors ou non
     */
    public void setOut(boolean out) {
       this.out = out;
       torchLight.setActive(isInGame());
    }
 
+   /**
+    * Permet de savoir si un joueur est mort
+    * @return
+    */
    public boolean isDead() {
       return hp <= 0;
    }
 
+   /**
+    * Permet de savoir si un joueur est en pleine partie
+    * @return
+    */
    public boolean isInGame() {
       return !isOut() && !isDead();
    }
 
+   /**
+    * Active la compétence du joueur
+    */
    public void toggleSkill() {
       if (isInGame()) {
          getSkill().activate();
