@@ -17,7 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 
 /**
- * Fenêtre gérant l'affichage de plusieurs panneaux de log.
+ * Fenêtre contenant plusieurs logs graphiques sous forme d'un log par onglet.
  * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
@@ -27,13 +27,24 @@ import javax.swing.JTabbedPane;
  */
 public class LogsFrame extends JFrame {
 
-   /**
-    * ID de sérialisation.
-    */
-   private static final long serialVersionUID = 3686426401919375295L;
-   
+   private static final long serialVersionUID = -3342054795452954852L;
+
    private JTabbedPane tabbedPaneLogs;
 
+   /**
+    * Crée la fenêtre de logs.
+    * 
+    * @param title
+    *           - le titre de la fenêtre.
+    * @param posX
+    *           - la position en X du coin supérieur gauche de la fenêtre.
+    * @param posY
+    *           - la position en Y du coin supérieur gauche de la fenêtre.
+    * @param width
+    *           - la largeur de la fenêtre.
+    * @param height
+    *           - la hauteur de la fenêtre.
+    */
    public LogsFrame(String title, int posX, int posY, int width, int height) {
       super(title);
 
@@ -41,38 +52,42 @@ public class LogsFrame extends JFrame {
 
       tabbedPaneLogs = new JTabbedPane(JTabbedPane.LEFT);
       getContentPane().add(tabbedPaneLogs);
+
+      setVisible(true);
    }
 
+   /**
+    * Ajoute un log graphique à la fenêtre en créant un nouvel onglet.
+    * 
+    * @param panel
+    *           - le log graphique à ajouter.
+    */
    public void addLogPanel(LogPanel panel) {
-      try {
-         tabbedPaneLogs.addTab(panel.getName(), panel);
-      }
-      catch (IndexOutOfBoundsException e) {
-         System.out.println("DEBUG - ou la");
-      }
+      tabbedPaneLogs.addTab(panel.getName(), panel);
    }
-
+   
    public void removeLogPanel(LogPanel panel) {
       try {
          tabbedPaneLogs.remove(panel);
       }
-      catch (IndexOutOfBoundsException e) {
-         System.out.println("DEBUG - ici");
+      catch(IndexOutOfBoundsException e) {
+         
       }
    }
-
+   
    public void setLogPanelTitle(LogPanel panel, String title) {
-
+      
       int index = tabbedPaneLogs.indexOfComponent(panel);
-
+      
       if (index >= 0 && index < tabbedPaneLogs.getTabCount()) {
-         try {
+         try{
             tabbedPaneLogs.setTitleAt(index, title);
          }
-         catch (IndexOutOfBoundsException e) {
-            System.out.println("DEBUG - la");
+         catch(IndexOutOfBoundsException e) {
+            
          }
       }
-
+      
    }
+
 }

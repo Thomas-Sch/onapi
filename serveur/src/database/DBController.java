@@ -60,7 +60,7 @@ public class DBController {
             return null;
          else {
             database.execute("INSERT INTO User(name, password, role) VALUES('"
-                  + login + "', '" + password + "')");
+                  + login + "', '" + password + "', '"+ role +"')");
 
             // recupère l'id inseré
             result = database

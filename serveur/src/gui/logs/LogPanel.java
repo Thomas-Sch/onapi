@@ -19,7 +19,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 /**
- * Panneau servant à l'affichage d'un log.
+ * Représentation graphique d'un log.
  * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
@@ -29,15 +29,18 @@ import javax.swing.JTextArea;
  */
 public class LogPanel extends JPanel {
 
-   /**
-    * ID de sérialisation.
-    */
-   private static final long serialVersionUID = -5308495458453556350L;
+   private static final long serialVersionUID = 2581654682724148340L;
 
    private JTextArea textArea;
 
    private JScrollPane scrollPane;
 
+   /**
+    * Crée la représentation graphique d'un log, avec un nom indiqué.
+    * 
+    * @param name
+    *           - le nom du log.
+    */
    public LogPanel(String name) {
       setName(name);
 
@@ -45,6 +48,8 @@ public class LogPanel extends JPanel {
       textArea.setEditable(false);
       textArea.setFont(Font.getFont(Font.SANS_SERIF));
       textArea.setLineWrap(true);
+
+      textArea.setFont(Font.getFont(Font.SANS_SERIF));
 
       scrollPane = new JScrollPane(textArea);
 
@@ -55,6 +60,12 @@ public class LogPanel extends JPanel {
 
    }
 
+   /**
+    * Ajoute à la fin du log graphique le message donné.
+    * 
+    * @param message
+    *           - le message à ajouter.
+    */
    public void push(LogMessage message) {
       textArea.append(message.getLogShortDate() + "\n");
 

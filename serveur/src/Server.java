@@ -22,6 +22,8 @@ import core.Core;
  * 
  */
 public class Server {
+   
+   private static boolean logs = false;
 
    /**
     * Méthode principale à appeler pour démarrer le serveur.
@@ -31,9 +33,15 @@ public class Server {
     * @throws IOException
     */
    public static void main(String[] args) {
+      
+      if (args.length > 0) {
+         if (args[0].equalsIgnoreCase("-logs")) {
+            logs = true;
+         }
+      }
 
       // Création du coeur du serveur
-      Core core = new Core(true);
+      Core core = new Core(logs);
 
       // Démarrage du serveur
       core.start();

@@ -81,7 +81,10 @@ public class GameServer implements Observer {
       this.core = core;
 
       log = new Log(name);
-      logsFrame.addLogPanel(log.createLogPanel());
+      
+      if (logsFrame != null) {
+         logsFrame.addLogPanel(log.createLogPanel());
+      }
 
       log.push("Starting the server " + name + " ...");
 
