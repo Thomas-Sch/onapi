@@ -82,7 +82,7 @@ public class Map extends Entity {
 
       // Crée la map et ajoute les spawners
       MazeGenerator generator = new MazeGenerator();
-      setGrid(generator.generateMaze(teams.length * 3));
+      setGrid(generator.generateMaze(teams.length * 6));
       spawners = generator.generateSpawners(teams, this);
 
       // Définit la consistance physique des murs

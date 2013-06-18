@@ -45,7 +45,7 @@ public enum Tile {
    /**
     * Largeur d'une tile à l'affichage
     */
-   public static final int WIDTH = 550;
+   public static final int WIDTH = 600;
    
    /**
     * Hauteur d'une tile à l'affichage

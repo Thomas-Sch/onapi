@@ -69,7 +69,6 @@ public class JLogin extends JFrame{
       lblMessage = new JLabel("");
       lblMessage.setForeground(Color.RED);
       
-      // TODO pour tests :
       ltpLogin.setText("GregoireDec");
       lppPassword.setText("1234");
       ltpServerAdress.setText("127.0.0.1");
