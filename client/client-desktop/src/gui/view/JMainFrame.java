@@ -14,6 +14,8 @@ package gui.view;
 import gui.component.JLabelInfo;
 import gui.controller.MainFrame;
 
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -37,7 +39,7 @@ import settings.Language.Text;
 public class JMainFrame extends JFrame {
 
    /**
-    * ID de s�rialisation du composant graphique.
+    * ID de sérialisation du composant graphique.
     */
    private static final long serialVersionUID = -8770775554830532082L;
    
@@ -48,6 +50,7 @@ public class JMainFrame extends JFrame {
    
    public JMainFrame(String title, MainFrame controller) {
       super(title);
+      setMinimumSize(new Dimension(800, 380));
       this.controller = controller;
       initContent();
       setContentPane(buildContent());
@@ -58,7 +61,9 @@ public class JMainFrame extends JFrame {
    public void initContent() {
       lbiUserGreeting = new JLabelInfo("Bienvenue ! " + controller.getUserName());
       btnPlay = new JButton(Text.PLAY_BUTTON.toString());
+      btnPlay.setFont(new Font("Sans Serif", Font.BOLD, 36));
       btnInventory = new JButton(Text.INVENTORY_BUTTON.toString());
+      btnInventory.setFont(new Font("Sans Serif", Font.BOLD, 36));
    }
    
    public JPanel buildContent() {

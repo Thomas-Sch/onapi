@@ -37,7 +37,7 @@ import settings.Language.Text;
  * @author Schweizer Thomas
  *
  */
-public class JLogin extends JFrame{
+public class JLogin extends JFrame {
 
    /**
     * ID sérialisation du composant graphique.

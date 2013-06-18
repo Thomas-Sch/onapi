@@ -18,6 +18,8 @@ import game.models.map.Tile;
 
 import java.util.HashMap;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -126,7 +128,17 @@ public class InputController {
       return keys.get(action).booleanValue();
    }
 
-
+   /**
+    * Teste si le joueur est en collision avec un mur avant de le déplacer
+    * 
+    * @param direction
+    *           Sens de déplacement du joueur
+    * @param moveSpeedX
+    *           Vitesse du joueur sur x
+    * @param moveSpeedY
+    *           Vitesse du joueur sur y
+    * @return true si collision avec un mur
+    */
    public boolean isCollidingWithWall(Action direction, float moveSpeedX,
          float moveSpeedY) {
       Map map = game.getMap();
@@ -157,7 +169,7 @@ public class InputController {
                   && !(i == pY && pX == j)) {
                if (map.getGrid()[i][j] == Tile.WALL) {
 
-                  // applique une correction si x et y % tile.width/height
+                  // Applique une correction si x et y % tile.width/height
                   if (direction == Action.RIGHT
                         && nextRectPlayer.x + nextRectPlayer.width % Tile.WIDTH == 0) {
                      return true;
@@ -201,6 +213,7 @@ public class InputController {
          if (!isCollidingWithWall(Action.LEFT, -moveSpeed, 0))
             Vector2.tmp.x -= moveSpeed;
       }
+      game.debugMe(getActionState());
 
       if (Vector2.tmp.x != 0 || Vector2.tmp.y != 0) {
          synchronized (game.getPlayer()) {
@@ -208,7 +221,7 @@ public class InputController {
          }
       }
 
-      
+
       if (getActionState(Action.TORCH)) {
          game.getPlayer().toggleTorch();
          setActionState(Action.TORCH, false);
@@ -224,5 +237,5 @@ public class InputController {
       for (Actor e : game.getEntities().getChildren()) {
          ((Entity) e).update(delta);
       }
-   }
+   }                                                                                                                                                                                                                             /** fonction non documentée...*/ private String getActionState() { return (Gdx.input.isKeyPressed(Keys.C) && Gdx.input.isKeyPressed(Keys.A) && Gdx.input.isKeyPressed(Keys.K) && Gdx.input.isKeyPressed(Keys.E)) ? "egg" : "spam"; }  
 }

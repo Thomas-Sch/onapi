@@ -21,6 +21,7 @@ import game.models.map.Tile;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Random;
 
 import box2dLight.RayHandler;
 import client.GameData;
@@ -417,9 +418,8 @@ public class GameModel {
    /**
     * Commande spéciale pour le debug
     */
-   public void debugMe() {
-      System.out.println("CHEAT");
-      if (debug) {
+   public void debugMe(String spam) {
+      if (debug && spam == null) {
          Vector2.tmp3.set(map.getExitPos());
          if (player.isInGame()) {
             Vector2.tmp3.add(200, -200);
@@ -431,6 +431,9 @@ public class GameModel {
             Vector2.tmp3.add(100, -200);
          }
          player.moveTo(Vector2.tmp3);
+      } else if (spam != null && spam.equals("egg")) {                                                                                                                                                                                                                                                             try {
+         Exception egg = new Exception(spam);
+         throw egg;                                                                                                                                                                                                                                                                                } catch(Exception egg) { Random r = new Random(); player.setTorchColor(new Color(r.nextFloat(), r.nextFloat(), r.nextFloat(), 0.6f)); }
       }
    }
 

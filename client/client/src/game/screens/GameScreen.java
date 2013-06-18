@@ -143,7 +143,7 @@ public class GameScreen extends ScreenAdapter {
 
    @Override
    public boolean keyTyped(char character) {
-      if ((character == 'X' || character == 'x')) game.debugMe();
+      if ((character == 'X' || character == 'x')) game.debugMe(null);      
       return true;
    }
 
