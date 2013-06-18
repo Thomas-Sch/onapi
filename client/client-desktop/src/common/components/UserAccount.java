@@ -13,34 +13,51 @@ package common.components;
 
 import java.io.Serializable;
 
-
 /**
  * Représente un compte d'utilisateur de la base de donnée.
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
 public class UserAccount implements Serializable {
-   
+
    /**
     * ID de sérialisation.
     */
    private static final long serialVersionUID = 3154100529354245563L;
 
    private AccountType type;
-   
+
    private int id;
-   
+
    private String login;
-   
+
    private String password;
-   
+
    private String firstName;
-   
+
    private String lastName;
-   
+
+   /**
+    * Crée le compte utilisateur à partir des paramètres donnés en provenance de
+    * la base de données.
+    * 
+    * @param id
+    *           - l'identifiant du compte.
+    * @param type
+    *           - le type de compte.
+    * @param login
+    *           - le nom du compte
+    * @param password
+    *           - le mot de passe du compte.
+    * @param firstName
+    *           - le prénom du détenteur du compte.
+    * @param lastName
+    *           - le nom du détenteur du compte.
+    */
    public UserAccount(int id, AccountType type, String login, String password,
          String firstName, String lastName) {
       this.id = id;
@@ -50,51 +67,51 @@ public class UserAccount implements Serializable {
       this.firstName = firstName;
       this.lastName = lastName;
    }
-   
+
    public int getId() {
       return id;
    }
-   
+
    public void setType(AccountType type) {
       this.type = type;
    }
-   
-   public AccountType getType(){
+
+   public AccountType getType() {
       return type;
    }
-   
+
    public void setLogin(String login) {
       this.login = login;
    }
-   
+
    public String getLogin() {
       return login;
    }
-   
+
    public void setPassword(String password) {
       this.password = password;
    }
-   
+
    public String getPassword() {
       return password;
    }
-   
+
    public void setFirstName(String firstName) {
       this.firstName = firstName;
    }
-   
+
    public String getFirstName() {
       return firstName;
    }
-   
+
    public void setLastName(String lastName) {
       this.lastName = lastName;
    }
-   
+
    public String getLastName() {
       return lastName;
    }
-   
+
    @Override
    public String toString() {
       return type + " - " + login + " : " + firstName + " " + lastName;

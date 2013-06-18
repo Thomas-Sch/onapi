@@ -24,7 +24,6 @@ import javax.swing.JTabbedPane;
  * @author Schweizer Thomas
  *
  */
-@SuppressWarnings("serial")
 public class LogsFrame extends JFrame {
 
    private JTabbedPane tabbedPaneLogs;

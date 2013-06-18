@@ -12,15 +12,17 @@
 package common.components;
 
 /**
- * TODO
+ * Défini les différents type de compte présents sur le serveur. Permet une
+ * distinction entre les comptes pour des question de droits.
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
 public enum AccountType {
-   
+
    USER, ADMINISTRATOR;
 
 }

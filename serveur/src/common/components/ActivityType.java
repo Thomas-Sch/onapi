@@ -12,7 +12,8 @@
 package common.components;
 
 /**
- * Représente les différentes l'activité actuelle d'un utilisateur.
+ * Représente les différentes activités que peut avoir actuellement un
+ * utilisateur au sein du serveur.
  * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
