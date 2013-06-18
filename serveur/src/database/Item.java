@@ -12,17 +12,18 @@
 package database;
 
 /**
- * TODO
+ * Représente un élément de jeu en provenance la base de données.
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
 public class Item {
    private int id;
    private String name;
-   
+
    public int getId() {
       return id;
    }
@@ -39,7 +40,7 @@ public class Item {
       this.name = name;
    }
 
-   public Item(int id, String name){
+   public Item(int id, String name) {
       this.id = id;
       this.name = name;
    }

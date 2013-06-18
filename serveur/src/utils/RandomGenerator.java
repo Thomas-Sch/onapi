@@ -35,7 +35,7 @@ public class RandomGenerator {
    /**
     * Retourne un code entier aléatoire qui n'est pas actuellement utilisé.
     * 
-    * @return Un code alétaoire non utilisé.
+    * @return Un code aléatoire non utilisé.
     */
    public static int generateConnectionCode() {
       int code;
@@ -43,7 +43,7 @@ public class RandomGenerator {
       do {
          code = (int) (Math.random() * Integer.MAX_VALUE);
       } while (!isCodeFree(code));
-      
+
       synchronized (alreadyUsedCodes) {
          alreadyUsedCodes.add(code);
       }
