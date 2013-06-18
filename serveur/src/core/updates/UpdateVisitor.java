@@ -17,26 +17,28 @@ import core.updates.components.StandardPing;
 import core.updates.components.admin.Kicked;
 import core.updates.components.admin.UpdatedServerUser;
 
-
 /**
- * TODO
+ * Interface du visiteur pour les mises à jour.
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
 public interface UpdateVisitor {
-   
+
    // Général
    void casePing(StandardPing update);
-   
+
    // Salon d'attente
    void caseLobbyGameReady(LobbyGameReady update);
+
    void caseLobbyUpdateSlot(LobbyUpdateSlot update);
-   
+
    // Administration
    void caseUpdateServerUser(UpdatedServerUser udpate);
+
    void caseKicked(Kicked update);
 
 }

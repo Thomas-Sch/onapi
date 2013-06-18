@@ -17,18 +17,19 @@ import core.updates.Update;
 import core.updates.UpdateVisitor;
 
 /**
- * TODO
+ * Mise à jour concernant l'emplacement d'un salon d'attente.
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
 public class LobbyUpdateSlot extends Update {
-   
+
    public int slotNumber;
    public PlayerStatus status;
-   
+
    public LobbyUpdateSlot(int slotNumber, PlayerStatus status) {
       super();
       this.slotNumber = slotNumber;

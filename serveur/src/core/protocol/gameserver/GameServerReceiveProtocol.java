@@ -22,39 +22,40 @@ import core.protocol.ServerStandardReceiveProtocol;
 import core.updates.components.admin.UpdatedServerUser;
 
 /**
- * TODO
+ * Protocole des requêtes accessibles une fois sur un serveur de jeu.
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
 public class GameServerReceiveProtocol extends ServerStandardReceiveProtocol {
-   
+
    private GameServer gameServer;
-   
+
    private PlayerStatus status;
-   
-   public GameServerReceiveProtocol(Core core, GameServer gameServer, UserInformations user,
-                               PlayerStatus status) {
+
+   public GameServerReceiveProtocol(Core core, GameServer gameServer,
+         UserInformations user, PlayerStatus status) {
       super(core, user);
       this.gameServer = gameServer;
       this.status = status;
    }
-   
+
    public void leave() {
       if (gameServer.removePlayer(user)) {
          user.gameServer = null;
-            
+
          // On retourne au protocol de connexion.
          user.activity = ActivityType.CONNECTED;
          user.serverReceive = new AccountConnection(core, user);
-         
+
          // Mise à jour transmise aux administrateurs
          core.adminUpdate(new UpdatedServerUser(user.getConnectedUser()));
       }
    }
-   
+
    public void lobbySetReady() {
       boolean ready = user.connectionsToClient.receiveChannel.receiveBoolean();
       status.setReady(ready);

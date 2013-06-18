@@ -27,7 +27,7 @@ public class PortException extends IOException {
    /**
     * ID de sérialisation.
     */
-   private static final long serialVersionUID = -5855790231160541860L;
+   private static final long serialVersionUID = 20002L;
 
    /**
     * Crée une exception indiquant une erreur quelconque du port d'écoute.

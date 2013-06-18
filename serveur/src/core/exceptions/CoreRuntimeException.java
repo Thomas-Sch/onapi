@@ -25,7 +25,7 @@ public class CoreRuntimeException extends RuntimeException {
    /**
     * ID de sérialisation.
     */
-   private static final long serialVersionUID = 356320132101265386L;
+   private static final long serialVersionUID = 20001L;
 
    /**
     * Crée une exception indiquant une erreur quelconque du coeur du serveur.

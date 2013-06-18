@@ -25,7 +25,7 @@ public class GameServerException extends RuntimeException {
    /**
     * ID de sérialisation.
     */
-   private static final long serialVersionUID = 6130283653529717488L;
+   private static final long serialVersionUID = 30000L;
 
    /**
     * Crée une exception indiquant une erreur quelconque du serveur de jeu.

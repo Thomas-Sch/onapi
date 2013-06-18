@@ -1,5 +1,5 @@
 /* ============================================================================
- * Nom du fichier   : LobbyConnection.java
+ * Nom du fichier   : GameServerConnection.java
  * ============================================================================
  * Date de création : 19 mai 2013
  * ============================================================================
@@ -21,51 +21,57 @@ import core.UserInformations;
 import core.protocol.gameserver.GameServerReceiveProtocol;
 
 /**
- * TODO
+ * Gère une connexion utilisateur au niveau du serveur de jeu, c'est-à-dire les
+ * actions que peut effectuer un client après avoir rejoint un serveur de jeu.
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
 public class GameServerConnection implements ServerRequestAnswers {
-   
+
    private GameServerReceiveProtocol receiveProtocol;
-   
+
    private UserInformations user;
-   
-   public GameServerConnection(Core core, GameServer gameServer, UserInformations user,
-                          PlayerStatus status) {
+
+   /**
+    * Crée le gestionnaire de connexion.
+    * 
+    * @param core - le coeur logique du serveur.
+    * @param gameServer - le serveur de jeu.
+    * @param user - l'utilisateur à gérer.
+    * @param status - le status du joueur sur le serveur.
+    */
+   public GameServerConnection(Core core, GameServer gameServer,
+         UserInformations user, PlayerStatus status) {
       this.user = user;
-      receiveProtocol = new GameServerReceiveProtocol(core, gameServer, user, status);
+      receiveProtocol = new GameServerReceiveProtocol(core, gameServer, user,
+            status);
    }
 
    @Override
    public void answerRequest(ProtocolType type) {
-      
-      switch(type) {
-         
-         case PING :
+
+      switch (type) {
+
+         case PING:
             receiveProtocol.acceptRequest(type);
             receiveProtocol.ping();
             break;
-            
-         case TEXT_MESSAGE :
-            receiveProtocol.acceptRequest(type);
-            receiveProtocol.textMessage();
-            break;
-            
-         case LEAVE_GAME :
+
+         case LEAVE_GAME:
             receiveProtocol.acceptRequest(type);
             receiveProtocol.leave();
             break;
-            
-         case LOBBY_SET_READY :
+
+         case LOBBY_SET_READY:
             receiveProtocol.acceptRequest(type);
             receiveProtocol.lobbySetReady();
             break;
-            
-         case ADMIN_KICK :
+
+         case ADMIN_KICK:
             if (user.account.getType() == AccountType.ADMINISTRATOR) {
                receiveProtocol.acceptRequest(type);
                receiveProtocol.adminKick();
@@ -74,15 +80,12 @@ public class GameServerConnection implements ServerRequestAnswers {
                receiveProtocol.refuseRequest(type);
             }
             break;
-            
-         default :
+
+         default:
             receiveProtocol.refuseRequest(type);
             user.log.push("Bad request protocol");
       }
-      
-      
+
    }
-   
-   
 
 }

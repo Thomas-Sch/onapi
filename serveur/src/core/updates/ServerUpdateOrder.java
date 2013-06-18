@@ -25,37 +25,49 @@ import core.updates.components.admin.Kicked;
 import core.updates.components.admin.UpdatedServerUser;
 
 /**
- * TODO
+ * Permet de mettre en attente les mises à jour et de les envoyer sur ordre.
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
 public class ServerUpdateOrder implements UpdateVisitor {
-   
+
    private UserInformations user;
-   
+
    private ServerUpdateProtocol protocol;
-   
+
    private LinkedList<Update> waitingUpdates = new LinkedList<>();
-   
+
    public ServerUpdateOrder(Core core, UserInformations user) {
       this.user = user;
       protocol = new ServerUpdateProtocol(core, user);
    }
-   
+
+   /**
+    * Ajoute à la file d'attente la mise à jour donnée.
+    * 
+    * @param update
+    *           - la mise à jour à mettre en file d'attente.
+    */
    public void pushUpdate(Update update) {
       synchronized (waitingUpdates) {
          waitingUpdates.add(update);
       }
    }
-   
-   
+
+   /**
+    * Vide la file d'attente en envoyant toutes les mises à jour.
+    * 
+    * @return Vrai si au moins une mise à jour a été envoyée, Faux si aucune n'a
+    *         été transmise.
+    */
    public boolean sendUpdate() {
       boolean updateSent = false;
-      synchronized(waitingUpdates) {
-         for(int i = 0 ; i < waitingUpdates.size() ; i++) {
+      synchronized (waitingUpdates) {
+         for (int i = 0; i < waitingUpdates.size(); i++) {
             Update update = waitingUpdates.remove();
             update.apply(this);
             updateSent = true;
@@ -63,7 +75,6 @@ public class ServerUpdateOrder implements UpdateVisitor {
       }
       return updateSent;
    }
-
 
    @Override
    public void casePing(StandardPing update) {
@@ -96,5 +107,5 @@ public class ServerUpdateOrder implements UpdateVisitor {
          user.log.push("Update a user from server");
       }
    }
-   
+
 }

@@ -15,22 +15,23 @@ import core.updates.Update;
 import core.updates.UpdateVisitor;
 
 /**
- * TODO
+ * Mise à jour indiquant que l'utilisateur a été éjecté du serveur.
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
 public class Kicked extends Update {
-   
+
    public String message;
-   
+
    public Kicked(String kickMessage) {
       super();
       message = kickMessage;
    }
-   
+
    @Override
    public void apply(UpdateVisitor v) {
       v.caseKicked(this);

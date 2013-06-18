@@ -11,10 +11,8 @@
  */
 package core.updates;
 
-
-
 /**
- * TODO
+ * Représente une mise à jour.
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
@@ -28,7 +26,7 @@ public abstract class Update {
       }
 
       /**
-       * the method for applying visitors to Update
+       * Effectue l'action adéquate pour la mise à jour.
        */
       public abstract void apply(UpdateVisitor v);
       

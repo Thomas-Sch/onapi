@@ -14,15 +14,17 @@ package core;
 import common.connections.protocol.ProtocolType;
 
 /**
- * TODO
+ * Interface définissant un gestionnaire de connexion pour les requêtes d'un
+ * client.
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
 public interface ServerRequestAnswers {
-   
+
    public void answerRequest(ProtocolType type);
 
 }

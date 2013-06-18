@@ -17,17 +17,18 @@ import core.updates.Update;
 import core.updates.UpdateVisitor;
 
 /**
- * TODO
+ * Mise à jour des informations générales concernant un utilisateur.
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
- *
+ * 
  */
 public class UpdatedServerUser extends Update {
-   
+
    public ConnectedUser user;
-   
+
    public UpdatedServerUser(ConnectedUser user) {
       super();
       this.user = user;
