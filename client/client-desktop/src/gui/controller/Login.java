@@ -20,6 +20,8 @@ import java.awt.Component;
 
 import javax.swing.JFrame;
 
+import client.GameLauncher;
+
 import core.ConnectionsManager;
 
 import settings.Settings;
@@ -37,8 +39,9 @@ public class Login extends Controller {
 
    JLogin view;
 
-   public Login(ConnectionsManager connections) {
+   public Login(ConnectionsManager connections, GameLauncher launcher) {
       super(connections);
+      connections.setupGameLauncher(launcher);
    }
 
    @Override

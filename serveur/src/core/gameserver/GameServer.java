@@ -25,6 +25,7 @@ import settings.Settings;
 import core.Core;
 import core.UserInformations;
 import core.gameserver.exceptions.GameServerException;
+import core.updates.components.LobbyGameReady;
 import core.updates.components.LobbyUpdateSlot;
 
 /**
@@ -291,6 +292,8 @@ public class GameServer implements Observer {
          PlayerSlot updatedSlot = (PlayerSlot) o;
          PlayerStatus status = updatedSlot.getStatus();
          int slotNumber = updatedSlot.getSlotNumber();
+         
+         int nbReady = 0;
 
          // Envoi de l'information mise à jour aux joueurs présents qui ne sont
          // pas administrateurs
@@ -300,12 +303,26 @@ public class GameServer implements Observer {
                      && slot.user.account.getType() != AccountType.ADMINISTRATOR) {
                   slot.user.serverUpdate.pushUpdate(new LobbyUpdateSlot(
                         slotNumber, status));
+                  
+                  if (slot.status.isReady()) {
+                     nbReady++;
+                  }
                }
             }
          }
 
          // Envoi de l'information aux administrateurs
          core.adminUpdate(new LobbyUpdateSlot(slotNumber, status));
+         
+
+         // Vérification de l'état de la partie
+         if (nbReady > 0 && nbReady == players.length) {
+            synchronized (players) {
+               for (PlayerSlot slot : players) {
+                  slot.user.serverUpdate.pushUpdate(new LobbyGameReady());
+               }
+            }
+         }
       }
 
    }

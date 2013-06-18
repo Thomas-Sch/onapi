@@ -78,7 +78,7 @@ public class Launcher {
          sets = new Settings();
          sets.loadSettings();
 
-         new Login(connections);
+         new Login(connections, new GameLauncher(false));
 
          // Temporaire en attendant de merge.
          Logs.addLogsToFrame(new JLog("Logs", 0, 0, 500, 400));
