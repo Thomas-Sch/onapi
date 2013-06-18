@@ -35,6 +35,8 @@ public class Server {
     */
    public static void main(String[] args) {
       
+      Settings.DEBUG_MODE_ON = false;
+      
       if (args.length > 0) {
          Settings.GAMESERVER_PLAYER_NUMBER = Integer.parseInt(args[0]);
       }
