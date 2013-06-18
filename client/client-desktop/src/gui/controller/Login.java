@@ -22,29 +22,29 @@ import javax.swing.JFrame;
 
 import core.ConnectionsManager;
 
-
 import settings.Settings;
 import settings.Language.Text;
 
 /**
  * Contrôleur de la fenêtre de login.
+ * 
  * @author Crescenzio Fabio
  * @author Decorvet Grégoire
  * @author Jaquier Kevin
  * @author Schweizer Thomas
  */
 public class Login extends Controller {
-   
+
    JLogin view;
-   
+
    public Login(ConnectionsManager connections) {
       super(connections);
    }
 
    @Override
-   protected void initComponents(Object ... object) {
+   protected void initComponents(Object... object) {
       view = new JLogin(Text.APP_TITLE.toString());
-      Positions.setPositionOnScreen(view,  Settings.mainFrame.anchor);
+      Positions.setPositionOnScreen(view, Settings.mainFrame.anchor);
       view.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       view.setVisible(true);
       view.setResizable(false);

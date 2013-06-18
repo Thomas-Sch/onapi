@@ -114,6 +114,7 @@ public class ConnectionsManager {
    }
    
    public class KeepAlive extends Thread {
+      @SuppressWarnings("unused") // Variable en prévision de la suite.
       private Channel requestChannel;
       private ClientRequestProtocol protocol;
       
@@ -138,6 +139,7 @@ public class ConnectionsManager {
    }
    
    public class Notifier implements GameListener {
+      @SuppressWarnings("unused") // En prévision de la suite
       private ClientRequestProtocol protocol;
 
       public Notifier(GameData data, ClientRequestProtocol protocol) {
@@ -203,10 +205,6 @@ public class ConnectionsManager {
                switch (proType) {
                   case PING:
                      protocol.ping();
-                     break;
-
-                  case TEXT_MESSAGE:
-                     System.out.println(protocol.updateMessage());
                      break;
                      
                   case LOBBY_UPDATED_SLOT_STATUS:

@@ -1,5 +1,5 @@
 /* ============================================================================
- * Nom du fichier   : UserInfo.java
+ * Nom du fichier   : PlayerInfo.java
  * ============================================================================
  * Date de création : 14 juin 2013
  * ============================================================================
@@ -14,8 +14,6 @@ package core;
 import java.util.Observable;
 import java.util.Observer;
 
-import common.components.ActivityType;
-import common.components.ConnectedUser;
 import common.components.gameserver.PlayerStatus;
 
 /**

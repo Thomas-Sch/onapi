@@ -81,10 +81,11 @@ public class Launcher {
          new Login(connections);
 
          // Temporaire en attendant de merge.
-         (new Logs()).addLogsToFrame(new JLog("Logs", 0, 0, 500, 400));
-
-         Settings.createTemplateForLanguage("fr");
-         Settings.createUpdateForLanguage("fr");
+         Logs.addLogsToFrame(new JLog("Logs", 0, 0, 500, 400));
+         
+//       Sert pour le développement
+//         Settings.createTemplateForLanguage("fr");
+//         Settings.createUpdateForLanguage("fr");
       }
    }
 

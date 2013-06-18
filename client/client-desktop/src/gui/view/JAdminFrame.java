@@ -54,6 +54,7 @@ public class JAdminFrame extends JDialog implements Observer {
     */
    private static final long serialVersionUID = -1202660840303381066L;   
    
+   @SuppressWarnings("unused") // Variable en prévision de la suite
    private UsersInformations modelAllUsers;
    private PlayersInformations modelServer;
    

@@ -1,22 +1,23 @@
+/* ============================================================================
+ * Nom du fichier   : Lobby.java
+ * ============================================================================
+ * Date de création : 3 juin 2013
+ * ============================================================================
+ * Auteurs          : Crescenzio Fabio
+ *                    Decorvet Grégoire
+ *                    Jaquier Kevin
+ *                    Schweizer Thomas
+ * ============================================================================
+ */
 package gui.controller;
 
-import gui.actions.AcCancel;
-import gui.actions.AcConnect;
 import gui.actions.AcLobbyNotReady;
 import gui.actions.AcLobbyReady;
-import gui.utils.Positions;
-import gui.utils.Positions.ScreenPosition;
 import gui.utils.WindowCloseListener;
 import gui.view.JLobby;
-import gui.view.JLogin;
 
 import java.awt.Component;
-import java.awt.Dialog.ModalityType;
-import java.awt.event.ContainerEvent;
-import java.awt.event.ContainerListener;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.awt.event.WindowStateListener;
 import java.awt.Frame;
 
 import javax.swing.JFrame;
@@ -24,33 +25,21 @@ import javax.swing.JFrame;
 import core.ConnectionsManager;
 import core.PlayersInformations;
 
-import settings.Settings;
 import settings.Language.Text;
-import utils.Logs;
 
-import client.ClientRequestProtocol;
-import client.GameLauncher;
-
+/**
+ * Contrôleur permettant de démarrer la fenêtre du salon d'attente.
+ * 
+ * @author Crescenzio Fabio
+ * @author Decorvet Grégoire
+ * @author Jaquier Kevin
+ * @author Schweizer Thomas
+ * 
+ */
 public class Lobby extends Controller {
-   
+
    private JLobby view;
    private PlayersInformations model;
-   
-   /*
-    * protocol = (ClientRequestProtocol) dependencies[0];
-      
-      boolean success = protocol.joinLobby();
-      
-      Logs.messages.push("Recherche d'une partie initiée !");
-      JLobby view = new JLobby();
-      view.setTitle(Text.APP_TITLE.toString() + " - " + Text.LOBBY_TITLE.toString());
-      Positions.setPositionOnScreen(view, ScreenPosition.CENTER);
-      view.setVisible(true);
-      
-      new GameLauncher(connections, true); // TODO true = temporaire
-    * 
-    * 
-    */
 
    public Lobby(ConnectionsManager connections, Frame parent) {
       super(connections, parent);
@@ -59,7 +48,7 @@ public class Lobby extends Controller {
    @Override
    protected void initComponents(Object... objects) {
       model = connections.getPlayers();
-      view = new JLobby(model, (Frame)objects[0]);
+      view = new JLobby(model, (Frame) objects[0]);
       view.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
       view.addWindowListener(new WindowCloseListener() {
          @Override
@@ -68,11 +57,12 @@ public class Lobby extends Controller {
             view.dispose();
          }
       });
-      view.setTitle(Text.APP_TITLE.toString() + " - " + Text.LOBBY_TITLE.toString());
-      
+      view.setTitle(Text.APP_TITLE.toString() + " - "
+            + Text.LOBBY_TITLE.toString());
+
       // Ajout de l'observateur
       model.addObserver(view);
-      
+
       view.setVisible(true);
    }
 

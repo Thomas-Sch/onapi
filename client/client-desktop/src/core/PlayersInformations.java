@@ -1,5 +1,5 @@
 /* ============================================================================
- * Nom du fichier   : UsersInformations.java
+ * Nom du fichier   : PlayersInformations.java
  * ============================================================================
  * Date de création : 7 juin 2013
  * ============================================================================
@@ -16,7 +16,6 @@ import java.util.LinkedList;
 import java.util.Observable;
 import java.util.Observer;
 
-import common.components.ConnectedUser;
 import common.components.gameserver.PlayerStatus;
 
 /**

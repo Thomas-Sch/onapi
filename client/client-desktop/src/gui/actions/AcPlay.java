@@ -48,12 +48,7 @@ public class AcPlay extends UserAction {
          connections.setupPlayers(lobbySize);
          
          new GameLauncher(true); // TODO true = temporaire
-         Lobby lobby = new Lobby(connections, (Frame)dependencies[0]);
-         
-//       JLobby view = new JLobby((Frame)dependencies[0]);
-//       view.setTitle(Text.APP_TITLE.toString() + " - " + Text.LOBBY_TITLE.toString());
-//       Positions.setPositionOnScreen(view, ScreenPosition.CENTER);
-//       view.setVisible(true);
+         new Lobby(connections, (Frame)dependencies[0]);
        
       }
       

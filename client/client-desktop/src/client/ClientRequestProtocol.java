@@ -1,5 +1,5 @@
 /* ============================================================================
- * Nom du fichier   : Protocol.java
+ * Nom du fichier   : ClientRequestProtocol.java
  * ============================================================================
  * Date de création : 8 mai 2013
  * ============================================================================
@@ -12,13 +12,11 @@
 package client;
 
 import utils.Logs;
-import log.Log;
 import common.components.UserAccount;
 import common.connections.Channel;
 import common.connections.exceptions.ProtocolException;
 import common.connections.exceptions.TimeOutException;
 import common.connections.protocol.ProtocolType;
-import core.ConnectionsManager;
 
 /**
  * Classe permettant de rassembler les protocoles utilisés par le client pour
@@ -45,7 +43,6 @@ public class ClientRequestProtocol {
     * <b><u>ATTENTION :</b></u> le canal doit déjà être connecté au serveur.
     * @param channel
     */
-   @Deprecated
    public ClientRequestProtocol(Channel channel) {
       requestChannel = channel;
       initDone = true;
