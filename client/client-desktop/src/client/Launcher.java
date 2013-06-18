@@ -33,12 +33,17 @@ import core.ConnectionsManager;
  * 
  */
 public class Launcher {
+   
+   private final static boolean LOGS_ON = false;
+   private final static boolean LOGS_FRAME_ON = false;
+   private final static boolean DEVELOPPEMENT_MODE_ON = false;
 
    private static Settings sets;
 
    /**
     * @param args
     */
+   @SuppressWarnings("unused") // enlève les warning pour code mort des logs
    public static void main(String[] args) {
       GameData initData = new GameData();
       GameModel game = new GameModel(initData);
@@ -79,13 +84,22 @@ public class Launcher {
          sets.loadSettings();
 
          new Login(connections, new GameLauncher(false));
-
-         // Temporaire en attendant de merge.
-         Logs.addLogsToFrame(new JLog("Logs", 0, 0, 500, 400));
          
-//       Sert pour le développement
-//         Settings.createTemplateForLanguage("fr");
-//         Settings.createUpdateForLanguage("fr");
+         // Création des logs
+         if (LOGS_ON) {
+            Logs.setupFiles();
+         }
+         if (LOGS_ON && LOGS_FRAME_ON) {
+            JLog logsFrame = new JLog("Onapi - Logs", 0, 0, 500, 400);
+            Logs.addLogsToFrame(logsFrame);
+         }
+         
+         // Auto création du template de langue et du fichier update
+         if (DEVELOPPEMENT_MODE_ON) {
+            Settings.createTemplateForLanguage("fr");
+            Settings.createUpdateForLanguage("fr");
+         }
+         
       }
    }
 
