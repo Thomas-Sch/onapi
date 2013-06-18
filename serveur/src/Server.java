@@ -10,6 +10,7 @@
  * ============================================================================
  */
 
+import settings.Settings;
 import core.Core;
 
 /**
@@ -35,7 +36,11 @@ public class Server {
    public static void main(String[] args) {
       
       if (args.length > 0) {
-         if (args[0].equalsIgnoreCase("-logs")) {
+         Settings.GAMESERVER_PLAYER_NUMBER = Integer.parseInt(args[0]);
+      }
+      
+      if (args.length == 2) {
+         if (args[1].equalsIgnoreCase("-logs")) {
             logs = true;
          }
       }
