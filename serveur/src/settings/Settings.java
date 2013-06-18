@@ -23,7 +23,7 @@ package settings;
 public class Settings {
 
    // Options de développement
-   public static final boolean DEBUG_MODE_ON = true;
+   public static final boolean DEBUG_MODE_ON = false;
 
    // Options du serveur
    public static final String GAMESERVER_NAME = "GameServer";
