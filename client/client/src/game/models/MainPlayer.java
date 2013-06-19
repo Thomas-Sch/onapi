@@ -32,8 +32,8 @@ import com.badlogic.gdx.math.Vector2;
 public class MainPlayer extends Player {
 
    // Paramètres du halo de lumière autour du joueur
-   public final static Color HALO_COLOR = new Color(1, 1, 1, 0.15f);
-   public final static float HALO_DISTANCE = Tile.WIDTH * 0.66f;
+   public final static Color HALO_COLOR = new Color(1, 1, 1, 0.3f);
+   public final static float HALO_DISTANCE = Tile.WIDTH * 0.8f;
    
    public MainPlayer(Vector2 pos, Vector2 dir, Team team, Weapon weapon,
          Skill skill, Bonus bonus, GameModel game) {

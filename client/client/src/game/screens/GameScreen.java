@@ -62,7 +62,7 @@ public class GameScreen extends ScreenAdapter {
     *           Activer le mode debug.
     */
    public GameScreen(boolean debug, GameData initData) {
-      this.debug = debug;
+      this.debug = false;
       game = initData.getGame();
    }
 
